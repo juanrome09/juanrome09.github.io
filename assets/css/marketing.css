@@ -1,0 +1,496 @@
+/* ==========================================================================
+   A360 — marketing.css
+   REESKIN A PETICIÓN DEL CLIENTE (no es la interpretación original del
+   encargo): esto ya no es "tomar el sistema, no la paleta" de MindMarket —
+   es su piel literal (tipografía Inter, radios 50-64px, paleta crema/azul/
+   coral/amarillo, spacing, animación) aplicada tal cual a la estructura y
+   contenido de A360 Marketing. El cliente ajustará colores después; hasta
+   entonces estos son los tokens reales de la ficha de estilo MindMarket.
+   Asesoría y la puerta NO se tocan: siguen el manual de A360.
+   ========================================================================== */
+
+body.marketing {
+  /* ---- Tokens literales de MindMarket ---- */
+  --mk-acento: #1E6FA0;      /* Azul acero del logo monocromo de Marketing — acento estructural (nav, héroe, toggle) */
+  --mk-crema: #f5f1e4;      /* Cream Paper — lienzo de página */
+  --mk-tinta: #2c2e2a;      /* Ink Black — texto y titulares */
+  --mk-blanco: #ffffff;     /* Pure White — tarjetas, nav */
+  --mk-arena: #e0dbce;      /* Sandstone — superficie secundaria/recesada */
+  --mk-gris: #80827f;       /* Stone Gray — texto muted */
+  --mk-niebla: #d5d5d4;     /* Hairline Mist — filetes sutiles */
+  --mk-negro: #000000;      /* Pure Ink — máximo contraste */
+  --mk-azul: #2ba0ff;       /* Sky Pop — acento decorativo, puntos de icono */
+  --mk-coral: #ff705d;      /* Coral Pop — CTA de nivel servicio, único relleno fuerte */
+  --mk-amarillo: #f5e211;   /* Sunshine Pop — banda de cierre/footer */
+
+  /* ---- Tipografía: una sola familia (Inter) a escala extrema ---- */
+  --f-titulos: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --f-cuerpo: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* Escala MindMarket (body-sm 15 / body-lg 18 / subheading 20 / heading-sm 30 /
+     heading 53 / heading-lg 81 / display 140-144), llevada a clamp() fluido */
+  --display: clamp(48px, 10vw, 140px);
+  --titulo-1: clamp(36px, 7vw, 81px);
+  --titulo-2: clamp(28px, 4.5vw, 53px);
+  --titulo-3: 30px;
+  --cuerpo-lg: 18px;
+  --cuerpo: 17px;
+  --menor: 15px;
+
+  /* ---- Radios: 50px es la firma; 63.75px en contenedores de imagen ---- */
+  --r-panel: 50px;
+  --r-medio: 10px;
+  --mk-r-imagen: 63.75px;
+
+  background: var(--mk-crema);
+  color: var(--mk-tinta);
+  /* Ojo: el hueco para el nav NO va aquí (con padding-top en el body se
+     ve una franja crema detrás de la píldora, cortada contra el color
+     de la primera sección). Va como padding dentro de cada sección, así
+     su propio color de fondo llega hasta arriba del todo y la píldora
+     flota directamente sobre él, sin costura. */
+}
+
+/* ---- Tipografía base: Inter 400/500, nunca 700, tracking negativo en display ---- */
+
+body.marketing h1, body.marketing h2, body.marketing h3, body.marketing h4 {
+  font-family: var(--f-titulos);
+  font-weight: 500;
+  color: var(--mk-tinta);
+}
+body.marketing h1 { font-size: var(--display); line-height: .95; letter-spacing: -.06em; }
+body.marketing h2 { font-size: var(--titulo-1); line-height: 1.15; letter-spacing: -.05em; }
+body.marketing h3 { font-size: var(--titulo-3); line-height: 1.2; letter-spacing: normal; }
+body.marketing p, body.marketing li { color: var(--mk-tinta); }
+body.marketing .menor { color: var(--mk-gris); }
+
+body.marketing a.enlace-cuerpo {
+  color: var(--mk-tinta);
+  text-decoration: none;
+  border-bottom: 1px solid var(--mk-gris);
+}
+
+/* Cada banda es su propia "hoja" opaca — nunca transparente, porque con
+   el efecto de páginas apiladas de abajo eso dejaría ver la hoja anterior
+   asomando (el "texto encima de texto" que no queremos). Alternan crema/
+   arena/blanco sólidos en vez de colores sueltos por página. */
+body.marketing .banda-blanca { background: var(--mk-blanco) !important; }
+body.marketing .banda-gris,
+body.marketing .banda[style*="background"] { background: var(--mk-crema) !important; }
+
+/* Nota: cada sección debe caber en una pantalla para que el efecto de
+   apilado se vea limpio (ver más abajo). Padding contenido a propósito,
+   no --e-8, para no forzar secciones mucho más altas que el viewport. */
+body.marketing .banda { padding-block: var(--e-6); }
+@media (min-width: 1024px) { body.marketing .banda { padding-block: var(--e-7); } }
+
+/* ---------- Animación de firma: páginas apiladas ----------
+   La animación real de MindMarket no son micro-efectos sueltos: cada
+   sección se queda fija (sticky) mientras la siguiente sube con las
+   esquinas superiores redondeadas y la cubre, como hojas apilándose.
+   CSS puro (sticky + border-radius), sin JS ni librería de animación.
+
+   Clave para que no se solape texto de una "hoja" con la siguiente:
+   CADA hoja tiene que ser como mínimo una pantalla completa (100dvh).
+   Si una hoja es más baja que la ventana, deja de estar pegada antes de
+   que la siguiente la haya tapado del todo, y se ven las dos a la vez.
+   Por eso min-height:100dvh va en todas — sección o bloque de servicio,
+   sin excepción — no solo en el héroe. */
+body.marketing main > section,
+body.marketing main > article {
+  position: sticky;
+  top: 0;
+  min-height: 100dvh;
+  background: var(--mk-crema);
+  display: flex;
+  flex-direction: column;
+  /* Centrado, pero solo si cabe: en pantallas bajas donde el contenido
+     no entra entero, ancla arriba para que lo primero que se vea sea
+     siempre el principio (título e idea clave), nunca un recorte a
+     mitad de frase esperando a que "se despegue". */
+  justify-content: safe center;
+  /* El hueco del nav va aquí, no en el body: así el color de fondo de
+     CADA sección llega hasta arriba del todo, detrás de la píldora
+     flotante, sin dejar asomar el crema del body como una costura.
+     !important porque .banda (más específica) no debe poder recortar
+     este margen — si lo hiciera, la píldora taparía el título. */
+  padding-top: 104px !important;
+}
+/* Toda hoja menos la primera sube con las esquinas redondeadas */
+body.marketing main > *:not(:first-child) {
+  border-radius: 50px 50px 0 0;
+}
+/* El footer es la última hoja: no se queda pegado, solo remata subiendo */
+body.marketing .pie {
+  position: relative;
+  border-radius: 50px 50px 0 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  body.marketing main > section,
+  body.marketing main > article { position: relative; min-height: 0; }
+}
+
+/* ---------- Navegación flotante en píldora ---------- */
+
+.nav-flotante-envoltorio {
+  position: fixed;
+  inset-block-start: var(--e-2);
+  inset-inline: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  padding-inline: var(--canal-movil);
+}
+
+.nav-flotante {
+  width: 100%;
+  max-width: var(--ancho-max);
+  background: var(--mk-blanco);
+  border: 1px solid var(--mk-niebla);
+  border-radius: var(--r-pildora);
+  padding: 10px var(--e-3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-3);
+}
+
+.nav-flotante__logo svg,
+.nav-flotante__logo img { height: 52px; width: auto; display: block; }
+
+.nav-flotante__nav {
+  display: none;
+  align-items: center;
+  gap: var(--e-4);
+}
+@media (min-width: 900px) { .nav-flotante__nav { display: flex; } }
+
+.nav-flotante__nav a {
+  font-family: var(--f-cuerpo);
+  font-weight: 500;
+  font-size: var(--menor);
+  color: var(--mk-tinta);
+  padding: 10px 16px;
+  border-radius: var(--r-pildora);
+  transition: background-color var(--dur-hover) ease;
+}
+.nav-flotante__nav a:hover, .nav-flotante__nav a:focus-visible { background: var(--mk-arena); }
+.nav-flotante__nav a[aria-current="page"] { color: var(--mk-coral); }
+
+.nav-flotante__cambio-mundo {
+  font-size: var(--menor);
+  font-weight: 500;
+  color: var(--mk-tinta);
+  text-decoration: none;
+  border-bottom: 1px solid var(--mk-gris);
+}
+
+/* Menu Toggle Button — recoloreado: círculo en el azul del logo de Marketing, icono blanco */
+.nav-flotante__movil-abrir {
+  display: flex;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--mk-acento);
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--dur-hover) ease;
+}
+.nav-flotante__movil-abrir:hover,
+.nav-flotante__movil-abrir:focus-visible { background: var(--mk-tinta); }
+@media (min-width: 900px) { .nav-flotante__movil-abrir { display: none; } }
+
+/* ---------- Botones: ghost neutro (acción general) + coral (nivel servicio) ---------- */
+
+.boton-mk-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  background: var(--mk-blanco);
+  color: var(--mk-tinta);
+  border: 1px solid var(--mk-niebla);
+  border-radius: var(--r-pildora);
+  padding: 11px 12px 11px 20px;
+  font-family: var(--f-cuerpo);
+  font-weight: 500;
+  font-size: var(--menor);
+  transition: background-color var(--dur-hover) ease;
+}
+.boton-mk-ghost:hover, .boton-mk-ghost:focus-visible { background: var(--mk-arena); }
+.boton-mk-ghost__punto {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--mk-azul);
+  flex-shrink: 0;
+}
+
+.boton-mk-coral {
+  display: inline-flex;
+  align-items: center;
+  background: var(--mk-coral);
+  color: var(--mk-blanco);
+  border: 1px solid var(--mk-coral);
+  border-radius: var(--r-pildora);
+  padding: 11px 20px;
+  font-family: var(--f-cuerpo);
+  font-weight: 500;
+  font-size: var(--menor);
+  transition: background-color var(--dur-hover) ease;
+}
+.boton-mk-coral:hover, .boton-mk-coral:focus-visible { background: #e85c49; border-color: #e85c49; }
+
+/* ---------- Héroe: titular a --display, imagen a sangre entrando por abajo ---------- */
+
+body.marketing .marketing-hero {
+  /* Verde, como el héroe real de MindMarket — así la hoja siguiente
+     (crema) se nota de verdad al subir y cubrirlo. */
+  background: var(--mk-acento);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* 104px de hueco del nav + un poco de aire extra antes del titular.
+     !important para ganarle al !important del hueco base del nav
+     (ver más arriba) y no quedarnos solo con 104px pelados aquí. */
+  padding-block-start: calc(104px + var(--e-4)) !important;
+  padding-inline: var(--canal-movil);
+}
+@media (min-width: 1024px) { .marketing-hero { padding-inline: var(--canal-escritorio); } }
+
+/* Fondo azul oscuro: el texto va en crema, no en tinta (si no, no se lee) */
+body.marketing .marketing-hero__titulo {
+  font-family: var(--f-titulos);
+  font-weight: 500;
+  font-size: var(--display);
+  line-height: .95;
+  letter-spacing: -.06em;
+  color: var(--mk-crema);
+  max-width: 16ch;
+}
+body.marketing .marketing-hero__linea {
+  margin-top: var(--e-3);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--mk-crema);
+  opacity: .9;
+  max-width: 46ch;
+}
+.marketing-hero__acciones { margin-top: var(--e-4); }
+
+.marketing-hero__imagen {
+  margin-top: var(--e-6);
+  margin-inline: calc(var(--canal-movil) * -1);
+}
+@media (min-width: 1024px) { .marketing-hero__imagen { margin-inline: calc(var(--canal-escritorio) * -1); } }
+
+/* ---------- Los cinco servicios: tarjetas blancas de 50px sobre crema ---------- */
+
+.servicios-marketing {
+  display: grid;
+  gap: var(--e-4);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) { .servicios-marketing { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .servicios-marketing { grid-template-columns: repeat(3, 1fr); } }
+
+.servicio-panel-mk {
+  background: var(--mk-blanco);
+  border-radius: var(--r-panel);
+  padding: 21px;
+}
+.servicio-panel-mk h3 { color: var(--mk-tinta); margin-bottom: 8px; }
+.servicio-panel-mk .boton-mk-coral { margin-top: var(--e-3); }
+
+/* ---------- Nuestro trabajo: escaparate visual de las piezas tipo ---------- */
+
+.trabajo-mk {
+  display: grid;
+  gap: var(--e-3);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) { .trabajo-mk { grid-template-columns: repeat(3, 1fr); } }
+.trabajo-mk__pieza .placeholder-img {
+  border-radius: var(--mk-r-imagen);
+  background: var(--mk-blanco) !important;
+}
+
+/* ---------- Bloque de enfoque / proceso ---------- */
+
+.enfoque-mk {
+  display: grid;
+  gap: var(--e-4);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) { .enfoque-mk { grid-template-columns: repeat(4, 1fr); } }
+.enfoque-mk__item h3 { color: var(--mk-tinta); font-size: var(--titulo-3); margin-bottom: 6px; }
+
+/* ---------- Preguntas frecuentes: acordeón, una columna editorial ---------- */
+
+.faq-mk { max-width: 760px; }
+.faq-mk .acordeon__item { border-top-color: var(--mk-niebla); }
+.faq-mk .acordeon__item:last-child { border-bottom-color: var(--mk-niebla); }
+.faq-mk .acordeon__pregunta {
+  font-family: var(--f-titulos);
+  font-weight: 500;
+  font-size: var(--titulo-3);
+  color: var(--mk-tinta);
+}
+.faq-mk .acordeon__icono::before,
+.faq-mk .acordeon__icono::after { background: var(--mk-coral); }
+.faq-mk .acordeon__respuesta__interior {
+  font-family: var(--f-cuerpo);
+  color: var(--mk-gris);
+  font-size: 18px;
+  max-width: 62ch;
+}
+
+/* ---------- Cierre: banda oscura de una sola nota, único uso de Staatliches ---------- */
+
+.cierre-marketing {
+  background: var(--mk-tinta);
+  color: var(--mk-crema);
+  text-align: center;
+  padding-block: var(--e-8);
+}
+body.marketing .cierre-marketing__previa {
+  font-family: var(--f-cuerpo);
+  font-weight: 400;
+  font-size: 20px;
+  color: var(--mk-crema);
+  opacity: .75;
+  margin-bottom: var(--e-2);
+}
+body.marketing .cierre-marketing__cartel {
+  font-family: var(--f-cartel);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: clamp(32px, 6vw, 72px);
+  letter-spacing: .01em;
+  line-height: 1;
+  color: var(--mk-crema);
+  max-width: 20ch;
+  margin-inline: auto;
+}
+body.marketing .cierre-marketing__linea {
+  font-family: var(--f-cuerpo);
+  font-size: 18px;
+  color: var(--mk-crema);
+  opacity: .85;
+  max-width: 46ch;
+  margin: var(--e-3) auto 0;
+}
+.cierre-marketing .boton-mk-coral { margin-top: var(--e-4); }
+
+/* ---------- Servicios (página): tarjetas blancas alternando con arena ---------- */
+
+.servicio-bloque-mk {
+  padding-block: var(--e-6);
+}
+@media (min-width: 1024px) { .servicio-bloque-mk { padding-block: var(--e-7); } }
+/* Cada bloque es su propia "hoja" opaca — nunca transparente, o se
+   vería el bloque anterior por debajo durante la subida. */
+.servicio-bloque-mk:nth-of-type(odd) { background: var(--mk-crema); }
+.servicio-bloque-mk:nth-of-type(even) { background: var(--mk-arena); }
+.servicio-bloque-mk__interior {
+  display: grid;
+  gap: var(--e-4);
+  align-items: start;
+}
+@media (min-width: 900px) { .servicio-bloque-mk__interior { grid-template-columns: .5fr 1fr; gap: var(--e-6); } }
+.servicio-bloque-mk__numero {
+  font-family: var(--f-titulos);
+  font-weight: 500;
+  font-size: var(--titulo-1);
+  color: var(--mk-coral);
+}
+.servicio-bloque-mk__lista {
+  margin-top: var(--e-3);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 56ch;
+}
+.servicio-bloque-mk__lista li {
+  padding-left: var(--e-3);
+  position: relative;
+  font-size: 18px;
+}
+.servicio-bloque-mk__lista li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: .65em;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--mk-coral);
+}
+
+/* ---------- Nosotros ---------- */
+
+.nosotros-mk-grid {
+  display: grid;
+  gap: var(--e-5);
+}
+@media (min-width: 900px) { .nosotros-mk-grid { grid-template-columns: 1fr 1fr; } }
+.nosotros-mk-forma { position: relative; }
+.nosotros-mk-forma__rect {
+  position: absolute;
+  inset-block-start: -20px;
+  inset-inline-end: -20px;
+  width: 55%;
+  height: 45%;
+  background: var(--mk-acento);
+  border-radius: var(--mk-r-imagen);
+  transform: none;
+  z-index: 0;
+}
+
+/* ---------- Contacto ---------- */
+
+.contacto-grid-mk {
+  display: grid;
+  gap: var(--e-5);
+}
+.contacto-grid-mk > * { min-width: 0; }
+@media (min-width: 900px) { .contacto-grid-mk { grid-template-columns: 1.1fr .9fr; gap: var(--e-6); } }
+.contacto-panel-mk {
+  background: var(--mk-arena);
+  color: var(--mk-tinta);
+  border-radius: var(--r-panel);
+  padding: 21px;
+}
+.contacto-panel-mk h2, .contacto-panel-mk h3 { color: var(--mk-tinta); }
+.contacto-panel-mk a { text-decoration: none; border-bottom: 1px solid var(--mk-gris); }
+
+/* Campos de formulario, en Marketing, con el radio y tono MindMarket */
+body.marketing .campo input,
+body.marketing .campo select,
+body.marketing .campo textarea {
+  border-color: var(--mk-niebla);
+  border-radius: var(--r-medio);
+  background: var(--mk-blanco);
+  color: var(--mk-tinta);
+}
+body.marketing .campo input:focus-visible,
+body.marketing .campo select:focus-visible,
+body.marketing .campo textarea:focus-visible { border-color: var(--mk-azul); }
+body.marketing .campo label { color: var(--mk-tinta); }
+
+/* Placeholders de imagen: radio grande, superficie arena */
+body.marketing .placeholder-img {
+  border-radius: var(--mk-r-imagen);
+  border: 1px dashed var(--mk-gris);
+  color: var(--mk-tinta);
+  background: var(--mk-arena) !important;
+}
+
+/* ---------- Footer: banda amarilla, tinta oscura (Footer Accent Block) ---------- */
+
+body.marketing .pie {
+  background: var(--mk-amarillo) !important;
+  color: var(--mk-tinta);
+}
+body.marketing .pie h3 { color: var(--mk-tinta); }
+body.marketing .pie a, body.marketing .pie address { color: var(--mk-tinta); opacity: 1; }
+body.marketing .pie__redes a { border-color: var(--mk-tinta); }
+body.marketing .pie__redes svg path { fill: var(--mk-tinta) !important; }
+body.marketing .pie__legal { border-top-color: rgba(44,46,42,.2); opacity: 1; }

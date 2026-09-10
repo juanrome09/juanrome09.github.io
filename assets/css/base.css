@@ -1,0 +1,649 @@
+/* ==========================================================================
+   A360 — base.css
+   Reset, tokens de marca, tipografía, utilidades y componentes compartidos
+   por las tres piezas (puerta, asesoría, marketing).
+   No hay hexadecimales sueltos fuera de este archivo: todo sale de aquí.
+   ========================================================================== */
+
+/* ---------- 1. Tipografías autoalojadas ---------- */
+
+@font-face {
+  font-family: 'Kumbh Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../fonts/kumbh-sans-var.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/lato-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/lato-italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../fonts/lato-bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Staatliches';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/staatliches-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poetsen One';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/poetsen-one-regular.woff2') format('woff2');
+}
+
+/* Inter — solo para el sitio de Marketing, a petición del cliente:
+   reskin literal de MindMarket (ver marketing.css). No se usa en
+   Asesoría ni en la puerta, que siguen el manual de A360. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../fonts/inter-var.woff2') format('woff2');
+}
+
+/* ---------- 2. Tokens de marca (Manual de Identidad A360 v1, 2025) ---------- */
+
+:root {
+  /* Color — institucionales */
+  --naranja: #E95117;
+  --azul-acero: #1E6FA0;
+  --azul-hondo: #0B3A54;
+  --negro: #000000;
+
+  /* Color — secundarios */
+  --rojo-vivo: #F7374F;
+  --vino: #88304E;
+  --vino-hondo: #522546;
+  --gris-tinta: #404040;
+  --gris-claro: #E8E7E7;
+  --lino: #F3EEE7;
+
+  /* Color — complementarios (uno por composición, máx. 20% del área) */
+  --turquesa: #51BCBD;
+  --verde: #8DC04A;
+  --verde-mar: #1BA074;
+  --violeta: #A13C8F;
+  --dorado: #D1970F;
+  --dorado-oscuro: #A07C32;
+
+  /* Lavados derivados (mezcla con blanco, generados para superficies) */
+  --lavado-azul: #E4EEF4;
+  --lavado-hondo: #E7EBEE;
+  --lavado-vino: #F3EAED;
+  --lavado-naranja: #FDEEE8;
+
+  /* Ajeno a la marca: único uso permitido, botón flotante de WhatsApp */
+  --whatsapp: #25D366;
+
+  --blanco: #FFFFFF;
+
+  /* Tipografía */
+  --f-titulos: 'Kumbh Sans', system-ui, sans-serif;
+  --f-cuerpo: 'Lato', system-ui, sans-serif;
+  --f-cartel: 'Staatliches', system-ui, sans-serif;
+  --f-versatil: 'Poetsen One', system-ui, sans-serif;
+
+  /* Escala tipográfica — clamp(), menor en móvil */
+  --display-xl: clamp(64px, 12vw, 168px);
+  --display: clamp(44px, 7vw, 104px);
+  --titulo-1: clamp(34px, 4.5vw, 60px);
+  --titulo-2: clamp(26px, 3vw, 38px);
+  --titulo-3: 22px;
+  --cuerpo-lg: 19px;
+  --cuerpo: 17px;
+  --menor: 15px;
+
+  --medida-max: 68ch;
+
+  /* Geometría */
+  --r-pildora: 999px;
+  --r-panel: 24px;
+  --r-medio: 12px;
+  --r-nada: 0;
+  --rotacion: 8deg;
+
+  /* Espaciado — base 8 */
+  --e-1: 8px;
+  --e-2: 16px;
+  --e-3: 24px;
+  --e-4: 32px;
+  --e-5: 48px;
+  --e-6: 64px;
+  --e-7: 96px;
+  --e-8: 128px;
+
+  --ancho-max: 1200px;
+  --canal-movil: 24px;
+  --canal-escritorio: 48px;
+
+  /* Movimiento */
+  --dur-reveal: 520ms;
+  --curva-reveal: cubic-bezier(.2, .7, .2, 1);
+  --dur-hover: 140ms;
+  --dur-panel: 180ms;
+}
+
+/* ---------- 3. Reset ---------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: auto; /* nunca secuestrado */
+}
+
+body {
+  /* Salvaguarda: las formas decorativas del manual (§3.3) desbordan a
+     propósito sus paneles; esto evita que ese desborde abra scroll
+     horizontal de página en cualquier ancho. Al no tocar `overflow` en
+     html, la propagación al viewport sigue siendo la estándar (CSS
+     Overflow §3) y no interfiere con los elementos position:fixed. */
+  overflow-x: hidden;
+  margin: 0;
+  background: var(--blanco);
+  color: var(--gris-tinta);
+  font-family: var(--f-cuerpo);
+  font-size: var(--cuerpo);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, picture, svg { display: block; max-width: 100%; }
+img { height: auto; }
+
+h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
+
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+a { color: inherit; text-decoration: none; }
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+input, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+/* ---------- 4. Tipografía base ---------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--f-titulos);
+  font-weight: 700;
+  color: var(--azul-hondo);
+}
+
+h1 { font-size: var(--titulo-1); line-height: 1.05; letter-spacing: -.02em; }
+h2 { font-size: var(--titulo-2); line-height: 1.15; letter-spacing: -.015em; }
+h3 { font-size: var(--titulo-3); line-height: 1.3; }
+
+p {
+  max-width: var(--medida-max);
+  text-align: left;
+}
+
+.cuerpo-lg { font-size: var(--cuerpo-lg); line-height: 1.6; }
+.menor { font-size: var(--menor); line-height: 1.5; }
+
+.eslogan {
+  font-family: var(--f-cuerpo);
+  font-style: italic;
+  font-size: var(--cuerpo-lg);
+}
+
+/* ---------- 5. Accesibilidad ---------- */
+
+:focus-visible {
+  outline: 2px solid var(--azul-acero);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.saltar-contenido {
+  position: absolute;
+  left: var(--e-2);
+  top: -100px;
+  background: var(--azul-hondo);
+  color: var(--blanco);
+  padding: var(--e-2) var(--e-3);
+  border-radius: var(--r-medio);
+  z-index: 200;
+  transition: top var(--dur-hover) ease;
+}
+.saltar-contenido:focus { top: var(--e-2); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- 6. Layout / utilidades ---------- */
+
+.contenedor {
+  max-width: var(--ancho-max);
+  margin-inline: auto;
+  padding-inline: var(--canal-movil);
+}
+
+@media (min-width: 1024px) {
+  .contenedor { padding-inline: var(--canal-escritorio); }
+}
+
+.banda { padding-block: var(--e-6); }
+@media (min-width: 1024px) { .banda { padding-block: var(--e-7); } }
+
+.banda-gris { background: var(--gris-claro); }
+.banda-blanca { background: var(--blanco); }
+
+.visually-hidden-mobile { display: none; }
+@media (min-width: 768px) { .visually-hidden-mobile { display: block; } }
+
+/* Forma rotada del manual (media luna, trapecio, círculo, píldora) */
+.forma-rotada { transform: rotate(var(--rotacion)); }
+
+/* ---------- 7. Reveal (IntersectionObserver + CSS) ---------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--dur-reveal) var(--curva-reveal),
+              transform var(--dur-reveal) var(--curva-reveal);
+}
+.reveal.en-vista {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-grupo > * { transition-delay: calc(var(--indice, 0) * 70ms); }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- 8. Botones ---------- */
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e-1);
+  border-radius: var(--r-pildora);
+  padding: 14px 28px;
+  font-family: var(--f-cuerpo);
+  font-weight: 700;
+  font-size: var(--cuerpo);
+  line-height: 1;
+  white-space: nowrap;
+  transition: background-color var(--dur-hover) ease, color var(--dur-hover) ease, border-color var(--dur-hover) ease;
+}
+
+.boton-primario {
+  background: var(--naranja);
+  color: var(--blanco);
+  border: 1px solid var(--naranja);
+}
+.boton-primario:hover, .boton-primario:focus-visible {
+  background: #cf4610;
+  border-color: #cf4610;
+}
+
+.boton-oscuro {
+  background: var(--azul-hondo);
+  color: var(--blanco);
+  border: 1px solid var(--azul-hondo);
+}
+.boton-oscuro:hover, .boton-oscuro:focus-visible {
+  background: #082a3d;
+  border-color: #082a3d;
+}
+
+.boton-secundario {
+  background: transparent;
+  color: var(--azul-hondo);
+  border: 1px solid var(--azul-hondo);
+}
+.boton-secundario:hover, .boton-secundario:focus-visible {
+  background: var(--azul-hondo);
+  color: var(--blanco);
+}
+
+/* ---------- 9. Cabecera (variante clásica — Asesoría) ---------- */
+
+.cabecera {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 100;
+  background: var(--blanco);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur-panel) ease;
+}
+
+.cabecera.compacta {
+  border-bottom-color: var(--gris-claro);
+}
+
+.cabecera__interior {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-3);
+  height: 88px;
+  transition: height var(--dur-panel) ease;
+}
+.cabecera.compacta .cabecera__interior { height: 64px; }
+
+.cabecera__logo img, .cabecera__logo svg { height: 58px; width: auto; display: block; transition: height var(--dur-panel) ease; }
+.cabecera.compacta .cabecera__logo img,
+.cabecera.compacta .cabecera__logo svg { height: 44px; }
+
+.cabecera__nav {
+  display: none;
+  align-items: center;
+  gap: var(--e-4);
+}
+@media (min-width: 900px) { .cabecera__nav { display: flex; } }
+
+.cabecera__nav a {
+  font-family: var(--f-cuerpo);
+  font-weight: 700;
+  font-size: var(--menor);
+}
+.cabecera__nav a[aria-current="page"] { color: var(--azul-acero); }
+
+.cabecera__cambio-mundo {
+  font-size: var(--menor);
+  font-weight: 700;
+  color: var(--azul-acero);
+  text-underline-offset: 2px;
+  text-decoration: underline;
+}
+
+.cabecera__movil-abrir {
+  display: flex;
+  width: 44px; height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+@media (min-width: 900px) { .cabecera__movil-abrir { display: none; } }
+
+/* ---------- 10. Menú móvil ---------- */
+
+.menu-movil {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--blanco);
+  display: flex;
+  flex-direction: column;
+  padding: var(--e-3) var(--canal-movil);
+  transform: translateY(-8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+.menu-movil[data-abierto="true"] {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.menu-movil__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menu-movil__cerrar { width: 44px; height: 44px; }
+
+.menu-movil__nav {
+  margin-top: var(--e-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-3);
+}
+.menu-movil__nav a {
+  font-family: var(--f-titulos);
+  font-weight: 700;
+  font-size: var(--titulo-3);
+  color: var(--azul-hondo);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-movil { transition: none; }
+}
+
+/* ---------- 11. Botón flotante de WhatsApp ---------- */
+
+.whatsapp-flotante {
+  position: fixed;
+  inset-block-end: var(--e-2);
+  inset-inline-end: var(--e-2);
+  z-index: 150;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--whatsapp);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.whatsapp-flotante svg { width: 28px; height: 28px; }
+
+/* ---------- 12. Acordeón (preguntas frecuentes) ---------- */
+
+.acordeon__item {
+  border-top: 1px solid var(--gris-claro);
+}
+.acordeon__item:last-child { border-bottom: 1px solid var(--gris-claro); }
+
+.acordeon__pregunta {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-3);
+  padding-block: var(--e-3);
+  text-align: left;
+  font-family: var(--f-titulos);
+  font-weight: 700;
+  font-size: var(--titulo-3);
+  color: var(--azul-hondo);
+}
+
+.acordeon__icono {
+  flex-shrink: 0;
+  width: 20px; height: 20px;
+  position: relative;
+}
+.acordeon__icono::before, .acordeon__icono::after {
+  content: '';
+  position: absolute;
+  background: var(--azul-hondo);
+  inset-inline-start: 0;
+  top: 50%;
+  width: 100%;
+  height: 2px;
+  transform: translateY(-50%);
+  transition: transform var(--dur-hover) ease;
+}
+.acordeon__icono::after { transform: translateY(-50%) rotate(90deg); }
+.acordeon__pregunta[aria-expanded="true"] .acordeon__icono::after { transform: translateY(-50%) rotate(0deg); }
+
+.acordeon__respuesta {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 220ms ease;
+}
+.acordeon__respuesta__interior {
+  padding-block-end: var(--e-3);
+  font-family: var(--f-cuerpo);
+  color: var(--gris-tinta);
+}
+
+/* ---------- 13. Formulario ---------- */
+
+.campo { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--e-3); }
+
+.campo label {
+  font-family: var(--f-cuerpo);
+  font-weight: 700;
+  font-size: var(--menor);
+  color: var(--azul-hondo);
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  width: 100%;
+  border: 1px solid var(--gris-claro);
+  border-radius: var(--r-medio);
+  padding: 12px 16px;
+  font-size: var(--cuerpo);
+  background: var(--blanco);
+  color: var(--gris-tinta);
+}
+.campo input:focus-visible,
+.campo select:focus-visible,
+.campo textarea:focus-visible {
+  border-color: var(--azul-acero);
+}
+
+.campo textarea { resize: vertical; min-height: 120px; }
+
+.campo__error {
+  font-size: var(--menor);
+  color: var(--rojo-vivo);
+  display: none;
+}
+.campo.con-error input,
+.campo.con-error select,
+.campo.con-error textarea {
+  border-color: var(--rojo-vivo);
+}
+.campo.con-error .campo__error { display: block; }
+
+.campo-consentimiento {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: var(--e-3);
+}
+.campo-consentimiento input { margin-top: 4px; }
+.campo-consentimiento label { font-size: var(--menor); }
+
+.formulario__estado {
+  margin-top: var(--e-2);
+  padding: var(--e-2) var(--e-3);
+  border-radius: var(--r-medio);
+  font-size: var(--menor);
+  display: none;
+}
+.formulario__estado[data-visible="true"] { display: block; }
+.formulario__estado[data-tipo="exito"] { background: var(--lavado-azul); color: var(--azul-hondo); }
+.formulario__estado[data-tipo="error"] { background: var(--lavado-naranja); color: var(--vino-hondo); }
+
+/* Honeypot antispam — invisible, fuera del flujo de lectura visual pero presente para bots */
+.campo-trampa {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* ---------- 14. Footer (estructura común, tinte por pieza) ---------- */
+
+.pie {
+  position: relative;
+  color: var(--blanco);
+}
+.pie__interior {
+  display: grid;
+  gap: var(--e-5);
+  padding-block: var(--e-6);
+}
+@media (min-width: 768px) {
+  .pie__interior { grid-template-columns: 1.2fr 1fr 1fr; }
+}
+.pie__logo img, .pie__logo svg { height: 36px; width: auto; }
+.pie h3 {
+  color: var(--blanco);
+  font-size: var(--menor);
+  text-transform: none;
+  margin-bottom: var(--e-2);
+}
+.pie a, .pie address { font-size: var(--menor); opacity: .92; }
+.pie address { font-style: normal; }
+.pie__nav { display: flex; flex-direction: column; gap: 10px; }
+.pie__redes { display: flex; gap: var(--e-2); margin-top: var(--e-2); }
+.pie__redes a { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.35); border-radius: 50%; }
+.pie__legal {
+  border-top: 1px solid rgba(255,255,255,.2);
+  padding-block: var(--e-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-2);
+  justify-content: space-between;
+  font-size: var(--menor);
+  opacity: .85;
+}
+
+/* ---------- 15. Placeholders de imagen ---------- */
+
+.placeholder-img {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--e-3);
+  color: var(--azul-hondo);
+  font-family: var(--f-cuerpo);
+  font-weight: 700;
+  font-size: var(--menor);
+  border: 1px dashed rgba(11, 58, 84, .35);
+}

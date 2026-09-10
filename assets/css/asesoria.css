@@ -1,0 +1,195 @@
+/* ==========================================================================
+   A360 — asesoria.css
+   Fusión Ditto + Ease Health, movimiento de Eterna Legal.
+   "Juvenil pero serio": geometría redondeada + aire (juvenil), escala
+   contenida + azul hondo como tinta + cero adorno (serio).
+   ========================================================================== */
+
+body.asesoria { padding-top: 88px; } /* alto de la cabecera fija */
+
+.asesoria a.enlace-cuerpo {
+  color: var(--azul-acero);
+  text-underline-offset: 2px;
+  text-decoration: underline;
+}
+
+/* ---------- Cabecera clásica a sangre ---------- */
+
+.cabecera--asesoria { border-bottom: 1px solid transparent; }
+.cabecera--asesoria .cabecera__interior { padding-inline: var(--canal-movil); }
+@media (min-width: 1024px) {
+  .cabecera--asesoria .cabecera__interior { padding-inline: var(--canal-escritorio); }
+}
+
+/* ---------- Héroe a dos columnas ---------- */
+
+.asesoria-hero {
+  padding-block: var(--e-6);
+}
+@media (min-width: 1024px) { .asesoria-hero { padding-block: var(--e-7); } }
+
+.asesoria-hero__grid {
+  display: grid;
+  gap: var(--e-5);
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .asesoria-hero__grid { grid-template-columns: 1.1fr 1fr; gap: var(--e-6); }
+}
+
+.asesoria-hero__texto h1 { margin-bottom: var(--e-2); }
+.asesoria-hero__texto p { margin-bottom: var(--e-4); }
+.asesoria-hero__acciones { display: flex; flex-wrap: wrap; gap: var(--e-2); }
+
+.asesoria-hero__visual {
+  position: relative;
+}
+.asesoria-hero__panel {
+  position: relative;
+  background: var(--lavado-azul);
+  border-radius: var(--r-panel);
+  padding: var(--e-2);
+  z-index: 1;
+}
+.asesoria-hero__forma {
+  position: absolute;
+  inset-block-end: -24px;
+  inset-inline-end: -24px;
+  width: 60%;
+  height: 55%;
+  background: var(--naranja);
+  border-radius: var(--r-panel);
+  transform: rotate(var(--rotacion));
+  z-index: 0;
+}
+
+/* ---------- Los cuatro servicios: filete superior, sin caja ---------- */
+
+.servicios-tira {
+  display: grid;
+  gap: var(--e-4);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) { .servicios-tira { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .servicios-tira { grid-template-columns: repeat(4, 1fr); } }
+
+.servicio-filete {
+  border-top: 3px solid var(--naranja);
+  padding-top: var(--e-2);
+}
+.servicio-filete:nth-child(2) { border-top-color: var(--azul-acero); }
+.servicio-filete:nth-child(3) { border-top-color: var(--azul-hondo); }
+.servicio-filete:nth-child(4) { border-top-color: var(--naranja); }
+.servicio-filete h3 { margin-bottom: 8px; }
+
+/* ---------- Cómo trabajamos: pasos numerados (secuencia real) ---------- */
+
+.pasos {
+  display: grid;
+  gap: var(--e-4);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) { .pasos { grid-template-columns: repeat(3, 1fr); } }
+
+.paso__numero {
+  font-family: var(--f-titulos);
+  font-weight: 700;
+  font-size: var(--titulo-2);
+  color: var(--azul-acero);
+  margin-bottom: var(--e-1);
+}
+.paso h3 { margin-bottom: 8px; }
+
+/* ---------- Preguntas frecuentes: acordeón a dos columnas ---------- */
+
+.faq {
+  display: grid;
+  gap: 0 var(--e-5);
+}
+@media (min-width: 900px) {
+  .faq { grid-template-columns: 1fr 1fr; }
+  .faq .acordeon__item { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: start; }
+  .faq .acordeon__pregunta { grid-column: 1; padding-inline-end: var(--e-3); }
+  .faq .acordeon__respuesta { grid-column: 2; max-height: none !important; overflow: visible; }
+  .faq .acordeon__respuesta__interior { padding-block-start: var(--e-3); }
+}
+
+/* ---------- Cierre a sangre ---------- */
+
+.cierre-asesoria {
+  background: var(--azul-hondo);
+  color: var(--blanco);
+  text-align: center;
+  padding-block: var(--e-7);
+}
+.cierre-asesoria h2 { color: var(--blanco); max-width: 24ch; margin-inline: auto; }
+.cierre-asesoria p { color: var(--blanco); margin-inline: auto; margin-top: var(--e-2); }
+.cierre-asesoria .boton { margin-top: var(--e-4); }
+
+/* ---------- Servicios (página): zig-zag ---------- */
+
+.servicio-bloque {
+  display: grid;
+  gap: var(--e-4);
+  align-items: center;
+  padding-block: var(--e-5);
+}
+@media (min-width: 900px) {
+  .servicio-bloque { grid-template-columns: 1fr 1fr; gap: var(--e-6); }
+  .servicio-bloque--invertido .servicio-bloque__panel { order: 2; }
+}
+.servicio-bloque__panel {
+  border-radius: var(--r-panel);
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.servicio-bloque:nth-of-type(odd) .servicio-bloque__panel { background: var(--lavado-azul); }
+.servicio-bloque:nth-of-type(even) .servicio-bloque__panel { background: var(--lino); }
+.servicio-bloque__lista { margin-top: var(--e-2); display: flex; flex-direction: column; gap: 8px; }
+.servicio-bloque__lista li { padding-left: var(--e-2); position: relative; }
+.servicio-bloque__lista li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: .6em;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--naranja);
+}
+
+/* ---------- Nosotros ---------- */
+
+.nosotros-retrato {
+  border-radius: var(--r-panel);
+  overflow: hidden;
+}
+.nosotros-mapa-enlace {
+  display: block;
+  border-radius: var(--r-medio);
+  overflow: hidden;
+  border: 1px solid var(--gris-claro);
+}
+
+/* ---------- Contacto ---------- */
+
+.contacto-grid {
+  display: grid;
+  gap: var(--e-5);
+}
+.contacto-grid > * { min-width: 0; }
+@media (min-width: 900px) {
+  .contacto-grid { grid-template-columns: 1.1fr .9fr; gap: var(--e-6); }
+}
+.contacto-panel {
+  background: var(--turquesa);
+  color: var(--azul-hondo);
+  border-radius: var(--r-panel);
+  padding: var(--e-4);
+}
+.contacto-panel h2, .contacto-panel h3 { color: var(--azul-hondo); }
+.contacto-panel a { text-decoration: underline; text-underline-offset: 2px; }
+.contacto-panel__whatsapp {
+  margin-top: var(--e-3);
+  display: inline-flex;
+}

@@ -1,0 +1,244 @@
+/* ==========================================================================
+   A360 — puerta.css
+   La pantalla de selección (/). Sin scroll en escritorio: es una decisión,
+   no una home. Referencia estructural: Slush (sistema, no paleta).
+   ========================================================================== */
+
+body.puerta {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body.puerta > main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.puerta-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-3);
+  padding: var(--e-3) var(--canal-movil);
+}
+@media (min-width: 1024px) {
+  .puerta-cabecera { padding: var(--e-3) var(--canal-escritorio); }
+}
+
+.puerta-cabecera__logo svg,
+.puerta-cabecera__logo img { height: 48px; width: auto; display: block; }
+
+.puerta-cabecera__contacto {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-1) var(--e-3);
+  font-size: var(--menor);
+  font-weight: 700;
+}
+.puerta-cabecera__contacto a { color: var(--azul-hondo); }
+.puerta-cabecera__contacto a:hover,
+.puerta-cabecera__contacto a:focus-visible { color: var(--azul-acero); }
+
+/* ---------- Héroe: media luna a sangre detrás del wordmark ---------- */
+
+.puerta-hero {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--e-4) var(--canal-movil) var(--e-3);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.puerta-hero__luna {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  width: min(140vw, 1400px);
+  aspect-ratio: 1.6 / 1;
+  transform: translate(-50%, -46%) translateX(-40%);
+  opacity: 0;
+  z-index: -1;
+  animation: puerta-barrido 420ms cubic-bezier(.2, .7, .2, 1) both;
+}
+.puerta-hero__luna svg { width: 100%; height: 100%; }
+
+@media (max-width: 640px) {
+  .puerta-hero__luna {
+    inset-inline-start: auto;
+    inset-inline-end: -10%;
+    transform: translateY(-46%) translateX(-40%);
+    width: 120vw;
+  }
+  @keyframes puerta-barrido-movil {
+    from { opacity: 0; transform: translateY(-46%) translateX(20%); }
+    to { opacity: 1; transform: translateY(-46%) translateX(0); }
+  }
+  .puerta-hero__luna { animation-name: puerta-barrido-movil; }
+}
+
+.puerta-hero__titulo {
+  font-family: var(--f-titulos);
+  font-weight: 700;
+  font-size: var(--display-xl);
+  line-height: .84;
+  letter-spacing: -.03em;
+  color: var(--azul-hondo);
+  opacity: 0;
+  animation: puerta-aparecer 420ms cubic-bezier(.2, .7, .2, 1) 380ms both;
+}
+
+.puerta-hero__eslogan {
+  margin-top: var(--e-2);
+  font-family: var(--f-cuerpo);
+  font-style: italic;
+  font-size: var(--cuerpo-lg);
+  color: var(--gris-tinta);
+  opacity: 0;
+  animation: puerta-aparecer 420ms cubic-bezier(.2, .7, .2, 1) 460ms both;
+}
+
+@keyframes puerta-barrido {
+  from { opacity: 0; transform: translate(-50%, -46%) translateX(-40%); }
+  to   { opacity: 1; transform: translate(-50%, -46%) translateX(0); }
+}
+@keyframes puerta-aparecer {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .puerta-hero__luna,
+  .puerta-hero__titulo,
+  .puerta-hero__eslogan {
+    animation: none;
+    opacity: 1;
+    transform: translate(-50%, -46%);
+  }
+  .puerta-hero__titulo, .puerta-hero__eslogan { transform: none; }
+}
+
+/* ---------- Las dos puertas ---------- */
+
+.puertas {
+  position: relative;
+  width: 100%;
+  max-width: var(--ancho-max);
+  margin-inline: auto;
+  margin-top: var(--e-5);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--e-3);
+}
+@media (min-width: 720px) {
+  .puertas { grid-template-columns: 1fr 1fr; }
+}
+
+.puerta-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 320px;
+  padding: var(--e-4);
+  border-radius: var(--r-panel);
+  border: 1px solid var(--negro);
+  transition: background-color var(--dur-panel) ease, color var(--dur-panel) ease;
+}
+
+.puerta-panel--asesoria { background: var(--lavado-azul); color: var(--azul-hondo); }
+.puerta-panel--marketing { background: var(--lavado-vino); color: var(--vino-hondo); }
+
+.puerta-panel--asesoria:hover, .puerta-panel--asesoria:focus-visible {
+  background: var(--azul-hondo);
+  color: var(--blanco);
+}
+.puerta-panel--marketing:hover, .puerta-panel--marketing:focus-visible {
+  background: var(--vino);
+  color: var(--blanco);
+}
+
+.puerta-panel__titulo {
+  font-family: var(--f-titulos);
+  font-weight: 700;
+  font-size: var(--titulo-1);
+  color: inherit;
+}
+.puerta-panel__descripcion {
+  margin-top: var(--e-2);
+  font-family: var(--f-cuerpo);
+  font-size: var(--cuerpo);
+  color: inherit;
+  max-width: 32ch;
+}
+.puerta-panel__entrar {
+  align-self: flex-end;
+  margin-top: var(--e-4);
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 22px;
+  border-radius: var(--r-pildora);
+  border: 1px solid currentColor;
+  font-family: var(--f-cuerpo);
+  font-weight: 700;
+  font-size: var(--menor);
+}
+
+/* Formas del manual rotadas 8°, collage asimétrico — decorativas, aria-hidden */
+.puerta-forma {
+  position: absolute;
+  pointer-events: none;
+  transform: rotate(var(--rotacion));
+}
+.puerta-forma--trapecio {
+  inset-block-start: -36px;
+  inset-inline-end: 9%;
+  width: 64px; height: 40px;
+  background: var(--naranja);
+  clip-path: polygon(20% 0, 80% 0, 100% 100%, 0% 100%);
+  display: none;
+}
+.puerta-forma--circulo {
+  inset-block-end: -28px;
+  inset-inline-start: 4%;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--azul-acero);
+}
+.puerta-forma--pildora {
+  inset-block-start: 38%;
+  inset-inline-start: -12px;
+  width: 70px; height: 24px;
+  border-radius: var(--r-pildora);
+  background: var(--gris-claro);
+  display: none;
+}
+@media (min-width: 900px) {
+  .puerta-forma--trapecio, .puerta-forma--pildora { display: block; }
+  .puerta-forma--circulo { width: 44px; height: 44px; inset-block-end: -34px; }
+}
+
+/* ---------- Pie mínimo ---------- */
+
+.puerta-pie {
+  padding: var(--e-3) var(--canal-movil) var(--e-4);
+  text-align: center;
+  font-size: var(--menor);
+  color: var(--gris-tinta);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--e-1) var(--e-3);
+}
+@media (min-width: 1024px) {
+  .puerta-pie { padding-inline: var(--canal-escritorio); }
+}
+.puerta-pie a { font-weight: 700; color: var(--azul-acero); }
+.puerta-pie a:hover, .puerta-pie a:focus-visible { text-decoration: underline; }
