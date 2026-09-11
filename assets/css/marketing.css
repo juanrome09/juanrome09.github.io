@@ -130,23 +130,34 @@ body.marketing .pie {
   body.marketing main > article { position: relative; min-height: 0; }
 }
 
-/* En móvil el "sticky + 100dvh" se desactiva del todo: con el ancho
-   estrecho el texto se parte en más líneas y las secciones se vuelven
-   varias pantallas de altas — el efecto de apilado se rompe (partes que
-   no llegan a verse nunca) y encima castiga el rendimiento del scroll.
-   Por debajo de 768px, scroll normal de toda la vida; el nav flotante
-   sigue fijo arriba, como cualquier cabecera fija. */
+/* En móvil el efecto de apilado se queda — pero no en las secciones
+   donde de verdad rompe: las que llevan una rejilla con varios elementos
+   (servicios, el escaparate de trabajo, las preguntas frecuentes, el
+   formulario) se vuelven varias pantallas de alto al partirse el texto
+   en más líneas, y al quedar "pegadas" ocultan contenido que nunca
+   llega a verse. Esas pasan a scroll normal. El resto (héroe, "cómo
+   enfocamos", misión/visión, valores, cierre) es corto y sí aguanta
+   bien el efecto completo. */
 @media (max-width: 768px) {
-  body.marketing { padding-top: 104px; }
-  body.marketing main > section,
-  body.marketing main > article {
+  /* position:relative, no static: static pinta DETRÁS de lo sticky (son
+     capas de apilamiento distintas), así que la sección "normal" quedaría
+     tapada por la pegada de arriba en vez de cubrirla. relative sin
+     desplazamiento se comporta igual en el layout pero pinta en el orden
+     correcto, encima de lo que viene antes. */
+  body.marketing main > section:has(.servicios-marketing),
+  body.marketing main > section:has(.trabajo-mk),
+  body.marketing main > section:has(.faq-mk),
+  body.marketing .cierre-marketing {
     position: relative;
     min-height: 0;
-    padding-top: var(--e-4) !important;
+    padding-top: var(--e-5) !important;
   }
-  body.marketing .marketing-hero {
+  /* Esta sí puede ser la primera (y única) sección de contacto.html —
+     necesita el hueco completo del nav, no solo el respiro entre bandas. */
+  body.marketing main > section:has(.contacto-grid-mk) {
+    position: relative;
     min-height: 0;
-    padding-block-start: var(--e-4) !important;
+    padding-top: calc(104px + var(--e-3)) !important;
   }
 }
 
@@ -377,12 +388,14 @@ body.marketing .marketing-hero__linea {
   padding-block: var(--e-8);
 }
 body.marketing .cierre-marketing__previa {
-  font-family: var(--f-cuerpo);
-  font-weight: 400;
-  font-size: 20px;
+  font-family: var(--f-titulos);
+  font-weight: 500;
+  font-size: clamp(20px, 3vw, 28px);
+  line-height: 1.3;
   color: var(--mk-crema);
-  opacity: .75;
-  margin-bottom: var(--e-2);
+  max-width: 24ch;
+  margin-inline: auto;
+  margin-bottom: var(--e-3);
 }
 body.marketing .cierre-marketing__cartel {
   font-family: var(--f-cartel);
