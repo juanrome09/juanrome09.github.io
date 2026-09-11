@@ -130,6 +130,26 @@ body.marketing .pie {
   body.marketing main > article { position: relative; min-height: 0; }
 }
 
+/* En móvil el "sticky + 100dvh" se desactiva del todo: con el ancho
+   estrecho el texto se parte en más líneas y las secciones se vuelven
+   varias pantallas de altas — el efecto de apilado se rompe (partes que
+   no llegan a verse nunca) y encima castiga el rendimiento del scroll.
+   Por debajo de 768px, scroll normal de toda la vida; el nav flotante
+   sigue fijo arriba, como cualquier cabecera fija. */
+@media (max-width: 768px) {
+  body.marketing { padding-top: 104px; }
+  body.marketing main > section,
+  body.marketing main > article {
+    position: relative;
+    min-height: 0;
+    padding-top: var(--e-4) !important;
+  }
+  body.marketing .marketing-hero {
+    min-height: 0;
+    padding-block-start: var(--e-4) !important;
+  }
+}
+
 /* ---------- Navegación flotante en píldora ---------- */
 
 .nav-flotante-envoltorio {
@@ -184,6 +204,10 @@ body.marketing .pie {
   text-decoration: none;
   border-bottom: 1px solid var(--mk-gris);
 }
+
+/* El panel de menú a pantalla completa es compartido con Asesoría
+   (base.css lo pinta en azul-hondo); en Marketing usa su propia tinta. */
+body.marketing .menu-movil__nav a { color: var(--mk-tinta); }
 
 /* Menu Toggle Button — recoloreado: círculo en el azul del logo de Marketing, icono blanco */
 .nav-flotante__movil-abrir {

@@ -113,6 +113,20 @@ function iniciarReveals() {
     el.style.setProperty('--indice', indice % 5);
     observador.observe(el);
   });
+
+  // Red de seguridad: si por lo que sea el observer no llega a disparar
+  // para algo que ya está a la vista al cargar (pestaña en segundo plano,
+  // navegador raro, lo que sea), no se queda invisible para siempre.
+  window.setTimeout(() => {
+    elementos.forEach((el) => {
+      if (el.classList.contains('en-vista')) return;
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        el.classList.add('en-vista');
+        observador.unobserve(el);
+      }
+    });
+  }, 1200);
 }
 
 /* ---------- Acordeón de preguntas frecuentes ---------- */
