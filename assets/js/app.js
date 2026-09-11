@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarAcordeon();
   iniciarAnioFooter();
   iniciarFormulario();
+  iniciarSeccionesApiladas();
 });
 
 /* ---------- Cabecera: se compacta al pasar 80px ---------- */
@@ -127,6 +128,59 @@ function iniciarReveals() {
       }
     });
   }, 1200);
+}
+
+/* ---------- Marketing: apilado de páginas — pegar solo lo que cabe ----------
+   En móvil, cada sección de Marketing se queda fija (sticky) mientras la
+   siguiente sube y la tapa. Eso solo se ve bien si la sección entera cabe
+   en una pantalla; si no, se queda "pegada" mucho más de lo que dura el
+   scroll y da sensación de web rota. Qué secciones caben no es algo que
+   se pueda fijar a mano de una vez: depende del texto real, del tamaño
+   de letra del sistema y del ancho exacto del teléfono (incluso el
+   héroe puede no caber en un teléfono muy estrecho). Así que en vez de
+   una lista fija de "estas sí, estas no", se mide la altura real de
+   cada sección y se le añade .mk-seccion-larga solo si no entra —
+   marketing.css le quita el sticky a esas. */
+function iniciarSeccionesApiladas() {
+  if (!document.body.classList.contains('marketing')) return;
+  // El cierre queda fuera: es corto a propósito (ver marketing.css) y
+  // siempre va en scroll normal, no según lo que mida aquí.
+  const secciones = Array.from(
+    document.querySelectorAll('main > section, main > article')
+  ).filter((seccion) => !seccion.classList.contains('cierre-marketing'));
+  if (!secciones.length) return;
+
+  let pendiente = null;
+  const ajustar = () => {
+    // Pequeño retardo en vez de requestAnimationFrame: agrupa llamadas
+    // seguidas (varios listeners pueden disparar a la vez) sin depender
+    // del pipeline de pintado, que en pestañas en segundo plano puede
+    // tardar en correr.
+    if (pendiente) window.clearTimeout(pendiente);
+    pendiente = window.setTimeout(() => {
+      if (window.innerWidth > 768) {
+        secciones.forEach((seccion) => seccion.classList.remove('mk-seccion-larga'));
+      } else {
+        secciones.forEach((seccion) => {
+          const cabe = seccion.getBoundingClientRect().height <= window.innerHeight + 24;
+          seccion.classList.toggle('mk-seccion-larga', !cabe);
+        });
+      }
+      pendiente = null;
+    }, 50);
+  };
+
+  ajustar();
+  // Reajustes tardíos: giro de pantalla, redimensionado, fuentes que
+  // terminan de cargar o imágenes que reciben su tamaño real — cualquier
+  // cosa que pueda cambiar cuánto ocupa el texto.
+  window.addEventListener('resize', ajustar, { passive: true });
+  window.addEventListener('orientationchange', () => window.setTimeout(ajustar, 300));
+  window.addEventListener('load', ajustar);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(ajustar).catch(() => {});
+  }
+  window.setTimeout(ajustar, 1200);
 }
 
 /* ---------- Acordeón de preguntas frecuentes ---------- */

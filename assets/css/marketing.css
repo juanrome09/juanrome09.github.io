@@ -130,34 +130,48 @@ body.marketing .pie {
   body.marketing main > article { position: relative; min-height: 0; }
 }
 
-/* En móvil el efecto de apilado se queda — pero no en las secciones
-   donde de verdad rompe: las que llevan una rejilla con varios elementos
-   (servicios, el escaparate de trabajo, las preguntas frecuentes, el
-   formulario) se vuelven varias pantallas de alto al partirse el texto
-   en más líneas, y al quedar "pegadas" ocultan contenido que nunca
-   llega a verse. Esas pasan a scroll normal. El resto (héroe, "cómo
-   enfocamos", misión/visión, valores, cierre) es corto y sí aguanta
-   bien el efecto completo. */
+/* En móvil el efecto de apilado se queda — pero solo en las hojas que
+   de verdad caben en una pantalla completa. Cuáles son eso no es fijo:
+   depende del contenido real, del tamaño de letra del sistema y del
+   ancho exacto del teléfono (incluso el propio héroe puede no caber si
+   el teléfono es muy estrecho). Por eso, en vez de adivinar a mano qué
+   sección es "corta" (una lista fija se queda corta en cuanto cambia
+   el texto o aparece un móvil más estrecho), app.js mide la altura real
+   de cada sección nada más cargar y le añade .mk-seccion-larga solo a
+   las que se pasan de la ventana. Esa hoja pierde el sticky y pasa a
+   scroll normal; el resto conserva el efecto completo de páginas
+   apiladas — ver iniciarSeccionesApiladas() en app.js. */
 @media (max-width: 768px) {
   /* position:relative, no static: static pinta DETRÁS de lo sticky (son
      capas de apilamiento distintas), así que la sección "normal" quedaría
      tapada por la pegada de arriba en vez de cubrirla. relative sin
      desplazamiento se comporta igual en el layout pero pinta en el orden
      correcto, encima de lo que viene antes. */
-  body.marketing main > section:has(.servicios-marketing),
-  body.marketing main > section:has(.trabajo-mk),
-  body.marketing main > section:has(.faq-mk),
-  body.marketing .cierre-marketing {
+  body.marketing main > section.mk-seccion-larga,
+  body.marketing main > article.mk-seccion-larga {
     position: relative;
     min-height: 0;
     padding-top: var(--e-5) !important;
   }
-  /* Esta sí puede ser la primera (y única) sección de contacto.html —
-     necesita el hueco completo del nav, no solo el respiro entre bandas. */
-  body.marketing main > section:has(.contacto-grid-mk) {
+  /* Si la hoja larga es la primera de la página (el héroe, o el propio
+     formulario de contacto cuando no hay héroe delante), necesita el
+     hueco completo del nav, no solo el respiro entre bandas. Más
+     específico que la regla de arriba (gana por :first-child) y más
+     específico que la propia regla del héroe (gana por más clases). */
+  body.marketing main > section.mk-seccion-larga:first-child,
+  body.marketing main > article.mk-seccion-larga:first-child {
+    padding-top: calc(104px + var(--e-3)) !important;
+  }
+  /* El cierre es corto a propósito — una llamada a la acción, no una
+     pantalla llena de contenido — así que se queda siempre en scroll
+     normal aquí, sin entrar en la medición de arriba: si le tocara el
+     min-height:100dvh por "sí cabe en una pantalla", se estiraría hasta
+     llenar la pantalla entera y volveríamos al hueco enorme para un
+     botón que ya se corrigió una vez. */
+  body.marketing .cierre-marketing {
     position: relative;
     min-height: 0;
-    padding-top: calc(104px + var(--e-3)) !important;
+    padding-top: var(--e-5) !important;
   }
 }
 
