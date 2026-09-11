@@ -575,6 +575,14 @@ p {
 .campo-consentimiento input { margin-top: 4px; }
 .campo-consentimiento label { font-size: var(--menor); }
 
+/* Frase corta justo antes del botón de envío: sin ella, el formulario
+   termina en un botón suelto sin ningún acompañamiento — se ve como si
+   faltara algo, aunque el formulario esté completo. */
+.formulario__nota {
+  margin-block: var(--e-2) var(--e-3);
+  font-weight: 500;
+}
+
 .formulario__estado {
   margin-top: var(--e-2);
   padding: var(--e-2) var(--e-3);
