@@ -116,6 +116,18 @@ body.marketing main > article {
      este margen — si lo hiciera, la píldora taparía el título. */
   padding-top: 104px !important;
 }
+/* Cada sección es un contenedor flex (para el centrado vertical de
+   arriba), así que su .contenedor es un ítem flex — y por defecto un
+   ítem flex no se encoge por debajo del tamaño de SU contenido más
+   ancho, aunque ese contenido tenga scroll propio (overflow-x:auto).
+   Sin esto, el carrusel horizontal de servicios/trabajo (más abajo)
+   estira el .contenedor entero al ancho de las cinco tarjetas juntas
+   en vez de quedarse en el ancho de la pantalla. */
+body.marketing main > section > .contenedor,
+body.marketing main > article > .contenedor {
+  min-width: 0;
+  width: 100%;
+}
 /* Toda hoja menos la primera sube con las esquinas redondeadas */
 body.marketing main > *:not(:first-child) {
   border-radius: 50px 50px 0 0;
@@ -358,9 +370,51 @@ body.marketing .marketing-hero__linea {
   grid-template-columns: 1fr;
 }
 @media (min-width: 768px) { .trabajo-mk { grid-template-columns: repeat(3, 1fr); } }
+.trabajo-mk__pieza {
+  /* Sin esto, un ítem de grid con aspect-ratio no se encoge por debajo
+     de su ancho de contenido: la columna con la pieza cuadrada (1:1)
+     queda más estrecha que las de 5:4 y esas se salen de su columna
+     en vez de repartirse en tres partes iguales — de ahí el pequeño
+     desbordamiento horizontal que había en escritorio (invisible,
+     absorbido por el overflow-x:hidden del body, pero real). */
+  min-width: 0;
+}
 .trabajo-mk__pieza .placeholder-img {
   border-radius: var(--mk-r-imagen);
   background: var(--mk-blanco) !important;
+}
+
+/* En móvil, cinco tarjetas de servicio (o tres piezas de trabajo) en
+   columna nunca caben en una pantalla — por mucho que se apriete el
+   espaciado, es más contenido del que entra en 100dvh, y esa sección
+   se queda sin la animación de apilado (ver iniciarSeccionesApiladas
+   en app.js). Se resuelve igual que MindMarket resuelve sus propios
+   escaparates: carrusel horizontal con scroll-snap, una tarjeta por
+   pantalla y el borde de la siguiente asomando para invitar a deslizar.
+   Así la sección entera mide una tarjeta de alto, no cinco. */
+@media (max-width: 767px) {
+  .servicios-marketing,
+  .trabajo-mk {
+    display: flex;
+    grid-template-columns: none;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    margin-inline: calc(var(--canal-movil) * -1);
+    padding-inline: var(--canal-movil);
+    padding-bottom: var(--e-2);
+    scrollbar-width: none;
+  }
+  .servicios-marketing::-webkit-scrollbar,
+  .trabajo-mk::-webkit-scrollbar { display: none; }
+  .servicios-marketing > .servicio-panel-mk,
+  .trabajo-mk > .trabajo-mk__pieza {
+    scroll-snap-align: start;
+    flex: 0 0 82%;
+    max-width: 340px;
+  }
 }
 
 /* ---------- Bloque de enfoque / proceso ---------- */
@@ -386,6 +440,14 @@ body.marketing .marketing-hero__linea {
 }
 .faq-mk .acordeon__icono::before,
 .faq-mk .acordeon__icono::after { background: var(--mk-coral); }
+/* A los 30px de --titulo-3, una pregunta larga se parte en 2-3 líneas y
+   las cinco preguntas juntas (aún cerradas, sin contar la respuesta) ya
+   no caben en una pantalla de móvil. Un tamaño más discreto aquí — la
+   pregunta no necesita ser un titular — es lo que le devuelve la
+   animación de apilado a esta sección. */
+@media (max-width: 767px) {
+  .faq-mk .acordeon__pregunta { font-size: 19px; line-height: 1.3; }
+}
 .faq-mk .acordeon__respuesta__interior {
   font-family: var(--f-cuerpo);
   color: var(--mk-gris);
