@@ -1,27 +1,40 @@
 /* ==========================================================================
    A360 — marketing.css
-   REESKIN A PETICIÓN DEL CLIENTE (no es la interpretación original del
-   encargo): esto ya no es "tomar el sistema, no la paleta" de MindMarket —
-   es su piel literal (tipografía Inter, radios 50-64px, paleta crema/azul/
-   coral/amarillo, spacing, animación) aplicada tal cual a la estructura y
-   contenido de A360 Marketing. El cliente ajustará colores después; hasta
-   entonces estos son los tokens reales de la ficha de estilo MindMarket.
-   Asesoría y la puerta NO se tocan: siguen el manual de A360.
+   La estructura, tipografía (Inter), radios y animación de firma siguen
+   siendo el sistema MindMarket del reskin original — pero la PALETA ya no
+   es la de aquella ficha de estilo prestada: es la paleta real del manual
+   de identidad corporativa de A360 Marketing (colores principales Orange
+   Red / Steel Blue / Dark Blue / Full Black, más dos secundarios de uso
+   explícitamente permitido como fondo y texto: Dark Slate Gray y Linen/
+   Gainsboro). Los nombres de las variables son historia del reskin y no se
+   han tocado (para no rehacer 50+ selectores), pero sus valores son ahora,
+   sin excepción, colores institucionales.
+   Deliberadamente fuera: los colores complementarios del manual (turquesa,
+   verde amarillo, verde mar, violeta, dorados) — el propio manual limita
+   su uso a "un color por composición" para piezas puntuales o eventos, no
+   para un sistema de interfaz completo; meterlos aquí habría sido lo
+   contrario de estratégico y coherente.
+   Asesoría y la puerta NO se tocan: siguen su propio manual de A360.
    ========================================================================== */
 
 body.marketing {
-  /* ---- Tokens literales de MindMarket ---- */
-  --mk-acento: #1E6FA0;      /* Azul acero del logo monocromo de Marketing — acento estructural (nav, héroe, toggle) */
-  --mk-crema: #f5f1e4;      /* Cream Paper — lienzo de página */
-  --mk-tinta: #2c2e2a;      /* Ink Black — texto y titulares */
-  --mk-blanco: #ffffff;     /* Pure White — tarjetas, nav */
-  --mk-arena: #e0dbce;      /* Sandstone — superficie secundaria/recesada */
-  --mk-gris: #80827f;       /* Stone Gray — texto muted */
-  --mk-niebla: #d5d5d4;     /* Hairline Mist — filetes sutiles */
-  --mk-negro: #000000;      /* Pure Ink — máximo contraste */
-  --mk-azul: #2ba0ff;       /* Sky Pop — acento decorativo, puntos de icono */
-  --mk-coral: #ff705d;      /* Coral Pop — CTA de nivel servicio, único relleno fuerte */
-  --mk-amarillo: #f5e211;   /* Sunshine Pop — banda de cierre/footer */
+  /* ---- Paleta oficial A360 Marketing (manual de identidad corporativa) ---- */
+  --mk-acento: #1E6FA0;      /* Steel Blue — acento estructural (nav, degradados) */
+  --mk-azul-oscuro: #0B3A54; /* Dark Blue — pareja de degradado, hover del CTA, banda de cierre */
+  --mk-crema: #F3EEE7;      /* Linen — lienzo de página */
+  --mk-tinta: #404040;      /* Dark Slate Gray — el manual lo fija como "el color para los
+                                textos sobre blanco"; aquí hace ese papel en toda la web,
+                                titulares incluidos */
+  --mk-blanco: #ffffff;     /* blanco — tarjetas, nav */
+  --mk-arena: #E8E7E7;      /* Gainsboro — superficie secundaria/recesada */
+  --mk-gris: rgba(64, 64, 64, .6); /* Dark Slate Gray atenuado — texto muted; no es un
+                                       color nuevo, es el mismo con menos opacidad */
+  --mk-niebla: #E8E7E7;     /* Gainsboro — filetes sutiles */
+  --mk-negro: #000000;      /* Full Black — máximo contraste */
+  --mk-azul: #1E6FA0;       /* Steel Blue — mismo acento estructural, sin un segundo azul suelto */
+  --mk-coral: #E95117;      /* Orange Red — único relleno fuerte (CTA), color de energía del manual */
+  --mk-degradado-hero: linear-gradient(135deg, #0B3A54, #1E6FA0); /* Dark Blue > Steel Blue: degradado oficial del manual */
+  --mk-degradado-pie: linear-gradient(135deg, #000000, #0B3A54);  /* Full Black > Dark Blue: degradado oficial del manual */
 
   /* ---- Tipografía: una sola familia (Inter) a escala extrema ---- */
   --f-titulos: 'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -286,14 +299,19 @@ body.marketing .menu-movil__nav a { color: var(--mk-tinta); }
   font-size: var(--menor);
   transition: background-color var(--dur-hover) ease;
 }
-.boton-mk-coral:hover, .boton-mk-coral:focus-visible { background: #e85c49; border-color: #e85c49; }
+/* Hover invierte a Dark Blue, no a un naranja más oscuro inventado: es la
+   misma pareja del degradado oficial "Dark Blue > Orange Red" del manual,
+   solo que aquí como dos estados en vez de un degradado. */
+.boton-mk-coral:hover, .boton-mk-coral:focus-visible { background: var(--mk-azul-oscuro); border-color: var(--mk-azul-oscuro); }
 
 /* ---------- Héroe: titular a --display, imagen a sangre entrando por abajo ---------- */
 
 body.marketing .marketing-hero {
-  /* Verde, como el héroe real de MindMarket — así la hoja siguiente
-     (crema) se nota de verdad al subir y cubrirlo. */
-  background: var(--mk-acento);
+  /* Degradado oficial del manual (Dark Blue > Steel Blue), no un azul
+     plano: así la hoja siguiente (Linen) se nota de verdad al subir y
+     cubrirlo, y el héroe ya tiene su propio gesto de marca desde el
+     primer segundo. */
+  background: var(--mk-degradado-hero);
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
@@ -464,7 +482,7 @@ body.marketing .marketing-hero__linea {
 .pildora-mk--contorno {
   background: transparent;
   color: var(--mk-crema);
-  border-color: rgba(245, 241, 228, .5);
+  border-color: rgba(243, 238, 231, .5); /* Linen a media opacidad, no un color aparte */
 }
 .pildora-mk--contorno:hover, .pildora-mk--contorno:focus-visible { background: var(--mk-crema); color: var(--mk-tinta); border-color: var(--mk-crema); }
 
@@ -790,29 +808,35 @@ body.marketing .placeholder-img {
   background: var(--mk-arena) !important;
 }
 
-/* ---------- Footer: banda amarilla, tinta oscura (Footer Accent Block) ---------- */
-
+/* ---------- Footer: degradado oficial Full Black > Dark Blue (Footer Accent Block) ----------
+   Ya no es la banda amarilla del reskin MindMarket — el manual de A360 no
+   tiene un amarillo institucional. En su lugar, el otro degradado oficial
+   del manual ("FULL BLACK > DARK BLUE"), la nota más oscura y definitiva
+   de la página, coherente con que el footer sea la última "hoja". */
 body.marketing .pie {
-  background: var(--mk-amarillo) !important;
-  color: var(--mk-tinta);
+  background: var(--mk-degradado-pie) !important;
+  color: var(--mk-crema);
   overflow: hidden;
 }
-body.marketing .pie h3 { color: var(--mk-tinta); }
-body.marketing .pie a, body.marketing .pie address { color: var(--mk-tinta); opacity: 1; }
+body.marketing .pie h3 { color: var(--mk-blanco); }
+body.marketing .pie a, body.marketing .pie address { color: var(--mk-crema); opacity: 1; }
 body.marketing .pie a { transition: opacity var(--dur-hover) ease; }
 body.marketing .pie__nav a:hover, body.marketing .pie__nav a:focus-visible,
-body.marketing .pie address a:hover, body.marketing .pie address a:focus-visible { opacity: .6; }
-body.marketing .pie__redes a { border-color: var(--mk-tinta); transition: background-color var(--dur-hover) ease; }
-body.marketing .pie__redes a:hover, body.marketing .pie__redes a:focus-visible { background: var(--mk-tinta); }
-body.marketing .pie__redes a:hover svg path, body.marketing .pie__redes a:focus-visible svg path { fill: var(--mk-amarillo) !important; }
-body.marketing .pie__redes svg path { fill: var(--mk-tinta) !important; transition: fill var(--dur-hover) ease; }
-body.marketing .pie__legal { border-top-color: rgba(44,46,42,.2); opacity: 1; }
+body.marketing .pie address a:hover, body.marketing .pie address a:focus-visible { opacity: .65; }
+body.marketing .pie__redes a { border-color: var(--mk-crema); transition: background-color var(--dur-hover) ease; }
+body.marketing .pie__redes a:hover, body.marketing .pie__redes a:focus-visible { background: var(--mk-crema); }
+body.marketing .pie__redes a:hover svg path, body.marketing .pie__redes a:focus-visible svg path { fill: var(--mk-azul-oscuro) !important; }
+body.marketing .pie__redes svg path { fill: var(--mk-crema) !important; transition: fill var(--dur-hover) ease; }
+body.marketing .pie__legal { border-top-color: rgba(243, 238, 231, .2); opacity: .85; }
 
-/* La esquina redondeada de arriba estaba ahí quieta, sin más — la
-   misma marca de agua del logo que ya llevan otras secciones, aquí en
-   tinta oscura sobre el amarillo, más grande y asomando por la
-   derecha. Y el footer entra con el mismo gesto que cualquier otra
-   "hoja" del sitio (aparece al llegar, no está ya puesto de golpe).
+/* La esquina redondeada de arriba estaba ahí quieta, sin más — la misma
+   marca de agua del logo que ya llevan otras secciones, aquí en su
+   versión blanca (el fondo ya es el degradado oscuro Full Black > Dark
+   Blue, no el amarillo claro de antes — la versión azul del logo se
+   perdería contra un fondo casi tan oscuro como ella misma), más grande
+   y asomando por la derecha. Y el footer entra con el mismo gesto que
+   cualquier otra "hoja" del sitio (aparece al llegar, no está ya puesto
+   de golpe).
 
    Sin envoltorio propio: el footer no tiene una altura fija (crece con
    su contenido), y un hijo position:absolute con inset:0 dentro de un
@@ -828,7 +852,7 @@ body.marketing .pie__marca-agua {
   z-index: 0;
   width: clamp(260px, 30vw, 480px);
   aspect-ratio: 1;
-  opacity: .1;
+  opacity: .14;
   pointer-events: none;
 }
 body.marketing .pie > *:not(.pie__marca-agua) { position: relative; z-index: 1; }
@@ -843,8 +867,8 @@ body.marketing .pie > *:not(.pie__marca-agua) { position: relative; z-index: 1; 
   }
 }
 @keyframes pie-marca-agua-latido {
-  0%, 100% { opacity: .1; transform: scale(1); }
-  50% { opacity: .16; transform: scale(1.05); }
+  0%, 100% { opacity: .14; transform: scale(1); }
+  50% { opacity: .2; transform: scale(1.05); }
 }
 
 /* Todas las demás "hojas" del sitio se cubren unas a otras al hacer
