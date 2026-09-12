@@ -49,6 +49,14 @@ body.marketing {
   --mk-verde-mar: #1BA074;   /* Medium Sea Green */
   --mk-violeta: #A13C8F;     /* Medium Violet Red */
   --mk-dorado: #D1970F;      /* Golden Rod */
+  /* Mismos cinco colores en canales R,G,B sueltos — para poder usarlos
+     en rgba() con transparencia (tarjetas de servicios al hover) sin
+     inventar un tono nuevo: es el mismo color, solo con alfa. */
+  --mk-turquesa-rgb: 81, 188, 189;
+  --mk-verde-lima-rgb: 141, 192, 74;
+  --mk-verde-mar-rgb: 27, 160, 116;
+  --mk-violeta-rgb: 161, 60, 143;
+  --mk-dorado-rgb: 209, 151, 15;
 
   /* ---- Tipografía: una sola familia (Inter) a escala extrema ---- */
   --f-titulos: 'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -534,11 +542,38 @@ body.marketing .marketing-hero__linea {
   border-radius: var(--r-panel);
   padding: 21px;
   border: 1px solid transparent;
-  transition: border-color var(--dur-hover) ease, transform var(--dur-hover) ease;
+  position: relative;
+  transition: background-color var(--dur-hover) ease, border-color var(--dur-hover) ease, transform var(--dur-hover) ease;
 }
-.servicio-panel-mk:hover, .servicio-panel-mk:focus-within {
-  border-color: var(--mk-coral);
-  transform: translateY(-4px);
+/* Cada tarjeta se tiñe al hover con su propio color de índice — el
+   mismo que su numeral, no un coral genérico igual en las cinco — con
+   transparencia (rgba, no un tono nuevo) para que el texto siga
+   leyéndose encima. :focus-within tiñe igual desde teclado o táctil,
+   pero SIN el zoom: el zoom (más abajo) solo entra con @media
+   (hover: hover), porque agrandar un 30% una tarjeta dentro del
+   carrusel de scroll horizontal de móvil, al tocarla, quedaría raro. */
+.servicio-panel-mk:nth-child(1):hover, .servicio-panel-mk:nth-child(1):focus-within {
+  background: rgba(var(--mk-turquesa-rgb), .18);
+  border-color: var(--mk-turquesa);
+}
+.servicio-panel-mk:nth-child(2):hover, .servicio-panel-mk:nth-child(2):focus-within {
+  background: rgba(var(--mk-verde-lima-rgb), .18);
+  border-color: var(--mk-verde-lima);
+}
+.servicio-panel-mk:nth-child(3):hover, .servicio-panel-mk:nth-child(3):focus-within {
+  background: rgba(var(--mk-verde-mar-rgb), .18);
+  border-color: var(--mk-verde-mar);
+}
+.servicio-panel-mk:nth-child(4):hover, .servicio-panel-mk:nth-child(4):focus-within {
+  background: rgba(var(--mk-violeta-rgb), .18);
+  border-color: var(--mk-violeta);
+}
+.servicio-panel-mk:nth-child(5):hover, .servicio-panel-mk:nth-child(5):focus-within {
+  background: rgba(var(--mk-dorado-rgb), .18);
+  border-color: var(--mk-dorado);
+}
+@media (hover: hover) and (pointer: fine) {
+  .servicio-panel-mk:hover { transform: scale(1.3); z-index: 5; }
 }
 .servicio-panel-mk__numero {
   display: block;
@@ -556,7 +591,7 @@ body.marketing .marketing-hero__linea {
 .servicio-panel-mk:nth-child(3) .servicio-panel-mk__numero { color: var(--mk-verde-mar); }
 .servicio-panel-mk:nth-child(4) .servicio-panel-mk__numero { color: var(--mk-violeta); }
 .servicio-panel-mk:nth-child(5) .servicio-panel-mk__numero { color: var(--mk-dorado); }
-.servicio-panel-mk h3 { color: var(--mk-tinta); margin-bottom: 8px; }
+.servicio-panel-mk h3 { color: var(--mk-coral); margin-bottom: 8px; }
 .servicio-panel-mk .boton-mk-coral { margin-top: var(--e-3); }
 
 /* ---------- Nuestro trabajo: escaparate visual de las piezas tipo ---------- */
