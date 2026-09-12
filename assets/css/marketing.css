@@ -373,7 +373,7 @@ body.marketing .marketing-hero {
    afectados. */
 @media (min-width: 2400px) {
   .marketing-hero__fondo-logo {
-    --tamano-logo-fondo: 1000px;
+    --tamano-logo-fondo: 1200px;
   }
 }
 /* Fondo azul oscuro: el texto va en crema, no en tinta (si no, no se lee) */
