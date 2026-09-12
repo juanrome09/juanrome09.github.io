@@ -367,14 +367,13 @@ body.marketing .marketing-hero {
   translate: 0px 0px;
 }
 /* Pantallas grandes de verdad (a partir de aquí ya no son un portátil ni
-   un monitor de oficina normal): en 3008px de ancho de página (la
-   pantalla real del cliente) esto da un logo de ~2100px — un 50% más
-   grande que el tamaño base en ese mismo punto (1400px). No toca nada
-   por debajo de 2400px, así que portátiles y monitores normales no se
-   ven afectados. */
+   un monitor de oficina normal): tamaño fijo de prueba, sin escalar con
+   el ancho, para ver claramente el punto de partida. No toca nada por
+   debajo de 2400px, así que portátiles y monitores normales no se ven
+   afectados. */
 @media (min-width: 2400px) {
   .marketing-hero__fondo-logo {
-    --tamano-logo-fondo: clamp(1400px, 70vw, 2300px);
+    --tamano-logo-fondo: 1000px;
   }
 }
 /* Fondo azul oscuro: el texto va en crema, no en tinta (si no, no se lee) */
