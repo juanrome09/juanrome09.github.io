@@ -573,7 +573,7 @@ body.marketing .marketing-hero__linea {
   border-color: var(--mk-dorado);
 }
 @media (hover: hover) and (pointer: fine) {
-  .servicio-panel-mk:hover { transform: scale(1.3); z-index: 5; }
+  .servicio-panel-mk:hover { transform: scale(1.2); z-index: 5; }
 }
 .servicio-panel-mk__numero {
   display: block;
