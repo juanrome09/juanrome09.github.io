@@ -553,7 +553,39 @@ body.marketing .marketing-hero__linea {
 
 /* ---------- Preguntas frecuentes: acordeón, una columna editorial ---------- */
 
-.faq-mk { max-width: 760px; }
+/* Antes era un título y una lista debajo, sin más — mucho aire vacío a
+   los lados en pantallas anchas. Dos columnas: a la izquierda el
+   titular, una línea de contexto y una salida directa para quien no
+   encuentre su pregunta; a la derecha el acordeón. */
+.faq-mk-grid {
+  display: grid;
+  gap: var(--e-5);
+  align-items: start;
+}
+@media (min-width: 900px) {
+  .faq-mk-grid { grid-template-columns: .85fr 1.15fr; gap: var(--e-6); }
+}
+.pildora-mk-oscura {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  background: var(--mk-tinta);
+  color: var(--mk-crema);
+  border-radius: var(--r-pildora);
+  padding: 11px 20px 11px 24px;
+  font-family: var(--f-cuerpo);
+  font-weight: 500;
+  font-size: var(--menor);
+  transition: background-color var(--dur-hover) ease;
+}
+.pildora-mk-oscura:hover, .pildora-mk-oscura:focus-visible { background: var(--mk-coral); }
+.pildora-mk-oscura__punto {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--mk-coral);
+  flex-shrink: 0;
+}
+
 .faq-mk .acordeon__item { border-top-color: var(--mk-niebla); }
 .faq-mk .acordeon__item:last-child { border-bottom-color: var(--mk-niebla); }
 .faq-mk .acordeon__pregunta {
