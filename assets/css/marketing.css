@@ -38,7 +38,6 @@ body.marketing {
   --mk-azul: #1E6FA0;       /* Steel Blue — mismo acento estructural, sin un segundo azul suelto */
   --mk-coral: #E95117;      /* Orange Red — único relleno fuerte (CTA), color de energía del manual */
   --mk-degradado-hero: linear-gradient(135deg, #0B3A54, #1E6FA0); /* Dark Blue > Steel Blue: degradado oficial del manual */
-  --mk-degradado-pie: linear-gradient(135deg, #000000, #0B3A54);  /* Full Black > Dark Blue: degradado oficial del manual */
 
   /* ---- Complementarios del manual: solo para los numerales de índice
      (servicios, enfoque) y el botón de cambio de mundo del header — un
@@ -750,16 +749,19 @@ body.marketing .marketing-hero__linea {
    completa. Solo se veía el botón porque ese sí tiene su propio color.
    Con el prefijo body.marketing (dos clases) se gana siempre, y es
    siempre así — no solo en móvil — es corto a propósito. */
-/* Mismo degradado exacto que el footer (--mk-degradado-pie), no el
-   gris de --mk-tinta: son dos elementos independientes (el footer ni
-   siquiera es hijo de <main>), pero al llevar idéntico fondo se leen
-   como una sola pieza continua — el propio recorte redondeado del
-   footer, que asoma el fondo de detrás en sus esquinas, deja ver el
-   mismo degradado en vez de una costura de otro color. */
+/* Mismo color exacto que el footer (--mk-azul-oscuro), no el gris de
+   --mk-tinta ni un degradado: son dos elementos independientes (el
+   footer ni siquiera es hijo de <main>), y con un degradado cada uno
+   recalcula su propio 0%-100% sobre SU alto de caja — dos alturas
+   distintas, así que el tono exacto en el borde de una nunca cuadra
+   del todo con el de la otra, por poco que se note. Un color PLANO
+   idéntico no tiene ese problema: no depende de la altura, así que el
+   borde entre las dos cajas es matemáticamente el mismo píxel de
+   color a ambos lados — de verdad una sola pieza, no una aproximación. */
 body.marketing .cierre-marketing {
   position: relative;
   min-height: 0;
-  background: var(--mk-degradado-pie);
+  background: var(--mk-azul-oscuro);
   color: var(--mk-crema);
   text-align: center;
   padding-block: var(--e-8);
@@ -904,13 +906,13 @@ body.marketing .placeholder-img {
   background: var(--mk-arena) !important;
 }
 
-/* ---------- Footer: degradado oficial Full Black > Dark Blue (Footer Accent Block) ----------
+/* ---------- Footer: Dark Blue plano (Footer Accent Block) ----------
    Ya no es la banda amarilla del reskin MindMarket — el manual de A360 no
-   tiene un amarillo institucional. En su lugar, el otro degradado oficial
-   del manual ("FULL BLACK > DARK BLUE"), la nota más oscura y definitiva
-   de la página, coherente con que el footer sea la última "hoja". */
+   tiene un amarillo institucional. Mismo Dark Blue plano que el cierre
+   "Enviar consulta" justo antes (ver más arriba el porqué de plano y no
+   degradado): así se leen como una sola pieza continua, sin costura. */
 body.marketing .pie {
-  background: var(--mk-degradado-pie) !important;
+  background: var(--mk-azul-oscuro) !important;
   color: var(--mk-crema);
   overflow: hidden;
 }
@@ -966,18 +968,24 @@ body.marketing .pie__marca-agua {
 }
 body.marketing .pie > *:not(.pie__marca-agua) { position: relative; z-index: 1; }
 
-/* La marca de agua respira despacio: un pulso muy sutil de opacidad y
-   escala, para que esa esquina no se quede completamente inerte aunque
-   el usuario no esté haciendo scroll. Nada de gimmick — apenas se nota
-   a simple vista, es vida de fondo, no una animación protagonista. */
+/* La marca de agua respira despacio: un pulso muy sutil de SOLO
+   opacidad, para que esa esquina no se quede completamente inerte
+   aunque el usuario no esté haciendo scroll. Solo opacidad, nunca
+   transform/escala: esta imagen vive recortada por el border-radius +
+   overflow:hidden de .pie, y animar su tamaño ahí dentro obligaba al
+   navegador a recalcular el recorte redondeado en cada fotograma —
+   eso es justo lo que se veía como esas líneas de puntos parpadeando
+   en la curvatura (un artefacto real de repintado, no cosmético) y
+   consumía CPU/GPU de fondo sin necesidad. Opacidad sola no recalcula
+   ningún recorte, así que el mismo gesto de vida sin ese coste. */
 @media (prefers-reduced-motion: no-preference) {
   body.marketing .pie__marca-agua {
     animation: pie-marca-agua-latido 7s ease-in-out infinite;
   }
 }
 @keyframes pie-marca-agua-latido {
-  0%, 100% { opacity: .14; transform: scale(1); }
-  50% { opacity: .2; transform: scale(1.05); }
+  0%, 100% { opacity: .14; }
+  50% { opacity: .22; }
 }
 
 /* Todas las demás "hojas" del sitio se cubren unas a otras al hacer
