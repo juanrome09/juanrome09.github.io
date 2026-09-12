@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarAnioFooter();
   iniciarFormulario();
   iniciarSeccionesApiladas();
+  iniciarHeroScrubMarketing();
+  iniciarMaquinaEscribir();
+  iniciarCopiarCorreo();
 });
 
 /* ---------- Cabecera: se compacta al pasar 80px ---------- */
@@ -293,6 +296,92 @@ function iniciarFormulario() {
       mostrarEstado('error', 'No hay conexión con el servidor de envío. Escríbenos directamente a info@asesores360.com.');
     } finally {
       if (boton) boton.disabled = false;
+    }
+  });
+}
+
+/* ---------- Héroe de Marketing: el icono de fondo sigue al ratón ----------
+   Paralaje suave: el desplazamiento objetivo depende de dónde está el
+   ratón respecto al centro de la ventana (no de cuánto se ha movido),
+   así el icono siempre "mira" hacia el cursor en vez de poder irse a
+   la deriva. La rotación y el pulso de escala son aparte, puro CSS
+   (@keyframes mk-respirar-logo) — aquí solo se toca `translate`. */
+function iniciarHeroScrubMarketing() {
+  const logo = document.querySelector('.marketing-hero__fondo-logo');
+  if (!logo) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const LIMITE_PX = 46;
+  let objetivoX = 0;
+  let objetivoY = 0;
+  let actualX = 0;
+  let actualY = 0;
+
+  document.addEventListener('mousemove', (evento) => {
+    const relX = evento.clientX / window.innerWidth - 0.5;
+    const relY = evento.clientY / window.innerHeight - 0.5;
+    objetivoX = relX * 2 * LIMITE_PX;
+    objetivoY = relY * 2 * LIMITE_PX;
+  }, { passive: true });
+
+  const avanzar = () => {
+    actualX += (objetivoX - actualX) * 0.06;
+    actualY += (objetivoY - actualY) * 0.06;
+    logo.style.translate = `${actualX.toFixed(1)}px ${actualY.toFixed(1)}px`;
+    window.requestAnimationFrame(avanzar);
+  };
+  window.requestAnimationFrame(avanzar);
+}
+
+/* ---------- Héroe de Marketing: línea a máquina de escribir ---------- */
+function iniciarMaquinaEscribir() {
+  const parrafo = document.querySelector('[data-texto-maquina]');
+  if (!parrafo) return;
+
+  const texto = parrafo.getAttribute('data-texto-maquina') || '';
+  const cursor = parrafo.querySelector('.marketing-hero__cursor');
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    parrafo.textContent = texto;
+    return;
+  }
+
+  const VELOCIDAD_MS = 38;
+  const RETRASO_INICIAL_MS = 600;
+  let indice = 0;
+
+  const escribirSiguienteCaracter = () => {
+    indice += 1;
+    parrafo.textContent = texto.slice(0, indice);
+    if (indice < texto.length) {
+      if (cursor) parrafo.appendChild(cursor);
+      window.setTimeout(escribirSiguienteCaracter, VELOCIDAD_MS);
+    }
+    // Al terminar, el cursor no se vuelve a añadir: queda el texto solo.
+  };
+
+  window.setTimeout(escribirSiguienteCaracter, RETRASO_INICIAL_MS);
+}
+
+/* ---------- Héroe de Marketing: copiar correo al portapapeles ---------- */
+function iniciarCopiarCorreo() {
+  const boton = document.querySelector('[data-copiar-correo]');
+  if (!boton || !navigator.clipboard) return;
+
+  const etiqueta = boton.querySelector('span');
+  const textoOriginal = etiqueta ? etiqueta.textContent : '';
+
+  boton.addEventListener('click', async () => {
+    const correo = boton.getAttribute('data-copiar-correo');
+    try {
+      await navigator.clipboard.writeText(correo);
+      if (etiqueta) {
+        etiqueta.textContent = '¡Copiado!';
+        window.setTimeout(() => { etiqueta.textContent = textoOriginal; }, 1600);
+      }
+    } catch (error) {
+      // Sin permiso de portapapeles: el correo ya está visible en el
+      // propio botón para copiarlo a mano, no hace falta avisar de nada.
     }
   });
 }

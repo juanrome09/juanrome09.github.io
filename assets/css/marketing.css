@@ -314,9 +314,58 @@ body.marketing .marketing-hero {
      (ver más arriba) y no quedarnos solo con 104px pelados aquí. */
   padding-block-start: calc(104px + var(--e-4)) !important;
   padding-inline: var(--canal-movil);
+  padding-block-end: var(--e-4);
+  /* Contiene el fondo interactivo de abajo, que es position:absolute. */
+  overflow: hidden;
 }
 @media (min-width: 1024px) { .marketing-hero { padding-inline: var(--canal-escritorio); } }
 
+/* El fondo es position:absolute (capa de pintado "estática/posicionada
+   sin desplazamiento" temprana); el resto de hijos del héroe necesita
+   su propio position:relative para pintar por delante, si no el fondo
+   los tapa — mismo motivo que el bug de apilado de secciones que ya se
+   corrigió en otro sitio de esta hoja de estilos. */
+.marketing-hero > *:not(.marketing-hero__fondo) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fondo interactivo del héroe: el icono real de A360 (logo-a360-blanco,
+   el mismo archivo de marca que usa el resto del sitio) como marca de
+   agua, a modo de placeholder con carácter mientras no hay vídeo real
+   (regla del encargo: nunca vídeo o foto de stock). Quieto del todo en
+   reposo — solo se mueve si se mueve el ratón (iniciarHeroScrubMarketing
+   en app.js, vía la propiedad translate; nada de animación propia). */
+.marketing-hero__fondo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.marketing-hero__fondo-logo {
+  /* El mínimo (420px) y el ritmo de crecimiento (58vw) son los de
+     siempre — no tocan ni móvil ni escritorios normales. Solo el tope
+     de arriba se ha ido afinando con pruebas reales en monitores 4K de
+     27": a 180% de escalado (~2133px de ancho de página, lo más
+     habitual en Windows para ese tamaño) esto da un logo de unos
+     1240px, que es el punto que ya se vio bien — ni de sobra ni corto. */
+  --tamano-logo-fondo: clamp(420px, 58vw, 1400px);
+  position: absolute;
+  top: 50%;
+  /* Pegado al borde real de la pantalla (no a una caja de contenido
+     centrada) y desplazado hacia fuera exactamente 1/8 de su propio
+     ancho — así siempre asoma 7/8 del logo y se recorta 1/8 contra el
+     borde, como una pieza "desfasada", sea cual sea el ancho de la
+     ventana. Al ser una fracción de su propio tamaño (no un % de un
+     contenedor que crece con la pantalla), nunca se dispara ni se va
+     a la deriva en monitores muy anchos. */
+  right: calc(var(--tamano-logo-fondo) / -8);
+  width: var(--tamano-logo-fondo);
+  aspect-ratio: 1;
+  margin-top: calc(var(--tamano-logo-fondo) / -2);
+  opacity: .14;
+  translate: 0px 0px;
+}
 /* Fondo azul oscuro: el texto va en crema, no en tinta (si no, no se lee) */
 body.marketing .marketing-hero__titulo {
   font-family: var(--f-titulos);
@@ -335,14 +384,56 @@ body.marketing .marketing-hero__linea {
   color: var(--mk-crema);
   opacity: .9;
   max-width: 46ch;
+  min-height: 1.5em;
 }
-.marketing-hero__acciones { margin-top: var(--e-4); }
 
-.marketing-hero__imagen {
-  margin-top: var(--e-6);
-  margin-inline: calc(var(--canal-movil) * -1);
+.marketing-hero__cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--mk-crema);
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  animation: mk-parpadeo 1s step-end infinite;
 }
-@media (min-width: 1024px) { .marketing-hero__imagen { margin-inline: calc(var(--canal-escritorio) * -1); } }
+@keyframes mk-parpadeo { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+.marketing-hero__pildoras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-2);
+  margin-top: var(--e-4);
+}
+.pildora-mk {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--mk-crema);
+  color: var(--mk-tinta);
+  border: 1px solid transparent;
+  border-radius: var(--r-pildora);
+  padding: 9px 18px;
+  font-family: var(--f-cuerpo);
+  font-weight: 500;
+  font-size: var(--menor);
+  white-space: nowrap;
+  transition: background-color var(--dur-hover) ease, color var(--dur-hover) ease, border-color var(--dur-hover) ease;
+  /* Aparecen con una pequeña entrada, no de golpe con el resto del
+     héroe: igual que el resto del sitio, un solo momento orquestado,
+     no una animación por elemento. */
+  opacity: 0;
+  transform: translateY(8px);
+  animation: mk-entrada-pildora .4s var(--curva-reveal) forwards;
+  animation-delay: .4s;
+}
+@keyframes mk-entrada-pildora { to { opacity: 1; transform: translateY(0); } }
+.pildora-mk:hover, .pildora-mk:focus-visible { background: var(--mk-tinta); color: var(--mk-crema); }
+.pildora-mk--contorno {
+  background: transparent;
+  color: var(--mk-crema);
+  border-color: rgba(245, 241, 228, .5);
+}
+.pildora-mk--contorno:hover, .pildora-mk--contorno:focus-visible { background: var(--mk-crema); color: var(--mk-tinta); border-color: var(--mk-crema); }
 
 /* ---------- Los cinco servicios: tarjetas blancas de 50px sobre crema ---------- */
 

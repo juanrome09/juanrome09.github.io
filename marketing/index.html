@@ -112,17 +112,24 @@
 <main id="contenido">
 
   <section class="marketing-hero">
+    <!-- Fondo interactivo: placeholder hasta que llegue vídeo real de
+         A360 (nunca stock). El icono sigue al ratón — ver
+         iniciarHeroScrubMarketing() en app.js. -->
+    <div class="marketing-hero__fondo" aria-hidden="true">
+      <img class="marketing-hero__fondo-logo" src="/assets/img/logo-a360-blanco.png" width="973" height="973" alt="">
+    </div>
+
     <!-- PENDIENTE A360 -->
     <h1 class="marketing-hero__titulo reveal">De invisible a inolvidable, con estrategia de datos</h1>
-    <p class="marketing-hero__linea reveal">Branding, redes, publicidad y desarrollo web para marcas de Ibiza que quieren dejar de pasar desapercibidas.</p>
-    <div class="marketing-hero__acciones reveal">
-      <a class="boton-mk-ghost" href="/marketing/servicios.html">Ver los servicios<span class="boton-mk-ghost__punto" aria-hidden="true"></span></a>
-    </div>
-    <div class="marketing-hero__imagen reveal">
-      <!-- Imagen de ambiente a sangre · 16:9 · 1600×900 — placeholder, tratamiento duotono vino pendiente de material real -->
-      <div class="placeholder-img" style="aspect-ratio:16/9;width:100%;background:var(--lavado-vino);border-radius:0" role="img" aria-label="Imagen de ambiente del equipo de A360 Marketing trabajando, pendiente de material del cliente">
-        Imagen de ambiente · 16:9 · 1600×900
-      </div>
+    <p class="marketing-hero__linea marketing-hero__linea--maquina" data-texto-maquina="Branding, redes, publicidad y desarrollo web para marcas de Ibiza que quieren dejar de pasar desapercibidas."><span class="marketing-hero__cursor" aria-hidden="true"></span></p>
+    <div class="marketing-hero__pildoras reveal">
+      <a class="pildora-mk" href="/marketing/servicios.html">Ver servicios</a>
+      <a class="pildora-mk" href="/marketing/#enfoque">Cómo trabajamos</a>
+      <a class="pildora-mk" href="/marketing/#trabajo">Nuestro trabajo</a>
+      <button class="pildora-mk pildora-mk--contorno" type="button" data-copiar-correo="info@asesores360.com">
+        <span>info@asesores360.com</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="8" y="8" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="2"/></svg>
+      </button>
     </div>
   </section>
 
@@ -164,7 +171,7 @@
     </div>
   </section>
 
-  <section class="banda">
+  <section class="banda" id="trabajo">
     <div class="contenedor">
       <h2 class="reveal">Así se ve un proyecto de A360 Marketing</h2>
       <!-- PENDIENTE A360 -->
@@ -192,7 +199,7 @@
     </div>
   </section>
 
-  <section class="banda banda-blanca">
+  <section class="banda banda-blanca" id="enfoque">
     <div class="contenedor">
       <h2>Cómo enfocamos cada proyecto</h2>
       <div class="enfoque-mk" style="margin-top:var(--e-4)">
