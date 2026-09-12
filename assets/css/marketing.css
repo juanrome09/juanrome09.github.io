@@ -174,17 +174,6 @@ body.marketing .pie {
   body.marketing main > article.mk-seccion-larga:first-child {
     padding-top: calc(104px + var(--e-3)) !important;
   }
-  /* El cierre es corto a propósito — una llamada a la acción, no una
-     pantalla llena de contenido — así que se queda siempre en scroll
-     normal aquí, sin entrar en la medición de arriba: si le tocara el
-     min-height:100dvh por "sí cabe en una pantalla", se estiraría hasta
-     llenar la pantalla entera y volveríamos al hueco enorme para un
-     botón que ya se corrigió una vez. */
-  body.marketing .cierre-marketing {
-    position: relative;
-    min-height: 0;
-    padding-top: var(--e-5) !important;
-  }
 }
 
 /* ---------- Navegación flotante en píldora ---------- */
@@ -592,7 +581,18 @@ body.marketing .marketing-hero__linea {
 
 /* ---------- Cierre: banda oscura de una sola nota, único uso de Staatliches ---------- */
 
-.cierre-marketing {
+/* Bug real encontrado en escritorio: la regla genérica de abajo
+   (body.marketing main > section) tiene MÁS especificidad que un
+   ".cierre-marketing" suelto (2 elementos gana a 0 cuando las clases
+   empatan a una), así que le ganaba la partida al fondo oscuro, al
+   sticky y al min-height:100dvh — el cierre se quedaba con fondo
+   crema, texto crema (invisible sobre crema) y estirado a pantalla
+   completa. Solo se veía el botón porque ese sí tiene su propio color.
+   Con el prefijo body.marketing (dos clases) se gana siempre, y es
+   siempre así — no solo en móvil — es corto a propósito. */
+body.marketing .cierre-marketing {
+  position: relative;
+  min-height: 0;
   background: var(--mk-tinta);
   color: var(--mk-crema);
   text-align: center;
