@@ -245,9 +245,12 @@ body.marketing .pie {
   color: var(--mk-tinta);
   padding: 10px 16px;
   border-radius: var(--r-pildora);
-  transition: background-color var(--dur-hover) ease;
+  transition: background-color var(--dur-hover) ease, color var(--dur-hover) ease;
 }
-.nav-flotante__nav a:hover, .nav-flotante__nav a:focus-visible { background: var(--mk-arena); }
+/* Mismo naranja que la página activa (aria-current, justo debajo): el
+   hover ya no es solo un fondo gris apenas perceptible, es el color de
+   marca — el mismo gesto naranja de los botones del héroe. */
+.nav-flotante__nav a:hover, .nav-flotante__nav a:focus-visible { background: var(--mk-arena); color: var(--mk-coral); }
 .nav-flotante__nav a[aria-current="page"] { color: var(--mk-coral); }
 
 /* El único enlace del header que lleva a otro mundo (Asesoría) se
@@ -505,7 +508,10 @@ body.marketing .marketing-hero__linea {
   animation-delay: .4s;
 }
 @keyframes mk-entrada-pildora { to { opacity: 1; transform: translateY(0); } }
-.pildora-mk:hover, .pildora-mk:focus-visible { background: var(--mk-tinta); color: var(--mk-crema); }
+/* Naranja de marca al pasar el ratón, no el gris oscuro de antes: es
+   el mismo color del único CTA fuerte de la web, así que el gesto de
+   "esto es interactivo" es siempre el mismo naranja en todas partes. */
+.pildora-mk:hover, .pildora-mk:focus-visible { background: var(--mk-coral); color: var(--mk-blanco); }
 .pildora-mk--contorno {
   background: transparent;
   color: var(--mk-crema);
