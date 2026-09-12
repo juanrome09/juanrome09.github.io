@@ -153,8 +153,10 @@ function iniciarSeccionesApiladas() {
   ).filter((seccion) => !seccion.classList.contains('cierre-marketing'));
   if (!secciones.length) return;
 
+  let ignorarObservador = false;
   let pendiente = null;
   const ajustar = () => {
+    if (ignorarObservador) return;
     // Pequeño retardo en vez de requestAnimationFrame: agrupa llamadas
     // seguidas (varios listeners pueden disparar a la vez) sin depender
     // del pipeline de pintado, que en pestañas en segundo plano puede
@@ -164,26 +166,58 @@ function iniciarSeccionesApiladas() {
       if (window.innerWidth > 768) {
         secciones.forEach((seccion) => seccion.classList.remove('mk-seccion-larga'));
       } else {
+        // Ojo: .mk-seccion-larga no solo quita el sticky, también reduce
+        // el padding superior (no necesita el hueco completo del nav si
+        // ya va en scroll normal). Eso significa que medir "la altura
+        // que tiene ahora mismo" no es fiable — una sección justo en el
+        // límite puede medir "cabe" estando ya en modo largo (con menos
+        // padding) y "no cabe" en modo normal (con más), y quedarse
+        // oscilando entre los dos sin converger nunca. Por eso se quita
+        // la clase ANTES de medir: siempre se decide desde el mismo
+        // punto de partida (el padding completo).
+        //
+        // Ese vaivén (quitar la clase, medir, quizá volver a ponerla) es
+        // en sí mismo un cambio de tamaño, y el ResizeObserver lo vería
+        // y se dispararía a sí mismo sin parar. `ignorarObservador` le
+        // dice que pase de esas notificaciones mientras dura el ajuste;
+        // no basta con desconectar y reconectar, porque reconectar
+        // (observe()) dispara su propio aviso inicial igualmente.
+        ignorarObservador = true;
         secciones.forEach((seccion) => {
+          seccion.classList.remove('mk-seccion-larga');
           const cabe = seccion.getBoundingClientRect().height <= window.innerHeight + 24;
           seccion.classList.toggle('mk-seccion-larga', !cabe);
         });
+        window.setTimeout(() => { ignorarObservador = false; }, 0);
       }
       pendiente = null;
     }, 50);
   };
 
+  // ResizeObserver en vez de una lista fija de "momentos en los que
+  // podría cambiar el alto" (fuentes, imágenes, orientación...): con la
+  // lista fija, si la tipografía web tardaba en intercambiarse
+  // (font-display: swap) después del último reajuste programado, la
+  // sección se quedaba con una clasificación caducada para siempre —
+  // pegada cuando ya no cabía, o al revés. El ResizeObserver avisa de
+  // cualquier cambio real de alto en cualquier sección, venga de donde
+  // venga, así que nunca se queda desactualizado.
+  if ('ResizeObserver' in window) {
+    const observador = new ResizeObserver(ajustar);
+    secciones.forEach((seccion) => observador.observe(seccion));
+  } else {
+    // Navegadores sin ResizeObserver (rarísimo hoy): red de seguridad
+    // con los disparadores de antes.
+    window.addEventListener('load', ajustar);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(ajustar).catch(() => {});
+    }
+    window.setTimeout(ajustar, 1200);
+  }
+
   ajustar();
-  // Reajustes tardíos: giro de pantalla, redimensionado, fuentes que
-  // terminan de cargar o imágenes que reciben su tamaño real — cualquier
-  // cosa que pueda cambiar cuánto ocupa el texto.
   window.addEventListener('resize', ajustar, { passive: true });
   window.addEventListener('orientationchange', () => window.setTimeout(ajustar, 300));
-  window.addEventListener('load', ajustar);
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(ajustar).catch(() => {});
-  }
-  window.setTimeout(ajustar, 1200);
 }
 
 /* ---------- Acordeón de preguntas frecuentes ---------- */
