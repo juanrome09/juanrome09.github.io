@@ -482,6 +482,20 @@ body.marketing .marketing-hero__linea {
   background: var(--mk-blanco);
   border-radius: var(--r-panel);
   padding: 21px;
+  border: 1px solid transparent;
+  transition: border-color var(--dur-hover) ease, transform var(--dur-hover) ease;
+}
+.servicio-panel-mk:hover, .servicio-panel-mk:focus-within {
+  border-color: var(--mk-coral);
+  transform: translateY(-4px);
+}
+.servicio-panel-mk__numero {
+  display: block;
+  font-family: var(--f-titulos);
+  font-weight: 500;
+  font-size: var(--menor);
+  color: var(--mk-gris);
+  margin-bottom: var(--e-2);
 }
 .servicio-panel-mk h3 { color: var(--mk-tinta); margin-bottom: 8px; }
 .servicio-panel-mk .boton-mk-coral { margin-top: var(--e-3); }
@@ -506,7 +520,11 @@ body.marketing .marketing-hero__linea {
 .trabajo-mk__pieza .placeholder-img {
   border-radius: var(--mk-r-imagen);
   background: var(--mk-blanco) !important;
+  border-color: var(--mk-gris);
+  transition: border-color var(--dur-hover) ease;
 }
+.trabajo-mk__pieza:hover .placeholder-img,
+.trabajo-mk__pieza:focus-within .placeholder-img { border-color: var(--mk-coral); }
 
 /* En móvil, cinco tarjetas de servicio (o tres piezas de trabajo) en
    columna nunca caben en una pantalla — por mucho que se apriete el
@@ -549,6 +567,15 @@ body.marketing .marketing-hero__linea {
   grid-template-columns: 1fr;
 }
 @media (min-width: 768px) { .enfoque-mk { grid-template-columns: repeat(4, 1fr); } }
+.enfoque-mk__item__numero {
+  display: block;
+  font-family: var(--f-titulos);
+  font-weight: 500;
+  font-size: var(--titulo-1);
+  color: var(--mk-coral);
+  line-height: 1;
+  margin-bottom: var(--e-2);
+}
 .enfoque-mk__item h3 { color: var(--mk-tinta); font-size: var(--titulo-3); margin-bottom: 6px; }
 
 /* ---------- Preguntas frecuentes: acordeón, una columna editorial ---------- */
@@ -768,9 +795,77 @@ body.marketing .placeholder-img {
 body.marketing .pie {
   background: var(--mk-amarillo) !important;
   color: var(--mk-tinta);
+  overflow: hidden;
 }
 body.marketing .pie h3 { color: var(--mk-tinta); }
 body.marketing .pie a, body.marketing .pie address { color: var(--mk-tinta); opacity: 1; }
-body.marketing .pie__redes a { border-color: var(--mk-tinta); }
-body.marketing .pie__redes svg path { fill: var(--mk-tinta) !important; }
+body.marketing .pie a { transition: opacity var(--dur-hover) ease; }
+body.marketing .pie__nav a:hover, body.marketing .pie__nav a:focus-visible,
+body.marketing .pie address a:hover, body.marketing .pie address a:focus-visible { opacity: .6; }
+body.marketing .pie__redes a { border-color: var(--mk-tinta); transition: background-color var(--dur-hover) ease; }
+body.marketing .pie__redes a:hover, body.marketing .pie__redes a:focus-visible { background: var(--mk-tinta); }
+body.marketing .pie__redes a:hover svg path, body.marketing .pie__redes a:focus-visible svg path { fill: var(--mk-amarillo) !important; }
+body.marketing .pie__redes svg path { fill: var(--mk-tinta) !important; transition: fill var(--dur-hover) ease; }
 body.marketing .pie__legal { border-top-color: rgba(44,46,42,.2); opacity: 1; }
+
+/* La esquina redondeada de arriba estaba ahí quieta, sin más — la
+   misma marca de agua del logo que ya llevan otras secciones, aquí en
+   tinta oscura sobre el amarillo, más grande y asomando por la
+   derecha. Y el footer entra con el mismo gesto que cualquier otra
+   "hoja" del sitio (aparece al llegar, no está ya puesto de golpe).
+
+   Sin envoltorio propio: el footer no tiene una altura fija (crece con
+   su contenido), y un hijo position:absolute con inset:0 dentro de un
+   padre de altura automática colapsa a 0 — el % de "bottom" no tiene
+   de qué ser porcentaje. La imagen cuelga directamente de .pie (que sí
+   es el position:relative + overflow:hidden que la recorta) con
+   desplazamientos en píxeles, no en %, así no depende de ninguna
+   altura para colocarse. */
+body.marketing .pie__marca-agua {
+  position: absolute;
+  bottom: -80px;
+  right: -40px;
+  z-index: 0;
+  width: clamp(260px, 30vw, 480px);
+  aspect-ratio: 1;
+  opacity: .1;
+  pointer-events: none;
+}
+body.marketing .pie > *:not(.pie__marca-agua) { position: relative; z-index: 1; }
+
+/* La marca de agua respira despacio: un pulso muy sutil de opacidad y
+   escala, para que esa esquina no se quede completamente inerte aunque
+   el usuario no esté haciendo scroll. Nada de gimmick — apenas se nota
+   a simple vista, es vida de fondo, no una animación protagonista. */
+@media (prefers-reduced-motion: no-preference) {
+  body.marketing .pie__marca-agua {
+    animation: pie-marca-agua-latido 7s ease-in-out infinite;
+  }
+}
+@keyframes pie-marca-agua-latido {
+  0%, 100% { opacity: .1; transform: scale(1); }
+  50% { opacity: .16; transform: scale(1.05); }
+}
+
+/* Todas las demás "hojas" del sitio se cubren unas a otras al hacer
+   scroll (sticky + border-radius, ver más arriba) — la curva de cada
+   una se percibe como un gesto, no como algo que ya estaba puesto.
+   El footer no puede jugar a eso: es la última hoja y no puede quedarse
+   sticky (no hay nada después que lo cubra), así que su curvatura
+   nacía ya completa y quieta, sin ese mismo gesto de entrada.
+   Aquí se lo damos por su cuenta, con el mismo mecanismo .reveal/
+   .en-vista que usa el resto del sitio (IntersectionObserver + transición,
+   ver base.css): nace recta y se despliega a su curva final justo cuando
+   el footer entra en pantalla, en vez de estar ya puesta de golpe. */
+body.marketing .pie.reveal {
+  border-radius: 0 0 0 0;
+  transition: opacity var(--dur-reveal) var(--curva-reveal),
+              transform var(--dur-reveal) var(--curva-reveal),
+              border-radius var(--dur-reveal) var(--curva-reveal);
+}
+body.marketing .pie.reveal.en-vista {
+  border-radius: 50px 50px 0 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  body.marketing .pie.reveal { border-radius: 50px 50px 0 0; }
+}
