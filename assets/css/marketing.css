@@ -378,6 +378,38 @@ body.marketing .marketing-hero {
     top: 45%;
   }
 }
+
+/* Marca de agua decorativa para las secciones de apertura de las
+   páginas interiores (Servicios, Nosotros): son solo un h1 + una
+   línea, y quedaban como un vacío blanco sin nada que mirar antes de
+   que arrancara el contenido real. Mismo icono real de A360 que ya
+   lleva el héroe de portada, aquí fijo (sin seguir al ratón — aquí es
+   textura de fondo, no el protagonista) y más discreto. */
+.mk-marca-agua {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.mk-marca-agua img {
+  position: absolute;
+  top: 50%;
+  right: calc(clamp(280px, 40vw, 560px) / -8);
+  width: clamp(280px, 40vw, 560px);
+  aspect-ratio: 1;
+  margin-top: calc(clamp(280px, 40vw, 560px) / -2);
+  opacity: .07;
+}
+/* Igual que en el héroe: el fondo pinta en una capa temprana, así que
+   sus hermanos necesitan su propio position:relative para no quedar
+   tapados. :has() localiza cualquier sección que lleve la marca de
+   agua, sin necesidad de una clase nueva por página. */
+body.marketing main > section:has(> .mk-marca-agua) > *:not(.mk-marca-agua) {
+  position: relative;
+  z-index: 1;
+}
+
 /* Fondo azul oscuro: el texto va en crema, no en tinta (si no, no se lee) */
 body.marketing .marketing-hero__titulo {
   font-family: var(--f-titulos);
