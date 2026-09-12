@@ -21,12 +21,16 @@ body.marketing {
   /* ---- Paleta oficial A360 Marketing (manual de identidad corporativa) ---- */
   --mk-acento: #1E6FA0;      /* Steel Blue — acento estructural (nav, degradados) */
   --mk-azul-oscuro: #0B3A54; /* Dark Blue — pareja de degradado, hover del CTA, banda de cierre */
-  --mk-crema: #F3EEE7;      /* Linen — lienzo de página */
+  --mk-crema: #ffffff;      /* Blanco — lienzo principal. Antes era Linen: más variedad
+                                real entre el lienzo (blanco puro) y el panel secundario
+                                (Linen, ver --mk-arena) que dos beige casi iguales. */
   --mk-tinta: #404040;      /* Dark Slate Gray — el manual lo fija como "el color para los
                                 textos sobre blanco"; aquí hace ese papel en toda la web,
                                 titulares incluidos */
   --mk-blanco: #ffffff;     /* blanco — tarjetas, nav */
-  --mk-arena: #E8E7E7;      /* Gainsboro — superficie secundaria/recesada */
+  --mk-arena: #F3EEE7;      /* Linen — superficie secundaria/recesada, con calidez propia
+                                en vez del gris frío de Gainsboro (que se queda solo para
+                                los filetes, ver --mk-niebla) */
   --mk-gris: rgba(64, 64, 64, .6); /* Dark Slate Gray atenuado — texto muted; no es un
                                        color nuevo, es el mismo con menos opacidad */
   --mk-niebla: #E8E7E7;     /* Gainsboro — filetes sutiles */
@@ -35,6 +39,16 @@ body.marketing {
   --mk-coral: #E95117;      /* Orange Red — único relleno fuerte (CTA), color de energía del manual */
   --mk-degradado-hero: linear-gradient(135deg, #0B3A54, #1E6FA0); /* Dark Blue > Steel Blue: degradado oficial del manual */
   --mk-degradado-pie: linear-gradient(135deg, #000000, #0B3A54);  /* Full Black > Dark Blue: degradado oficial del manual */
+
+  /* ---- Complementarios del manual: solo para los numerales de índice
+     (servicios, enfoque) y el botón de cambio de mundo del header — un
+     color fijo por posición, nunca mezclados sueltos en una misma pieza,
+     tal y como el propio manual pide para este grupo de colores. ---- */
+  --mk-turquesa: #51BCBD;    /* Medium Turquoise */
+  --mk-verde-lima: #8DC04A;  /* Yellow Green */
+  --mk-verde-mar: #1BA074;   /* Medium Sea Green */
+  --mk-violeta: #A13C8F;     /* Medium Violet Red */
+  --mk-dorado: #D1970F;      /* Golden Rod */
 
   /* ---- Tipografía: una sola familia (Inter) a escala extrema ---- */
   --f-titulos: 'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -236,17 +250,30 @@ body.marketing .pie {
 .nav-flotante__nav a:hover, .nav-flotante__nav a:focus-visible { background: var(--mk-arena); }
 .nav-flotante__nav a[aria-current="page"] { color: var(--mk-coral); }
 
+/* El único enlace del header que lleva a otro mundo (Asesoría) se
+   distingue con su propio color — Medium Sea Green, que no se repite
+   en ningún otro botón de acción de Marketing — en vez de quedar como
+   un enlace de texto más entre la píldora de navegación. */
 .nav-flotante__cambio-mundo {
+  display: inline-flex;
+  align-items: center;
   font-size: var(--menor);
   font-weight: 500;
-  color: var(--mk-tinta);
+  color: var(--mk-blanco);
+  background: var(--mk-verde-mar);
   text-decoration: none;
-  border-bottom: 1px solid var(--mk-gris);
+  padding: 10px 16px;
+  border-radius: var(--r-pildora);
+  transition: background-color var(--dur-hover) ease;
 }
+.nav-flotante__cambio-mundo:hover, .nav-flotante__cambio-mundo:focus-visible { background: var(--mk-azul-oscuro); }
 
 /* El panel de menú a pantalla completa es compartido con Asesoría
    (base.css lo pinta en azul-hondo); en Marketing usa su propia tinta. */
 body.marketing .menu-movil__nav a { color: var(--mk-tinta); }
+/* Mismo verde del enlace "Ir a Asesoría" del header, aquí en su versión
+   del menú a pantalla completa: es el último enlace de la lista. */
+body.marketing .menu-movil__nav a:last-child { color: var(--mk-verde-mar); }
 
 /* Menu Toggle Button — recoloreado: círculo en el azul del logo de Marketing, icono blanco */
 .nav-flotante__movil-abrir {
@@ -512,9 +539,17 @@ body.marketing .marketing-hero__linea {
   font-family: var(--f-titulos);
   font-weight: 500;
   font-size: var(--menor);
-  color: var(--mk-gris);
   margin-bottom: var(--e-2);
 }
+/* Un color complementario del manual por posición — el mismo orden que
+   "Cómo enfocamos" más abajo — en vez de los cinco números en el mismo
+   gris apagado. Con solo 5 servicios no hace falta un selector :nth-
+   child(n+6): la lista siempre para en el quinto. */
+.servicio-panel-mk:nth-child(1) .servicio-panel-mk__numero { color: var(--mk-turquesa); }
+.servicio-panel-mk:nth-child(2) .servicio-panel-mk__numero { color: var(--mk-verde-lima); }
+.servicio-panel-mk:nth-child(3) .servicio-panel-mk__numero { color: var(--mk-verde-mar); }
+.servicio-panel-mk:nth-child(4) .servicio-panel-mk__numero { color: var(--mk-violeta); }
+.servicio-panel-mk:nth-child(5) .servicio-panel-mk__numero { color: var(--mk-dorado); }
 .servicio-panel-mk h3 { color: var(--mk-tinta); margin-bottom: 8px; }
 .servicio-panel-mk .boton-mk-coral { margin-top: var(--e-3); }
 
@@ -590,10 +625,17 @@ body.marketing .marketing-hero__linea {
   font-family: var(--f-titulos);
   font-weight: 500;
   font-size: var(--titulo-1);
-  color: var(--mk-coral);
   line-height: 1;
   margin-bottom: var(--e-2);
 }
+/* Mismo orden de color que las tarjetas de "Servicios": el paso 01
+   siempre es turquesa, el 02 siempre verde lima, etc. — un numeral en
+   este sitio siempre significa el mismo color, no una elección suelta
+   por sección. */
+.enfoque-mk__item:nth-child(1) .enfoque-mk__item__numero { color: var(--mk-turquesa); }
+.enfoque-mk__item:nth-child(2) .enfoque-mk__item__numero { color: var(--mk-verde-lima); }
+.enfoque-mk__item:nth-child(3) .enfoque-mk__item__numero { color: var(--mk-verde-mar); }
+.enfoque-mk__item:nth-child(4) .enfoque-mk__item__numero { color: var(--mk-violeta); }
 .enfoque-mk__item h3 { color: var(--mk-tinta); font-size: var(--titulo-3); margin-bottom: 6px; }
 
 /* ---------- Preguntas frecuentes: acordeón, una columna editorial ---------- */
@@ -726,8 +768,15 @@ body.marketing .cierre-marketing__linea {
   font-family: var(--f-titulos);
   font-weight: 500;
   font-size: var(--titulo-1);
-  color: var(--mk-coral);
 }
+/* Mismo orden de color que los numerales de inicio (turquesa, verde
+   lima, verde mar, violeta, dorado): un 01 siempre es el mismo color
+   en toda la web, aquí en su versión a tamaño completo. */
+.servicio-bloque-mk:nth-of-type(1) .servicio-bloque-mk__numero { color: var(--mk-turquesa); }
+.servicio-bloque-mk:nth-of-type(2) .servicio-bloque-mk__numero { color: var(--mk-verde-lima); }
+.servicio-bloque-mk:nth-of-type(3) .servicio-bloque-mk__numero { color: var(--mk-verde-mar); }
+.servicio-bloque-mk:nth-of-type(4) .servicio-bloque-mk__numero { color: var(--mk-violeta); }
+.servicio-bloque-mk:nth-of-type(5) .servicio-bloque-mk__numero { color: var(--mk-dorado); }
 .servicio-bloque-mk__lista {
   margin-top: var(--e-3);
   display: flex;
