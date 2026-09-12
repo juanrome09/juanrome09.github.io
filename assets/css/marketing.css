@@ -709,10 +709,16 @@ body.marketing .marketing-hero__linea {
    completa. Solo se veía el botón porque ese sí tiene su propio color.
    Con el prefijo body.marketing (dos clases) se gana siempre, y es
    siempre así — no solo en móvil — es corto a propósito. */
+/* Mismo degradado exacto que el footer (--mk-degradado-pie), no el
+   gris de --mk-tinta: son dos elementos independientes (el footer ni
+   siquiera es hijo de <main>), pero al llevar idéntico fondo se leen
+   como una sola pieza continua — el propio recorte redondeado del
+   footer, que asoma el fondo de detrás en sus esquinas, deja ver el
+   mismo degradado en vez de una costura de otro color. */
 body.marketing .cierre-marketing {
   position: relative;
   min-height: 0;
-  background: var(--mk-tinta);
+  background: var(--mk-degradado-pie);
   color: var(--mk-crema);
   text-align: center;
   padding-block: var(--e-8);
@@ -866,6 +872,19 @@ body.marketing .pie {
   background: var(--mk-degradado-pie) !important;
   color: var(--mk-crema);
   overflow: hidden;
+}
+/* La esquina redondeada del footer no cubre nada (el cierre no es
+   sticky: no hay "hoja" debajo que tapar) — recorta su propia caja y
+   deja ver lo que hay detrás en esa esquina, que sin este ajuste es el
+   blanco de la página, no el cierre. Aunque cierre y footer sean dos
+   elementos distintos (el footer ni siquiera es hijo de <main>), al
+   llevar el mismo degradado y solaparse exactamente lo que mide el
+   radio, ese hueco de la esquina muestra el mismo fondo del cierre
+   asomando por debajo — se leen como una sola pieza continua, no dos
+   bloques oscuros con una costura blanca entre medias. */
+body.marketing main:has(> .cierre-marketing:last-child) + .pie {
+  margin-top: -50px;
+  padding-top: 50px;
 }
 body.marketing .pie h3 { color: var(--mk-blanco); }
 body.marketing .pie a, body.marketing .pie address { color: var(--mk-crema); opacity: 1; }
