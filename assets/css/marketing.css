@@ -51,6 +51,8 @@ body.marketing {
   --mk-rosa-oscuro: #88304E; /* Dark Pink M. (secundario del manual) — a petición del
                                  cliente, sustituye al naranja en los botones "Ver
                                  servicio" de las tarjetas de Servicios (inicio) */
+  --mk-vino-oscuro: #522546; /* Dark Pink D. (secundario del manual) — extremo final del
+                                 degradado de los títulos de sección (ver más abajo) */
   --mk-degradado-hero: linear-gradient(135deg, #0B3A54, #1E6FA0); /* Dark Blue > Steel Blue: degradado oficial del manual */
   --mk-degradado-pie: linear-gradient(135deg, #000000, #0B3A54);  /* Full Black > Dark Blue: degradado oficial del manual —
                                                                        antes se cambió a plano por la costura entre el cierre y
@@ -113,6 +115,26 @@ body.marketing h1, body.marketing h2, body.marketing h3, body.marketing h4 {
 body.marketing h1 { font-size: var(--display); line-height: .95; letter-spacing: -.06em; }
 body.marketing h2 { font-size: var(--titulo-1); line-height: 1.15; letter-spacing: -.05em; }
 body.marketing h3 { font-size: var(--titulo-3); line-height: 1.2; letter-spacing: normal; }
+
+/* Títulos de sección en degradado — petición del cliente, en los 4
+   titulares de inicio (Servicios, Así se ve un proyecto, Cómo
+   enfocamos, Preguntas frecuentes), Dark Blue > Dark Pink D., ambos
+   secundarios del manual, izquierda a derecha. color sólido primero
+   como red de seguridad: si el navegador no soporta recortar el fondo
+   al propio texto, se queda en Dark Blue liso en vez de invisible
+   (background-clip:text con color:transparent sin ese soporte no
+   pintaría nada). h2 explícito en el selector — hace falta más peso
+   que el h2 de arriba (mismas 2 clases, pero menos elementos, y por
+   especificidad pierde el pulso si no se iguala). */
+body.marketing h2.mk-titulo-degradado { color: var(--mk-azul-oscuro); }
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  body.marketing h2.mk-titulo-degradado {
+    background: linear-gradient(90deg, var(--mk-azul-oscuro), var(--mk-vino-oscuro));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
 body.marketing p, body.marketing li { color: var(--mk-tinta); }
 body.marketing .menor { color: var(--mk-gris); }
 
