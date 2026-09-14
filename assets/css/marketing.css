@@ -38,6 +38,10 @@ body.marketing {
   --mk-azul: #1E6FA0;       /* Steel Blue — mismo acento estructural, sin un segundo azul suelto */
   --mk-coral: #E95117;      /* Orange Red — único relleno fuerte (CTA), color de energía del manual */
   --mk-degradado-hero: linear-gradient(135deg, #0B3A54, #1E6FA0); /* Dark Blue > Steel Blue: degradado oficial del manual */
+  --mk-degradado-pie: linear-gradient(135deg, #000000, #0B3A54);  /* Full Black > Dark Blue: degradado oficial del manual —
+                                                                       antes se cambió a plano por la costura entre el cierre y
+                                                                       el footer, pero ahora que son una sola caja (ver más abajo)
+                                                                       el degradado no tiene ningún borde donde no cuadrar. */
 
   /* ---- Complementarios del manual: solo para los numerales de índice
      (servicios, enfoque) y el botón de cambio de mundo del header — un
@@ -125,16 +129,27 @@ body.marketing .banda { padding-block: var(--e-6); }
    CSS puro (sticky + border-radius), sin JS ni librería de animación.
 
    Clave para que no se solape texto de una "hoja" con la siguiente:
-   CADA hoja tiene que ser como mínimo una pantalla completa (100dvh).
+   CADA hoja tiene que ser como mínimo una pantalla completa (100svh).
    Si una hoja es más baja que la ventana, deja de estar pegada antes de
    que la siguiente la haya tapado del todo, y se ven las dos a la vez.
-   Por eso min-height:100dvh va en todas — sección o bloque de servicio,
-   sin excepción — no solo en el héroe. */
+   Por eso min-height:100svh va en todas — sección o bloque de servicio,
+   sin excepción — no solo en el héroe.
+
+   svh, no dvh: bug real en móvil — al llegar abajo del todo y deslizar
+   apenas hacia arriba, la barra de direcciones del navegador reaparece,
+   así que 100dvh (que SÍ cambia con ella) recalcula la altura de cada
+   sección de golpe. Eso dispara el ResizeObserver de
+   iniciarSeccionesApiladas() en cadena para todas las secciones a la
+   vez, cada una forzando su propio reflow para remedir — justo el
+   pequeño atasco que se notaba en ese gesto exacto. 100svh es la altura
+   "pequeña" (con la barra siempre puesta): no cambia cuando la barra
+   aparece o desaparece, así que ese gesto ya no mueve nada que el
+   ResizeObserver tenga que volver a medir. */
 body.marketing main > section,
 body.marketing main > article {
   position: sticky;
   top: 0;
-  min-height: 100dvh;
+  min-height: 100svh;
   background: var(--mk-crema);
   display: flex;
   flex-direction: column;
@@ -349,7 +364,7 @@ body.marketing .marketing-hero {
      cubrirlo, y el héroe ya tiene su propio gesto de marca desde el
      primer segundo. */
   background: var(--mk-degradado-hero);
-  min-height: 100dvh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -420,6 +435,33 @@ body.marketing .marketing-hero {
     --tamano-logo-fondo: 1600px;
     right: 200px;
     top: 45%;
+  }
+}
+/* En móvil el truco de "pegado al borde derecho, desplazado 1/8 hacia
+   fuera" no queda centrado — a un ancho de pantalla estrecho, el mínimo
+   de 420px del logo ya es más ancho que la propia pantalla, así que el
+   hueco que deja a la izquierda y el trozo que recorta a la derecha no
+   miden lo mismo: el logo se ve corrido hacia un lado, no en el centro.
+
+   Aquí se centra de verdad, pero NO con margin negativo de la mitad de
+   --tamano-logo-fondo (esa fue la primera solución, y se quedaba corta):
+   img,svg,picture llevan un max-width:100% global (ver base.css), que en
+   una pantalla más estrecha que los 420px mínimos de la variable recorta
+   el ancho real por debajo de lo que --tamano-logo-fondo dice — el
+   margen negativo se calculaba sobre un tamaño que ya no es el real, y
+   el logo quedaba descentrado otra vez, solo que un poco menos. Con
+   translate(-50%,-50%) el desplazamiento es la mitad del tamaño REAL ya
+   renderizado (recorte de max-width incluido), así que centra de verdad
+   sea cual sea el ancho final. Convive sin problema con el `translate`
+   de iniciarHeroScrubMarketing en app.js (esa es la propiedad individual
+   `translate`, no la función `transform: translate()` — se combinan
+   sin pisarse). */
+@media (max-width: 768px) {
+  .marketing-hero__fondo-logo {
+    right: auto;
+    left: 50%;
+    margin-top: 0;
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -621,7 +663,7 @@ body.marketing .marketing-hero__linea {
 
 /* En móvil, cinco tarjetas de servicio (o tres piezas de trabajo) en
    columna nunca caben en una pantalla — por mucho que se apriete el
-   espaciado, es más contenido del que entra en 100dvh, y esa sección
+   espaciado, es más contenido del que entra en 100svh, y esa sección
    se queda sin la animación de apilado (ver iniciarSeccionesApiladas
    en app.js). Se resuelve igual que MindMarket resuelve sus propios
    escaparates: carrusel horizontal con scroll-snap, una tarjeta por
@@ -899,13 +941,15 @@ body.marketing .placeholder-img {
   background: var(--mk-arena) !important;
 }
 
-/* ---------- Footer: Dark Blue plano (Footer Accent Block) ----------
+/* ---------- Footer: degradado oficial Full Black > Dark Blue (Footer Accent Block) ----------
    Ya no es la banda amarilla del reskin MindMarket — el manual de A360 no
    tiene un amarillo institucional. El propio cierre "Enviar consulta"
    vive ahora dentro de este mismo <footer> (ver el bloque de arriba) y
-   hereda este fondo directamente, sin necesitar el suyo. */
+   hereda este fondo directamente, sin necesitar el suyo — al ser una
+   sola caja, el degradado se pinta de un tirón sobre toda su altura,
+   sin ningún borde entre dos elementos donde pudiera no cuadrar. */
 body.marketing .pie {
-  background: var(--mk-azul-oscuro) !important;
+  background: var(--mk-degradado-pie) !important;
   color: var(--mk-crema);
   overflow: hidden;
 }
