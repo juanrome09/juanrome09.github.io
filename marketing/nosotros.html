@@ -58,35 +58,43 @@
 
 <main id="contenido">
 
-  <section class="banda banda-blanca">
+  <section class="banda banda-blanca mk-seccion-compacta">
     <div class="contenedor nosotros-mk-grid">
       <div class="reveal">
-        <h1>Quiénes somos</h1>
+        <h1 class="mk-titulo-degradado">Quiénes somos</h1>
         <!-- PENDIENTE A360 -->
         <p class="cuerpo-lg" style="margin-top:var(--e-2)">A360 Marketing nació en 2024 como la división de marketing digital de A360 Ibiza Asesores, S.L. — la misma organización multidisciplinar detrás de A360 Asesoría, en Santa Eulalia del Río. Innovación, creatividad, transparencia y cercanía guían cada proyecto que hacemos.</p>
       </div>
       <div class="nosotros-mk-forma reveal">
         <span class="nosotros-mk-forma__rect" aria-hidden="true"></span>
-        <!-- Foto de equipo · 4:5 · 800×1000 — placeholder hasta recibir material real -->
-        <div class="placeholder-img" style="aspect-ratio:4/5;width:100%;border-radius:var(--r-panel);position:relative;z-index:1" role="img" aria-label="Foto del equipo de A360 Marketing, pendiente de material del cliente">
-          Foto equipo · 4:5 · 800×1000
-        </div>
+        <img class="nosotros-mk-forma__foto" style="aspect-ratio:4/5" src="/assets/img/placeholders/foto-equipo-nosotros.png" width="890" height="1186" alt="Equipo de A360 Marketing reunido en una sala de trabajo" loading="lazy">
       </div>
     </div>
   </section>
 
-  <section class="banda banda-blanca">
+  <section class="banda banda-blanca mk-seccion-compacta">
     <div class="mk-marca-agua" aria-hidden="true">
       <img src="/assets/img/logo-a360-azul.png" width="973" height="973" alt="">
     </div>
-    <div class="contenedor" style="display:grid;gap:var(--e-5);grid-template-columns:1fr">
-      <div class="nosotros-mk-mision">
-        <h2 class="reveal mk-titulo-degradado">Misión</h2>
-        <p class="cuerpo-lg reveal" style="margin-top:var(--e-2);max-width:60ch">Impulsar el crecimiento digital de nuestros clientes a través de estrategias de marketing innovadoras y personalizadas.</p>
-      </div>
-      <div class="nosotros-mk-mision">
-        <h2 class="reveal mk-titulo-degradado">Visión</h2>
-        <p class="cuerpo-lg reveal" style="margin-top:var(--e-2);max-width:60ch">Ser la agencia de referencia en marketing digital en Ibiza, ayudando a empresas y emprendedores a alcanzar su máximo potencial en el entorno digital.</p>
+    <div class="contenedor">
+      <div class="mk-mapa-mv">
+        <svg class="mk-mapa-mv__ruta" viewBox="0 0 1000 380" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M 6 15 C 6 220, 6 220, 250 225 C 500 228, 850 205, 994 199" />
+        </svg>
+        <div class="mk-mapa-mv__punto mk-mapa-mv__punto--mision reveal">
+          <span class="mk-mapa-mv__pin" aria-hidden="true"></span>
+          <div>
+            <h2 class="mk-titulo-degradado">Misión</h2>
+            <p class="cuerpo-lg" style="margin-top:6px;max-width:38ch">Impulsar el crecimiento digital de nuestros clientes a través de estrategias de marketing innovadoras y personalizadas.</p>
+          </div>
+        </div>
+        <div class="mk-mapa-mv__punto mk-mapa-mv__punto--vision reveal">
+          <span class="mk-mapa-mv__pin" aria-hidden="true"></span>
+          <div>
+            <h2 class="mk-titulo-degradado">Visión</h2>
+            <p class="cuerpo-lg" style="margin-top:6px;max-width:38ch">Ser la agencia de referencia en marketing digital en Ibiza, ayudando a empresas y emprendedores a alcanzar su máximo potencial en el entorno digital.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -119,7 +127,7 @@
     </div>
   </section>
 
-  <section class="banda banda-blanca">
+  <section class="banda banda-blanca mk-seccion-libre">
     <div class="contenedor">
       <h2 class="reveal mk-titulo-degradado">Dónde trabajamos</h2>
       <!-- PENDIENTE A360 -->

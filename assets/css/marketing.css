@@ -118,34 +118,39 @@ body.marketing h3 { font-size: var(--titulo-3); line-height: 1.2; letter-spacing
 
 /* Títulos de sección en degradado — petición del cliente, primero en
    los 4 titulares de inicio (Servicios, Así se ve un proyecto, Cómo
-   enfocamos, Preguntas frecuentes) y luego extendido a los títulos
+   enfocamos, Preguntas frecuentes), luego extendido a los títulos
    equivalentes del resto de pestañas (Misión, Visión, Nuestros
    valores, Dónde trabajamos en Nosotros; los 5 títulos de servicio en
-   Servicios), Dark Blue > Dark Pink M. (el mismo rosa oscuro de los
-   botones "Ver servicio"), izquierda a derecha. color sólido primero
-   como red de seguridad: si el navegador no soporta recortar el fondo
-   al propio texto, se queda en Dark Blue liso en vez de invisible
-   (background-clip:text con color:transparent sin ese soporte no
-   pintaría nada). h2 explícito en el selector — hace falta más peso
-   que el h2 de arriba (mismas 2 clases, pero menos elementos, y por
-   especificidad pierde el pulso si no se iguala).
+   Servicios) y por último al h1 "Quiénes somos" de Nosotros (pedido
+   aparte del cliente: ese título también lo quiere en degradado, pese
+   a ser un h1 y no un h2 como el resto — de ahí el selector con las
+   dos etiquetas). Dark Blue > Dark Pink M. (el mismo rosa oscuro de
+   los botones "Ver servicio"), izquierda a derecha. color sólido
+   primero como red de seguridad: si el navegador no soporta recortar
+   el fondo al propio texto, se queda en Dark Blue liso en vez de
+   invisible (background-clip:text con color:transparent sin ese
+   soporte no pintaría nada). h1/h2 explícitos en el selector — hace
+   falta más peso que las reglas de h1/h2 de arriba (mismas 2 clases,
+   pero menos elementos, y por especificidad pierden el pulso si no se
+   igualan).
 
-   display:inline-block, y no el block por defecto de un h2: el
+   display:inline-block, y no el block por defecto de un h1/h2: el
    degradado es el FONDO de toda la caja del título, recortado a las
-   letras — con un h2 a lo ancho de todo el contenedor (el caso normal)
-   y un título corto como "Misión" o "Visión", casi todo ese fondo cae
-   FUERA de las letras (a la derecha, en el espacio vacío del resto de
-   la caja), así que las letras solo enseñan una porción mínima del
-   degradado, casi un azul liso — bug real, no solo estético, porque el
-   cliente pidió el degradado precisamente para que se note. Con
-   inline-block la caja se ajusta al ancho real del texto, así el
-   degradado completo (azul a rosa) cae siempre detrás de las letras,
-   se note o no. En los 4 títulos largos de inicio no cambia nada
-   (ya ocupaban casi todo el ancho); en los títulos cortos nuevos es
-   lo que hace visible el degradado. */
-body.marketing h2.mk-titulo-degradado { color: var(--mk-azul-oscuro); display: inline-block; }
+   letras — con un título a lo ancho de todo el contenedor (el caso
+   normal) y un título corto como "Misión" o "Visión", casi todo ese
+   fondo cae FUERA de las letras (a la derecha, en el espacio vacío del
+   resto de la caja), así que las letras solo enseñan una porción
+   mínima del degradado, casi un azul liso — bug real, no solo
+   estético, porque el cliente pidió el degradado precisamente para
+   que se note. Con inline-block la caja se ajusta al ancho real del
+   texto, así el degradado completo (azul a rosa) cae siempre detrás de
+   las letras, se note o no. En los títulos largos (los 4 de inicio,
+   "Quiénes somos") casi no cambia nada visualmente (ya ocupaban casi
+   todo el ancho de su línea); en los títulos cortos es lo que hace
+   visible el degradado. */
+body.marketing h1.mk-titulo-degradado, body.marketing h2.mk-titulo-degradado { color: var(--mk-azul-oscuro); display: inline-block; }
 @supports (background-clip: text) or (-webkit-background-clip: text) {
-  body.marketing h2.mk-titulo-degradado {
+  body.marketing h1.mk-titulo-degradado, body.marketing h2.mk-titulo-degradado {
     background: linear-gradient(90deg, var(--mk-azul-oscuro), var(--mk-rosa-oscuro));
     -webkit-background-clip: text;
     background-clip: text;
@@ -242,6 +247,22 @@ body.marketing main > article > .contenedor {
   width: 100%;
 }
 
+/* Petición del cliente: menos scroll "de sobra" antes de pasar a la
+   siguiente hoja. Servicios (5 tarjetas), Así se ve un proyecto y Cómo
+   enfocamos cada proyecto son las tres únicas secciones de Inicio con
+   contenido real más alto que 100svh en pantallas de portátil
+   normales — a diferencia de Dónde trabajamos o Contacto (ver
+   .mk-seccion-libre más abajo), aquí SÍ hay margen de sobra que
+   recortar sin tocar ni una palabra ni una tarjeta: el padding-bottom
+   de .banda (96px en escritorio) se pensó para secciones con una sola
+   línea de contenido, no para una rejilla de varias filas. Bajarlo no
+   cambia el aspecto de la sección (el contenido sigue centrado
+   arriba-abajo iguales que antes, solo con menos aire de sobra debajo
+   que nunca se llegaba a ver completo). */
+body.marketing .mk-seccion-compacta {
+  padding-bottom: var(--e-4) !important;
+}
+
 /* Alternancia automática por posición: pedido del cliente porque con
    --mk-crema y --mk-arena en el mismo tono la web se veía plana, una
    sola hoja de color seguida de principio a fin. Se decide por
@@ -290,6 +311,53 @@ body.marketing main::after {
   content: '';
   display: block;
   height: 100svh;
+}
+
+/* Petición del cliente: "en todas las secciones anteriores al footer
+   hay que dar más scroll de lo normal... la transición debe ser
+   limpia". Causa real: una sección con MÁS contenido del que cabe en
+   100svh sigue siendo sticky (eso está bien, es la base de todo el
+   sistema), pero antes de poder pasar a la siguiente hay que agotar
+   primero su scroll interno (overflow-y:auto) — el ratón/dedo se
+   siente "atascado" un tramo mientras recorre ese sobrante. Para
+   contenido que cabe de sobra (la inmensa mayoría de las secciones)
+   esto no se nota porque no hay sobrante que recorrer. Pero una
+   sección con una imagen 16:9 a todo el ancho (Dónde trabajamos) o un
+   formulario completo de contacto (Contacto) es, de por sí, más alta
+   que una pantalla — no hay margen ni tipografía que recortar sin
+   destrozar el contenido, así que la única solución honesta es que
+   ESA sección concreta no finja ser "una pantalla exacta": que sea un
+   bloque normal, con su altura real, recorrido con el scroll normal
+   de la página — mismo criterio que ya se aplicó al footer.
+   .mk-seccion-libre marca esas excepciones a mano (Dónde trabajamos
+   en Nosotros; la única sección de Contacto) sin tocar el
+   comportamiento de apilado del resto.
+
+   position:relative, no static: el orden de pintado en CSS no sigue
+   el orden del DOM a secas — TODO elemento posicionado (relative,
+   sticky, absolute...) se pinta por encima de TODO elemento estático,
+   sea cual sea su orden en el HTML. Con static aquí, la sección
+   anterior (todavía sticky mientras dura su propio tramo de scroll)
+   se seguía pintando ENCIMA de esta aunque viniera antes en el
+   documento — se veían las dos mezcladas. relative no cambia nada de
+   la posición real (sigue siendo su sitio normal en el flujo, sin
+   desplazamiento), pero la mantiene en el mismo grupo de pintado que
+   el resto de hojas, así que gana ella cuando toca. */
+body.marketing main > section.mk-seccion-libre,
+body.marketing main > article.mk-seccion-libre {
+  position: relative;
+  height: auto;
+  overflow-y: visible;
+}
+/* Si la ÚLTIMA hoja de <main> es una .mk-seccion-libre, el relleno de
+   más arriba (pensado para dar sitio a la última sección STICKY) ya
+   no hace falta — esa sección, al no ser sticky, no necesita margen
+   para engancharse, y dejarlo en 100svh solo metería un tramo de
+   scroll vacío entre ella y el footer (el mismo problema que se acaba
+   de arreglar, pero desplazado). :has() lo detecta automáticamente,
+   sin tocar esta regla página por página. */
+body.marketing main:has(> :last-child.mk-seccion-libre)::after {
+  height: 0;
 }
 
 /* Toda hoja menos la primera sube con las esquinas redondeadas */
@@ -675,6 +743,11 @@ body.marketing .marketing-hero__linea {
 }
 @media (min-width: 640px) { .servicios-marketing { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1024px) { .servicios-marketing { grid-template-columns: repeat(3, 1fr); } }
+/* En pantallas anchas, las 5 tarjetas en una sola fila (en vez de
+   3+2) — menos alto total, menos scroll interno antes de pasar a la
+   siguiente hoja (petición del cliente), y de paso se aprovecha mejor
+   el ancho disponible en vez de dejarlo casi vacío en la segunda fila. */
+@media (min-width: 1200px) { .servicios-marketing { grid-template-columns: repeat(5, 1fr); gap: var(--e-3); } }
 
 .servicio-panel-mk {
   background: var(--mk-blanco);
@@ -1059,6 +1132,15 @@ body.marketing .cierre-marketing__linea {
 }
 @media (min-width: 900px) { .nosotros-mk-grid { grid-template-columns: 1fr 1fr; } }
 .nosotros-mk-forma { position: relative; }
+.nosotros-mk-forma__foto {
+  display: block;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: var(--r-panel);
+}
 .nosotros-mk-forma__rect {
   position: absolute;
   inset-block-start: -20px;
@@ -1069,6 +1151,84 @@ body.marketing .cierre-marketing__linea {
   border-radius: var(--mk-r-imagen);
   transform: none;
   z-index: 0;
+}
+
+/* ---------- Misión y Visión: mapa de ruta ----------
+   Petición del cliente, a partir de una imagen de referencia (no hace
+   falta calcarla, pero sí acercarse): dos puntos de un trayecto — la
+   Misión como punto de partida, la Visión como destino — unidos por
+   una línea discontinua, cada uno con su propio "pin" de mapa. En vez
+   de dos bloques de texto sueltos y ya, esto da la idea de que la
+   Visión es a dónde se llega siguiendo la Misión, no dos frases
+   independientes.
+   position:relative + altura fija en escritorio para poder colocar el
+   SVG de la ruta y los dos puntos por encima uno del otro sin que se
+   estorben; en móvil (más abajo) vuelve a ser flujo normal apilado,
+   como antes del rediseño, porque una ruta diagonal no tiene sentido
+   en una columna estrecha. */
+.mk-mapa-mv {
+  position: relative;
+  height: 420px;
+}
+.mk-mapa-mv__ruta {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+.mk-mapa-mv__ruta path {
+  fill: none;
+  stroke: var(--mk-violeta);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 2 14;
+  opacity: .55;
+}
+.mk-mapa-mv__punto {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--e-2);
+  max-width: 400px;
+}
+.mk-mapa-mv__punto--mision { top: 0; left: 0; }
+.mk-mapa-mv__punto--vision {
+  bottom: 0;
+  right: 0;
+  text-align: right;
+  flex-direction: row-reverse;
+  margin-left: auto;
+}
+/* El pin: un punto sólido con dos halos concéntricos más claros
+   (rgba del mismo violeta, sin inventar un tono nuevo) — el mismo
+   gesto que el marcador de la imagen de referencia, sin necesitar un
+   icono/imagen aparte. */
+.mk-mapa-mv__pin {
+  flex-shrink: 0;
+  margin-top: 10px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--mk-violeta);
+  box-shadow: 0 0 0 7px rgba(var(--mk-violeta-rgb), .18), 0 0 0 14px rgba(var(--mk-violeta-rgb), .08);
+}
+.mk-mapa-mv__punto h2 { margin-bottom: 2px; }
+@media (max-width: 767px) {
+  /* Sin la ruta diagonal: en una columna estrecha no queda sitio para
+     que se lea, y con los dos puntos apilados normales (uno debajo del
+     otro) ya se entiende igual la idea de trayecto sin ella. */
+  .mk-mapa-mv { height: auto; }
+  .mk-mapa-mv__ruta { display: none; }
+  .mk-mapa-mv__punto {
+    position: static;
+    max-width: none;
+    text-align: left !important;
+    flex-direction: row !important;
+    margin-left: 0;
+  }
+  .mk-mapa-mv__punto--vision { margin-top: var(--e-4); }
 }
 
 /* ---------- Contacto ---------- */
