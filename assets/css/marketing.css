@@ -1143,20 +1143,21 @@ body.marketing .pie__redes a:hover svg path, body.marketing .pie__redes a:focus-
 body.marketing .pie__redes svg path { fill: var(--mk-crema) !important; transition: fill var(--dur-hover) ease; }
 body.marketing .pie__legal { border-top-color: rgba(243, 238, 231, .2); opacity: .85; }
 
-/* Logotipo del footer: de vuelta a la variante con el icono y la
-   palabra "MARKETING" apilados debajo (logo-marketing.png), como el
-   diseño original — pero en blanco, no en su naranja/azul de siempre.
-   El PNG tiene canal alfa de verdad (fondo transparente, confirmado
-   antes de tocar nada), así que brightness(0) invert(1) es seguro:
-   convierte a negro puro cualquier píxel opaco y luego invierte a
-   blanco, sin tocar la transparencia de alrededor — nada de recrear
-   el logo a mano ni pedir un archivo nuevo. Un solo tamaño (no icono
-   y texto por separado, ya no hace falta): lo bastante grande para
-   notarse sin quedar más grande que el resto de columnas del footer. */
+/* Logotipo del footer: icono + palabra "MARKETING" apilados debajo,
+   como el diseño original, pero en blanco. brightness(0) invert(1)
+   sobre el PNG a color se descartó: aplana TODO el logo a un único
+   blanco plano, incluidas las zonas que en el original ya eran
+   blancas (el arco y los dígitos "360", recortados como hueco sobre
+   el naranja) — el resultado era una mancha sin ese hueco, no el
+   logo real. logo-marketing-blanco.png es un archivo generado aparte
+   que respeta esa técnica: cada píxel del naranja/azul/marino se
+   vuelve blanco opaco y cada píxel que ya era blanco (el hueco del
+   360) se vuelve transparente, igual que ya hace logo-a360-blanco.png
+   con el icono solo — así el hueco se sigue viendo (deja pasar el
+   fondo oscuro del footer) en vez de desaparecer. */
 body.marketing .pie__marca img {
   height: 60px;
   width: auto;
-  filter: brightness(0) invert(1);
 }
 
 /* Todas las demás "hojas" del sitio se cubren unas a otras al hacer
