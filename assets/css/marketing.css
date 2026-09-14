@@ -1155,32 +1155,9 @@ body.marketing .pie__legal { border-top-color: rgba(243, 238, 231, .2); opacity:
    360) se vuelve transparente, igual que ya hace logo-a360-blanco.png
    con el icono solo — así el hueco se sigue viendo (deja pasar el
    fondo oscuro del footer) en vez de desaparecer. */
-body.marketing .pie__marca {
-  display: inline-block;
-  margin-bottom: var(--e-2);
-}
 body.marketing .pie__marca img {
-  height: 72px;
+  height: 60px;
   width: auto;
-}
-
-/* Petición del cliente: la dirección debe arrancar a la misma altura
-   que los títulos "Marketing"/"Más" de las otras dos columnas, con el
-   logo por encima. Antes el logo y la dirección eran hermanos dentro
-   de la MISMA celda de la rejilla (columna 1), así que la dirección
-   arrancaba más abajo que esos títulos por la altura del logo delante
-   de ella — no hay forma de igualar esa altura si ambos viven en el
-   mismo flujo. Se saca el logo a su propia fila de la rejilla (fila 1,
-   solo columna 1) y el resto de la columna 1 (dirección, teléfono,
-   correo, redes, agrupados en .pie__datos) pasa a la fila 2 junto con
-   los dos <nav>, así los tres arrancan en la misma línea. En móvil no
-   aplica (esta rejilla de filas es solo de escritorio): ahí el orden
-   natural del HTML ya apila logo → datos → nav → nav igual que antes. */
-@media (min-width: 768px) {
-  body.marketing .pie__interior { grid-template-rows: auto auto; row-gap: var(--e-2); }
-  body.marketing .pie__marca { grid-column: 1; grid-row: 1; margin-bottom: 0; }
-  body.marketing .pie__datos { grid-column: 1; grid-row: 2; }
-  body.marketing .pie__nav { grid-row: 2; }
 }
 
 /* Todas las demás "hojas" del sitio se cubren unas a otras al hacer
