@@ -21,13 +21,21 @@ body.marketing {
   /* ---- Paleta oficial A360 Marketing (manual de identidad corporativa) ---- */
   --mk-acento: #1E6FA0;      /* Steel Blue — acento estructural (nav, degradados) */
   --mk-azul-oscuro: #0B3A54; /* Dark Blue — pareja de degradado, hover del CTA, banda de cierre */
-  --mk-crema: #ffffff;      /* Blanco — lienzo principal. Antes era Linen: más variedad
-                                real entre el lienzo (blanco puro) y el panel secundario
-                                (Linen, ver --mk-arena) que dos beige casi iguales. */
+  --mk-crema: #F3EEE7;      /* Linen — lienzo principal. Petición del cliente: nada de
+                                blanco puro como superficie en toda la web de Marketing,
+                                a excepción del texto (ver --mk-texto-claro). Ahora
+                                coincide con --mk-arena a propósito — ya no hacía falta
+                                distinguir "lienzo" de "panel secundario" con dos beige
+                                distintos si ninguno de los dos puede ser blanco. */
   --mk-tinta: #404040;      /* Dark Slate Gray — el manual lo fija como "el color para los
                                 textos sobre blanco"; aquí hace ese papel en toda la web,
                                 titulares incluidos */
-  --mk-blanco: #ffffff;     /* blanco — tarjetas, nav */
+  --mk-blanco: #F3EEE7;     /* Linen — tarjetas, nav. Mismo motivo que --mk-crema: cero
+                                blanco puro como superficie. */
+  --mk-texto-claro: #ffffff; /* Blanco puro — SOLO para texto legible sobre fondos
+                                 oscuros (héroe, cierre, footer). La única excepción real
+                                 a "nada de blanco": las letras siguen en blanco, todo lo
+                                 demás (fondos, bordes, iconos) pasa a Linen. */
   --mk-arena: #F3EEE7;      /* Linen — superficie secundaria/recesada, con calidez propia
                                 en vez del gris frío de Gainsboro (que se queda solo para
                                 los filetes, ver --mk-niebla) */
@@ -37,6 +45,9 @@ body.marketing {
   --mk-negro: #000000;      /* Full Black — máximo contraste */
   --mk-azul: #1E6FA0;       /* Steel Blue — mismo acento estructural, sin un segundo azul suelto */
   --mk-coral: #E95117;      /* Orange Red — único relleno fuerte (CTA), color de energía del manual */
+  --mk-rosa-oscuro: #88304E; /* Dark Pink M. (secundario del manual) — a petición del
+                                 cliente, sustituye al naranja en los botones "Ver
+                                 servicio" de las tarjetas de Servicios (inicio) */
   --mk-degradado-hero: linear-gradient(135deg, #0B3A54, #1E6FA0); /* Dark Blue > Steel Blue: degradado oficial del manual */
   --mk-degradado-pie: linear-gradient(135deg, #000000, #0B3A54);  /* Full Black > Dark Blue: degradado oficial del manual —
                                                                        antes se cambió a plano por la costura entre el cierre y
@@ -320,7 +331,7 @@ body.marketing .pie {
   align-items: center;
   font-size: var(--menor);
   font-weight: 500;
-  color: var(--mk-blanco);
+  color: var(--mk-texto-claro);
   background: var(--mk-verde-mar);
   text-decoration: none;
   padding: 10px 16px;
@@ -378,7 +389,7 @@ body.marketing .menu-movil__nav a:last-child { color: var(--mk-verde-mar); }
   display: inline-flex;
   align-items: center;
   background: var(--mk-coral);
-  color: var(--mk-blanco);
+  color: var(--mk-texto-claro);
   border: 1px solid var(--mk-coral);
   border-radius: var(--r-pildora);
   padding: 11px 20px;
@@ -539,7 +550,7 @@ body.marketing .marketing-hero__titulo {
   font-size: var(--display);
   line-height: .95;
   letter-spacing: -.06em;
-  color: var(--mk-crema);
+  color: var(--mk-texto-claro);
   max-width: 16ch;
 }
 body.marketing .marketing-hero__linea {
@@ -547,7 +558,7 @@ body.marketing .marketing-hero__linea {
   font-size: 20px;
   font-weight: 400;
   line-height: 1.5;
-  color: var(--mk-crema);
+  color: var(--mk-texto-claro);
   opacity: .9;
   max-width: 46ch;
   min-height: 1.5em;
@@ -596,10 +607,10 @@ body.marketing .marketing-hero__linea {
 /* Naranja de marca al pasar el ratón, no el gris oscuro de antes: es
    el mismo color del único CTA fuerte de la web, así que el gesto de
    "esto es interactivo" es siempre el mismo naranja en todas partes. */
-.pildora-mk:hover, .pildora-mk:focus-visible { background: var(--mk-coral); color: var(--mk-blanco); }
+.pildora-mk:hover, .pildora-mk:focus-visible { background: var(--mk-coral); color: var(--mk-texto-claro); }
 .pildora-mk--contorno {
   background: transparent;
-  color: var(--mk-crema);
+  color: var(--mk-texto-claro);
   border-color: rgba(243, 238, 231, .5); /* Linen a media opacidad, no un color aparte */
 }
 .pildora-mk--contorno:hover, .pildora-mk--contorno:focus-visible { background: var(--mk-crema); color: var(--mk-tinta); border-color: var(--mk-crema); }
@@ -669,7 +680,20 @@ body.marketing .marketing-hero__linea {
 .servicio-panel-mk:nth-child(4) .servicio-panel-mk__numero { color: var(--mk-violeta); }
 .servicio-panel-mk:nth-child(5) .servicio-panel-mk__numero { color: var(--mk-dorado); }
 .servicio-panel-mk h3 { color: var(--mk-coral); margin-bottom: 8px; }
-.servicio-panel-mk .boton-mk-coral { margin-top: var(--e-3); }
+/* Petición del cliente: aquí, y solo aquí (las tarjetas de Servicios
+   de inicio), el botón "Ver servicio" cambia el naranja de marca por
+   Dark Pink M. — el resto de botones .boton-mk-coral de la web
+   (Enviar consulta, etc.) siguen en naranja, sin tocar. */
+.servicio-panel-mk .boton-mk-coral {
+  margin-top: var(--e-3);
+  background: var(--mk-rosa-oscuro);
+  border-color: var(--mk-rosa-oscuro);
+}
+.servicio-panel-mk .boton-mk-coral:hover,
+.servicio-panel-mk .boton-mk-coral:focus-visible {
+  background: var(--mk-azul-oscuro);
+  border-color: var(--mk-azul-oscuro);
+}
 
 /* ---------- Nuestro trabajo: escaparate visual de las piezas tipo ---------- */
 
@@ -796,7 +820,7 @@ body.marketing .marketing-hero__linea {
   align-items: center;
   gap: var(--e-2);
   background: var(--mk-tinta);
-  color: var(--mk-crema);
+  color: var(--mk-texto-claro);
   border-radius: var(--r-pildora);
   padding: 11px 20px 11px 24px;
   font-family: var(--f-cuerpo);
@@ -863,7 +887,7 @@ body.marketing .cierre-marketing__previa {
   font-weight: 500;
   font-size: clamp(20px, 3vw, 28px);
   line-height: 1.3;
-  color: var(--mk-crema);
+  color: var(--mk-texto-claro);
   max-width: 24ch;
   margin-inline: auto;
   margin-bottom: var(--e-3);
@@ -875,14 +899,14 @@ body.marketing .cierre-marketing__cartel {
   font-size: clamp(32px, 6vw, 72px);
   letter-spacing: .01em;
   line-height: 1;
-  color: var(--mk-crema);
+  color: var(--mk-texto-claro);
   max-width: 20ch;
   margin-inline: auto;
 }
 body.marketing .cierre-marketing__linea {
   font-family: var(--f-cuerpo);
   font-size: 18px;
-  color: var(--mk-crema);
+  color: var(--mk-texto-claro);
   opacity: .85;
   max-width: 46ch;
   margin: var(--e-3) auto 0;
@@ -1007,11 +1031,11 @@ body.marketing .placeholder-img {
    sin ningún borde entre dos elementos donde pudiera no cuadrar. */
 body.marketing .pie {
   background: var(--mk-degradado-pie) !important;
-  color: var(--mk-crema);
+  color: var(--mk-texto-claro);
   overflow: hidden;
 }
-body.marketing .pie h3 { color: var(--mk-blanco); }
-body.marketing .pie a, body.marketing .pie address { color: var(--mk-crema); opacity: 1; }
+body.marketing .pie h3 { color: var(--mk-texto-claro); }
+body.marketing .pie a, body.marketing .pie address { color: var(--mk-texto-claro); opacity: 1; }
 body.marketing .pie a { transition: opacity var(--dur-hover) ease; }
 body.marketing .pie__nav a:hover, body.marketing .pie__nav a:focus-visible,
 body.marketing .pie address a:hover, body.marketing .pie address a:focus-visible { opacity: .65; }
