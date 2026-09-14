@@ -190,6 +190,33 @@ body.marketing main > article > .contenedor {
   min-width: 0;
   width: 100%;
 }
+
+/* Bug real, no de contenido sino de estructura — por esto la última
+   hoja (la que va justo antes del footer) no se quedaba pegada NUNCA,
+   fuera cual fuera su contenido: position:sticky solo puede desplazar
+   un elemento dentro del espacio libre de SU PROPIO contenedor (aquí,
+   <main>). Cada sección se pega porque main sigue teniendo más alto
+   por delante (las hermanas que vienen después le dan ese margen) —
+   pero la ÚLTIMA sección es, ella misma, el final de <main>: no hay
+   ninguna hermana después que le dé sitio, así que el margen para
+   pegarse es CERO y sticky no tiene nada que hacer, por mucho
+   min-height o overflow que se le ponga a ella. El footer no cuenta:
+   vive fuera de <main> a propósito (es semánticamente correcto que el
+   pie de página no sea "contenido principal"), así que no le da sitio.
+
+   Arreglo sin tocar el HTML de las 4 páginas ni la semántica: un
+   ::after de puro relleno (sin contenido real, invisible, fuera del
+   árbol de accesibilidad) como si fuera un último hijo más de <main>,
+   con la misma altura de una hoja — le da a la sección real de antes
+   el mismo margen que ya tienen todas las demás. El footer, al venir
+   justo después de ese hueco, sigue cubriendo con su esquina redondeada
+   exactamente igual que antes. */
+body.marketing main::after {
+  content: '';
+  display: block;
+  height: 100svh;
+}
+
 /* Toda hoja menos la primera sube con las esquinas redondeadas */
 body.marketing main > *:not(:first-child) {
   border-radius: 50px 50px 0 0;
