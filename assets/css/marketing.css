@@ -126,37 +126,50 @@ body.marketing .banda { padding-block: var(--e-6); }
    La animación real de MindMarket no son micro-efectos sueltos: cada
    sección se queda fija (sticky) mientras la siguiente sube con las
    esquinas superiores redondeadas y la cubre, como hojas apilándose.
-   CSS puro (sticky + border-radius), sin JS ni librería de animación.
+   CSS puro (sticky + border-radius), sin JS ni librería de animación —
+   y SIEMPRE sticky, sin excepciones ni condiciones: es lo que hace que
+   cada esquina redondeada cubra de verdad a la hoja de antes en vez de
+   asomar la que hay más atrás.
 
-   Clave para que no se solape texto de una "hoja" con la siguiente:
-   CADA hoja tiene que ser como mínimo una pantalla completa (100svh).
-   Si una hoja es más baja que la ventana, deja de estar pegada antes de
-   que la siguiente la haya tapado del todo, y se ven las dos a la vez.
-   Por eso min-height:100svh va en todas — sección o bloque de servicio,
-   sin excepción — no solo en el héroe.
+   Segunda versión de este bloque. La primera (una sección más alta que
+   la pantalla pierde el sticky y pasa a scroll normal) rompía dos
+   cosas a la vez: la propia sección dejaba de quedarse fija (todo lo
+   contrario de "hojas apilándose"), y además la SIGUIENTE sección, al
+   llegar arriba del todo, no tenía ya nada fijo debajo que cubrir —
+   así que su esquina redondeada asomaba lo que hubiera pegado más
+   atrás, dos o tres hojas antes. Ese parche llevó a otro parche (quitar
+   el redondeo de la hoja siguiente) y así sucesivamente: arreglar un
+   síntoma sin tocar la causa.
 
-   svh, no dvh: bug real en móvil — al llegar abajo del todo y deslizar
-   apenas hacia arriba, la barra de direcciones del navegador reaparece,
-   así que 100dvh (que SÍ cambia con ella) recalcula la altura de cada
-   sección de golpe. Eso dispara el ResizeObserver de
-   iniciarSeccionesApiladas() en cadena para todas las secciones a la
-   vez, cada una forzando su propio reflow para remedir — justo el
-   pequeño atasco que se notaba en ese gesto exacto. 100svh es la altura
-   "pequeña" (con la barra siempre puesta): no cambia cuando la barra
-   aparece o desaparece, así que ese gesto ya no mueve nada que el
-   ResizeObserver tenga que volver a medir. */
+   La causa real es otra: una sección más alta que la pantalla, sticky
+   y sin overflow, no pierde su contenido porque deba dejar de ser
+   sticky — lo pierde porque nada dentro de ella puede hacer scroll
+   propio. Con overflow-y:auto y una altura FIJA (no solo mínima) de
+   100svh, la sección sigue sticky siempre (misma altura, tapa siempre
+   a la de antes, la cubre siempre la siguiente) y, si su contenido no
+   cabe, se puede recorrer con scroll DENTRO de ella sin que se mueva
+   de sitio — el scroll del ratón/dedo sigue pasando de largo hacia la
+   página en cuanto se llega al final de ese scroll interno (scroll
+   chaining nativo del navegador, sin JS). Cuando el contenido sí cabe
+   (el caso normal), overflow-y:auto no cambia nada visualmente.
+
+   svh, no dvh: en móvil, al llegar abajo del todo y deslizar apenas
+   hacia arriba, la barra de direcciones del navegador reaparece;
+   100dvh cambia con ella y 100svh no, así que ese gesto no dispara
+   ningún recálculo. */
 body.marketing main > section,
 body.marketing main > article {
   position: sticky;
   top: 0;
-  min-height: 100svh;
+  height: 100svh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background: var(--mk-crema);
   display: flex;
   flex-direction: column;
-  /* Centrado, pero solo si cabe: en pantallas bajas donde el contenido
-     no entra entero, ancla arriba para que lo primero que se vea sea
-     siempre el principio (título e idea clave), nunca un recorte a
-     mitad de frase esperando a que "se despegue". */
+  /* Centrado, pero solo si cabe: si el contenido no entra entero,
+     ancla arriba (para que lo primero que se vea sea siempre el
+     principio) y dentro ya hace scroll propio en vez de recortarse. */
   justify-content: safe center;
   /* El hueco del nav va aquí, no en el body: así el color de fondo de
      CADA sección llega hasta arriba del todo, detrás de la píldora
@@ -181,76 +194,22 @@ body.marketing main > article > .contenedor {
 body.marketing main > *:not(:first-child) {
   border-radius: 50px 50px 0 0;
 }
-/* El footer es la última hoja: no se queda pegado, solo remata subiendo */
+/* El footer es la última hoja: no se queda pegado, solo remata subiendo.
+   Como TODA sección de encima es siempre sticky (sin excepciones, ver
+   arriba), la que va justo antes del footer siempre está ahí para que
+   su esquina redondeada la cubra de verdad — nunca hace falta apagar
+   este redondeo. */
 body.marketing .pie {
   position: relative;
   border-radius: 50px 50px 0 0;
 }
 @media (prefers-reduced-motion: reduce) {
   body.marketing main > section,
-  body.marketing main > article { position: relative; min-height: 0; }
-}
-
-/* El efecto de apilado se queda — pero solo en las hojas que de verdad
-   caben en una pantalla completa. Cuáles son eso no es fijo: depende
-   del contenido real, del tamaño de letra del sistema, del zoom del
-   navegador y del alto real de la ventana — y esto no es solo cosa de
-   móvil: un portátil con poca altura de pantalla o una ventana no
-   maximizada pueden hacer que una sección con bastante contenido
-   (Preguntas frecuentes, por ejemplo) tampoco quepa en escritorio. Por
-   eso NADA de esto va detrás de un @media por ancho: app.js mide la
-   altura real de cada sección, en cualquier ventana, y le añade
-   .mk-seccion-larga solo a las que se pasan de la ventana. Esa hoja
-   pierde el sticky y pasa a scroll normal; el resto conserva el efecto
-   completo de páginas apiladas — ver iniciarSeccionesApiladas() en
-   app.js. */
-
-/* position:relative, no static: static pinta DETRÁS de lo sticky (son
-   capas de apilamiento distintas), así que la sección "normal" quedaría
-   tapada por la pegada de arriba en vez de cubrirla. relative sin
-   desplazamiento se comporta igual en el layout pero pinta en el orden
-   correcto, encima de lo que viene antes. */
-body.marketing main > section.mk-seccion-larga,
-body.marketing main > article.mk-seccion-larga {
-  position: relative;
-  min-height: 0;
-  padding-top: var(--e-5) !important;
-}
-/* Si la hoja larga es la primera de la página (el héroe, o el propio
-   formulario de contacto cuando no hay héroe delante), necesita el
-   hueco completo del nav, no solo el respiro entre bandas. Más
-   específico que la regla de arriba (gana por :first-child) y más
-   específico que la propia regla del héroe (gana por más clases). */
-body.marketing main > section.mk-seccion-larga:first-child,
-body.marketing main > article.mk-seccion-larga:first-child {
-  padding-top: calc(104px + var(--e-3)) !important;
-}
-
-/* Bug real: una hoja .mk-seccion-larga no se queda pegada — sigue de
-   largo con el resto de la página, como una web normal. Eso significa
-   que cuando la SIGUIENTE hoja llega arriba del todo, la larga ya se
-   ha ido scrolleada del todo; no está ahí para que la asome el hueco
-   de su esquina redondeada. Lo que se ve por ese hueco es lo que haya
-   TODAVÍA pegado más atrás (la última hoja de verdad sticky, dos o
-   tres posiciones antes) — contenido de la sección equivocada
-   colándose por el borde curvo. Sin esquina redondeada no hay hueco
-   que pueda asomar nada: la hoja siguiente tapa con un borde recto y
-   opaco — sin el gesto de "cortina", pero tampoco con ninguna
-   filtración. Con selector de hermano adyacente esto se resuelve solo,
-   en cadena, sin tocar JS: si dos o tres hojas largas van seguidas,
-   cada una de las que las sigue pierde su redondeo igual. */
-body.marketing main > .mk-seccion-larga + section,
-body.marketing main > .mk-seccion-larga + article {
-  border-radius: 0;
-}
-/* El footer tiene su propio pulso de "esquina que se despliega" al
-   entrar en pantalla (.pie.reveal / .en-vista, y su versión sin
-   movimiento reducido — ver más abajo), las tres con más peso que un
-   selector normal. !important aquí es a propósito: por muy fijas que
-   estén esas reglas, ninguna debe ganarle a "no hay nada pegado detrás
-   que asomar" cuando la hoja de antes (preguntas frecuentes) va larga. */
-body.marketing main:has(> .mk-seccion-larga:last-child) + .pie {
-  border-radius: 0 !important;
+  body.marketing main > article {
+    position: relative;
+    height: auto;
+    overflow-y: visible;
+  }
 }
 
 /* ---------- Navegación flotante en píldora ---------- */
@@ -392,10 +351,10 @@ body.marketing .marketing-hero {
      cubrirlo, y el héroe ya tiene su propio gesto de marca desde el
      primer segundo. */
   background: var(--mk-degradado-hero);
-  min-height: 100svh;
+  height: 100svh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: safe center;
   /* 104px de hueco del nav + un poco de aire extra antes del titular.
      !important para ganarle al !important del hueco base del nav
      (ver más arriba) y no quedarnos solo con 104px pelados aquí. */
@@ -691,10 +650,11 @@ body.marketing .marketing-hero__linea {
 
 /* En móvil, cinco tarjetas de servicio (o tres piezas de trabajo) en
    columna nunca caben en una pantalla — por mucho que se apriete el
-   espaciado, es más contenido del que entra en 100svh, y esa sección
-   se queda sin la animación de apilado (ver iniciarSeccionesApiladas
-   en app.js). Se resuelve igual que MindMarket resuelve sus propios
-   escaparates: carrusel horizontal con scroll-snap, una tarjeta por
+   espaciado, es más contenido del que entra en 100svh. La sección ya
+   puede hacer scroll propio si hace falta (ver la regla general de
+   arriba), pero un carrusel se lee mejor aquí que una lista larga con
+   scroll interno: igual que MindMarket resuelve sus propios
+   escaparates, carrusel horizontal con scroll-snap, una tarjeta por
    pantalla y el borde de la siguiente asomando para invitar a deslizar.
    Así la sección entera mide una tarjeta de alto, no cinco. */
 @media (max-width: 767px) {

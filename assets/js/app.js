@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarAcordeon();
   iniciarAnioFooter();
   iniciarFormulario();
-  iniciarSeccionesApiladas();
   iniciarHeroScrubMarketing();
   iniciarMaquinaEscribir();
   iniciarCopiarCorreo();
@@ -131,96 +130,6 @@ function iniciarReveals() {
       }
     });
   }, 1200);
-}
-
-/* ---------- Marketing: apilado de páginas — pegar solo lo que cabe ----------
-   Cada sección de Marketing se queda fija (sticky) mientras la siguiente
-   sube y la tapa. Eso solo se ve bien si la sección entera cabe en una
-   pantalla; si no, se queda "pegada" mucho más de lo que dura el scroll
-   y el contenido que sobra por abajo no llega a verse nunca (una hoja
-   sticky no hace scroll de su propio contenido: se queda quieta hasta
-   que la siguiente la cubre, así que lo que no entra en el alto visible
-   se pierde sin más). Qué secciones caben no es algo que se pueda fijar
-   a mano de una vez: depende del texto real, del tamaño de letra del
-   sistema, del zoom del navegador y del alto real de la ventana — y
-   esto último no es solo cosa de móvil: un portátil con poca altura de
-   pantalla, una ventana no maximizada o un navegador con zoom por
-   encima del 100% pueden hacer que una sección con bastante contenido
-   (Preguntas frecuentes, por ejemplo) tampoco quepa en escritorio. Por
-   eso se mide la altura real de cada sección — en cualquier ancho de
-   ventana, no solo por debajo de cierto punto de corte — y se le añade
-   .mk-seccion-larga solo si no entra; marketing.css le quita el sticky
-   a esas, sea cual sea el dispositivo. */
-function iniciarSeccionesApiladas() {
-  if (!document.body.classList.contains('marketing')) return;
-  // El cierre queda fuera: es corto a propósito (ver marketing.css) y
-  // siempre va en scroll normal, no según lo que mida aquí.
-  const secciones = Array.from(
-    document.querySelectorAll('main > section, main > article')
-  ).filter((seccion) => !seccion.classList.contains('cierre-marketing'));
-  if (!secciones.length) return;
-
-  let ignorarObservador = false;
-  let pendiente = null;
-  const ajustar = () => {
-    if (ignorarObservador) return;
-    // Pequeño retardo en vez de requestAnimationFrame: agrupa llamadas
-    // seguidas (varios listeners pueden disparar a la vez) sin depender
-    // del pipeline de pintado, que en pestañas en segundo plano puede
-    // tardar en correr.
-    if (pendiente) window.clearTimeout(pendiente);
-    pendiente = window.setTimeout(() => {
-      // Ojo: .mk-seccion-larga no solo quita el sticky, también reduce
-      // el padding superior (no necesita el hueco completo del nav si
-      // ya va en scroll normal). Eso significa que medir "la altura
-      // que tiene ahora mismo" no es fiable — una sección justo en el
-      // límite puede medir "cabe" estando ya en modo largo (con menos
-      // padding) y "no cabe" en modo normal (con más), y quedarse
-      // oscilando entre los dos sin converger nunca. Por eso se quita
-      // la clase ANTES de medir: siempre se decide desde el mismo
-      // punto de partida (el padding completo).
-      //
-      // Ese vaivén (quitar la clase, medir, quizá volver a ponerla) es
-      // en sí mismo un cambio de tamaño, y el ResizeObserver lo vería
-      // y se dispararía a sí mismo sin parar. `ignorarObservador` le
-      // dice que pase de esas notificaciones mientras dura el ajuste;
-      // no basta con desconectar y reconectar, porque reconectar
-      // (observe()) dispara su propio aviso inicial igualmente.
-      ignorarObservador = true;
-      secciones.forEach((seccion) => {
-        seccion.classList.remove('mk-seccion-larga');
-        const cabe = seccion.getBoundingClientRect().height <= window.innerHeight + 24;
-        seccion.classList.toggle('mk-seccion-larga', !cabe);
-      });
-      window.setTimeout(() => { ignorarObservador = false; }, 0);
-      pendiente = null;
-    }, 50);
-  };
-
-  // ResizeObserver en vez de una lista fija de "momentos en los que
-  // podría cambiar el alto" (fuentes, imágenes, orientación...): con la
-  // lista fija, si la tipografía web tardaba en intercambiarse
-  // (font-display: swap) después del último reajuste programado, la
-  // sección se quedaba con una clasificación caducada para siempre —
-  // pegada cuando ya no cabía, o al revés. El ResizeObserver avisa de
-  // cualquier cambio real de alto en cualquier sección, venga de donde
-  // venga, así que nunca se queda desactualizado.
-  if ('ResizeObserver' in window) {
-    const observador = new ResizeObserver(ajustar);
-    secciones.forEach((seccion) => observador.observe(seccion));
-  } else {
-    // Navegadores sin ResizeObserver (rarísimo hoy): red de seguridad
-    // con los disparadores de antes.
-    window.addEventListener('load', ajustar);
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(ajustar).catch(() => {});
-    }
-    window.setTimeout(ajustar, 1200);
-  }
-
-  ajustar();
-  window.addEventListener('resize', ajustar, { passive: true });
-  window.addEventListener('orientationchange', () => window.setTimeout(ajustar, 300));
 }
 
 /* ---------- Acordeón de preguntas frecuentes ---------- */
