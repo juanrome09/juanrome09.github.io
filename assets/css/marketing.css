@@ -23,10 +23,7 @@ body.marketing {
   --mk-azul-oscuro: #0B3A54; /* Dark Blue — pareja de degradado, hover del CTA, banda de cierre */
   --mk-crema: #F3EEE7;      /* Linen — lienzo principal. Petición del cliente: nada de
                                 blanco puro como superficie en toda la web de Marketing,
-                                a excepción del texto (ver --mk-texto-claro). Ahora
-                                coincide con --mk-arena a propósito — ya no hacía falta
-                                distinguir "lienzo" de "panel secundario" con dos beige
-                                distintos si ninguno de los dos puede ser blanco. */
+                                a excepción del texto (ver --mk-texto-claro). */
   --mk-tinta: #404040;      /* Dark Slate Gray — el manual lo fija como "el color para los
                                 textos sobre blanco"; aquí hace ese papel en toda la web,
                                 titulares incluidos */
@@ -36,9 +33,15 @@ body.marketing {
                                  oscuros (héroe, cierre, footer). La única excepción real
                                  a "nada de blanco": las letras siguen en blanco, todo lo
                                  demás (fondos, bordes, iconos) pasa a Linen. */
-  --mk-arena: #F3EEE7;      /* Linen — superficie secundaria/recesada, con calidez propia
-                                en vez del gris frío de Gainsboro (que se queda solo para
-                                los filetes, ver --mk-niebla) */
+  --mk-arena: #E8E7E7;      /* Gainsboro — superficie secundaria/recesada. Petición del
+                                cliente: con --mk-crema y --mk-arena en el mismo Linen, la
+                                web se veía plana, un solo tono seguido entre sección y
+                                sección. Se separan de nuevo: Linen sigue de lienzo
+                                principal, Gainsboro pasa a ser el tono que se intercala —
+                                ver la alternancia por posición más abajo (body.marketing
+                                main > section:nth-child...). Mismo valor que --mk-niebla
+                                (coincidencia a propósito: Gainsboro hace de superficie Y
+                                de filete, nunca aparece un tercer gris suelto). */
   --mk-gris: rgba(64, 64, 64, .6); /* Dark Slate Gray atenuado — texto muted; no es un
                                        color nuevo, es el mismo con menos opacidad */
   --mk-niebla: #E8E7E7;     /* Gainsboro — filetes sutiles */
@@ -121,11 +124,9 @@ body.marketing a.enlace-cuerpo {
 
 /* Cada banda es su propia "hoja" opaca — nunca transparente, porque con
    el efecto de páginas apiladas de abajo eso dejaría ver la hoja anterior
-   asomando (el "texto encima de texto" que no queremos). Alternan crema/
-   arena/blanco sólidos en vez de colores sueltos por página. */
-body.marketing .banda-blanca { background: var(--mk-blanco) !important; }
-body.marketing .banda-gris,
-body.marketing .banda[style*="background"] { background: var(--mk-crema) !important; }
+   asomando (el "texto encima de texto" que no queremos). El color en
+   sí (crema o arena) ya no lo deciden estas clases — ver la alternancia
+   automática por posición, un poco más abajo. */
 
 /* Nota: cada sección debe caber en una pantalla para que el efecto de
    apilado se vea limpio (ver más abajo). Padding contenido a propósito,
@@ -200,6 +201,30 @@ body.marketing main > section > .contenedor,
 body.marketing main > article > .contenedor {
   min-width: 0;
   width: 100%;
+}
+
+/* Alternancia automática por posición: pedido del cliente porque con
+   --mk-crema y --mk-arena en el mismo tono la web se veía plana, una
+   sola hoja de color seguida de principio a fin. Se decide por
+   POSICIÓN dentro de <main> (nth-child), no por qué clase (.banda,
+   .banda-blanca...) lleve cada sección a mano en el HTML — así
+   funciona igual en las 4 páginas sin tener que ir clase por clase
+   cuadrando cuál toca en cada una, y si el día de mañana se añade o
+   se quita una sección, la que viene detrás se re-intercala sola. El
+   héroe queda fuera (su fondo es el degradado de marca, no entra en
+   este reparto). Con una sola sección en la página (contacto.html) la
+   cuenta empieza en 1 = impar = Linen, que es justo el tono que debe
+   predominar cuando no hay nada que alternar. !important porque
+   compite con .banda-blanca (ver más arriba, esa clase ya no decide
+   el color, pero de momento se queda en el HTML como referencia
+   semántica y con un !important propio del reskin original). */
+body.marketing main > section:not(.marketing-hero):nth-child(odd),
+body.marketing main > article:nth-child(odd) {
+  background: var(--mk-crema) !important;
+}
+body.marketing main > section:not(.marketing-hero):nth-child(even),
+body.marketing main > article:nth-child(even) {
+  background: var(--mk-arena) !important;
 }
 
 /* Bug real, no de contenido sino de estructura — por esto la última
@@ -947,9 +972,11 @@ body.marketing .cierre-marketing__linea {
 }
 @media (min-width: 1024px) { .servicio-bloque-mk { padding-block: var(--e-7); } }
 /* Cada bloque es su propia "hoja" opaca — nunca transparente, o se
-   vería el bloque anterior por debajo durante la subida. */
-.servicio-bloque-mk:nth-of-type(odd) { background: var(--mk-crema); }
-.servicio-bloque-mk:nth-of-type(even) { background: var(--mk-arena); }
+   vería el bloque anterior por debajo durante la subida. El color en
+   sí (crema/arena alternando) ya no se decide aquí: lo pone la
+   alternancia general por posición (body.marketing main > article,
+   más arriba), que cubre estos mismos artículos sin necesitar una
+   regla aparte. */
 .servicio-bloque-mk__interior {
   display: grid;
   gap: var(--e-4);
