@@ -221,18 +221,40 @@ body.marketing main::after {
 body.marketing main > *:not(:first-child) {
   border-radius: 50px 50px 0 0;
 }
-/* El footer es la última hoja: no se queda pegado, solo remata subiendo.
-   Como TODA sección de encima es siempre sticky (sin excepciones, ver
-   arriba), la que va justo antes del footer siempre está ahí para que
-   su esquina redondeada la cubra de verdad — nunca hace falta apagar
-   este redondeo. */
+/* El footer es la última hoja — y, sin más, tiene el mismo problema
+   estructural que tenía la última sección de <main>: position:sticky
+   solo puede moverse dentro del espacio libre de SU contenedor, que
+   para el footer es <body>. Como el footer es el último hijo real de
+   <body> (el botón de WhatsApp es position:fixed, no cuenta en el
+   flujo, y el <script> final tampoco pinta caja), <body> termina
+   exactamente donde termina el footer — cero margen para pegarse, iría
+   de largo con el scroll igual que le pasaba a "Preguntas frecuentes"
+   antes de este mismo arreglo. Mismo remedio: un ::after de relleno en
+   body, con la altura de una hoja, para que el footer tenga sitio de
+   verdad donde quedarse fijo mientras se termina de ver por completo.
+   overflow-y:auto (con overflow-x:hidden explícito, para no arriesgar
+   una barra horizontal por el sangrado de la marca de agua) por si su
+   contenido no cupiera entero en una pantalla — mismo mecanismo que ya
+   llevan las demás hojas: no pierde nada, se recorre con scroll propio
+   sin moverse de sitio. */
+body.marketing::after {
+  content: '';
+  display: block;
+  height: 100svh;
+}
 body.marketing .pie {
-  position: relative;
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   border-radius: 50px 50px 0 0;
 }
 @media (prefers-reduced-motion: reduce) {
   body.marketing main > section,
-  body.marketing main > article {
+  body.marketing main > article,
+  body.marketing .pie {
     position: relative;
     height: auto;
     overflow-y: visible;
