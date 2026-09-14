@@ -1130,7 +1130,7 @@ body.marketing .placeholder-img {
 body.marketing .pie {
   background: var(--mk-degradado-pie) !important;
   color: var(--mk-texto-claro);
-  overflow: hidden;
+  overflow-x: hidden;
 }
 body.marketing .pie h3 { color: var(--mk-texto-claro); }
 body.marketing .pie a, body.marketing .pie address { color: var(--mk-texto-claro); opacity: 1; }
