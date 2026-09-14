@@ -802,12 +802,20 @@ body.marketing .marketing-hero__linea {
 
 /* ---------- Bloque de enfoque / proceso ---------- */
 
+/* Cuadrícula de 2×2, no las 4 en fila de antes — referencia del
+   cliente. Con el orden normal del HTML (01, 02, 03, 04 seguidos) un
+   grid de 2 columnas ya reparte solo 01-02 en la fila de arriba y
+   03-04 en la de abajo (así lo pidió, en vez del orden por columnas
+   de la propia referencia, donde 02 iba debajo de 01) — no hace falta
+   reordenar nada, es el flujo normal de un grid de 2 columnas. */
 .enfoque-mk {
   display: grid;
   gap: var(--e-4);
   grid-template-columns: 1fr;
 }
-@media (min-width: 768px) { .enfoque-mk { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 768px) {
+  .enfoque-mk { grid-template-columns: repeat(2, 1fr); gap: var(--e-6) var(--e-5); }
+}
 .enfoque-mk__item__numero {
   display: block;
   font-family: var(--f-titulos);
