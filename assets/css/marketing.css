@@ -223,6 +223,35 @@ body.marketing .pie {
   body.marketing main > article.mk-seccion-larga:first-child {
     padding-top: calc(104px + var(--e-3)) !important;
   }
+
+  /* Bug real: una hoja .mk-seccion-larga no se queda pegada — sigue de
+     largo con el resto de la página, como una web normal. Eso significa
+     que cuando la SIGUIENTE hoja llega arriba del todo, la larga ya se
+     ha ido scrolleada del todo; no está ahí para que la asome el hueco
+     de su esquina redondeada. Lo que se ve por ese hueco es lo que haya
+     TODAVÍA pegado más atrás (la última hoja de verdad sticky, dos o
+     tres posiciones antes) — contenido de la sección equivocada
+     colándose por el borde curvo, justo lo que se reportó. Sin esquina
+     redondeada no hay hueco que pueda asomar nada: la hoja siguiente
+     tapa con un borde recto y opaco — sin el gesto de "cortina", pero
+     tampoco con ninguna filtración. Con selector de hermano adyacente
+     esto se resuelve solo, en cadena, sin tocar JS: si dos o tres hojas
+     largas van seguidas, cada una de las que las sigue pierde su
+     redondeo igual. */
+  body.marketing main > .mk-seccion-larga + section,
+  body.marketing main > .mk-seccion-larga + article {
+    border-radius: 0;
+  }
+  /* El footer tiene su propio pulso de "esquina que se despliega" al
+     entrar en pantalla (.pie.reveal / .en-vista, y su versión sin
+     movimiento reducido — ver más abajo), las tres con más peso que un
+     selector normal. !important aquí es a propósito: por muy fijas
+     que estén esas reglas, ninguna debe ganarle a "no hay nada pegado
+     detrás que asomar" cuando la hoja de antes (preguntas frecuentes)
+     va larga. */
+  body.marketing main:has(> .mk-seccion-larga:last-child) + .pie {
+    border-radius: 0 !important;
+  }
 }
 
 /* ---------- Navegación flotante en píldora ---------- */
