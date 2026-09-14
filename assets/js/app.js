@@ -342,7 +342,8 @@ function iniciarFormulario() {
    (@keyframes mk-respirar-logo) — aquí solo se toca `translate`. */
 function iniciarHeroScrubMarketing() {
   const logo = document.querySelector('.marketing-hero__fondo-logo');
-  if (!logo) return;
+  const heroSeccion = document.querySelector('.marketing-hero');
+  if (!logo || !heroSeccion) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const LIMITE_PX = 46;
@@ -350,21 +351,42 @@ function iniciarHeroScrubMarketing() {
   let objetivoY = 0;
   let actualX = 0;
   let actualY = 0;
+  let idFotograma = null;
 
-  document.addEventListener('mousemove', (evento) => {
+  const alMoverRaton = (evento) => {
     const relX = evento.clientX / window.innerWidth - 0.5;
     const relY = evento.clientY / window.innerHeight - 0.5;
     objetivoX = relX * 2 * LIMITE_PX;
     objetivoY = relY * 2 * LIMITE_PX;
-  }, { passive: true });
+  };
 
   const avanzar = () => {
     actualX += (objetivoX - actualX) * 0.06;
     actualY += (objetivoY - actualY) * 0.06;
     logo.style.translate = `${actualX.toFixed(1)}px ${actualY.toFixed(1)}px`;
-    window.requestAnimationFrame(avanzar);
+    idFotograma = window.requestAnimationFrame(avanzar);
   };
-  window.requestAnimationFrame(avanzar);
+
+  // Bug real: esto arrancaba un requestAnimationFrame infinito al cargar
+  // la página y ya no paraba nunca — seguía calculando y escribiendo
+  // `translate` en cada fotograma aunque el héroe llevara rato fuera de
+  // la pantalla (scroll hasta el footer, por ejemplo), trabajo invisible
+  // de fondo para siempre que se notaba como una lentitud de fondo sin
+  // causa aparente en el resto de la página. Con IntersectionObserver
+  // el bucle (y el listener de mousemove, que dispara con mucha
+  // frecuencia) solo vive mientras el héroe está realmente en pantalla.
+  const observador = new IntersectionObserver((entradas) => {
+    const visible = entradas[0].isIntersecting;
+    if (visible && idFotograma === null) {
+      document.addEventListener('mousemove', alMoverRaton, { passive: true });
+      idFotograma = window.requestAnimationFrame(avanzar);
+    } else if (!visible && idFotograma !== null) {
+      document.removeEventListener('mousemove', alMoverRaton);
+      window.cancelAnimationFrame(idFotograma);
+      idFotograma = null;
+    }
+  });
+  observador.observe(heroSeccion);
 }
 
 /* ---------- Héroe de Marketing: línea a máquina de escribir ---------- */

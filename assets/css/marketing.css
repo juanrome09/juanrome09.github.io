@@ -738,31 +738,24 @@ body.marketing .marketing-hero__linea {
   max-width: 62ch;
 }
 
-/* ---------- Cierre: banda oscura de una sola nota, único uso de Staatliches ---------- */
-
-/* Bug real encontrado en escritorio: la regla genérica de abajo
-   (body.marketing main > section) tiene MÁS especificidad que un
-   ".cierre-marketing" suelto (2 elementos gana a 0 cuando las clases
-   empatan a una), así que le ganaba la partida al fondo oscuro, al
-   sticky y al min-height:100dvh — el cierre se quedaba con fondo
-   crema, texto crema (invisible sobre crema) y estirado a pantalla
-   completa. Solo se veía el botón porque ese sí tiene su propio color.
-   Con el prefijo body.marketing (dos clases) se gana siempre, y es
-   siempre así — no solo en móvil — es corto a propósito. */
-/* Mismo color exacto que el footer (--mk-azul-oscuro), no el gris de
-   --mk-tinta ni un degradado: son dos elementos independientes (el
-   footer ni siquiera es hijo de <main>), y con un degradado cada uno
-   recalcula su propio 0%-100% sobre SU alto de caja — dos alturas
-   distintas, así que el tono exacto en el borde de una nunca cuadra
-   del todo con el de la otra, por poco que se note. Un color PLANO
-   idéntico no tiene ese problema: no depende de la altura, así que el
-   borde entre las dos cajas es matemáticamente el mismo píxel de
-   color a ambos lados — de verdad una sola pieza, no una aproximación. */
-body.marketing .cierre-marketing {
-  position: relative;
-  min-height: 0;
-  background: var(--mk-azul-oscuro);
-  color: var(--mk-crema);
+/* ---------- Cierre "Enviar consulta": ya no es su propia sección ----------
+   Antes era un <section class="cierre-marketing"> aparte, hermano del
+   <footer> — dos cajas independientes que, por bien que se les hiciera
+   coincidir el color (primero un degradado, luego un plano idéntico
+   con un solape a medida para tapar la costura), seguían siendo dos
+   piezas: el navegador las pinta, las hace layout y las anima cada una
+   por su cuenta, y cualquier intento de "que parezcan una" era una
+   aproximación con parches. La solución de verdad es que SEAN una: este
+   bloque ahora vive dentro del propio <footer class="pie">, como su
+   primer contenido, sin sección ni fondo ni posicionamiento propios —
+   hereda el fondo Dark Blue, el borde redondeado y el reveal del
+   footer directamente. Cero costura posible porque ya no hay dos cajas,
+   solo una. De regalo, desaparece también el viejo problema de
+   especificidad con "body.marketing main > section" (ya no es hijo de
+   <main>, esa regla ni le toca) y el solape de -50px que hacía falta
+   para que la esquina redondeada del footer no asomara el blanco de la
+   página detrás (ya no hay "detrás": todo es la misma caja). */
+body.marketing .cierre-marketing__contenido {
   text-align: center;
   padding-block: var(--e-8);
 }
@@ -795,7 +788,7 @@ body.marketing .cierre-marketing__linea {
   max-width: 46ch;
   margin: var(--e-3) auto 0;
 }
-.cierre-marketing .boton-mk-coral { margin-top: var(--e-4); }
+.cierre-marketing__contenido .boton-mk-coral { margin-top: var(--e-4); }
 
 /* ---------- Servicios (página): tarjetas blancas alternando con arena ---------- */
 
@@ -908,26 +901,13 @@ body.marketing .placeholder-img {
 
 /* ---------- Footer: Dark Blue plano (Footer Accent Block) ----------
    Ya no es la banda amarilla del reskin MindMarket — el manual de A360 no
-   tiene un amarillo institucional. Mismo Dark Blue plano que el cierre
-   "Enviar consulta" justo antes (ver más arriba el porqué de plano y no
-   degradado): así se leen como una sola pieza continua, sin costura. */
+   tiene un amarillo institucional. El propio cierre "Enviar consulta"
+   vive ahora dentro de este mismo <footer> (ver el bloque de arriba) y
+   hereda este fondo directamente, sin necesitar el suyo. */
 body.marketing .pie {
   background: var(--mk-azul-oscuro) !important;
   color: var(--mk-crema);
   overflow: hidden;
-}
-/* La esquina redondeada del footer no cubre nada (el cierre no es
-   sticky: no hay "hoja" debajo que tapar) — recorta su propia caja y
-   deja ver lo que hay detrás en esa esquina, que sin este ajuste es el
-   blanco de la página, no el cierre. Aunque cierre y footer sean dos
-   elementos distintos (el footer ni siquiera es hijo de <main>), al
-   llevar el mismo degradado y solaparse exactamente lo que mide el
-   radio, ese hueco de la esquina muestra el mismo fondo del cierre
-   asomando por debajo — se leen como una sola pieza continua, no dos
-   bloques oscuros con una costura blanca entre medias. */
-body.marketing main:has(> .cierre-marketing:last-child) + .pie {
-  margin-top: -50px;
-  padding-top: 50px;
 }
 body.marketing .pie h3 { color: var(--mk-blanco); }
 body.marketing .pie a, body.marketing .pie address { color: var(--mk-crema); opacity: 1; }
