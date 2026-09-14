@@ -280,27 +280,32 @@ body.marketing main::after {
 body.marketing main > *:not(:first-child) {
   border-radius: 50px 50px 0 0;
 }
-/* El footer es la última hoja — y, sin más, tiene el mismo problema
-   estructural que tenía la última sección de <main>: position:sticky
-   solo puede moverse dentro del espacio libre de SU contenedor, que
-   para el footer es <body>. Como el footer es el último hijo real de
-   <body> (el botón de WhatsApp es position:fixed, no cuenta en el
-   flujo, y el <script> final tampoco pinta caja), <body> termina
-   exactamente donde termina el footer — cero margen para pegarse, iría
-   de largo con el scroll igual que le pasaba a "Preguntas frecuentes"
-   antes de este mismo arreglo. Mismo remedio: un ::after de relleno en
-   body, con la altura de una hoja, para que el footer tenga sitio de
-   verdad donde quedarse fijo mientras se termina de ver por completo.
-   overflow-y:auto (con overflow-x:hidden explícito, para no arriesgar
-   una barra horizontal por el sangrado de la marca de agua) por si su
-   contenido no cupiera entero en una pantalla — mismo mecanismo que ya
-   llevan las demás hojas: no pierde nada, se recorre con scroll propio
-   sin moverse de sitio. */
-body.marketing::after {
-  content: '';
-  display: block;
-  height: 100svh;
-}
+/* El footer, a diferencia de la última sección de <main>, NO necesita
+   un ::after de relleno detrás — y tenerlo (100svh, como se probó en
+   un primer momento) es justo lo que causaba la queja del cliente:
+   "tengo que dar un montón de scroll cuando ya llegué al final, y
+   para volver a subir necesito el doble". Con ese relleno, para pasar
+   del todo el footer había que recorrer con scroll SU propio contenido
+   interno (overflow-y:auto, cuando no cabe entero en una pantalla) Y
+   ADEMÁS una pantalla entera más de <body> vacío detrás — dos tramos
+   de scroll donde no cambiaba nada en pantalla, uno detrás de otro.
+
+   No hace falta: el footer mide siempre 100svh exacto (igual que
+   cualquier otra hoja) y es el ÚLTIMO hijo de <body> — así que su
+   posición NATURAL (sin sticky) coincide exactamente con top:0 justo
+   en el punto donde el documento se queda sin más scroll. No necesita
+   margen propio para "engancharse" porque no hay nada después de él
+   que deba deslizarse por encima suyo (ese es el motivo por el que SÍ
+   hace falta en la última sección de <main>: ahí lo que viene después,
+   el propio footer, necesita ese margen para poder deslizarse). El
+   overflow-y:auto de .pie (ver la regla de abajo) se sigue encargando
+   de que "Aviso legal", Privacidad, Cookies y el copyright se puedan
+   recorrer con scroll si no caben enteros en una pantalla — pero ya
+   sin la pantalla extra de scroll "atascado" detrás. Verificado: en
+   una ventana de 779px de alto, antes hacían falta 779px extra de
+   scroll sin cambios visuales para llegar al final; ahora son 0. Por
+   eso ya no hay una regla ::after para body: no pintaría nada
+   (height:0), así que directamente no existe. */
 body.marketing .pie {
   position: sticky;
   top: 0;
