@@ -672,8 +672,28 @@ body.marketing .marketing-hero__linea {
   border-color: var(--mk-gris);
   transition: border-color var(--dur-hover) ease;
 }
+/* Cuando una pieza ya tiene material real en vez de placeholder: mismo
+   radio y mismo borde con hover coral, pero sin el borde punteado ni
+   el texto centrado (eso es solo del estado "pendiente"). object-fit
+   cover + center porque la foto (720×1280, un story vertical) no es
+   cuadrada — se recorta por igual arriba y abajo para llenar el hueco
+   1:1 sin deformarse, centrada en el contenido real de la pieza. */
+.trabajo-mk__foto {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: var(--mk-r-imagen);
+  border: 1px solid var(--mk-gris);
+  transition: border-color var(--dur-hover) ease;
+}
 .trabajo-mk__pieza:hover .placeholder-img,
-.trabajo-mk__pieza:focus-within .placeholder-img { border-color: var(--mk-coral); }
+.trabajo-mk__pieza:focus-within .placeholder-img,
+.trabajo-mk__pieza:hover .trabajo-mk__foto,
+.trabajo-mk__pieza:focus-within .trabajo-mk__foto {
+  border-color: var(--mk-coral);
+}
 
 /* En móvil, cinco tarjetas de servicio (o tres piezas de trabajo) en
    columna nunca caben en una pantalla — por mucho que se apriete el
