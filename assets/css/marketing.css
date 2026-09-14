@@ -896,9 +896,27 @@ body.marketing .cierre-marketing__previa {
   line-height: 1.3;
   color: var(--mk-texto-claro);
   white-space: nowrap;
+  /* Bug real: no quedaba centrada pese al text-align:center del
+     contenedor padre — base.css tiene una regla global "p { text-align:
+     left; max-width: var(--medida-max); }" para el cuerpo de texto
+     normal del sitio, y al ser este párrafo un <p>, esa regla lo toca
+     DIRECTAMENTE (no por herencia). Un valor puesto directo en el
+     propio elemento gana siempre a uno heredado del padre, sin
+     importar cuál tenga más especificidad — por eso ganaba el "left"
+     del selector suelto "p" al "center" heredado. Se pisa aquí mismo,
+     explícito, con más especificidad que el "p" a secas. */
+  text-align: center;
+  max-width: none;
   margin-inline: auto;
   margin-bottom: var(--e-3);
 }
+/* text-align:center explícito en las tres — mismo motivo que el
+   comentario de .cierre-marketing__previa un poco más arriba: al ser
+   <p>, la regla global "p { text-align:left }" de base.css les toca
+   directo y le gana a la herencia del padre. Sin esto, con línea
+   partida en dos (el cartel, cuando no cabe en una línea) se vería
+   la segunda línea pegada a la izquierda en vez de centrada bajo la
+   primera. */
 body.marketing .cierre-marketing__cartel {
   font-family: var(--f-cartel);
   font-weight: 400;
@@ -907,6 +925,7 @@ body.marketing .cierre-marketing__cartel {
   letter-spacing: .01em;
   line-height: 1;
   color: var(--mk-texto-claro);
+  text-align: center;
   max-width: 20ch;
   margin-inline: auto;
 }
@@ -915,6 +934,7 @@ body.marketing .cierre-marketing__linea {
   font-size: 18px;
   color: var(--mk-texto-claro);
   opacity: .85;
+  text-align: center;
   max-width: 46ch;
   margin: var(--e-3) auto 0;
 }
