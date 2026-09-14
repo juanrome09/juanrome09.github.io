@@ -116,18 +116,34 @@ body.marketing h1 { font-size: var(--display); line-height: .95; letter-spacing:
 body.marketing h2 { font-size: var(--titulo-1); line-height: 1.15; letter-spacing: -.05em; }
 body.marketing h3 { font-size: var(--titulo-3); line-height: 1.2; letter-spacing: normal; }
 
-/* Títulos de sección en degradado — petición del cliente, en los 4
-   titulares de inicio (Servicios, Así se ve un proyecto, Cómo
-   enfocamos, Preguntas frecuentes), Dark Blue > Dark Pink M. (el mismo
-   rosa oscuro de los botones "Ver servicio"), izquierda a derecha.
-   color sólido primero
+/* Títulos de sección en degradado — petición del cliente, primero en
+   los 4 titulares de inicio (Servicios, Así se ve un proyecto, Cómo
+   enfocamos, Preguntas frecuentes) y luego extendido a los títulos
+   equivalentes del resto de pestañas (Misión, Visión, Nuestros
+   valores, Dónde trabajamos en Nosotros; los 5 títulos de servicio en
+   Servicios), Dark Blue > Dark Pink M. (el mismo rosa oscuro de los
+   botones "Ver servicio"), izquierda a derecha. color sólido primero
    como red de seguridad: si el navegador no soporta recortar el fondo
    al propio texto, se queda en Dark Blue liso en vez de invisible
    (background-clip:text con color:transparent sin ese soporte no
    pintaría nada). h2 explícito en el selector — hace falta más peso
    que el h2 de arriba (mismas 2 clases, pero menos elementos, y por
-   especificidad pierde el pulso si no se iguala). */
-body.marketing h2.mk-titulo-degradado { color: var(--mk-azul-oscuro); }
+   especificidad pierde el pulso si no se iguala).
+
+   display:inline-block, y no el block por defecto de un h2: el
+   degradado es el FONDO de toda la caja del título, recortado a las
+   letras — con un h2 a lo ancho de todo el contenedor (el caso normal)
+   y un título corto como "Misión" o "Visión", casi todo ese fondo cae
+   FUERA de las letras (a la derecha, en el espacio vacío del resto de
+   la caja), así que las letras solo enseñan una porción mínima del
+   degradado, casi un azul liso — bug real, no solo estético, porque el
+   cliente pidió el degradado precisamente para que se note. Con
+   inline-block la caja se ajusta al ancho real del texto, así el
+   degradado completo (azul a rosa) cae siempre detrás de las letras,
+   se note o no. En los 4 títulos largos de inicio no cambia nada
+   (ya ocupaban casi todo el ancho); en los títulos cortos nuevos es
+   lo que hace visible el degradado. */
+body.marketing h2.mk-titulo-degradado { color: var(--mk-azul-oscuro); display: inline-block; }
 @supports (background-clip: text) or (-webkit-background-clip: text) {
   body.marketing h2.mk-titulo-degradado {
     background: linear-gradient(90deg, var(--mk-azul-oscuro), var(--mk-rosa-oscuro));
@@ -280,45 +296,27 @@ body.marketing main::after {
 body.marketing main > *:not(:first-child) {
   border-radius: 50px 50px 0 0;
 }
-/* El footer, a diferencia de la última sección de <main>, NO necesita
-   un ::after de relleno detrás — y tenerlo (100svh, como se probó en
-   un primer momento) es justo lo que causaba la queja del cliente:
-   "tengo que dar un montón de scroll cuando ya llegué al final, y
-   para volver a subir necesito el doble". Con ese relleno, para pasar
-   del todo el footer había que recorrer con scroll SU propio contenido
-   interno (overflow-y:auto, cuando no cabe entero en una pantalla) Y
-   ADEMÁS una pantalla entera más de <body> vacío detrás — dos tramos
-   de scroll donde no cambiaba nada en pantalla, uno detrás de otro.
+/* Petición del cliente: el efecto sticky/apilado es solo para las
+   secciones de <main> — el footer NO debe tener ese efecto (antes sí
+   lo tenía, a petición suya en su momento, pero decidió que solo
+   quiere el efecto en el resto de secciones). Sin position:sticky, sin
+   altura fija ni overflow propio: el footer es un bloque normal, con
+   su altura natural según su contenido — se recorre con el scroll de
+   toda la página, como un footer corriente, sin scroll interno.
 
-   No hace falta: el footer mide siempre 100svh exacto (igual que
-   cualquier otra hoja) y es el ÚLTIMO hijo de <body> — así que su
-   posición NATURAL (sin sticky) coincide exactamente con top:0 justo
-   en el punto donde el documento se queda sin más scroll. No necesita
-   margen propio para "engancharse" porque no hay nada después de él
-   que deba deslizarse por encima suyo (ese es el motivo por el que SÍ
-   hace falta en la última sección de <main>: ahí lo que viene después,
-   el propio footer, necesita ese margen para poder deslizarse). El
-   overflow-y:auto de .pie (ver la regla de abajo) se sigue encargando
-   de que "Aviso legal", Privacidad, Cookies y el copyright se puedan
-   recorrer con scroll si no caben enteros en una pantalla — pero ya
-   sin la pantalla extra de scroll "atascado" detrás. Verificado: en
-   una ventana de 779px de alto, antes hacían falta 779px extra de
-   scroll sin cambios visuales para llegar al final; ahora son 0. Por
-   eso ya no hay una regla ::after para body: no pintaría nada
-   (height:0), así que directamente no existe. */
+   La entrada del footer sigue viéndose igual que antes (su esquina
+   redondeada tapando la sección anterior): ese efecto lo da el ::after
+   de relleno de la ÚLTIMA sección de <main> (más arriba), no algo
+   propio del footer — con ese relleno, la última sección se queda
+   pegada un tramo de scroll mientras el footer, ya en flujo normal,
+   entra deslizándose desde abajo y la cubre. Quitarle el sticky al
+   footer no toca esa parte. */
 body.marketing .pie {
-  position: sticky;
-  top: 0;
-  height: 100svh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
   border-radius: 50px 50px 0 0;
 }
 @media (prefers-reduced-motion: reduce) {
   body.marketing main > section,
-  body.marketing main > article,
-  body.marketing .pie {
+  body.marketing main > article {
     position: relative;
     height: auto;
     overflow-y: visible;
