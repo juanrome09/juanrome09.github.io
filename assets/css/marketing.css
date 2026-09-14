@@ -1143,24 +1143,20 @@ body.marketing .pie__redes a:hover svg path, body.marketing .pie__redes a:focus-
 body.marketing .pie__redes svg path { fill: var(--mk-crema) !important; transition: fill var(--dur-hover) ease; }
 body.marketing .pie__legal { border-top-color: rgba(243, 238, 231, .2); opacity: .85; }
 
-/* Logotipo del footer: petición del cliente — más grande que antes,
-   en blanco (era la versión naranja/azul con "MARKETING" incrustado
-   en la propia imagen) y con la frase "A360 Marketing" como texto de
-   verdad, no solo en el alt. Con el ícono solo (sin la palabra
-   "MARKETING" ya dibujada dentro del PNG) hay control real del color
-   y del tamaño del texto por separado — antes venían pegados en un
-   único archivo y no se podía tocar uno sin el otro. */
-body.marketing .pie__marca {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-}
-body.marketing .pie__marca img { height: 40px; width: auto; }
-body.marketing .pie__marca span {
-  font-family: var(--f-titulos);
-  font-weight: 500;
-  font-size: 19px;
-  color: var(--mk-texto-claro);
+/* Logotipo del footer: de vuelta a la variante con el icono y la
+   palabra "MARKETING" apilados debajo (logo-marketing.png), como el
+   diseño original — pero en blanco, no en su naranja/azul de siempre.
+   El PNG tiene canal alfa de verdad (fondo transparente, confirmado
+   antes de tocar nada), así que brightness(0) invert(1) es seguro:
+   convierte a negro puro cualquier píxel opaco y luego invierte a
+   blanco, sin tocar la transparencia de alrededor — nada de recrear
+   el logo a mano ni pedir un archivo nuevo. Un solo tamaño (no icono
+   y texto por separado, ya no hace falta): lo bastante grande para
+   notarse sin quedar más grande que el resto de columnas del footer. */
+body.marketing .pie__marca img {
+  height: 60px;
+  width: auto;
+  filter: brightness(0) invert(1);
 }
 
 /* Todas las demás "hojas" del sitio se cubren unas a otras al hacer
