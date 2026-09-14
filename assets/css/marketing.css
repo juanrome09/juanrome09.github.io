@@ -48,11 +48,11 @@ body.marketing {
   --mk-negro: #000000;      /* Full Black — máximo contraste */
   --mk-azul: #1E6FA0;       /* Steel Blue — mismo acento estructural, sin un segundo azul suelto */
   --mk-coral: #E95117;      /* Orange Red — único relleno fuerte (CTA), color de energía del manual */
-  --mk-rosa-oscuro: #88304E; /* Dark Pink M. (secundario del manual) — a petición del
-                                 cliente, sustituye al naranja en los botones "Ver
-                                 servicio" de las tarjetas de Servicios (inicio) */
-  --mk-vino-oscuro: #522546; /* Dark Pink D. (secundario del manual) — extremo final del
-                                 degradado de los títulos de sección (ver más abajo) */
+  --mk-rosa-oscuro: #88304E; /* Dark Pink M. (secundario del manual) — botones "Ver
+                                 servicio" de las tarjetas de Servicios (inicio) Y
+                                 extremo final del degradado de los títulos de sección
+                                 (ver más abajo); mismo color en los dos sitios, a
+                                 petición del cliente. */
   --mk-degradado-hero: linear-gradient(135deg, #0B3A54, #1E6FA0); /* Dark Blue > Steel Blue: degradado oficial del manual */
   --mk-degradado-pie: linear-gradient(135deg, #000000, #0B3A54);  /* Full Black > Dark Blue: degradado oficial del manual —
                                                                        antes se cambió a plano por la costura entre el cierre y
@@ -118,8 +118,9 @@ body.marketing h3 { font-size: var(--titulo-3); line-height: 1.2; letter-spacing
 
 /* Títulos de sección en degradado — petición del cliente, en los 4
    titulares de inicio (Servicios, Así se ve un proyecto, Cómo
-   enfocamos, Preguntas frecuentes), Dark Blue > Dark Pink D., ambos
-   secundarios del manual, izquierda a derecha. color sólido primero
+   enfocamos, Preguntas frecuentes), Dark Blue > Dark Pink M. (el mismo
+   rosa oscuro de los botones "Ver servicio"), izquierda a derecha.
+   color sólido primero
    como red de seguridad: si el navegador no soporta recortar el fondo
    al propio texto, se queda en Dark Blue liso en vez de invisible
    (background-clip:text con color:transparent sin ese soporte no
@@ -129,7 +130,7 @@ body.marketing h3 { font-size: var(--titulo-3); line-height: 1.2; letter-spacing
 body.marketing h2.mk-titulo-degradado { color: var(--mk-azul-oscuro); }
 @supports (background-clip: text) or (-webkit-background-clip: text) {
   body.marketing h2.mk-titulo-degradado {
-    background: linear-gradient(90deg, var(--mk-azul-oscuro), var(--mk-vino-oscuro));
+    background: linear-gradient(90deg, var(--mk-azul-oscuro), var(--mk-rosa-oscuro));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -1142,52 +1143,24 @@ body.marketing .pie__redes a:hover svg path, body.marketing .pie__redes a:focus-
 body.marketing .pie__redes svg path { fill: var(--mk-crema) !important; transition: fill var(--dur-hover) ease; }
 body.marketing .pie__legal { border-top-color: rgba(243, 238, 231, .2); opacity: .85; }
 
-/* La esquina redondeada de arriba estaba ahí quieta, sin más — la misma
-   marca de agua del logo que ya llevan otras secciones, aquí en su
-   versión blanca (el fondo ya es el degradado oscuro Full Black > Dark
-   Blue, no el amarillo claro de antes — la versión azul del logo se
-   perdería contra un fondo casi tan oscuro como ella misma), más grande
-   y asomando por la derecha. Y el footer entra con el mismo gesto que
-   cualquier otra "hoja" del sitio (aparece al llegar, no está ya puesto
-   de golpe).
-
-   Sin envoltorio propio: el footer no tiene una altura fija (crece con
-   su contenido), y un hijo position:absolute con inset:0 dentro de un
-   padre de altura automática colapsa a 0 — el % de "bottom" no tiene
-   de qué ser porcentaje. La imagen cuelga directamente de .pie (que sí
-   es el position:relative + overflow:hidden que la recorta) con
-   desplazamientos en píxeles, no en %, así no depende de ninguna
-   altura para colocarse. */
-body.marketing .pie__marca-agua {
-  position: absolute;
-  bottom: -80px;
-  right: -40px;
-  z-index: 0;
-  width: clamp(260px, 30vw, 480px);
-  aspect-ratio: 1;
-  opacity: .14;
-  pointer-events: none;
+/* Logotipo del footer: petición del cliente — más grande que antes,
+   en blanco (era la versión naranja/azul con "MARKETING" incrustado
+   en la propia imagen) y con la frase "A360 Marketing" como texto de
+   verdad, no solo en el alt. Con el ícono solo (sin la palabra
+   "MARKETING" ya dibujada dentro del PNG) hay control real del color
+   y del tamaño del texto por separado — antes venían pegados en un
+   único archivo y no se podía tocar uno sin el otro. */
+body.marketing .pie__marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
 }
-body.marketing .pie > *:not(.pie__marca-agua) { position: relative; z-index: 1; }
-
-/* La marca de agua respira despacio: un pulso muy sutil de SOLO
-   opacidad, para que esa esquina no se quede completamente inerte
-   aunque el usuario no esté haciendo scroll. Solo opacidad, nunca
-   transform/escala: esta imagen vive recortada por el border-radius +
-   overflow:hidden de .pie, y animar su tamaño ahí dentro obligaba al
-   navegador a recalcular el recorte redondeado en cada fotograma —
-   eso es justo lo que se veía como esas líneas de puntos parpadeando
-   en la curvatura (un artefacto real de repintado, no cosmético) y
-   consumía CPU/GPU de fondo sin necesidad. Opacidad sola no recalcula
-   ningún recorte, así que el mismo gesto de vida sin ese coste. */
-@media (prefers-reduced-motion: no-preference) {
-  body.marketing .pie__marca-agua {
-    animation: pie-marca-agua-latido 7s ease-in-out infinite;
-  }
-}
-@keyframes pie-marca-agua-latido {
-  0%, 100% { opacity: .14; }
-  50% { opacity: .22; }
+body.marketing .pie__marca img { height: 40px; width: auto; }
+body.marketing .pie__marca span {
+  font-family: var(--f-titulos);
+  font-weight: 500;
+  font-size: 19px;
+  color: var(--mk-texto-claro);
 }
 
 /* Todas las demás "hojas" del sitio se cubren unas a otras al hacer
