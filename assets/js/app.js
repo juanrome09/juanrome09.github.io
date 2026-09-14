@@ -134,16 +134,23 @@ function iniciarReveals() {
 }
 
 /* ---------- Marketing: apilado de páginas — pegar solo lo que cabe ----------
-   En móvil, cada sección de Marketing se queda fija (sticky) mientras la
-   siguiente sube y la tapa. Eso solo se ve bien si la sección entera cabe
-   en una pantalla; si no, se queda "pegada" mucho más de lo que dura el
-   scroll y da sensación de web rota. Qué secciones caben no es algo que
-   se pueda fijar a mano de una vez: depende del texto real, del tamaño
-   de letra del sistema y del ancho exacto del teléfono (incluso el
-   héroe puede no caber en un teléfono muy estrecho). Así que en vez de
-   una lista fija de "estas sí, estas no", se mide la altura real de
-   cada sección y se le añade .mk-seccion-larga solo si no entra —
-   marketing.css le quita el sticky a esas. */
+   Cada sección de Marketing se queda fija (sticky) mientras la siguiente
+   sube y la tapa. Eso solo se ve bien si la sección entera cabe en una
+   pantalla; si no, se queda "pegada" mucho más de lo que dura el scroll
+   y el contenido que sobra por abajo no llega a verse nunca (una hoja
+   sticky no hace scroll de su propio contenido: se queda quieta hasta
+   que la siguiente la cubre, así que lo que no entra en el alto visible
+   se pierde sin más). Qué secciones caben no es algo que se pueda fijar
+   a mano de una vez: depende del texto real, del tamaño de letra del
+   sistema, del zoom del navegador y del alto real de la ventana — y
+   esto último no es solo cosa de móvil: un portátil con poca altura de
+   pantalla, una ventana no maximizada o un navegador con zoom por
+   encima del 100% pueden hacer que una sección con bastante contenido
+   (Preguntas frecuentes, por ejemplo) tampoco quepa en escritorio. Por
+   eso se mide la altura real de cada sección — en cualquier ancho de
+   ventana, no solo por debajo de cierto punto de corte — y se le añade
+   .mk-seccion-larga solo si no entra; marketing.css le quita el sticky
+   a esas, sea cual sea el dispositivo. */
 function iniciarSeccionesApiladas() {
   if (!document.body.classList.contains('marketing')) return;
   // El cierre queda fuera: es corto a propósito (ver marketing.css) y
@@ -163,33 +170,29 @@ function iniciarSeccionesApiladas() {
     // tardar en correr.
     if (pendiente) window.clearTimeout(pendiente);
     pendiente = window.setTimeout(() => {
-      if (window.innerWidth > 768) {
-        secciones.forEach((seccion) => seccion.classList.remove('mk-seccion-larga'));
-      } else {
-        // Ojo: .mk-seccion-larga no solo quita el sticky, también reduce
-        // el padding superior (no necesita el hueco completo del nav si
-        // ya va en scroll normal). Eso significa que medir "la altura
-        // que tiene ahora mismo" no es fiable — una sección justo en el
-        // límite puede medir "cabe" estando ya en modo largo (con menos
-        // padding) y "no cabe" en modo normal (con más), y quedarse
-        // oscilando entre los dos sin converger nunca. Por eso se quita
-        // la clase ANTES de medir: siempre se decide desde el mismo
-        // punto de partida (el padding completo).
-        //
-        // Ese vaivén (quitar la clase, medir, quizá volver a ponerla) es
-        // en sí mismo un cambio de tamaño, y el ResizeObserver lo vería
-        // y se dispararía a sí mismo sin parar. `ignorarObservador` le
-        // dice que pase de esas notificaciones mientras dura el ajuste;
-        // no basta con desconectar y reconectar, porque reconectar
-        // (observe()) dispara su propio aviso inicial igualmente.
-        ignorarObservador = true;
-        secciones.forEach((seccion) => {
-          seccion.classList.remove('mk-seccion-larga');
-          const cabe = seccion.getBoundingClientRect().height <= window.innerHeight + 24;
-          seccion.classList.toggle('mk-seccion-larga', !cabe);
-        });
-        window.setTimeout(() => { ignorarObservador = false; }, 0);
-      }
+      // Ojo: .mk-seccion-larga no solo quita el sticky, también reduce
+      // el padding superior (no necesita el hueco completo del nav si
+      // ya va en scroll normal). Eso significa que medir "la altura
+      // que tiene ahora mismo" no es fiable — una sección justo en el
+      // límite puede medir "cabe" estando ya en modo largo (con menos
+      // padding) y "no cabe" en modo normal (con más), y quedarse
+      // oscilando entre los dos sin converger nunca. Por eso se quita
+      // la clase ANTES de medir: siempre se decide desde el mismo
+      // punto de partida (el padding completo).
+      //
+      // Ese vaivén (quitar la clase, medir, quizá volver a ponerla) es
+      // en sí mismo un cambio de tamaño, y el ResizeObserver lo vería
+      // y se dispararía a sí mismo sin parar. `ignorarObservador` le
+      // dice que pase de esas notificaciones mientras dura el ajuste;
+      // no basta con desconectar y reconectar, porque reconectar
+      // (observe()) dispara su propio aviso inicial igualmente.
+      ignorarObservador = true;
+      secciones.forEach((seccion) => {
+        seccion.classList.remove('mk-seccion-larga');
+        const cabe = seccion.getBoundingClientRect().height <= window.innerHeight + 24;
+        seccion.classList.toggle('mk-seccion-larga', !cabe);
+      });
+      window.setTimeout(() => { ignorarObservador = false; }, 0);
       pendiente = null;
     }, 50);
   };

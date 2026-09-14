@@ -191,67 +191,66 @@ body.marketing .pie {
   body.marketing main > article { position: relative; min-height: 0; }
 }
 
-/* En móvil el efecto de apilado se queda — pero solo en las hojas que
-   de verdad caben en una pantalla completa. Cuáles son eso no es fijo:
-   depende del contenido real, del tamaño de letra del sistema y del
-   ancho exacto del teléfono (incluso el propio héroe puede no caber si
-   el teléfono es muy estrecho). Por eso, en vez de adivinar a mano qué
-   sección es "corta" (una lista fija se queda corta en cuanto cambia
-   el texto o aparece un móvil más estrecho), app.js mide la altura real
-   de cada sección nada más cargar y le añade .mk-seccion-larga solo a
-   las que se pasan de la ventana. Esa hoja pierde el sticky y pasa a
-   scroll normal; el resto conserva el efecto completo de páginas
-   apiladas — ver iniciarSeccionesApiladas() en app.js. */
-@media (max-width: 768px) {
-  /* position:relative, no static: static pinta DETRÁS de lo sticky (son
-     capas de apilamiento distintas), así que la sección "normal" quedaría
-     tapada por la pegada de arriba en vez de cubrirla. relative sin
-     desplazamiento se comporta igual en el layout pero pinta en el orden
-     correcto, encima de lo que viene antes. */
-  body.marketing main > section.mk-seccion-larga,
-  body.marketing main > article.mk-seccion-larga {
-    position: relative;
-    min-height: 0;
-    padding-top: var(--e-5) !important;
-  }
-  /* Si la hoja larga es la primera de la página (el héroe, o el propio
-     formulario de contacto cuando no hay héroe delante), necesita el
-     hueco completo del nav, no solo el respiro entre bandas. Más
-     específico que la regla de arriba (gana por :first-child) y más
-     específico que la propia regla del héroe (gana por más clases). */
-  body.marketing main > section.mk-seccion-larga:first-child,
-  body.marketing main > article.mk-seccion-larga:first-child {
-    padding-top: calc(104px + var(--e-3)) !important;
-  }
+/* El efecto de apilado se queda — pero solo en las hojas que de verdad
+   caben en una pantalla completa. Cuáles son eso no es fijo: depende
+   del contenido real, del tamaño de letra del sistema, del zoom del
+   navegador y del alto real de la ventana — y esto no es solo cosa de
+   móvil: un portátil con poca altura de pantalla o una ventana no
+   maximizada pueden hacer que una sección con bastante contenido
+   (Preguntas frecuentes, por ejemplo) tampoco quepa en escritorio. Por
+   eso NADA de esto va detrás de un @media por ancho: app.js mide la
+   altura real de cada sección, en cualquier ventana, y le añade
+   .mk-seccion-larga solo a las que se pasan de la ventana. Esa hoja
+   pierde el sticky y pasa a scroll normal; el resto conserva el efecto
+   completo de páginas apiladas — ver iniciarSeccionesApiladas() en
+   app.js. */
 
-  /* Bug real: una hoja .mk-seccion-larga no se queda pegada — sigue de
-     largo con el resto de la página, como una web normal. Eso significa
-     que cuando la SIGUIENTE hoja llega arriba del todo, la larga ya se
-     ha ido scrolleada del todo; no está ahí para que la asome el hueco
-     de su esquina redondeada. Lo que se ve por ese hueco es lo que haya
-     TODAVÍA pegado más atrás (la última hoja de verdad sticky, dos o
-     tres posiciones antes) — contenido de la sección equivocada
-     colándose por el borde curvo, justo lo que se reportó. Sin esquina
-     redondeada no hay hueco que pueda asomar nada: la hoja siguiente
-     tapa con un borde recto y opaco — sin el gesto de "cortina", pero
-     tampoco con ninguna filtración. Con selector de hermano adyacente
-     esto se resuelve solo, en cadena, sin tocar JS: si dos o tres hojas
-     largas van seguidas, cada una de las que las sigue pierde su
-     redondeo igual. */
-  body.marketing main > .mk-seccion-larga + section,
-  body.marketing main > .mk-seccion-larga + article {
-    border-radius: 0;
-  }
-  /* El footer tiene su propio pulso de "esquina que se despliega" al
-     entrar en pantalla (.pie.reveal / .en-vista, y su versión sin
-     movimiento reducido — ver más abajo), las tres con más peso que un
-     selector normal. !important aquí es a propósito: por muy fijas
-     que estén esas reglas, ninguna debe ganarle a "no hay nada pegado
-     detrás que asomar" cuando la hoja de antes (preguntas frecuentes)
-     va larga. */
-  body.marketing main:has(> .mk-seccion-larga:last-child) + .pie {
-    border-radius: 0 !important;
-  }
+/* position:relative, no static: static pinta DETRÁS de lo sticky (son
+   capas de apilamiento distintas), así que la sección "normal" quedaría
+   tapada por la pegada de arriba en vez de cubrirla. relative sin
+   desplazamiento se comporta igual en el layout pero pinta en el orden
+   correcto, encima de lo que viene antes. */
+body.marketing main > section.mk-seccion-larga,
+body.marketing main > article.mk-seccion-larga {
+  position: relative;
+  min-height: 0;
+  padding-top: var(--e-5) !important;
+}
+/* Si la hoja larga es la primera de la página (el héroe, o el propio
+   formulario de contacto cuando no hay héroe delante), necesita el
+   hueco completo del nav, no solo el respiro entre bandas. Más
+   específico que la regla de arriba (gana por :first-child) y más
+   específico que la propia regla del héroe (gana por más clases). */
+body.marketing main > section.mk-seccion-larga:first-child,
+body.marketing main > article.mk-seccion-larga:first-child {
+  padding-top: calc(104px + var(--e-3)) !important;
+}
+
+/* Bug real: una hoja .mk-seccion-larga no se queda pegada — sigue de
+   largo con el resto de la página, como una web normal. Eso significa
+   que cuando la SIGUIENTE hoja llega arriba del todo, la larga ya se
+   ha ido scrolleada del todo; no está ahí para que la asome el hueco
+   de su esquina redondeada. Lo que se ve por ese hueco es lo que haya
+   TODAVÍA pegado más atrás (la última hoja de verdad sticky, dos o
+   tres posiciones antes) — contenido de la sección equivocada
+   colándose por el borde curvo. Sin esquina redondeada no hay hueco
+   que pueda asomar nada: la hoja siguiente tapa con un borde recto y
+   opaco — sin el gesto de "cortina", pero tampoco con ninguna
+   filtración. Con selector de hermano adyacente esto se resuelve solo,
+   en cadena, sin tocar JS: si dos o tres hojas largas van seguidas,
+   cada una de las que las sigue pierde su redondeo igual. */
+body.marketing main > .mk-seccion-larga + section,
+body.marketing main > .mk-seccion-larga + article {
+  border-radius: 0;
+}
+/* El footer tiene su propio pulso de "esquina que se despliega" al
+   entrar en pantalla (.pie.reveal / .en-vista, y su versión sin
+   movimiento reducido — ver más abajo), las tres con más peso que un
+   selector normal. !important aquí es a propósito: por muy fijas que
+   estén esas reglas, ninguna debe ganarle a "no hay nada pegado detrás
+   que asomar" cuando la hoja de antes (preguntas frecuentes) va larga. */
+body.marketing main:has(> .mk-seccion-larga:last-child) + .pie {
+  border-radius: 0 !important;
 }
 
 /* ---------- Navegación flotante en píldora ---------- */
