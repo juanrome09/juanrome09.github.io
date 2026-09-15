@@ -47,7 +47,11 @@ body.marketing {
   --mk-niebla: #E8E7E7;     /* Gainsboro — filetes sutiles */
   --mk-negro: #000000;      /* Full Black — máximo contraste */
   --mk-azul: #1E6FA0;       /* Steel Blue — mismo acento estructural, sin un segundo azul suelto */
-  --mk-coral: #E95117;      /* Orange Red — único relleno fuerte (CTA), color de energía del manual */
+  --mk-coral: #E95117;      /* Orange Red — petición del cliente: se reserva para Asesoría (su
+                                color de marca) y ya no se usa como CTA aquí; en Marketing solo
+                                aparece en el botón "Ir a Asesoría", precisamente porque lleva
+                                a ese otro sitio. El resto de botones/hovers que antes eran este
+                                naranja pasan a --mk-rosa-oscuro. */
   --mk-rosa-oscuro: #88304E; /* Dark Pink M. (secundario del manual) — botones "Ver
                                  servicio" de las tarjetas de Servicios (inicio) Y
                                  extremo final del degradado de los títulos de sección
@@ -446,6 +450,55 @@ body.marketing .pie {
   gap: var(--e-3);
 }
 
+/* Petición del cliente: la píldora de navegación debe adaptarse al
+   fondo que tiene detrás, no ser siempre del mismo tono claro. Sobre
+   el héroe azul de Inicio (única página con fondo oscuro al arrancar)
+   ya funciona bien tal cual, arriba: píldora clara, logo azul, letras
+   oscuras — buen contraste contra el degradado oscuro del héroe, "como
+   en el inicio". Pero Nosotros, Servicios y Contacto arrancan con un
+   fondo claro (blanco/crema): la misma píldora clara se notaba poco
+   ahí, casi se fundía con la sección de debajo en vez de destacar.
+   Aquí se invierte para esas 3 páginas: píldora en Dark Blue, logo en
+   blanco y letras claras — mismo filtro brightness(0) invert(1) que
+   ya usa el logo del footer para no necesitar un archivo de imagen
+   aparte (el PNG ya tiene canal alfa transparente de verdad).
+   :has(.marketing-hero) detecta Inicio (la única página con esa
+   sección) sin necesitar una clase aparte en el <body> por página —
+   si el día de mañana Inicio deja de tener héroe, o alguna otra
+   página lo suma, esta regla se ajusta sola. */
+body.marketing:not(:has(.marketing-hero)) .nav-flotante {
+  background: var(--mk-azul-oscuro);
+  border-color: rgba(243, 238, 231, .15);
+}
+/* El logo del header es dos <img> superpuestas (azul y blanca), no un
+   filtro CSS sobre una sola: brightness(0) invert(1) aplana TODO
+   píxel opaco al mismo blanco, incluidas las zonas que en el propio
+   diseño ya son blancas (el arco y los dígitos "360", recortados como
+   hueco) — el resultado es una mancha sin ese hueco, no el logo real
+   (mismo bug, ya cazado una vez esta sesión, en el logo del footer).
+   logo-marketing-blanco.png ya resuelve esto bien (mismo archivo que
+   usa el footer), así que aquí se alterna cuál de las dos imágenes se
+   ve en vez de intentar blanquear la azul con un filtro. */
+.nav-flotante__logo .nav-flotante__logo-img--blanco { display: none; }
+body.marketing:not(:has(.marketing-hero)) .nav-flotante__logo .nav-flotante__logo-img--azul { display: none; }
+body.marketing:not(:has(.marketing-hero)) .nav-flotante__logo .nav-flotante__logo-img--blanco { display: block; }
+body.marketing:not(:has(.marketing-hero)) .nav-flotante__nav a {
+  color: var(--mk-texto-claro);
+}
+/* Nada de Dark Pink M. aquí (el acento que se usa en el resto del
+   nav sobre fondo claro): contra un fondo YA oscuro como este, un
+   rosa oscuro sobre azul oscuro es casi ilegible (contraste medido
+   ~1.5:1, muy por debajo del mínimo de accesibilidad). Un resalte
+   claro y translúcido detrás, manteniendo el texto blanco, da el
+   mismo gesto de "esto está activo/interactivo" con contraste de
+   sobra (>12:1). */
+body.marketing:not(:has(.marketing-hero)) .nav-flotante__nav a:hover,
+body.marketing:not(:has(.marketing-hero)) .nav-flotante__nav a:focus-visible,
+body.marketing:not(:has(.marketing-hero)) .nav-flotante__nav a[aria-current="page"] {
+  background: rgba(243, 238, 231, .16);
+  color: var(--mk-texto-claro);
+}
+
 .nav-flotante__logo svg,
 .nav-flotante__logo img { height: 52px; width: auto; display: block; }
 
@@ -465,23 +518,31 @@ body.marketing .pie {
   border-radius: var(--r-pildora);
   transition: background-color var(--dur-hover) ease, color var(--dur-hover) ease;
 }
-/* Mismo naranja que la página activa (aria-current, justo debajo): el
+/* Mismo tono que la página activa (aria-current, justo debajo): el
    hover ya no es solo un fondo gris apenas perceptible, es el color de
-   marca — el mismo gesto naranja de los botones del héroe. */
-.nav-flotante__nav a:hover, .nav-flotante__nav a:focus-visible { background: var(--mk-arena); color: var(--mk-coral); }
-.nav-flotante__nav a[aria-current="page"] { color: var(--mk-coral); }
+   marca. Antes era el naranja del manual — petición del cliente: el
+   naranja se reserva solo para Asesoría a partir de ahora, así que
+   aquí y en cualquier otro botón/hover de Marketing pasa a Dark Pink
+   M. (el mismo color de los botones "Ver servicio" y del degradado de
+   los títulos — no un tono nuevo, se reutiliza el que ya existía). */
+.nav-flotante__nav a:hover, .nav-flotante__nav a:focus-visible { background: var(--mk-arena); color: var(--mk-rosa-oscuro); }
+.nav-flotante__nav a[aria-current="page"] { color: var(--mk-rosa-oscuro); }
 
 /* El único enlace del header que lleva a otro mundo (Asesoría) se
-   distingue con su propio color — Medium Sea Green, que no se repite
-   en ningún otro botón de acción de Marketing — en vez de quedar como
-   un enlace de texto más entre la píldora de navegación. */
+   distingue con su propio color. Petición del cliente: ya no el verde
+   de antes — ahora el propio naranja de marca de Asesoría (el mismo
+   --naranja/#E95117 que usa su web), para que el botón funcione como
+   un adelanto visual de a dónde lleva, no un color suelto sin
+   relación con el destino. Es la única excepción al "nada de naranja
+   en Marketing": este botón ES la puerta a Asesoría, así que su color
+   es precisamente el del sitio al que se entra. */
 .nav-flotante__cambio-mundo {
   display: inline-flex;
   align-items: center;
   font-size: var(--menor);
   font-weight: 500;
   color: var(--mk-texto-claro);
-  background: var(--mk-verde-mar);
+  background: var(--mk-coral);
   text-decoration: none;
   padding: 10px 16px;
   border-radius: var(--r-pildora);
@@ -492,9 +553,10 @@ body.marketing .pie {
 /* El panel de menú a pantalla completa es compartido con Asesoría
    (base.css lo pinta en azul-hondo); en Marketing usa su propia tinta. */
 body.marketing .menu-movil__nav a { color: var(--mk-tinta); }
-/* Mismo verde del enlace "Ir a Asesoría" del header, aquí en su versión
-   del menú a pantalla completa: es el último enlace de la lista. */
-body.marketing .menu-movil__nav a:last-child { color: var(--mk-verde-mar); }
+/* Mismo naranja del enlace "Ir a Asesoría" del header, aquí en su
+   versión del menú a pantalla completa: es el último enlace de la
+   lista. */
+body.marketing .menu-movil__nav a:last-child { color: var(--mk-coral); }
 
 /* Menu Toggle Button — recoloreado: círculo en el azul del logo de Marketing, icono blanco */
 .nav-flotante__movil-abrir {
@@ -534,12 +596,21 @@ body.marketing .menu-movil__nav a:last-child { color: var(--mk-verde-mar); }
   flex-shrink: 0;
 }
 
+/* Petición del cliente: el naranja de marca (Orange Red) se reserva
+   solo para Asesoría de aquí en adelante — este botón (el CTA
+   principal, "Enviar consulta" en todas partes) pasa de naranja a
+   Dark Pink M., el mismo tono que ya llevaban los botones "Ver
+   servicio" y el degradado de los títulos. El nombre de la clase
+   sigue siendo "coral" por no reescribir el HTML de las 4 páginas
+   (cambiar cientos de referencias por un cambio de color habría sido
+   más riesgo que beneficio), pero ya no usa --mk-coral: el color de
+   verdad es --mk-rosa-oscuro. */
 .boton-mk-coral {
   display: inline-flex;
   align-items: center;
-  background: var(--mk-coral);
+  background: var(--mk-rosa-oscuro);
   color: var(--mk-texto-claro);
-  border: 1px solid var(--mk-coral);
+  border: 1px solid var(--mk-rosa-oscuro);
   border-radius: var(--r-pildora);
   padding: 11px 20px;
   font-family: var(--f-cuerpo);
@@ -547,9 +618,9 @@ body.marketing .menu-movil__nav a:last-child { color: var(--mk-verde-mar); }
   font-size: var(--menor);
   transition: background-color var(--dur-hover) ease;
 }
-/* Hover invierte a Dark Blue, no a un naranja más oscuro inventado: es la
-   misma pareja del degradado oficial "Dark Blue > Orange Red" del manual,
-   solo que aquí como dos estados en vez de un degradado. */
+/* Hover invierte a Dark Blue: mismo gesto de siempre (pasar a un azul
+   profundo), ya no emparejado con el naranja del manual sino con el
+   Dark Pink M. de arriba. */
 .boton-mk-coral:hover, .boton-mk-coral:focus-visible { background: var(--mk-azul-oscuro); border-color: var(--mk-azul-oscuro); }
 
 /* ---------- Héroe: titular a --display, imagen a sangre entrando por abajo ---------- */
@@ -753,10 +824,12 @@ body.marketing .marketing-hero__linea {
   animation-delay: .4s;
 }
 @keyframes mk-entrada-pildora { to { opacity: 1; transform: translateY(0); } }
-/* Naranja de marca al pasar el ratón, no el gris oscuro de antes: es
-   el mismo color del único CTA fuerte de la web, así que el gesto de
-   "esto es interactivo" es siempre el mismo naranja en todas partes. */
-.pildora-mk:hover, .pildora-mk:focus-visible { background: var(--mk-coral); color: var(--mk-texto-claro); }
+/* Dark Pink M. de marca al pasar el ratón, no el gris oscuro de
+   antes: es el mismo color del CTA principal de la web (ver
+   .boton-mk-coral), así que el gesto de "esto es interactivo" es
+   siempre el mismo en todas partes — antes era naranja, reservado
+   ahora para Asesoría. */
+.pildora-mk:hover, .pildora-mk:focus-visible { background: var(--mk-rosa-oscuro); color: var(--mk-texto-claro); }
 .pildora-mk--contorno {
   background: transparent;
   color: var(--mk-texto-claro);
@@ -833,7 +906,7 @@ body.marketing .marketing-hero__linea {
 .servicio-panel-mk:nth-child(3) .servicio-panel-mk__numero { color: var(--mk-verde-mar); }
 .servicio-panel-mk:nth-child(4) .servicio-panel-mk__numero { color: var(--mk-violeta); }
 .servicio-panel-mk:nth-child(5) .servicio-panel-mk__numero { color: var(--mk-dorado); }
-.servicio-panel-mk h3 { color: var(--mk-coral); margin-bottom: 8px; }
+.servicio-panel-mk h3 { color: var(--mk-rosa-oscuro); margin-bottom: 8px; }
 /* Petición del cliente: aquí, y solo aquí (las tarjetas de Servicios
    de inicio), el botón "Ver servicio" cambia el naranja de marca por
    Dark Pink M. — el resto de botones .boton-mk-coral de la web
@@ -892,7 +965,7 @@ body.marketing .marketing-hero__linea {
 .trabajo-mk__pieza:focus-within .placeholder-img,
 .trabajo-mk__pieza:hover .trabajo-mk__foto,
 .trabajo-mk__pieza:focus-within .trabajo-mk__foto {
-  border-color: var(--mk-coral);
+  border-color: var(--mk-rosa-oscuro);
 }
 
 /* En móvil, cinco tarjetas de servicio (o tres piezas de trabajo) en
@@ -1010,11 +1083,11 @@ body.marketing .marketing-hero__linea {
   font-size: var(--menor);
   transition: background-color var(--dur-hover) ease;
 }
-.pildora-mk-oscura:hover, .pildora-mk-oscura:focus-visible { background: var(--mk-coral); }
+.pildora-mk-oscura:hover, .pildora-mk-oscura:focus-visible { background: var(--mk-rosa-oscuro); }
 .pildora-mk-oscura__punto {
   width: 20px; height: 20px;
   border-radius: 50%;
-  background: var(--mk-coral);
+  background: var(--mk-rosa-oscuro);
   flex-shrink: 0;
 }
 
@@ -1027,7 +1100,7 @@ body.marketing .marketing-hero__linea {
   color: var(--mk-tinta);
 }
 .faq-mk .acordeon__icono::before,
-.faq-mk .acordeon__icono::after { background: var(--mk-coral); }
+.faq-mk .acordeon__icono::after { background: var(--mk-rosa-oscuro); }
 /* A los 30px de --titulo-3, una pregunta larga se parte en 2-3 líneas y
    las cinco preguntas juntas (aún cerradas, sin contar la respuesta) ya
    no caben en una pantalla de móvil. Un tamaño más discreto aquí — la
