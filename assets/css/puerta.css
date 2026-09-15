@@ -1,9 +1,3 @@
-/* ==========================================================================
-   A360 — puerta.css
-   La pantalla de selección (/). Sin scroll en escritorio: es una decisión,
-   no una home. Referencia estructural: Slush (sistema, no paleta).
-   ========================================================================== */
-
 body.puerta {
   min-height: 100vh;
   display: flex;
@@ -41,8 +35,6 @@ body.puerta > main {
 .puerta-cabecera__contacto a { color: var(--azul-hondo); }
 .puerta-cabecera__contacto a:hover,
 .puerta-cabecera__contacto a:focus-visible { color: var(--azul-acero); }
-
-/* ---------- Héroe: media luna a sangre detrás del wordmark ---------- */
 
 .puerta-hero {
   position: relative;
@@ -125,8 +117,6 @@ body.puerta > main {
   .puerta-hero__titulo, .puerta-hero__eslogan { transform: none; }
 }
 
-/* ---------- Las dos puertas ---------- */
-
 .puertas {
   position: relative;
   width: 100%;
@@ -191,7 +181,6 @@ body.puerta > main {
   font-size: var(--menor);
 }
 
-/* Formas del manual rotadas 8°, collage asimétrico — decorativas, aria-hidden */
 .puerta-forma {
   position: absolute;
   pointer-events: none;
@@ -224,8 +213,6 @@ body.puerta > main {
   .puerta-forma--trapecio, .puerta-forma--pildora { display: block; }
   .puerta-forma--circulo { width: 44px; height: 44px; inset-block-end: -34px; }
 }
-
-/* ---------- Pie mínimo ---------- */
 
 .puerta-pie {
   padding: var(--e-3) var(--canal-movil) var(--e-4);

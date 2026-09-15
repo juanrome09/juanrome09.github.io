@@ -1,11 +1,3 @@
-/* ==========================================================================
-   A360 — app.js
-   JS vanilla compartido por las 8 páginas interiores: cabecera compacta,
-   menú móvil, reveals, acordeón, año del footer y envío de formulario.
-   Sin jQuery, sin librerías de animación.
-   ========================================================================== */
-
-// Clave de acceso de Web3Forms (https://web3forms.com). Sustituir antes de publicar.
 const FORM_KEY = '{{FORM_KEY}}';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarNavAdaptativa();
 });
 
-/* ---------- Cabecera: se compacta al pasar 80px ---------- */
 function iniciarCabeceraCompacta() {
   const cabecera = document.querySelector('.cabecera');
   if (!cabecera) return;
@@ -33,7 +24,6 @@ function iniciarCabeceraCompacta() {
   window.addEventListener('scroll', actualizar, { passive: true });
 }
 
-/* ---------- Menú móvil: pantalla completa, foco atrapado, Esc cierra ---------- */
 function iniciarMenuMovil() {
   const abrir = document.querySelector('[data-menu-abrir]');
   const cerrar = document.querySelector('[data-menu-cerrar]');
@@ -90,7 +80,6 @@ function iniciarMenuMovil() {
   });
 }
 
-/* ---------- Reveals: opacity + translateY al 20% de visibilidad, una sola vez ---------- */
 function iniciarReveals() {
   const elementos = document.querySelectorAll('.reveal');
   if (!elementos.length) return;
@@ -118,9 +107,6 @@ function iniciarReveals() {
     observador.observe(el);
   });
 
-  // Red de seguridad: si por lo que sea el observer no llega a disparar
-  // para algo que ya está a la vista al cargar (pestaña en segundo plano,
-  // navegador raro, lo que sea), no se queda invisible para siempre.
   window.setTimeout(() => {
     elementos.forEach((el) => {
       if (el.classList.contains('en-vista')) return;
@@ -133,7 +119,6 @@ function iniciarReveals() {
   }, 1200);
 }
 
-/* ---------- Acordeón de preguntas frecuentes ---------- */
 function iniciarAcordeon() {
   const preguntas = document.querySelectorAll('.acordeon__pregunta');
   preguntas.forEach((boton) => {
@@ -149,14 +134,12 @@ function iniciarAcordeon() {
   });
 }
 
-/* ---------- Año del footer ---------- */
 function iniciarAnioFooter() {
   document.querySelectorAll('[data-anio]').forEach((el) => {
     el.textContent = new Date().getFullYear();
   });
 }
 
-/* ---------- Formulario de contacto: validación + envío a Web3Forms ---------- */
 function iniciarFormulario() {
   const formulario = document.querySelector('[data-formulario-contacto]');
   if (!formulario) return;
@@ -207,7 +190,6 @@ function iniciarFormulario() {
   formulario.addEventListener('submit', async (evento) => {
     evento.preventDefault();
 
-    // Honeypot: si el campo trampa tiene contenido, es un bot. Se ignora en silencio.
     const trampa = formulario.querySelector('[data-trampa]');
     if (trampa && trampa.value) return;
 
@@ -247,12 +229,6 @@ function iniciarFormulario() {
   });
 }
 
-/* ---------- Héroe de Marketing: el icono de fondo sigue al ratón ----------
-   Paralaje suave: el desplazamiento objetivo depende de dónde está el
-   ratón respecto al centro de la ventana (no de cuánto se ha movido),
-   así el icono siempre "mira" hacia el cursor en vez de poder irse a
-   la deriva. La rotación y el pulso de escala son aparte, puro CSS
-   (@keyframes mk-respirar-logo) — aquí solo se toca `translate`. */
 function iniciarHeroScrubMarketing() {
   const logo = document.querySelector('.marketing-hero__fondo-logo');
   const heroSeccion = document.querySelector('.marketing-hero');
@@ -280,14 +256,6 @@ function iniciarHeroScrubMarketing() {
     idFotograma = window.requestAnimationFrame(avanzar);
   };
 
-  // Bug real: esto arrancaba un requestAnimationFrame infinito al cargar
-  // la página y ya no paraba nunca — seguía calculando y escribiendo
-  // `translate` en cada fotograma aunque el héroe llevara rato fuera de
-  // la pantalla (scroll hasta el footer, por ejemplo), trabajo invisible
-  // de fondo para siempre que se notaba como una lentitud de fondo sin
-  // causa aparente en el resto de la página. Con IntersectionObserver
-  // el bucle (y el listener de mousemove, que dispara con mucha
-  // frecuencia) solo vive mientras el héroe está realmente en pantalla.
   const observador = new IntersectionObserver((entradas) => {
     const visible = entradas[0].isIntersecting;
     if (visible && idFotograma === null) {
@@ -302,7 +270,6 @@ function iniciarHeroScrubMarketing() {
   observador.observe(heroSeccion);
 }
 
-/* ---------- Héroe de Marketing: línea a máquina de escribir ---------- */
 function iniciarMaquinaEscribir() {
   const parrafo = document.querySelector('[data-texto-maquina]');
   if (!parrafo) return;
@@ -326,48 +293,11 @@ function iniciarMaquinaEscribir() {
       if (cursor) parrafo.appendChild(cursor);
       window.setTimeout(escribirSiguienteCaracter, VELOCIDAD_MS);
     }
-    // Al terminar, el cursor no se vuelve a añadir: queda el texto solo.
   };
 
   window.setTimeout(escribirSiguienteCaracter, RETRASO_INICIAL_MS);
 }
 
-/* ---------- Nav flotante de Marketing: color según lo que hay detrás ----------
-   Petición del cliente: la píldora debe verse clara (fondo casi
-   blanco, logo azul) sobre fondos oscuros — el héroe de Inicio y el
-   pie de página, que en las 4 páginas usa el mismo azul oscuro — y
-   oscura (píldora azul, logo blanco) sobre el resto de fondos claros.
-   Y tiene que pasar EN VIVO según se hace scroll, no fijo por página:
-   en Inicio se pasa del héroe a secciones claras y de vuelta a azul
-   oscuro en el pie; en las otras 3 páginas (sin héroe) pasa lo mismo
-   solo con el pie.
-   Bug real, encontrado probando esto: cada <section> de Inicio es
-   position:sticky con altura 100svh (ver más arriba en marketing.css)
-   para el efecto de "una pantalla tapa a la anterior" al hacer scroll.
-   Eso significa que el héroe NUNCA deja de estar ahí ni de ocupar toda
-   la pantalla en su propio rectángulo — solo queda por debajo, tapado
-   por la siguiente sección que también se pega a top:0. Comprobado con
-   getBoundingClientRect: el rectángulo del héroe sigue midiendo
-   top:0/alto:100svh aunque lleves varias pantallas de scroll, así que
-   mirar solo su geometría (IntersectionObserver normal, o a mano)
-   dice "oscuro" case siempre, incluso con Servicios ya tapándolo del
-   todo. Lo que hace falta no es "¿el héroe ocupa ese hueco?" sino
-   "¿qué se ve REALMENTE ahí?" — y eso es exactamente lo que responde
-   document.elementFromPoint: mira qué elemento está pintado encima de
-   verdad en un punto, sin que le afecte que algo por debajo siga
-   técnicamente stuck. Se muestrea justo debajo de la píldora (nunca
-   sobre ella, o el resultado sería siempre la propia píldora) y se
-   sube con closest() hasta encontrar la sección más cercana.
-   El pie NO se mira con este mismo muestreo puntual: no es sticky (su
-   geometría real sí es de fiar), pero por el mismo diseño de secciones
-   ancladas a pantalla completa, la última sección de cada página deja
-   un hueco fijo de sobra que nunca se puede scrollear del todo — así
-   que, aun en el scroll máximo del documento, el pie puede quedarse
-   ocupando solo la parte de abajo de la pantalla sin llegar nunca a
-   asomar justo detrás de la píldora. Mirarlo por geometría propia (qué
-   porción de la pantalla ocupa ya) en vez de por ese punto exacto
-   evita que la píldora se quede "oscura" para siempre en vez de
-   aclararse al llegar abajo. */
 function iniciarNavAdaptativa() {
   if (!document.body.classList.contains('marketing')) return;
   const nav = document.querySelector('.nav-flotante');
@@ -375,7 +305,7 @@ function iniciarNavAdaptativa() {
   const pie = document.querySelector('footer.pie');
   if (!nav || !envoltorio) return;
 
-  const PROPORCION_PIE_MINIMA = .2; // 20% de pantalla ya ocupada por el pie
+  const PROPORCION_PIE_MINIMA = .2;
 
   const aplicarEstado = (oscuroDetras) => {
     nav.classList.toggle('nav-flotante--oscura', !oscuroDetras);
@@ -416,7 +346,6 @@ function iniciarNavAdaptativa() {
   window.addEventListener('resize', actualizar, { passive: true });
 }
 
-/* ---------- Héroe de Marketing: copiar correo al portapapeles ---------- */
 function iniciarCopiarCorreo() {
   const boton = document.querySelector('[data-copiar-correo]');
   if (!boton || !navigator.clipboard) return;
@@ -433,8 +362,6 @@ function iniciarCopiarCorreo() {
         window.setTimeout(() => { etiqueta.textContent = textoOriginal; }, 1600);
       }
     } catch (error) {
-      // Sin permiso de portapapeles: el correo ya está visible en el
-      // propio botón para copiarlo a mano, no hace falta avisar de nada.
     }
   });
 }

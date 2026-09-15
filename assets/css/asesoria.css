@@ -1,11 +1,4 @@
-/* ==========================================================================
-   A360 — asesoria.css
-   Fusión Ditto + Ease Health, movimiento de Eterna Legal.
-   "Juvenil pero serio": geometría redondeada + aire (juvenil), escala
-   contenida + azul hondo como tinta + cero adorno (serio).
-   ========================================================================== */
-
-body.asesoria { padding-top: 88px; } /* alto de la cabecera fija */
+body.asesoria { padding-top: 88px; }
 
 .asesoria a.enlace-cuerpo {
   color: var(--azul-acero);
@@ -13,15 +6,11 @@ body.asesoria { padding-top: 88px; } /* alto de la cabecera fija */
   text-decoration: underline;
 }
 
-/* ---------- Cabecera clásica a sangre ---------- */
-
 .cabecera--asesoria { border-bottom: 1px solid transparent; }
 .cabecera--asesoria .cabecera__interior { padding-inline: var(--canal-movil); }
 @media (min-width: 1024px) {
   .cabecera--asesoria .cabecera__interior { padding-inline: var(--canal-escritorio); }
 }
-
-/* ---------- Héroe a dos columnas ---------- */
 
 .asesoria-hero {
   padding-block: var(--e-6);
@@ -63,8 +52,6 @@ body.asesoria { padding-top: 88px; } /* alto de la cabecera fija */
   z-index: 0;
 }
 
-/* ---------- Los cuatro servicios: filete superior, sin caja ---------- */
-
 .servicios-tira {
   display: grid;
   gap: var(--e-4);
@@ -82,8 +69,6 @@ body.asesoria { padding-top: 88px; } /* alto de la cabecera fija */
 .servicio-filete:nth-child(4) { border-top-color: var(--naranja); }
 .servicio-filete h3 { margin-bottom: 8px; }
 
-/* ---------- Cómo trabajamos: pasos numerados (secuencia real) ---------- */
-
 .pasos {
   display: grid;
   gap: var(--e-4);
@@ -100,8 +85,6 @@ body.asesoria { padding-top: 88px; } /* alto de la cabecera fija */
 }
 .paso h3 { margin-bottom: 8px; }
 
-/* ---------- Preguntas frecuentes: acordeón a dos columnas ---------- */
-
 .faq {
   display: grid;
   gap: 0 var(--e-5);
@@ -114,8 +97,6 @@ body.asesoria { padding-top: 88px; } /* alto de la cabecera fija */
   .faq .acordeon__respuesta__interior { padding-block-start: var(--e-3); }
 }
 
-/* ---------- Cierre a sangre ---------- */
-
 .cierre-asesoria {
   background: var(--azul-hondo);
   color: var(--blanco);
@@ -125,8 +106,6 @@ body.asesoria { padding-top: 88px; } /* alto de la cabecera fija */
 .cierre-asesoria h2 { color: var(--blanco); max-width: 24ch; margin-inline: auto; }
 .cierre-asesoria p { color: var(--blanco); margin-inline: auto; margin-top: var(--e-2); }
 .cierre-asesoria .boton { margin-top: var(--e-4); }
-
-/* ---------- Servicios (página): zig-zag ---------- */
 
 .servicio-bloque {
   display: grid;
@@ -158,8 +137,6 @@ body.asesoria { padding-top: 88px; } /* alto de la cabecera fija */
   background: var(--naranja);
 }
 
-/* ---------- Nosotros ---------- */
-
 .nosotros-retrato {
   border-radius: var(--r-panel);
   overflow: hidden;
@@ -170,8 +147,6 @@ body.asesoria { padding-top: 88px; } /* alto de la cabecera fija */
   overflow: hidden;
   border: 1px solid var(--gris-claro);
 }
-
-/* ---------- Contacto ---------- */
 
 .contacto-grid {
   display: grid;
@@ -194,9 +169,6 @@ body.asesoria { padding-top: 88px; } /* alto de la cabecera fija */
   display: inline-flex;
 }
 
-/* Mapa de ubicación — mismo criterio que en Marketing (ver
-   contacto-mapa en marketing.css): iframe de Google Maps sin clave de
-   API, gratuito, formato estándar para esto. */
 .contacto-mapa h2 { margin-bottom: var(--e-2); }
 .contacto-mapa__marco {
   border-radius: var(--r-panel);

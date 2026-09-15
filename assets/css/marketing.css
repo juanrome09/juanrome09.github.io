@@ -1,97 +1,40 @@
-/* ==========================================================================
-   A360 — marketing.css
-   La estructura, tipografía (Inter), radios y animación de firma siguen
-   siendo el sistema MindMarket del reskin original — pero la PALETA ya no
-   es la de aquella ficha de estilo prestada: es la paleta real del manual
-   de identidad corporativa de A360 Marketing (colores principales Orange
-   Red / Steel Blue / Dark Blue / Full Black, más dos secundarios de uso
-   explícitamente permitido como fondo y texto: Dark Slate Gray y Linen/
-   Gainsboro). Los nombres de las variables son historia del reskin y no se
-   han tocado (para no rehacer 50+ selectores), pero sus valores son ahora,
-   sin excepción, colores institucionales.
-   Deliberadamente fuera: los colores complementarios del manual (turquesa,
-   verde amarillo, verde mar, violeta, dorados) — el propio manual limita
-   su uso a "un color por composición" para piezas puntuales o eventos, no
-   para un sistema de interfaz completo; meterlos aquí habría sido lo
-   contrario de estratégico y coherente.
-   Asesoría y la puerta NO se tocan: siguen su propio manual de A360.
-   ========================================================================== */
-
 body.marketing {
-  /* ---- Paleta oficial A360 Marketing (manual de identidad corporativa) ---- */
-  --mk-acento: #1E6FA0;      /* Steel Blue — acento estructural (nav, degradados) */
-  --mk-azul-oscuro: #0B3A54; /* Dark Blue — pareja de degradado, hover del CTA, banda de cierre */
-  --mk-crema: #F3EEE7;      /* Linen — lienzo principal. Petición del cliente: nada de
-                                blanco puro como superficie en toda la web de Marketing,
-                                a excepción del texto (ver --mk-texto-claro). */
-  --mk-tinta: #404040;      /* Dark Slate Gray — el manual lo fija como "el color para los
-                                textos sobre blanco"; aquí hace ese papel en toda la web,
-                                titulares incluidos */
-  --mk-blanco: #F3EEE7;     /* Linen — tarjetas, nav. Mismo motivo que --mk-crema: cero
-                                blanco puro como superficie. */
-  --mk-texto-claro: #ffffff; /* Blanco puro — SOLO para texto legible sobre fondos
-                                 oscuros (héroe, cierre, footer). La única excepción real
-                                 a "nada de blanco": las letras siguen en blanco, todo lo
-                                 demás (fondos, bordes, iconos) pasa a Linen. */
-  --mk-arena: #E8E7E7;      /* Gainsboro — superficie secundaria/recesada. Petición del
-                                cliente: con --mk-crema y --mk-arena en el mismo Linen, la
-                                web se veía plana, un solo tono seguido entre sección y
-                                sección. Se separan de nuevo: Linen sigue de lienzo
-                                principal, Gainsboro pasa a ser el tono que se intercala —
-                                ver la alternancia por posición más abajo (body.marketing
-                                main > section:nth-child...). Mismo valor que --mk-niebla
-                                (coincidencia a propósito: Gainsboro hace de superficie Y
-                                de filete, nunca aparece un tercer gris suelto). */
-  --mk-gris: rgba(64, 64, 64, .6); /* Dark Slate Gray atenuado — texto muted; no es un
-                                       color nuevo, es el mismo con menos opacidad */
-  --mk-niebla: #E8E7E7;     /* Gainsboro — filetes sutiles */
-  --mk-negro: #000000;      /* Full Black — máximo contraste */
-  --mk-azul: #1E6FA0;       /* Steel Blue — mismo acento estructural, sin un segundo azul suelto */
-  --mk-coral: #E95117;      /* Orange Red — petición del cliente: se reserva para Asesoría (su
-                                color de marca) y ya no se usa como CTA aquí; en Marketing solo
-                                aparece en el botón "Ir a Asesoría", precisamente porque lleva
-                                a ese otro sitio. El resto de botones/hovers que antes eran este
-                                naranja pasan a --mk-rosa-oscuro. */
-  --mk-rosa-oscuro: #88304E; /* Dark Pink M. (secundario del manual) — botones "Ver
-                                 servicio" de las tarjetas de Servicios (inicio) Y
-                                 extremo final del degradado de los títulos de sección
-                                 (ver más abajo); mismo color en los dos sitios, a
-                                 petición del cliente. */
-  --mk-rosa-oscuro-rgb: 136, 48, 78; /* mismo Dark Pink M. de arriba, en R,G,B sueltos
-                                         para la "nube" translúcida del enlace activo
-                                         del nav sobre píldora clara (ver .nav-flotante__nav
-                                         a[aria-current] más abajo) — sin inventar un tono
-                                         nuevo, solo con alfa. */
-  --mk-degradado-hero: linear-gradient(135deg, #0B3A54, #1E6FA0); /* Dark Blue > Steel Blue: degradado oficial del manual */
-  --mk-degradado-pie: linear-gradient(135deg, #000000, #0B3A54);  /* Full Black > Dark Blue: degradado oficial del manual —
-                                                                       antes se cambió a plano por la costura entre el cierre y
-                                                                       el footer, pero ahora que son una sola caja (ver más abajo)
-                                                                       el degradado no tiene ningún borde donde no cuadrar. */
 
-  /* ---- Complementarios del manual: solo para los numerales de índice
-     (servicios, enfoque) y el botón de cambio de mundo del header — un
-     color fijo por posición, nunca mezclados sueltos en una misma pieza,
-     tal y como el propio manual pide para este grupo de colores. ---- */
-  --mk-turquesa: #51BCBD;    /* Medium Turquoise */
-  --mk-verde-lima: #8DC04A;  /* Yellow Green */
-  --mk-verde-mar: #1BA074;   /* Medium Sea Green */
-  --mk-violeta: #A13C8F;     /* Medium Violet Red */
-  --mk-dorado: #D1970F;      /* Golden Rod */
-  /* Mismos cinco colores en canales R,G,B sueltos — para poder usarlos
-     en rgba() con transparencia (tarjetas de servicios al hover) sin
-     inventar un tono nuevo: es el mismo color, solo con alfa. */
+  --mk-acento: #1E6FA0;
+  --mk-azul-oscuro: #0B3A54;
+  --mk-crema: #F3EEE7;
+  --mk-tinta: #404040;
+  --mk-blanco: #F3EEE7;
+  --mk-texto-claro: #ffffff;
+  --mk-arena: #E8E7E7;
+  --mk-gris: rgba(64, 64, 64, .6);
+  --mk-niebla: #E8E7E7;
+  --mk-negro: #000000;
+  --mk-azul: #1E6FA0;
+  --mk-coral: #E95117;
+  --mk-rosa-oscuro: #88304E;
+  --mk-rosa-oscuro-rgb: 136, 48, 78;
+  --mk-degradado-hero: linear-gradient(135deg, #0B3A54, #1E6FA0);
+  --mk-degradado-pie: linear-gradient(135deg, #000000, #0B3A54);
+
+
+  --mk-turquesa: #51BCBD;
+  --mk-verde-lima: #8DC04A;
+  --mk-verde-mar: #1BA074;
+  --mk-violeta: #A13C8F;
+  --mk-dorado: #D1970F;
+
   --mk-turquesa-rgb: 81, 188, 189;
   --mk-verde-lima-rgb: 141, 192, 74;
   --mk-verde-mar-rgb: 27, 160, 116;
   --mk-violeta-rgb: 161, 60, 143;
   --mk-dorado-rgb: 209, 151, 15;
 
-  /* ---- Tipografía: una sola familia (Inter) a escala extrema ---- */
+
   --f-titulos: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --f-cuerpo: 'Inter', ui-sans-serif, system-ui, sans-serif;
 
-  /* Escala MindMarket (body-sm 15 / body-lg 18 / subheading 20 / heading-sm 30 /
-     heading 53 / heading-lg 81 / display 140-144), llevada a clamp() fluido */
+
   --display: clamp(48px, 10vw, 140px);
   --titulo-1: clamp(36px, 7vw, 81px);
   --titulo-2: clamp(28px, 4.5vw, 53px);
@@ -100,45 +43,22 @@ body.marketing {
   --cuerpo: 17px;
   --menor: 15px;
 
-  /* ---- Radios: 50px es la firma; 63.75px en contenedores de imagen ---- */
+
   --r-panel: 50px;
   --r-medio: 10px;
   --mk-r-imagen: 63.75px;
 
   background: var(--mk-crema);
   color: var(--mk-tinta);
-  /* Ojo: el hueco para el nav NO va aquí (con padding-top en el body se
-     ve una franja crema detrás de la píldora, cortada contra el color
-     de la primera sección). Va como padding dentro de cada sección, así
-     su propio color de fondo llega hasta arriba del todo y la píldora
-     flota directamente sobre él, sin costura. */
+
 }
 
-/* Petición del cliente, probando desde su propio iPhone 16: "el
-   contenido se pierde en algunos sitios... si hay que dejar los
-   textos más pequeños se hace, pero debe quedar la misma info".
-   Comprobado con scrollHeight/clientHeight en las 4 páginas a 393×660
-   (el ancho real de un iPhone y el alto que deja Safari con las
-   barras visibles, el caso más ajustado): varias secciones con
-   rejillas de 2 columnas que en móvil pasan a 1 sola (Nuestros
-   valores, Cómo enfocamos, los bloques de Servicios...) no cabían
-   enteras en 100svh — hasta 250px de sobra, que había que recorrer
-   con scroll interno antes de poder pasar a la siguiente. Nada se
-   perdía de verdad (segu­ía estando, con scroll dentro de la propia
-   sección), pero por lo ajustado del margen se notaba mucho más que
-   en escritorio y el cliente lo interpretó como que faltaba.
-   clamp() ya reduce estos títulos con el ancho de pantalla, pero su
-   propio mínimo (36px para --titulo-1) seguía siendo grande para una
-   pantalla de 393px de ancho — se baja aparte, solo por debajo de
-   480px, sin tocar la escala fluida de tablets/escritorio. */
 @media (max-width: 480px) {
   body.marketing {
     --titulo-1: clamp(26px, 7.5vw, 81px);
     --titulo-3: 22px;
   }
 }
-
-/* ---- Tipografía base: Inter 400/500, nunca 700, tracking negativo en display ---- */
 
 body.marketing h1, body.marketing h2, body.marketing h3, body.marketing h4 {
   font-family: var(--f-titulos);
@@ -149,38 +69,6 @@ body.marketing h1 { font-size: var(--display); line-height: .95; letter-spacing:
 body.marketing h2 { font-size: var(--titulo-1); line-height: 1.15; letter-spacing: -.05em; }
 body.marketing h3 { font-size: var(--titulo-3); line-height: 1.2; letter-spacing: normal; }
 
-/* Títulos de sección en degradado — petición del cliente, primero en
-   los 4 titulares de inicio (Servicios, Así se ve un proyecto, Cómo
-   enfocamos, Preguntas frecuentes), luego extendido a los títulos
-   equivalentes del resto de pestañas (Misión, Visión, Nuestros
-   valores, Dónde trabajamos en Nosotros; los 5 títulos de servicio en
-   Servicios) y por último al h1 "Quiénes somos" de Nosotros (pedido
-   aparte del cliente: ese título también lo quiere en degradado, pese
-   a ser un h1 y no un h2 como el resto — de ahí el selector con las
-   dos etiquetas). Dark Blue > Dark Pink M. (el mismo rosa oscuro de
-   los botones "Ver servicio"), izquierda a derecha. color sólido
-   primero como red de seguridad: si el navegador no soporta recortar
-   el fondo al propio texto, se queda en Dark Blue liso en vez de
-   invisible (background-clip:text con color:transparent sin ese
-   soporte no pintaría nada). h1/h2 explícitos en el selector — hace
-   falta más peso que las reglas de h1/h2 de arriba (mismas 2 clases,
-   pero menos elementos, y por especificidad pierden el pulso si no se
-   igualan).
-
-   display:inline-block, y no el block por defecto de un h1/h2: el
-   degradado es el FONDO de toda la caja del título, recortado a las
-   letras — con un título a lo ancho de todo el contenedor (el caso
-   normal) y un título corto como "Misión" o "Visión", casi todo ese
-   fondo cae FUERA de las letras (a la derecha, en el espacio vacío del
-   resto de la caja), así que las letras solo enseñan una porción
-   mínima del degradado, casi un azul liso — bug real, no solo
-   estético, porque el cliente pidió el degradado precisamente para
-   que se note. Con inline-block la caja se ajusta al ancho real del
-   texto, así el degradado completo (azul a rosa) cae siempre detrás de
-   las letras, se note o no. En los títulos largos (los 4 de inicio,
-   "Quiénes somos") casi no cambia nada visualmente (ya ocupaban casi
-   todo el ancho de su línea); en los títulos cortos es lo que hace
-   visible el degradado. */
 body.marketing h1.mk-titulo-degradado, body.marketing h2.mk-titulo-degradado { color: var(--mk-azul-oscuro); display: inline-block; }
 @supports (background-clip: text) or (-webkit-background-clip: text) {
   body.marketing h1.mk-titulo-degradado, body.marketing h2.mk-titulo-degradado {
@@ -199,61 +87,9 @@ body.marketing a.enlace-cuerpo {
   border-bottom: 1px solid var(--mk-gris);
 }
 
-/* Cada banda es su propia "hoja" opaca — nunca transparente, porque con
-   el efecto de páginas apiladas de abajo eso dejaría ver la hoja anterior
-   asomando (el "texto encima de texto" que no queremos). El color en
-   sí (crema o arena) ya no lo deciden estas clases — ver la alternancia
-   automática por posición, un poco más abajo. */
-
-/* Nota: cada sección debe caber en una pantalla para que el efecto de
-   apilado se vea limpio (ver más abajo). Padding contenido a propósito,
-   no --e-8, para no forzar secciones mucho más altas que el viewport. */
 body.marketing .banda { padding-block: var(--e-6); }
 @media (min-width: 1024px) { body.marketing .banda { padding-block: var(--e-7); } }
 
-/* ---------- Animación de firma: páginas apiladas ----------
-   La animación real de MindMarket no son micro-efectos sueltos: cada
-   sección se queda fija (sticky) mientras la siguiente sube con las
-   esquinas superiores redondeadas y la cubre, como hojas apilándose.
-   CSS puro (sticky + border-radius), sin JS ni librería de animación —
-   y SIEMPRE sticky, sin excepciones ni condiciones: es lo que hace que
-   cada esquina redondeada cubra de verdad a la hoja de antes en vez de
-   asomar la que hay más atrás.
-
-   Segunda versión de este bloque. La primera (una sección más alta que
-   la pantalla pierde el sticky y pasa a scroll normal) rompía dos
-   cosas a la vez: la propia sección dejaba de quedarse fija (todo lo
-   contrario de "hojas apilándose"), y además la SIGUIENTE sección, al
-   llegar arriba del todo, no tenía ya nada fijo debajo que cubrir —
-   así que su esquina redondeada asomaba lo que hubiera pegado más
-   atrás, dos o tres hojas antes. Ese parche llevó a otro parche (quitar
-   el redondeo de la hoja siguiente) y así sucesivamente: arreglar un
-   síntoma sin tocar la causa.
-
-   La causa real es otra: una sección más alta que la pantalla, sticky
-   y sin overflow, no pierde su contenido porque deba dejar de ser
-   sticky — lo pierde porque nada dentro de ella puede hacer scroll
-   propio. La primera solución (ya retirada, ver más abajo) le daba
-   overflow-y:auto para poder recorrerla con scroll DENTRO de la
-   sección sin que se moviera de sitio.
-
-   Tercera versión de este bloque — overflow-y:auto retirado a
-   petición del cliente: ese scroll interno entraba en conflicto con
-   el scroll normal de la página (el gesto del ratón/dedo quedaba
-   "atrapado" recorriendo la sección en vez de pasar a la siguiente, y
-   además dejaba de funcionar bien al redimensionar la ventana). Se
-   acepta el trade-off: si el contenido de una sección no cabe entera
-   en 100svh, ahora se recorta en vez de poder recorrerse con scroll —
-   preferible, según el cliente, a un scroll interno que no funciona
-   bien. La altura sigue siendo FIJA (no solo mínima) porque de eso
-   depende el propio efecto de apilado de arriba: si la sección
-   creciera con su contenido, dejaría de tapar siempre exactamente a
-   la anterior.
-
-   svh, no dvh: en móvil, al llegar abajo del todo y deslizar apenas
-   hacia arriba, la barra de direcciones del navegador reaparece;
-   100dvh cambia con ella y 100svh no, así que ese gesto no dispara
-   ningún recálculo. */
 body.marketing main > section,
 body.marketing main > article {
   position: sticky;
@@ -263,68 +99,26 @@ body.marketing main > article {
   background: var(--mk-crema);
   display: flex;
   flex-direction: column;
-  /* Centrado, pero solo si cabe: si el contenido no entra entero,
-     ancla arriba (para que lo primero que se vea sea siempre el
-     principio) y lo que sobre por abajo se recorta, en vez de
-     centrarse partido por los dos extremos. */
+
   justify-content: safe center;
-  /* El hueco del nav va aquí, no en el body: así el color de fondo de
-     CADA sección llega hasta arriba del todo, detrás de la píldora
-     flotante, sin dejar asomar el crema del body como una costura.
-     !important porque .banda (más específica) no debe poder recortar
-     este margen — si lo hiciera, la píldora taparía el título. */
+
   padding-top: 104px !important;
 }
-/* Cada sección es un contenedor flex (para el centrado vertical de
-   arriba), así que su .contenedor es un ítem flex — y por defecto un
-   ítem flex no se encoge por debajo del tamaño de SU contenido más
-   ancho, aunque ese contenido tenga scroll propio (overflow-x:auto).
-   Sin esto, el carrusel horizontal de servicios/trabajo (más abajo)
-   estira el .contenedor entero al ancho de las cinco tarjetas juntas
-   en vez de quedarse en el ancho de la pantalla. */
+
 body.marketing main > section > .contenedor,
 body.marketing main > article > .contenedor {
   min-width: 0;
   width: 100%;
 }
 
-/* Petición del cliente: menos scroll "de sobra" antes de pasar a la
-   siguiente hoja. Servicios (5 tarjetas), Así se ve un proyecto y Cómo
-   enfocamos cada proyecto son las tres únicas secciones de Inicio con
-   contenido real más alto que 100svh en pantallas de portátil
-   normales — a diferencia de Dónde trabajamos o Contacto (ver
-   .mk-seccion-libre más abajo), aquí SÍ hay margen de sobra que
-   recortar sin tocar ni una palabra ni una tarjeta: el padding-bottom
-   de .banda (96px en escritorio) se pensó para secciones con una sola
-   línea de contenido, no para una rejilla de varias filas. Bajarlo no
-   cambia el aspecto de la sección (el contenido sigue centrado
-   arriba-abajo iguales que antes, solo con menos aire de sobra debajo
-   que nunca se llegaba a ver completo). */
 body.marketing .mk-seccion-compacta {
   padding-bottom: var(--e-4) !important;
 }
-/* Aún más ajustado en móvil — mismo motivo, pero ahí el margen de
-   sobra importa más: la pantalla entera es mucho más baja, así que
-   cada pixel de padding que no hace falta cuenta más. */
+
 @media (max-width: 480px) {
   body.marketing .mk-seccion-compacta { padding-bottom: var(--e-2) !important; }
 }
 
-/* Alternancia automática por posición: pedido del cliente porque con
-   --mk-crema y --mk-arena en el mismo tono la web se veía plana, una
-   sola hoja de color seguida de principio a fin. Se decide por
-   POSICIÓN dentro de <main> (nth-child), no por qué clase (.banda,
-   .banda-blanca...) lleve cada sección a mano en el HTML — así
-   funciona igual en las 4 páginas sin tener que ir clase por clase
-   cuadrando cuál toca en cada una, y si el día de mañana se añade o
-   se quita una sección, la que viene detrás se re-intercala sola. El
-   héroe queda fuera (su fondo es el degradado de marca, no entra en
-   este reparto). Con una sola sección en la página (contacto.html) la
-   cuenta empieza en 1 = impar = Linen, que es justo el tono que debe
-   predominar cuando no hay nada que alternar. !important porque
-   compite con .banda-blanca (ver más arriba, esa clase ya no decide
-   el color, pero de momento se queda en el HTML como referencia
-   semántica y con un !important propio del reskin original). */
 body.marketing main > section:not(.marketing-hero):nth-child(odd),
 body.marketing main > article:nth-child(odd) {
   background: var(--mk-crema) !important;
@@ -334,97 +128,27 @@ body.marketing main > article:nth-child(even) {
   background: var(--mk-arena) !important;
 }
 
-/* Bug real, no de contenido sino de estructura — por esto la última
-   hoja (la que va justo antes del footer) no se quedaba pegada NUNCA,
-   fuera cual fuera su contenido: position:sticky solo puede desplazar
-   un elemento dentro del espacio libre de SU PROPIO contenedor (aquí,
-   <main>). Cada sección se pega porque main sigue teniendo más alto
-   por delante (las hermanas que vienen después le dan ese margen) —
-   pero la ÚLTIMA sección es, ella misma, el final de <main>: no hay
-   ninguna hermana después que le dé sitio, así que el margen para
-   pegarse es CERO y sticky no tiene nada que hacer, por mucho
-   min-height o overflow que se le ponga a ella. El footer no cuenta:
-   vive fuera de <main> a propósito (es semánticamente correcto que el
-   pie de página no sea "contenido principal"), así que no le da sitio.
-
-   Arreglo sin tocar el HTML de las 4 páginas ni la semántica: un
-   ::after de puro relleno (sin contenido real, invisible, fuera del
-   árbol de accesibilidad) como si fuera un último hijo más de <main>,
-   con la misma altura de una hoja — le da a la sección real de antes
-   el mismo margen que ya tienen todas las demás. El footer, al venir
-   justo después de ese hueco, sigue cubriendo con su esquina redondeada
-   exactamente igual que antes. */
 body.marketing main::after {
   content: '';
   display: block;
   height: 100svh;
 }
 
-/* Petición del cliente: "en todas las secciones anteriores al footer
-   hay que dar más scroll de lo normal... la transición debe ser
-   limpia". Causa real: una sección con MÁS contenido del que cabe en
-   100svh sigue siendo sticky (eso está bien, es la base de todo el
-   sistema) pero, al tener su altura fija en 100svh (ver más arriba),
-   ese sobrante o se recorta o hay que dejarlo salir de la sección. Para
-   contenido que cabe de sobra (la inmensa mayoría de las secciones)
-   esto no se nota porque no hay sobrante. Pero una sección con una
-   imagen 16:9 a todo el ancho (Dónde trabajamos) o un formulario
-   completo de contacto (Contacto) es, de por sí, más alta que una
-   pantalla — no hay margen ni tipografía que recortar sin destrozar el
-   contenido, así que la única solución honesta es que ESA sección
-   concreta no finja ser "una pantalla exacta": que sea un bloque
-   normal, con su altura real, recorrido con el scroll normal de la
-   página — mismo criterio que ya se aplicó al footer.
-   .mk-seccion-libre marca esas excepciones a mano (Dónde trabajamos
-   en Nosotros; la única sección de Contacto) sin tocar el
-   comportamiento de apilado del resto.
-
-   position:relative, no static: el orden de pintado en CSS no sigue
-   el orden del DOM a secas — TODO elemento posicionado (relative,
-   sticky, absolute...) se pinta por encima de TODO elemento estático,
-   sea cual sea su orden en el HTML. Con static aquí, la sección
-   anterior (todavía sticky mientras dura su propio tramo de scroll)
-   se seguía pintando ENCIMA de esta aunque viniera antes en el
-   documento — se veían las dos mezcladas. relative no cambia nada de
-   la posición real (sigue siendo su sitio normal en el flujo, sin
-   desplazamiento), pero la mantiene en el mismo grupo de pintado que
-   el resto de hojas, así que gana ella cuando toca. */
 body.marketing main > section.mk-seccion-libre,
 body.marketing main > article.mk-seccion-libre {
   position: relative;
   height: auto;
   overflow-y: visible;
 }
-/* Si la ÚLTIMA hoja de <main> es una .mk-seccion-libre, el relleno de
-   más arriba (pensado para dar sitio a la última sección STICKY) ya
-   no hace falta — esa sección, al no ser sticky, no necesita margen
-   para engancharse, y dejarlo en 100svh solo metería un tramo de
-   scroll vacío entre ella y el footer (el mismo problema que se acaba
-   de arreglar, pero desplazado). :has() lo detecta automáticamente,
-   sin tocar esta regla página por página. */
+
 body.marketing main:has(> :last-child.mk-seccion-libre)::after {
   height: 0;
 }
 
-/* Toda hoja menos la primera sube con las esquinas redondeadas */
 body.marketing main > *:not(:first-child) {
   border-radius: 50px 50px 0 0;
 }
-/* Petición del cliente: el efecto sticky/apilado es solo para las
-   secciones de <main> — el footer NO debe tener ese efecto (antes sí
-   lo tenía, a petición suya en su momento, pero decidió que solo
-   quiere el efecto en el resto de secciones). Sin position:sticky, sin
-   altura fija ni overflow propio: el footer es un bloque normal, con
-   su altura natural según su contenido — se recorre con el scroll de
-   toda la página, como un footer corriente, sin scroll interno.
 
-   La entrada del footer sigue viéndose igual que antes (su esquina
-   redondeada tapando la sección anterior): ese efecto lo da el ::after
-   de relleno de la ÚLTIMA sección de <main> (más arriba), no algo
-   propio del footer — con ese relleno, la última sección se queda
-   pegada un tramo de scroll mientras el footer, ya en flujo normal,
-   entra deslizándose desde abajo y la cubre. Quitarle el sticky al
-   footer no toca esa parte. */
 body.marketing .pie {
   border-radius: 50px 50px 0 0;
 }
@@ -436,8 +160,6 @@ body.marketing .pie {
     overflow-y: visible;
   }
 }
-
-/* ---------- Navegación flotante en píldora ---------- */
 
 .nav-flotante-envoltorio {
   position: fixed;
@@ -461,60 +183,26 @@ body.marketing .pie {
   justify-content: space-between;
   gap: var(--e-3);
 }
-/* .nav-flotante--clara no tiene reglas propias a propósito: es el
-   mismo aspecto de arriba, y existe solo para que iniciarNavAdaptativa()
-   (app.js) pueda marcarlo explícitamente como estado "decidido por JS"
-   sin depender de la ausencia de --oscura. Ver esa función y el
-   comentario de --oscura más abajo. */
 
-/* Petición del cliente: la píldora de navegación debe adaptarse al
-   fondo que tiene DETRÁS EN CADA MOMENTO, no ser siempre del mismo
-   tono ni fija por página. Primera versión (ya superada): decidirlo
-   una sola vez por página con :has(.marketing-hero) — funcionaba al
-   cargar, pero en Inicio el héroe azul solo ocupa la primera pantalla;
-   en cuanto se hace scroll a una sección clara la píldora clara
-   quedaba fundida con el fondo, y al llegar al pie (azul oscuro en
-   las 4 páginas) tampoco volvía a aclararse. Ahora decide
-   iniciarNavAdaptativa() en app.js, en vivo, con IntersectionObserver:
-   mira qué hay justo detrás de la píldora (héroe o pie = oscuro,
-   cualquier otra sección = claro) y alterna estas dos clases. Se deja
-   .nav-flotante (sin modificador) con el aspecto claro por defecto —
-   así, si JS no llega a ejecutarse, el estado de partida sigue siendo
-   correcto en las 4 páginas tal y como se sirve el HTML. */
 body.marketing .nav-flotante.nav-flotante--oscura {
   background: var(--mk-azul-oscuro);
   border-color: rgba(243, 238, 231, .15);
 }
-/* El logo del header es dos <img> superpuestas (azul y blanca), no un
-   filtro CSS sobre una sola: brightness(0) invert(1) aplana TODO
-   píxel opaco al mismo blanco, incluidas las zonas que en el propio
-   diseño ya son blancas (el arco y los dígitos "360", recortados como
-   hueco) — el resultado es una mancha sin ese hueco, no el logo real
-   (mismo bug, ya cazado una vez esta sesión, en el logo del footer).
-   logo-marketing-blanco.png ya resuelve esto bien (mismo archivo que
-   usa el footer), así que aquí se alterna cuál de las dos imágenes se
-   ve en vez de intentar blanquear la azul con un filtro. */
+
 .nav-flotante__logo .nav-flotante__logo-img--blanco { display: none; }
 body.marketing .nav-flotante--oscura .nav-flotante__logo .nav-flotante__logo-img--azul { display: none; }
 body.marketing .nav-flotante--oscura .nav-flotante__logo .nav-flotante__logo-img--blanco { display: block; }
 body.marketing .nav-flotante--oscura .nav-flotante__nav a {
   color: var(--mk-texto-claro);
 }
-/* Nada de Dark Pink M. aquí (el acento que se usa en el resto del
-   nav sobre fondo claro): contra un fondo YA oscuro como este, un
-   rosa oscuro sobre azul oscuro es casi ilegible (contraste medido
-   ~1.5:1, muy por debajo del mínimo de accesibilidad). Un resalte
-   claro y translúcido detrás, manteniendo el texto blanco, da el
-   mismo gesto de "esto está activo/interactivo" con contraste de
-   sobra (>12:1). */
+
 body.marketing .nav-flotante--oscura .nav-flotante__nav a:hover,
 body.marketing .nav-flotante--oscura .nav-flotante__nav a:focus-visible,
 body.marketing .nav-flotante--oscura .nav-flotante__nav a[aria-current="page"] {
   background: rgba(243, 238, 231, .16);
   color: var(--mk-texto-claro);
 }
-/* Transición suave entre los dos estados — sin esto el cambio de
-   color al cruzar el héroe o el pie se nota como un parpadeo seco. */
+
 .nav-flotante,
 .nav-flotante__nav a { transition: background-color .25s ease, border-color .25s ease, color .25s ease; }
 
@@ -537,33 +225,14 @@ body.marketing .nav-flotante--oscura .nav-flotante__nav a[aria-current="page"] {
   border-radius: var(--r-pildora);
   transition: background-color var(--dur-hover) ease, color var(--dur-hover) ease;
 }
-/* Mismo tono que la página activa (aria-current, justo debajo): el
-   hover ya no es solo un fondo gris apenas perceptible, es el color de
-   marca. Antes era el naranja del manual — petición del cliente: el
-   naranja se reserva solo para Asesoría a partir de ahora, así que
-   aquí y en cualquier otro botón/hover de Marketing pasa a Dark Pink
-   M. (el mismo color de los botones "Ver servicio" y del degradado de
-   los títulos — no un tono nuevo, se reutiliza el que ya existía). */
+
 .nav-flotante__nav a:hover, .nav-flotante__nav a:focus-visible { background: var(--mk-arena); color: var(--mk-rosa-oscuro); }
-/* Petición del cliente: sobre la píldora clara, la página activa solo
-   se distinguía por el color de la letra — sin la "nube" (fondo)
-   que sí tiene el enlace activo sobre la píldora oscura (blanco
-   translúcido). Aquí, en vez de blanco, translúcido en el propio
-   Dark Pink M. — mismo gesto en las dos píldoras, cada una con el
-   tono que le toca. */
+
 .nav-flotante__nav a[aria-current="page"] {
   background: rgba(var(--mk-rosa-oscuro-rgb), .16);
   color: var(--mk-rosa-oscuro);
 }
 
-/* El único enlace del header que lleva a otro mundo (Asesoría) se
-   distingue con su propio color. Petición del cliente: ya no el verde
-   de antes — ahora el propio naranja de marca de Asesoría (el mismo
-   --naranja/#E95117 que usa su web), para que el botón funcione como
-   un adelanto visual de a dónde lleva, no un color suelto sin
-   relación con el destino. Es la única excepción al "nada de naranja
-   en Marketing": este botón ES la puerta a Asesoría, así que su color
-   es precisamente el del sitio al que se entra. */
 .nav-flotante__cambio-mundo {
   display: inline-flex;
   align-items: center;
@@ -578,15 +247,10 @@ body.marketing .nav-flotante--oscura .nav-flotante__nav a[aria-current="page"] {
 }
 .nav-flotante__cambio-mundo:hover, .nav-flotante__cambio-mundo:focus-visible { background: var(--mk-azul-oscuro); }
 
-/* El panel de menú a pantalla completa es compartido con Asesoría
-   (base.css lo pinta en azul-hondo); en Marketing usa su propia tinta. */
 body.marketing .menu-movil__nav a { color: var(--mk-tinta); }
-/* Mismo naranja del enlace "Ir a Asesoría" del header, aquí en su
-   versión del menú a pantalla completa: es el último enlace de la
-   lista. */
+
 body.marketing .menu-movil__nav a:last-child { color: var(--mk-coral); }
 
-/* Menu Toggle Button — recoloreado: círculo en el azul del logo de Marketing, icono blanco */
 .nav-flotante__movil-abrir {
   display: flex;
   width: 44px; height: 44px;
@@ -600,39 +264,6 @@ body.marketing .menu-movil__nav a:last-child { color: var(--mk-coral); }
 .nav-flotante__movil-abrir:focus-visible { background: var(--mk-tinta); }
 @media (min-width: 900px) { .nav-flotante__movil-abrir { display: none; } }
 
-/* ---------- Botones: ghost neutro (acción general) + coral (nivel servicio) ---------- */
-
-.boton-mk-ghost {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--e-2);
-  background: var(--mk-blanco);
-  color: var(--mk-tinta);
-  border: 1px solid var(--mk-niebla);
-  border-radius: var(--r-pildora);
-  padding: 11px 12px 11px 20px;
-  font-family: var(--f-cuerpo);
-  font-weight: 500;
-  font-size: var(--menor);
-  transition: background-color var(--dur-hover) ease;
-}
-.boton-mk-ghost:hover, .boton-mk-ghost:focus-visible { background: var(--mk-arena); }
-.boton-mk-ghost__punto {
-  width: 22px; height: 22px;
-  border-radius: 50%;
-  background: var(--mk-azul);
-  flex-shrink: 0;
-}
-
-/* Petición del cliente: el naranja de marca (Orange Red) se reserva
-   solo para Asesoría de aquí en adelante — este botón (el CTA
-   principal, "Enviar consulta" en todas partes) pasa de naranja a
-   Dark Pink M., el mismo tono que ya llevaban los botones "Ver
-   servicio" y el degradado de los títulos. El nombre de la clase
-   sigue siendo "coral" por no reescribir el HTML de las 4 páginas
-   (cambiar cientos de referencias por un cambio de color habría sido
-   más riesgo que beneficio), pero ya no usa --mk-coral: el color de
-   verdad es --mk-rosa-oscuro. */
 .boton-mk-coral {
   display: inline-flex;
   align-items: center;
@@ -646,49 +277,25 @@ body.marketing .menu-movil__nav a:last-child { color: var(--mk-coral); }
   font-size: var(--menor);
   transition: background-color var(--dur-hover) ease;
 }
-/* Hover invierte a Dark Blue: mismo gesto de siempre (pasar a un azul
-   profundo), ya no emparejado con el naranja del manual sino con el
-   Dark Pink M. de arriba. */
+
 .boton-mk-coral:hover, .boton-mk-coral:focus-visible { background: var(--mk-azul-oscuro); border-color: var(--mk-azul-oscuro); }
 
-/* ---------- Héroe: titular a --display, imagen a sangre entrando por abajo ---------- */
-
 body.marketing .marketing-hero {
-  /* Degradado oficial del manual (Dark Blue > Steel Blue), no un azul
-     plano: así la hoja siguiente (Linen) se nota de verdad al subir y
-     cubrirlo, y el héroe ya tiene su propio gesto de marca desde el
-     primer segundo. */
+
   background: var(--mk-degradado-hero);
   height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: safe center;
-  /* 104px de hueco del nav + un poco de aire extra antes del titular.
-     !important para ganarle al !important del hueco base del nav
-     (ver más arriba) y no quedarnos solo con 104px pelados aquí. */
+
   padding-block-start: calc(104px + var(--e-4)) !important;
   padding-inline: var(--canal-movil);
   padding-block-end: var(--e-4);
-  /* Contiene el fondo interactivo de abajo, que es position:absolute. */
+
   overflow: hidden;
 }
 @media (min-width: 1024px) { .marketing-hero { padding-inline: var(--canal-escritorio); } }
 
-/* Petición del cliente: textura de marca sobre el degradado del héroe
-   (no sobre el nav, donde se puso primero por error). z-index:-1
-   propio, no opacity/filter en .marketing-hero entera, para no
-   atenuar también el titular ni los botones — .marketing-hero ya es
-   position:sticky (todo main > section lo es, ver más arriba), y todo
-   position:sticky forma su propio contexto de apilamiento aunque no
-   tenga z-index propio, así que este z-index negativo ya queda
-   contenido dentro del héroe sin necesitar isolation:isolate aparte.
-   Se pinta detrás incluso del logo de fondo (.marketing-hero__fondo,
-   z-index:0) — la textura es la capa más de fondo de todas.
-   background-size:cover, no repeat: aquí sí toca cubrir la sección
-   entera (pedido explícito del cliente) y, a diferencia de la píldora
-   del nav, el héroe no es una tira desproporcionada — su proporción
-   real se parece bastante a la de la propia textura, así que cover no
-   la aplasta ni la difumina como pasaba allí. */
 .marketing-hero::before {
   content: '';
   position: absolute;
@@ -697,29 +304,16 @@ body.marketing .marketing-hero {
   background-image: url('/assets/img/fondo-marca-mk.png');
   background-size: cover;
   background-position: center;
-  /* A esta escala (toda la sección, no una píldora pequeña) el mismo
-     .6 que se probó en el nav se veía demasiado presente, compitiendo
-     con el titular y los botones. Bastante más baja aquí. */
+
   opacity: .15;
   pointer-events: none;
 }
 
-/* El fondo es position:absolute (capa de pintado "estática/posicionada
-   sin desplazamiento" temprana); el resto de hijos del héroe necesita
-   su propio position:relative para pintar por delante, si no el fondo
-   los tapa — mismo motivo que el bug de apilado de secciones que ya se
-   corrigió en otro sitio de esta hoja de estilos. */
 .marketing-hero > *:not(.marketing-hero__fondo) {
   position: relative;
   z-index: 1;
 }
 
-/* Fondo interactivo del héroe: el icono real de A360 (logo-a360-blanco,
-   el mismo archivo de marca que usa el resto del sitio) como marca de
-   agua, a modo de placeholder con carácter mientras no hay vídeo real
-   (regla del encargo: nunca vídeo o foto de stock). Quieto del todo en
-   reposo — solo se mueve si se mueve el ratón (iniciarHeroScrubMarketing
-   en app.js, vía la propiedad translate; nada de animación propia). */
 .marketing-hero__fondo {
   position: absolute;
   inset: 0;
@@ -727,22 +321,11 @@ body.marketing .marketing-hero {
   overflow: hidden;
 }
 .marketing-hero__fondo-logo {
-  /* El mínimo (420px) y el ritmo de crecimiento (58vw) son los de
-     siempre — no tocan ni móvil ni escritorios normales. Solo el tope
-     de arriba se ha ido afinando con pruebas reales en monitores 4K de
-     27": a 180% de escalado (~2133px de ancho de página, lo más
-     habitual en Windows para ese tamaño) esto da un logo de unos
-     1240px, que es el punto que ya se vio bien — ni de sobra ni corto. */
+
   --tamano-logo-fondo: clamp(420px, 58vw, 1400px);
   position: absolute;
   top: 50%;
-  /* Pegado al borde real de la pantalla (no a una caja de contenido
-     centrada) y desplazado hacia fuera exactamente 1/8 de su propio
-     ancho — así siempre asoma 7/8 del logo y se recorta 1/8 contra el
-     borde, como una pieza "desfasada", sea cual sea el ancho de la
-     ventana. Al ser una fracción de su propio tamaño (no un % de un
-     contenedor que crece con la pantalla), nunca se dispara ni se va
-     a la deriva en monitores muy anchos. */
+
   right: calc(var(--tamano-logo-fondo) / -8);
   width: var(--tamano-logo-fondo);
   aspect-ratio: 1;
@@ -750,11 +333,7 @@ body.marketing .marketing-hero {
   opacity: .14;
   translate: 0px 0px;
 }
-/* Pantallas grandes de verdad (a partir de aquí ya no son un portátil ni
-   un monitor de oficina normal): tamaño fijo de prueba, sin escalar con
-   el ancho, para ver claramente el punto de partida. No toca nada por
-   debajo de 2400px, así que portátiles y monitores normales no se ven
-   afectados. */
+
 @media (min-width: 2400px) {
   .marketing-hero__fondo-logo {
     --tamano-logo-fondo: 1600px;
@@ -762,25 +341,7 @@ body.marketing .marketing-hero {
     top: 45%;
   }
 }
-/* En móvil el truco de "pegado al borde derecho, desplazado 1/8 hacia
-   fuera" no queda centrado — a un ancho de pantalla estrecho, el mínimo
-   de 420px del logo ya es más ancho que la propia pantalla, así que el
-   hueco que deja a la izquierda y el trozo que recorta a la derecha no
-   miden lo mismo: el logo se ve corrido hacia un lado, no en el centro.
 
-   Aquí se centra de verdad, pero NO con margin negativo de la mitad de
-   --tamano-logo-fondo (esa fue la primera solución, y se quedaba corta):
-   img,svg,picture llevan un max-width:100% global (ver base.css), que en
-   una pantalla más estrecha que los 420px mínimos de la variable recorta
-   el ancho real por debajo de lo que --tamano-logo-fondo dice — el
-   margen negativo se calculaba sobre un tamaño que ya no es el real, y
-   el logo quedaba descentrado otra vez, solo que un poco menos. Con
-   translate(-50%,-50%) el desplazamiento es la mitad del tamaño REAL ya
-   renderizado (recorte de max-width incluido), así que centra de verdad
-   sea cual sea el ancho final. Convive sin problema con el `translate`
-   de iniciarHeroScrubMarketing en app.js (esa es la propiedad individual
-   `translate`, no la función `transform: translate()` — se combinan
-   sin pisarse). */
 @media (max-width: 768px) {
   .marketing-hero__fondo-logo {
     right: auto;
@@ -790,12 +351,6 @@ body.marketing .marketing-hero {
   }
 }
 
-/* Marca de agua decorativa para las secciones de apertura de las
-   páginas interiores (Servicios, Nosotros): son solo un h1 + una
-   línea, y quedaban como un vacío blanco sin nada que mirar antes de
-   que arrancara el contenido real. Mismo icono real de A360 que ya
-   lleva el héroe de portada, aquí fijo (sin seguir al ratón — aquí es
-   textura de fondo, no el protagonista) y más discreto. */
 .mk-marca-agua {
   position: absolute;
   inset: 0;
@@ -812,16 +367,12 @@ body.marketing .marketing-hero {
   margin-top: calc(clamp(280px, 40vw, 560px) / -2);
   opacity: .07;
 }
-/* Igual que en el héroe: el fondo pinta en una capa temprana, así que
-   sus hermanos necesitan su propio position:relative para no quedar
-   tapados. :has() localiza cualquier sección que lleve la marca de
-   agua, sin necesidad de una clase nueva por página. */
+
 body.marketing main > section:has(> .mk-marca-agua) > *:not(.mk-marca-agua) {
   position: relative;
   z-index: 1;
 }
 
-/* Fondo azul oscuro: el texto va en crema, no en tinta (si no, no se lee) */
 body.marketing .marketing-hero__titulo {
   font-family: var(--f-titulos);
   font-weight: 500;
@@ -873,65 +424,29 @@ body.marketing .marketing-hero__linea {
   font-size: var(--menor);
   white-space: nowrap;
   transition: background-color var(--dur-hover) ease, color var(--dur-hover) ease, border-color var(--dur-hover) ease;
-  /* Aparecen con una pequeña entrada, no de golpe con el resto del
-     héroe: igual que el resto del sitio, un solo momento orquestado,
-     no una animación por elemento. */
+
   opacity: 0;
   transform: translateY(8px);
   animation: mk-entrada-pildora .4s var(--curva-reveal) forwards;
   animation-delay: .4s;
 }
 @keyframes mk-entrada-pildora { to { opacity: 1; transform: translateY(0); } }
-/* Dark Pink M. de marca al pasar el ratón, no el gris oscuro de
-   antes: es el mismo color del CTA principal de la web (ver
-   .boton-mk-coral), así que el gesto de "esto es interactivo" es
-   siempre el mismo en todas partes — antes era naranja, reservado
-   ahora para Asesoría. */
+
 .pildora-mk:hover, .pildora-mk:focus-visible { background: var(--mk-rosa-oscuro); color: var(--mk-texto-claro); }
 .pildora-mk--contorno {
   background: transparent;
   color: var(--mk-texto-claro);
-  border-color: rgba(243, 238, 231, .5); /* Linen a media opacidad, no un color aparte */
+  border-color: rgba(243, 238, 231, .5);
 }
 .pildora-mk--contorno:hover, .pildora-mk--contorno:focus-visible { background: var(--mk-crema); color: var(--mk-tinta); border-color: var(--mk-crema); }
 
-/* ---------- Fondo decorativo genérico (Servicios, Cómo enfocamos, FAQ) ----------
-   Las tres secciones de Inicio con un diseño de fondo entregado por el
-   cliente ya montado como PNG comparten la misma mecánica, solo cambia
-   el PNG. inset:0 (no solo width:100% + aspect-ratio, como en la
-   primera versión) para que el fondo cubra SIEMPRE el 100% del alto
-   real de la sección, sea cual sea — la primera versión, pensada para
-   no recortar nunca la imagen, dejaba un bloque vacío al final de la
-   sección en vez de cubrirla entera cuando la sección era más alta que
-   la proporción propia de la imagen (justo lo que pasaba en "Cómo
-   enfocamos"). Petición del cliente: mejor recortar o estirar el
-   diseño con tal de que llene todo el hueco, así que object-fit:cover
-   en vez de mantener la proporción a toda costa. Absoluta dentro de la
-   propia sección, que ya es position:sticky (no hace falta forzarle un
-   position:relative aparte) — pointer-events:none para que no
-   interfiera con nada clicable delante.
-   position:relative + z-index en .contenedor es obligatorio, no
-   decorativo: un position:absolute se pinta SIEMPRE después (encima)
-   de sus hermanos position:static sea cual sea su orden en el HTML —
-   sin esto el fondo taparía el título y el resto del contenido en vez
-   de quedar detrás (el mismo motivo, ya documentado en otra sección de
-   esta hoja, del bug de la sección pegajosa que se colaba encima).
-   :has() detecta automáticamente cuál de las secciones lleva esta
-   decoración sin necesitar una clase de modificador aparte en cada
-   <section> del HTML. */
 .mk-fondo-decorativo {
   position: absolute;
   inset: 0;
   overflow: hidden;
   z-index: 0;
   pointer-events: none;
-  /* Petición del cliente: "transparencia" se refiere a lo que se le
-     resta al diseño original (100% opacidad), no a la opacidad final
-     directamente — un 10% de transparencia es opacity:.9 (casi entero,
-     apenas suavizado), no opacity:.1 (que lo deja casi invisible, como
-     pasó en los dos intentos anteriores: 20% de "transparencia" se
-     había puesto como opacity:.2 y luego opacity:.1, cuando debían ser
-     opacity:.8 y opacity:.9). */
+
   opacity: .9;
 }
 .mk-fondo-decorativo img {
@@ -945,8 +460,6 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   z-index: 1;
 }
 
-/* ---------- Los cinco servicios: tarjetas blancas de 50px sobre crema ---------- */
-
 .servicios-marketing {
   display: grid;
   gap: var(--e-4);
@@ -954,10 +467,7 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
 }
 @media (min-width: 640px) { .servicios-marketing { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1024px) { .servicios-marketing { grid-template-columns: repeat(3, 1fr); } }
-/* En pantallas anchas, las 5 tarjetas en una sola fila (en vez de
-   3+2) — menos alto total, menos scroll interno antes de pasar a la
-   siguiente hoja (petición del cliente), y de paso se aprovecha mejor
-   el ancho disponible en vez de dejarlo casi vacío en la segunda fila. */
+
 @media (min-width: 1200px) { .servicios-marketing { grid-template-columns: repeat(5, 1fr); gap: var(--e-3); } }
 
 .servicio-panel-mk {
@@ -967,27 +477,11 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   border: 1px solid transparent;
   position: relative;
   transition: background-color var(--dur-hover) ease, border-color var(--dur-hover) ease, transform var(--dur-hover) ease;
-  /* Petición del cliente: los cinco botones "Ver servicio" deben quedar
-     a la misma altura entre sí (la del nº3, el más largo — "Publicidad
-     digital — Meta Ads y Google Ads" — que es el que más empuja su
-     propio botón hacia abajo). Como .servicios-marketing ya reparte
-     estas tarjetas en fila (grid en escritorio, flex en el carrusel de
-     móvil, ver más abajo), y ambos por defecto estiran los ítems de una
-     misma fila a la misma altura (align-items: stretch), basta con que
-     cada tarjeta sea ella misma un contenedor flex en columna y el
-     botón se ancle abajo con margin-top:auto — la tarjeta más alta (la
-     del nº3) fija la altura de todas, y el resto de botones bajan solos
-     hasta esa misma línea sin tocar nada por página ni por breakpoint. */
+
   display: flex;
   flex-direction: column;
 }
-/* Cada tarjeta se tiñe al hover con su propio color de índice — el
-   mismo que su numeral, no un coral genérico igual en las cinco — con
-   transparencia (rgba, no un tono nuevo) para que el texto siga
-   leyéndose encima. :focus-within tiñe igual desde teclado o táctil,
-   pero SIN el zoom: el zoom (más abajo) solo entra con @media
-   (hover: hover), porque agrandar un 30% una tarjeta dentro del
-   carrusel de scroll horizontal de móvil, al tocarla, quedaría raro. */
+
 .servicio-panel-mk:nth-child(1):hover, .servicio-panel-mk:nth-child(1):focus-within {
   background: rgba(var(--mk-turquesa-rgb), .18);
   border-color: var(--mk-turquesa);
@@ -1018,26 +512,16 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   font-size: var(--menor);
   margin-bottom: var(--e-2);
 }
-/* Un color complementario del manual por posición — el mismo orden que
-   "Cómo enfocamos" más abajo — en vez de los cinco números en el mismo
-   gris apagado. Con solo 5 servicios no hace falta un selector :nth-
-   child(n+6): la lista siempre para en el quinto. */
+
 .servicio-panel-mk:nth-child(1) .servicio-panel-mk__numero { color: var(--mk-turquesa); }
 .servicio-panel-mk:nth-child(2) .servicio-panel-mk__numero { color: var(--mk-verde-lima); }
 .servicio-panel-mk:nth-child(3) .servicio-panel-mk__numero { color: var(--mk-verde-mar); }
 .servicio-panel-mk:nth-child(4) .servicio-panel-mk__numero { color: var(--mk-violeta); }
 .servicio-panel-mk:nth-child(5) .servicio-panel-mk__numero { color: var(--mk-dorado); }
 .servicio-panel-mk h3 { color: var(--mk-rosa-oscuro); margin-bottom: 8px; }
-/* Petición del cliente: aquí, y solo aquí (las tarjetas de Servicios
-   de inicio), el botón "Ver servicio" cambia el naranja de marca por
-   Dark Pink M. — el resto de botones .boton-mk-coral de la web
-   (Enviar consulta, etc.) siguen en naranja, sin tocar. */
+
 .servicio-panel-mk .boton-mk-coral {
-  /* margin-top:auto (no un valor fijo) es lo que de verdad ancla el
-     botón abajo del todo dentro de la tarjeta flex de arriba;
-     align-self:flex-start evita que además se estire a lo ancho de la
-     tarjeta entera (el comportamiento por defecto de un ítem flex en
-     una columna stretch) y quede como una barra en vez de una píldora. */
+
   margin-top: auto;
   align-self: flex-start;
   background: var(--mk-rosa-oscuro);
@@ -1049,8 +533,6 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   border-color: var(--mk-azul-oscuro);
 }
 
-/* ---------- Nuestro trabajo: escaparate visual de las piezas tipo ---------- */
-
 .trabajo-mk {
   display: grid;
   gap: var(--e-3);
@@ -1058,53 +540,21 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
 }
 @media (min-width: 768px) { .trabajo-mk { grid-template-columns: repeat(3, 1fr); } }
 .trabajo-mk__pieza {
-  /* Sin esto, un ítem de grid con aspect-ratio no se encoge por debajo
-     de su ancho de contenido: la columna con la pieza cuadrada (1:1)
-     queda más estrecha que las de 5:4 y esas se salen de su columna
-     en vez de repartirse en tres partes iguales — de ahí el pequeño
-     desbordamiento horizontal que había en escritorio (invisible,
-     absorbido por el overflow-x:hidden del body, pero real). */
+
   min-width: 0;
   position: relative;
-  /* isolation:isolate, no overflow:hidden: el resplandor de abajo debe
-     poder asomar más allá del propio recuadro (ese es justo el look de
-     referencia), pero necesita su propio contexto de apilamiento para
-     que el z-index negativo no se escape por detrás de la sección
-     entera en vez de quedarse solo detrás de esta pieza. */
+
   isolation: isolate;
 }
-/* Petición del cliente, con una web de referencia: cada recuadro debe
-   verse "un poco difuminado" — un resplandor de color suave asomando
-   detrás y alrededor de la imagen, no la imagen en sí borrosa (eso sí
-   perdería la foto). radial-gradient, no filter:blur(): mismo motivo
-   que el de "Nuestros valores" más abajo en esta hoja — un blur() no
-   se disuelve del todo si la forma es comparable en tamaño al espacio
-   que tiene para desvanecerse; el gradiente da un borde perfectamente
-   suave sin ese límite. Un color distinto por pieza (no el mismo
-   coral/rosa repetido) para que las tres no se vean como una sola
-   mancha genérica. */
+
 .trabajo-mk__pieza::before {
   content: '';
   position: absolute;
-  /* Vaivén de intensidad a petición del cliente — de -20% a -32%
-     ("más notorio"), a -26% ("ya es mucho"), a -26% de nuevo pero más
-     tenue ("se ven los bordes"), y ahora "muy bajo": punto medio entre
-     el segundo cambio (-32%) y el último (-26%). */
+
   inset: -29%;
   z-index: -1;
 }
-/* Bug real, el de "se ven los bordes de la caja": por defecto
-   radial-gradient dimensiona la elipse a farthest-corner, así que en
-   una caja rectangular (no cuadrada) el color todavía no ha llegado a
-   transparent del todo justo en el lado más corto — se nota como un
-   corte recto ahí, no como un resplandor difuminado. closest-side
-   dimensiona la elipse para que quepa entera dentro de la propia caja
-   (toca el lado más cercano, no la esquina más lejana), así que con
-   "transparent" bastante antes del 100% se apaga del todo sin llegar
-   nunca al borde — ya no hay ningún filo que se pueda ver, sea cual
-   sea la intensidad (ese arreglo no se toca, solo el alfa y el punto
-   de fuga). Alfa y "transparent" también a medio camino entre el
-   segundo cambio (.8/.75, 78%) y el último (.4/.35, 85%). */
+
 .trabajo-mk__pieza:nth-child(1)::before {
   background: radial-gradient(ellipse closest-side, rgba(var(--mk-turquesa-rgb), .6), transparent 81%);
 }
@@ -1120,12 +570,7 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   border-color: var(--mk-gris);
   transition: border-color var(--dur-hover) ease;
 }
-/* Cuando una pieza ya tiene material real en vez de placeholder: mismo
-   radio y mismo borde con hover coral, pero sin el borde punteado ni
-   el texto centrado (eso es solo del estado "pendiente"). object-fit
-   cover + center porque la foto (720×1280, un story vertical) no es
-   cuadrada — se recorta por igual arriba y abajo para llenar el hueco
-   1:1 sin deformarse, centrada en el contenido real de la pieza. */
+
 .trabajo-mk__foto {
   display: block;
   width: 100%;
@@ -1143,15 +588,6 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   border-color: var(--mk-rosa-oscuro);
 }
 
-/* En móvil, cinco tarjetas de servicio (o tres piezas de trabajo) en
-   columna nunca caben en una pantalla — por mucho que se apriete el
-   espaciado, es más contenido del que entra en 100svh. La sección ya
-   puede hacer scroll propio si hace falta (ver la regla general de
-   arriba), pero un carrusel se lee mejor aquí que una lista larga con
-   scroll interno: igual que MindMarket resuelve sus propios
-   escaparates, carrusel horizontal con scroll-snap, una tarjeta por
-   pantalla y el borde de la siguiente asomando para invitar a deslizar.
-   Así la sección entera mide una tarjeta de alto, no cinco. */
 @media (max-width: 767px) {
   .servicios-marketing,
   .trabajo-mk {
@@ -1177,14 +613,6 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   }
 }
 
-/* ---------- Bloque de enfoque / proceso ---------- */
-
-/* Cuadrícula de 2×2, no las 4 en fila de antes — referencia del
-   cliente. Con el orden normal del HTML (01, 02, 03, 04 seguidos) un
-   grid de 2 columnas ya reparte solo 01-02 en la fila de arriba y
-   03-04 en la de abajo (así lo pidió, en vez del orden por columnas
-   de la propia referencia, donde 02 iba debajo de 01) — no hace falta
-   reordenar nada, es el flujo normal de un grid de 2 columnas. */
 .enfoque-mk {
   display: grid;
   gap: var(--e-4);
@@ -1193,26 +621,11 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
 @media (min-width: 768px) {
   .enfoque-mk { grid-template-columns: repeat(2, 1fr); gap: var(--e-6) var(--e-5); }
 }
-/* Móvil: los 4 items pasan de 2×2 a una sola columna apilada — el
-   doble de filas que en escritorio, así que cada gap y cada margen
-   cuentan el doble. margin-top con !important porque en el HTML viene
-   como estilo en línea (mismo valor en escritorio y en móvil hasta
-   ahora); el resto son valores que solo existían para la versión de
-   escritorio, sin una alternativa más ajustada para pantallas
-   estrechas. */
+
 @media (max-width: 480px) {
-  /* Un poco más ajustado que antes: al quitar el scroll interno de las
-     secciones (petición del cliente, ver la regla general de arriba),
-     esta sección concreta —"Cómo enfocamos", la única de Inicio con 4
-     ítems apilados en una sola columna en móvil— se quedaba unos 40px
-     más alta que el hueco disponible, así que ese sobrante se recortaba
-     en vez de dejarse ver. Apretando gap y márgenes ya no hace falta
-     recortar nada. */
+
   .enfoque-mk { gap: 4px; margin-top: 4px !important; }
-  /* Tamaño propio en móvil, no --titulo-1 (esa variable la comparten
-     los títulos de verdad de cada página — bajarla más para que el
-     numeral decorativo quepa mejor encogería también esos títulos,
-     que ya están en su tamaño mínimo legible). */
+
   .enfoque-mk__item__numero { font-size: 20px; margin-bottom: 2px; }
   .enfoque-mk__item h3 { margin-bottom: 2px; }
 }
@@ -1224,22 +637,13 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   line-height: 1;
   margin-bottom: var(--e-2);
 }
-/* Mismo orden de color que las tarjetas de "Servicios": el paso 01
-   siempre es turquesa, el 02 siempre verde lima, etc. — un numeral en
-   este sitio siempre significa el mismo color, no una elección suelta
-   por sección. */
+
 .enfoque-mk__item:nth-child(1) .enfoque-mk__item__numero { color: var(--mk-turquesa); }
 .enfoque-mk__item:nth-child(2) .enfoque-mk__item__numero { color: var(--mk-verde-lima); }
 .enfoque-mk__item:nth-child(3) .enfoque-mk__item__numero { color: var(--mk-verde-mar); }
 .enfoque-mk__item:nth-child(4) .enfoque-mk__item__numero { color: var(--mk-violeta); }
 .enfoque-mk__item h3 { color: var(--mk-tinta); font-size: var(--titulo-3); margin-bottom: 6px; }
 
-/* ---------- Preguntas frecuentes: acordeón, una columna editorial ---------- */
-
-/* Antes era un título y una lista debajo, sin más — mucho aire vacío a
-   los lados en pantallas anchas. Dos columnas: a la izquierda el
-   titular, una línea de contexto y una salida directa para quien no
-   encuentre su pregunta; a la derecha el acordeón. */
 .faq-mk-grid {
   display: grid;
   gap: var(--e-5);
@@ -1281,13 +685,6 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   font-size: var(--titulo-3);
   color: var(--mk-tinta);
 }
-.faq-mk .acordeon__icono::before,
-.faq-mk .acordeon__icono::after { background: var(--mk-rosa-oscuro); }
-/* A los 30px de --titulo-3, una pregunta larga se parte en 2-3 líneas y
-   las cinco preguntas juntas (aún cerradas, sin contar la respuesta) ya
-   no caben en una pantalla de móvil. Un tamaño más discreto aquí — la
-   pregunta no necesita ser un titular — es lo que le devuelve la
-   animación de apilado a esta sección. */
 @media (max-width: 767px) {
   .faq-mk .acordeon__pregunta { font-size: 19px; line-height: 1.3; }
 }
@@ -1298,34 +695,11 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   max-width: 62ch;
 }
 
-/* ---------- Cierre "Enviar consulta": ya no es su propia sección ----------
-   Antes era un <section class="cierre-marketing"> aparte, hermano del
-   <footer> — dos cajas independientes que, por bien que se les hiciera
-   coincidir el color (primero un degradado, luego un plano idéntico
-   con un solape a medida para tapar la costura), seguían siendo dos
-   piezas: el navegador las pinta, las hace layout y las anima cada una
-   por su cuenta, y cualquier intento de "que parezcan una" era una
-   aproximación con parches. La solución de verdad es que SEAN una: este
-   bloque ahora vive dentro del propio <footer class="pie">, como su
-   primer contenido, sin sección ni fondo ni posicionamiento propios —
-   hereda el fondo Dark Blue, el borde redondeado y el reveal del
-   footer directamente. Cero costura posible porque ya no hay dos cajas,
-   solo una. De regalo, desaparece también el viejo problema de
-   especificidad con "body.marketing main > section" (ya no es hijo de
-   <main>, esa regla ni le toca) y el solape de -50px que hacía falta
-   para que la esquina redondeada del footer no asomara el blanco de la
-   página detrás (ya no hay "detrás": todo es la misma caja). */
 body.marketing .cierre-marketing__contenido {
   text-align: center;
   padding-block: var(--e-8);
 }
-/* En una sola línea siempre, a propósito: el max-width:24ch de antes
-   cortaba esta frase de 38 caracteres a la mitad ("¿Tu marca todavía
-   pasa" / "desapercibida?"). Sin ese límite de ancho y con nowrap no
-   hay salto posible; el tamaño baja mucho más que el resto de
-   titulares (hasta 12px en el móvil más estrecho) para que quepa
-   entera igual, tal como se pidió — no es un titular grande, es la
-   frase de contexto antes del cartel de verdad. */
+
 body.marketing .cierre-marketing__previa {
   font-family: var(--f-titulos);
   font-weight: 500;
@@ -1333,27 +707,13 @@ body.marketing .cierre-marketing__previa {
   line-height: 1.3;
   color: var(--mk-texto-claro);
   white-space: nowrap;
-  /* Bug real: no quedaba centrada pese al text-align:center del
-     contenedor padre — base.css tiene una regla global "p { text-align:
-     left; max-width: var(--medida-max); }" para el cuerpo de texto
-     normal del sitio, y al ser este párrafo un <p>, esa regla lo toca
-     DIRECTAMENTE (no por herencia). Un valor puesto directo en el
-     propio elemento gana siempre a uno heredado del padre, sin
-     importar cuál tenga más especificidad — por eso ganaba el "left"
-     del selector suelto "p" al "center" heredado. Se pisa aquí mismo,
-     explícito, con más especificidad que el "p" a secas. */
+
   text-align: center;
   max-width: none;
   margin-inline: auto;
   margin-bottom: var(--e-3);
 }
-/* text-align:center explícito en las tres — mismo motivo que el
-   comentario de .cierre-marketing__previa un poco más arriba: al ser
-   <p>, la regla global "p { text-align:left }" de base.css les toca
-   directo y le gana a la herencia del padre. Sin esto, con línea
-   partida en dos (el cartel, cuando no cabe en una línea) se vería
-   la segunda línea pegada a la izquierda en vez de centrada bajo la
-   primera. */
+
 body.marketing .cierre-marketing__cartel {
   font-family: var(--f-cartel);
   font-weight: 400;
@@ -1377,29 +737,8 @@ body.marketing .cierre-marketing__linea {
 }
 .cierre-marketing__contenido .boton-mk-coral { margin-top: var(--e-4); }
 
-/* ---------- Servicios (página): tarjetas blancas alternando con arena ---------- */
-
-/* El héroe seguía viéndose simple con solo los chips (petición del
-   cliente: "agrega algo más, sigue esa misma línea") — se añade un
-   grupo de cinco insignias con los mismos iconos y colores de los
-   cinco servicios, dispersas como un colage flotante en la zona
-   derecha (donde antes solo estaba el logo de agua tenue), cada una
-   con un giro y tamaño ligeramente distinto para que no se lea como
-   una rejilla ordenada sino como algo puesto a mano. Puramente
-   decorativo (aria-hidden, no son enlaces — para eso ya están los
-   chips de abajo) y con position:absolute, así que no ocupa espacio
-   ni puede desbordar la sección. En móvil se oculta entero: no hay
-   ancho de sobra a la derecha del texto para que quepa sin
-   amontonarse encima. */
 .mk-servicios-hero-iconos {
-  /* !important: hay una regla más específica más arriba
-     ("section:has(> .mk-marca-agua) > *:not(.mk-marca-agua)") que le
-     pondría position:relative a CUALQUIER hermano de la marca de agua
-     — sin el !important, este contenedor perdería su position:absolute
-     y se quedaría con alto 0 (nada dentro le da altura en flujo
-     normal), y los porcentajes top:% de sus iconos (ver más abajo)
-     calcularían contra ese alto 0: todos los iconos se apilarían
-     arriba del todo en vez de repartirse por la sección. */
+
   position: absolute !important;
   inset: 0 !important;
   z-index: 0;
@@ -1429,9 +768,7 @@ body.marketing .cierre-marketing__linea {
   transform: rotate(-8deg);
 }
 .mk-servicios-hero-iconos__pieza:nth-child(2) {
-  /* top:15%, no menos: por debajo queda tapado por la píldora de
-     navegación flotante (fixed, siempre encima) — comprobado que a
-     4% quedaba oculto detrás sin que se notara visualmente el motivo. */
+
   --mk-servicio-acento: var(--mk-verde-lima); --mk-servicio-acento-rgb: var(--mk-verde-lima-rgb);
   top: 15%; right: 6%;
   width: 56px; height: 56px;
@@ -1464,12 +801,6 @@ body.marketing .cierre-marketing__linea {
   .mk-servicios-hero-iconos { display: none; }
 }
 
-/* Chips de acceso directo en el propio héroe — antes era solo el h1 y
-   una línea de texto, plano. Un chip por servicio (mismo color de
-   acento y mismo orden que el propio bloque al que enlaza) para que
-   ya desde arriba se vea que hay cinco servicios distintos, no una
-   sola pestaña de texto — y de paso deja saltar directo a cualquiera
-   sin desplazarse por los cuatro anteriores. */
 .mk-servicios-chips {
   display: flex;
   flex-wrap: wrap;
@@ -1513,39 +844,20 @@ body.marketing .cierre-marketing__linea {
   padding-block: var(--e-6);
 }
 @media (min-width: 1024px) { .servicio-bloque-mk { padding-block: var(--e-7); } }
-/* Cada bloque es su propia "hoja" opaca — nunca transparente, o se
-   vería el bloque anterior por debajo durante la subida. El color en
-   sí (crema/arena alternando) ya no se decide aquí: lo pone la
-   alternancia general por posición (body.marketing main > article,
-   más arriba), que cubre estos mismos artículos sin necesitar una
-   regla aparte. */
+
 .servicio-bloque-mk__interior {
   display: grid;
   gap: var(--e-4);
   align-items: start;
 }
 @media (min-width: 900px) { .servicio-bloque-mk__interior { grid-template-columns: .5fr 1fr; gap: var(--e-6); } }
-/* Móvil: bug real reportado por el cliente desde su iPhone — hasta
-   109px de sobra en el bloque de "Publicidad digital..." (el título
-   más largo de los cinco, más líneas al envolver). El propio título
-   ya se achica con --titulo-1 en móvil (ver la regla general más
-   arriba); aquí se recorta además el aire de sobra que no aporta
-   nada a la lectura: el padding-bottom del bloque (64px, pensado para
-   una sola columna de texto corto, no para icono+número+título+lista+
-   botón apilados) y los espacios entre esas piezas. */
+
 @media (max-width: 480px) {
   .servicio-bloque-mk { padding-bottom: var(--e-3); }
   .servicio-bloque-mk__interior { gap: var(--e-3); }
   .servicio-bloque-mk__lista { gap: 6px; margin-top: var(--e-2); }
 }
-/* Petición del cliente: "mejorar visualmente" también esta pestaña —
-   antes cada servicio era solo un número grande y texto, los cinco
-   iguales salvo el color del numeral. Se añade una variable de acento
-   por posición (--mk-servicio-acento), mismo orden y mismos cinco
-   colores que ya usaban los numerales aquí y las tarjetas de
-   Servicios/Cómo enfocamos en Inicio — no una paleta nueva, solo se
-   reutiliza en más sitios dentro del mismo bloque: el icono, la marca
-   de check de la lista, el botón "Consultar" y la mancha de fondo. */
+
 .servicio-bloque-mk:nth-of-type(1) { --mk-servicio-acento: var(--mk-turquesa); --mk-servicio-acento-rgb: var(--mk-turquesa-rgb); }
 .servicio-bloque-mk:nth-of-type(2) { --mk-servicio-acento: var(--mk-verde-lima); --mk-servicio-acento-rgb: var(--mk-verde-lima-rgb); }
 .servicio-bloque-mk:nth-of-type(3) { --mk-servicio-acento: var(--mk-verde-mar); --mk-servicio-acento-rgb: var(--mk-verde-mar-rgb); }
@@ -1557,28 +869,13 @@ body.marketing .cierre-marketing__linea {
   font-size: var(--titulo-1);
   color: var(--mk-servicio-acento);
 }
-/* Insignia circular con el icono propio de cada servicio, encima del
-   numeral — mismo gesto "insignia de color" que ya usan las tarjetas
-   de Nuestros valores, para que las tres páginas compartan un mismo
-   lenguaje visual sin ser el mismo diseño calcado. */
+
 .servicio-bloque-mk__marca {
   display: flex;
   flex-direction: column;
   gap: var(--e-2);
 }
-/* Bug real de overflow, no solo estética: por debajo de 900px la
-   rejilla .servicio-bloque-mk__interior pasa a una sola columna (ver
-   la media query de más abajo), así que el icono y el número dejan de
-   ir al lado del texto — pasan a ir ENCIMA. En columna (como en
-   escritorio) eso suma icono + separación + número como altura
-   extra ANTES de una fila de contenido que ya de por sí llena la
-   pantalla; en escritorio no pasaba nada porque esa columna nunca era
-   la más alta de las dos, pero en móvil sí lo era, y de sobra: se
-   quedaba corto por unos 78px, con scroll interno de más antes de
-   pasar al siguiente servicio — justo lo que se acaba de arreglar en
-   el resto de la web. Con el icono al lado del número (fila, no
-   columna) la altura de este bloque es como mucho la del propio
-   icono, la misma que ya tenía solo con el número. */
+
 @media (max-width: 899px) {
   .servicio-bloque-mk__marca { flex-direction: row; align-items: center; gap: var(--e-2); }
 }
@@ -1600,16 +897,7 @@ body.marketing .cierre-marketing__linea {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-/* Mancha de color muy difuminada de fondo, la misma idea que en
-   Nuestros valores — aquí sobre todo el bloque (article), no sobre
-   una tarjeta suelta, así que va bastante más grande y baja de
-   opacidad para no empastar el texto largo que hay encima. Puramente
-   decorativa: position:absolute + z-index negativo, no ocupa espacio
-   ni cambia la altura del bloque. */
-/* Solo overflow-x: el eje Y ya lo trae oculto de la regla general de
-   las hojas sticky (main > article, ver más arriba) — no hace falta
-   repetirlo, y así si el día de mañana esa regla general cambia, esta
-   no se queda con un valor de overflow-y suelto y desactualizado. */
+
 .servicio-bloque-mk { position: relative; overflow-x: hidden; }
 .servicio-bloque-mk::after {
   content: '';
@@ -1638,10 +926,7 @@ body.marketing .cierre-marketing__linea {
   gap: 10px;
   font-size: 18px;
 }
-/* El check: mismo icono en las tres listas de cada servicio, color de
-   acento propio de ese servicio — sustituye el punto liso genérico de
-   antes (que era siempre coral, sin relación con el color del propio
-   servicio). */
+
 .servicio-bloque-mk__check {
   flex-shrink: 0;
   display: flex;
@@ -1661,11 +946,7 @@ body.marketing .cierre-marketing__linea {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-/* CTA "Consultar este servicio": antes un enlace de texto suelto,
-   ahora un botón fantasma con el color propio del servicio — mismo
-   patrón que .boton-mk-ghost (borde + relleno al hover), pero con
-   color por posición en vez de coral fijo, para que cierre el bloque
-   con el mismo acento que abre el icono de arriba. */
+
 .servicio-bloque-mk__cta {
   display: inline-flex;
   align-items: center;
@@ -1687,22 +968,12 @@ body.marketing .cierre-marketing__linea {
 }
 .servicio-bloque-mk__cta:hover span, .servicio-bloque-mk__cta:focus-visible span { transform: translateX(4px); }
 
-/* ---------- Nosotros ---------- */
-
 .nosotros-mk-grid {
   display: grid;
   gap: var(--e-5);
 }
 @media (min-width: 900px) { .nosotros-mk-grid { grid-template-columns: 1fr 1fr; } }
-/* Móvil: bug real reportado por el cliente desde su iPhone — la foto
-   de equipo a 4:5 (pensada para ir al lado del texto, en columna
-   propia, en escritorio) ocupa media pantalla de ALTO cuando pasa a
-   ir a todo el ancho del móvil debajo del texto (345px de ancho ≈
-   431px de alto a 4:5). !important porque el aspect-ratio real viene
-   como estilo en línea en el HTML. 3:2 no recorta mucho más de la
-   foto de lo que ya recorta el 4:5 original (la fuente es casi
-   cuadrada) y baja el alto a ~230px — ni de lejos toda la sección,
-   pero es la pieza más grande de las que sobraban. */
+
 @media (max-width: 480px) {
   .nosotros-mk-grid { gap: 16px; }
   .nosotros-mk-forma__foto {
@@ -1731,27 +1002,6 @@ body.marketing .cierre-marketing__linea {
   z-index: 0;
 }
 
-/* ---------- Misión y Visión: mapa de ruta ----------
-   Petición del cliente, a partir de una imagen de referencia: un mapa
-   de curvas de nivel de fondo (no solo la línea discontinua suelta),
-   con un par de iconos sueltos (una montaña, una bandera, un par de
-   "x" de marcador de mapa) y dos puntos de un trayecto — la Misión
-   como punto de partida, la Visión como destino — unidos por una ruta
-   discontinua bien serpenteada, cada uno con su propio pin de mapa de
-   verdad (no un punto suelto) y su halo de "aquí estoy" debajo.
-
-   Tres capas separadas, todas dentro de .mk-mapa-mv (position:relative
-   + altura fija en escritorio):
-   1. .mk-mapa-mv__fondo — las curvas de nivel y los iconos sueltos,
-      un solo SVG en z-index:0, muy tenue (no debe competir con el
-      texto ni con la ruta).
-   2. .mk-mapa-mv__ruta — la línea discontinua, en z-index:0 también
-      pero pintada DESPUÉS del fondo (más marcada, color de marca).
-   3. .mk-mapa-mv__punto — los dos bloques de pin+texto, en z-index:1,
-      por encima de las dos capas anteriores.
-   En móvil (más abajo) todo esto desaparece salvo los pines: una ruta
-   y un mapa de fondo no tienen sitio en una columna estrecha, así que
-   vuelve a ser flujo normal apilado, como antes del rediseño. */
 .mk-mapa-mv {
   position: relative;
   height: 420px;
@@ -1764,20 +1014,14 @@ body.marketing .cierre-marketing__linea {
   height: 100%;
   z-index: 0;
 }
-/* Curvas de nivel: la misma silueta irregular (un óvalo "abollado",
-   nunca un círculo perfecto — así no se lee como una diana) repetida
-   a tres tamaños dentro de un mismo <g>, imitando las líneas de un
-   mapa topográfico. Dos grupos, cada uno en una esquina vacía del
-   mapa (nunca debajo del texto de Misión/Visión), con un giro
-   distinto para que no se vean como copias exactas la una de la otra. */
+
 .mk-mapa-mv__curvas-nivel path {
   fill: none;
   stroke: var(--mk-tinta);
   stroke-width: 1.5;
   opacity: .1;
 }
-/* Montaña, bandera y "x" de marcador: mismo gris tenue que las curvas
-   de nivel, trazo sin relleno salvo el triángulo de la bandera. */
+
 .mk-mapa-mv__icono path {
   fill: none;
   stroke: var(--mk-tinta);
@@ -1811,11 +1055,7 @@ body.marketing .cierre-marketing__linea {
   flex-direction: row-reverse;
   margin-left: auto;
 }
-/* El pin de verdad (gota + núcleo blanco, como cualquier marcador de
-   mapa) en vez de un punto suelto, con su halo de "aquí estoy" — dos
-   círculos concéntricos más claros, mismo violeta con transparencia,
-   centrados en la PUNTA del pin (donde de verdad "toca" el mapa), no
-   en el pin entero. */
+
 .mk-mapa-mv__pin {
   flex-shrink: 0;
   width: 32px;
@@ -1829,9 +1069,7 @@ body.marketing .cierre-marketing__linea {
 .mk-mapa-mv__pin-nucleo { fill: var(--mk-crema); }
 .mk-mapa-mv__punto h2 { margin-bottom: 2px; }
 @media (max-width: 767px) {
-  /* Sin ruta ni mapa de fondo: en una columna estrecha no queda sitio
-     para que se lean, y con los dos puntos apilados normales (uno
-     debajo del otro) ya se entiende igual la idea de trayecto. */
+
   .mk-mapa-mv { height: auto; }
   .mk-mapa-mv__ruta, .mk-mapa-mv__fondo { display: none; }
   .mk-mapa-mv__punto {
@@ -1844,20 +1082,6 @@ body.marketing .cierre-marketing__linea {
   .mk-mapa-mv__punto--vision { margin-top: var(--e-4); }
 }
 
-/* ---------- Nuestros valores: tarjetas con icono ----------
-   Petición del cliente: "más diseño" también aquí, pero DISTINTO del
-   mapa de Misión/Visión — no otro mapa, ni la rejilla de numerales
-   grandes que ya usa "Cómo enfocamos" (misma clase .enfoque-mk,
-   deliberadamente sin tocar: es la de Inicio, no la de esta página).
-   Cuatro tarjetas con icono propio (línea, no relleno, mismo grosor
-   que el resto de iconos del sitio) dentro de una insignia circular
-   de color, más una mancha de color muy difuminada en la esquina de
-   cada tarjeta — el mismo gesto "insignia + mancha" en las cuatro,
-   pero cada una con su propio color, para que se lean como un
-   conjunto y no como cuatro piezas sueltas. Los cuatro colores son
-   los mismos complementarios y en el mismo orden que ya usan las
-   tarjetas de Servicios y "Cómo enfocamos" (turquesa, verde lima,
-   verde mar, violeta) — coherencia de marca, no una paleta nueva. */
 .mk-valores {
   display: grid;
   grid-template-columns: 1fr;
@@ -1866,14 +1090,9 @@ body.marketing .cierre-marketing__linea {
 @media (min-width: 700px) {
   .mk-valores { grid-template-columns: repeat(2, 1fr); gap: var(--e-4); }
 }
-/* Móvil: las 4 tarjetas pasan de 2×2 a una columna — mismo motivo que
-   .enfoque-mk más arriba, el doble de "filas" que en escritorio. */
+
 @media (max-width: 480px) {
-  /* Un poco más ajustado que antes: al quitar el scroll interno de las
-     secciones (petición del cliente, ver la regla general de main >
-     section más arriba), esta sección se quedaba unos 14px más alta
-     que el hueco disponible, y ese sobrante se recortaba en vez de
-     dejarse ver. */
+
   .mk-valores { gap: 6px; margin-top: 4px !important; }
   .mk-valores__item { padding: 10px 14px; gap: 10px; }
   .mk-valores__icono { width: 36px; height: 36px; }
@@ -1898,18 +1117,7 @@ body.marketing .cierre-marketing__linea {
 @media (hover: hover) and (pointer: fine) {
   .mk-valores__item:hover { transform: translateY(-6px); background: rgba(var(--mk-valores-acento-rgb), .14); }
 }
-/* La mancha de color: bug real reportado por el cliente ("hay un
-   desfase de color, del lado derecho no se ven bien") — el círculo de
-   130px con filter:blur(28px) de antes no era tan alto como la propia
-   tarjeta (129px), así que el blur no llegaba a disolver el borde del
-   todo: se veía un canto de color casi recto en vez de un degradado
-   suave, más notorio con verde lima y violeta (colores más vivos) que
-   con turquesa o verde mar. filter:blur en un elemento pequeño es
-   justo el caso donde peor se comporta (el navegador tiene que
-   "adivinar" cómo disolver un borde que apenas le sobra sitio).
-   Cambiado a radial-gradient: se disuelve matemáticamente a
-   transparente sin ningún borde que dibujar, así que no puede volver
-   a pasar sea cual sea el tamaño real de la tarjeta. */
+
 .mk-valores__item::after {
   content: '';
   position: absolute;
@@ -1938,28 +1146,6 @@ body.marketing .cierre-marketing__linea {
 }
 .mk-valores__item h3 { margin-bottom: 4px; }
 
-/* ---------- Contacto ---------- */
-
-/* Mismo colage decorativo que ya lleva el héroe de Servicios (mismo
-   motivo: "mejora el diseño como con las demás pestañas") — aquí con
-   los cuatro iconos del propio tema de la página (mensaje, teléfono,
-   correo, ubicación) en vez de los de servicio.
-
-   Bug real encontrado al montarlo: en Servicios cada bloque es su
-   propia sección de altura fija (100svh), así que un top:% ahí cae
-   donde se espera. Contacto es distinto — es una .mk-seccion-libre,
-   una sola sección sin sticky que contiene TODO el contenido de la
-   página, formulario incluido, así que su alto real son ~1300px o
-   más. Con el colage puesto directamente en la sección (inset:0) los
-   mismos top:% de Servicios calculaban contra esa altura enorme en
-   vez de contra la zona visible del título — dos de los cuatro
-   iconos aparecían muy por debajo, escondidos DETRÁS del panel opaco
-   "Datos y horario" (detectado comparando getBoundingClientRect del
-   icono contra el del panel: caía dentro de su rectángulo). Arreglo:
-   .mk-contacto-hero envuelve SOLO el título y la línea de intro, con
-   su propia altura (la de ese contenido, no la de toda la página), y
-   el colage se posiciona con píxeles sueltos dentro de esa zona en
-   vez de porcentajes de una altura que no le corresponde. */
 .mk-contacto-hero { position: relative; }
 .mk-contacto-hero-iconos {
   position: absolute;
@@ -2031,12 +1217,6 @@ body.marketing .cierre-marketing__linea {
 .contacto-panel-mk h2, .contacto-panel-mk h3 { color: var(--mk-tinta); }
 .contacto-panel-mk a { text-decoration: none; border-bottom: 1px solid var(--mk-gris); }
 
-/* Petición del cliente: "mejora el diseño como con las demás
-   pestañas" — antes cada dato (dirección, teléfono, correo, horario)
-   era solo un párrafo suelto con un <strong> delante, los cuatro
-   iguales. Mismo lenguaje que ya usan Nuestros valores y Servicios:
-   un icono propio por dato, en su insignia de color, con los mismos
-   cinco acentos y el mismo orden que en el resto del sitio. */
 .mk-contacto-dato {
   display: flex;
   align-items: flex-start;
@@ -2044,13 +1224,7 @@ body.marketing .cierre-marketing__linea {
   margin-top: var(--e-3);
 }
 .mk-contacto-dato:first-of-type { margin-top: var(--e-2); }
-/* nth-of-type, no nth-child: el <h2> "Datos y horario" que precede a
-   estos cuatro <div> cuenta como hijo 1 para nth-child, así que con
-   nth-child cada color quedaba desplazado uno (y el cuarto dato,
-   Horario, se quedaba sin ninguno) — bug real, detectado al verificar
-   con getComputedStyle que "Horario" no tenía --mk-servicio-acento.
-   nth-of-type cuenta solo entre <div>, que aquí son únicamente estos
-   cuatro, así que 1-4 caen exactamente donde deben. */
+
 .mk-contacto-dato:nth-of-type(1) { --mk-servicio-acento: var(--mk-turquesa); --mk-servicio-acento-rgb: var(--mk-turquesa-rgb); }
 .mk-contacto-dato:nth-of-type(2) { --mk-servicio-acento: var(--mk-verde-lima); --mk-servicio-acento-rgb: var(--mk-verde-lima-rgb); }
 .mk-contacto-dato:nth-of-type(3) { --mk-servicio-acento: var(--mk-verde-mar); --mk-servicio-acento-rgb: var(--mk-verde-mar-rgb); }
@@ -2077,12 +1251,6 @@ body.marketing .cierre-marketing__linea {
 }
 .mk-contacto-dato p { margin: 0; }
 
-/* Botón de WhatsApp: petición del cliente, "el mismo que se usa en la
-   burbuja" — antes era un boton-mk-ghost genérico (blanco, con un
-   punto azul decorativo sin relación con WhatsApp). Mismo verde
-   (--whatsapp) y mismo icono SVG que .whatsapp-flotante (la burbuja
-   fija de la esquina), para que se lea como el mismo botón en vez de
-   dos elementos distintos que llevan al mismo sitio. */
 .mk-boton-whatsapp {
   display: inline-flex;
   align-items: center;
@@ -2101,13 +1269,6 @@ body.marketing .cierre-marketing__linea {
 .mk-boton-whatsapp:hover, .mk-boton-whatsapp:focus-visible { filter: brightness(1.08); }
 .mk-boton-whatsapp svg { width: 22px; height: 22px; flex-shrink: 0; }
 
-/* Petición del cliente: un mapa de la ubicación de A360, con los
-   horarios reales sacados de su ficha de Google (los mismos datos que
-   ya usa el propio mapa, la única fuente pública real que hay de
-   ellos — antes decía "pendiente de confirmar"). El iframe de Google
-   Maps sin clave de API (maps.google.com/maps?...&output=embed) es el
-   método estándar y gratuito para esto — no hace falta ninguna cuenta
-   de facturación ni límite de peticiones, solo la URL. */
 .contacto-mapa h2 { margin-bottom: var(--e-2); }
 .contacto-mapa__marco {
   border-radius: var(--r-panel);
@@ -2117,15 +1278,6 @@ body.marketing .cierre-marketing__linea {
 }
 .contacto-mapa__marco iframe { display: block; }
 
-/* Campos de formulario, en Marketing, con el radio y tono MindMarket.
-   Bug de contraste real: el campo (--mk-blanco) y el panel que lo
-   rodea (--mk-arena) son el mismo Linen desde que se quitó el blanco
-   de la web — con el filete claro (--mk-niebla) de antes, apenas se
-   distinguía dónde empezaba cada campo. En vez de volver a poner
-   blanco (la petición fue justo lo contrario), se marca el borde con
-   más peso y contraste real (--mk-gris, no el hairline casi invisible
-   de --mk-niebla) y una sombra suave hacia abajo — el campo se separa
-   del panel por profundidad, no por color de fondo. */
 body.marketing .campo input,
 body.marketing .campo select,
 body.marketing .campo textarea {
@@ -2144,7 +1296,6 @@ body.marketing .campo textarea:focus-visible {
 }
 body.marketing .campo label { color: var(--mk-tinta); }
 
-/* Placeholders de imagen: radio grande, superficie arena */
 body.marketing .placeholder-img {
   border-radius: var(--mk-r-imagen);
   border: 1px dashed var(--mk-gris);
@@ -2152,13 +1303,6 @@ body.marketing .placeholder-img {
   background: var(--mk-arena) !important;
 }
 
-/* ---------- Footer: degradado oficial Full Black > Dark Blue (Footer Accent Block) ----------
-   Ya no es la banda amarilla del reskin MindMarket — el manual de A360 no
-   tiene un amarillo institucional. El propio cierre "Enviar consulta"
-   vive ahora dentro de este mismo <footer> (ver el bloque de arriba) y
-   hereda este fondo directamente, sin necesitar el suyo — al ser una
-   sola caja, el degradado se pinta de un tirón sobre toda su altura,
-   sin ningún borde entre dos elementos donde pudiera no cuadrar. */
 body.marketing .pie {
   background: var(--mk-degradado-pie) !important;
   color: var(--mk-texto-claro);
@@ -2175,33 +1319,11 @@ body.marketing .pie__redes a:hover svg path, body.marketing .pie__redes a:focus-
 body.marketing .pie__redes svg path { fill: var(--mk-crema) !important; transition: fill var(--dur-hover) ease; }
 body.marketing .pie__legal { border-top-color: rgba(243, 238, 231, .2); opacity: .85; }
 
-/* Logotipo del footer: icono + palabra "MARKETING" apilados debajo,
-   como el diseño original, pero en blanco. brightness(0) invert(1)
-   sobre el PNG a color se descartó: aplana TODO el logo a un único
-   blanco plano, incluidas las zonas que en el original ya eran
-   blancas (el arco y los dígitos "360", recortados como hueco sobre
-   el naranja) — el resultado era una mancha sin ese hueco, no el
-   logo real. logo-marketing-blanco.png es un archivo generado aparte
-   que respeta esa técnica: cada píxel del naranja/azul/marino se
-   vuelve blanco opaco y cada píxel que ya era blanco (el hueco del
-   360) se vuelve transparente, igual que ya hace logo-a360-blanco.png
-   con el icono solo — así el hueco se sigue viendo (deja pasar el
-   fondo oscuro del footer) en vez de desaparecer. */
 body.marketing .pie__marca img {
   height: 60px;
   width: auto;
 }
 
-/* Todas las demás "hojas" del sitio se cubren unas a otras al hacer
-   scroll (sticky + border-radius, ver más arriba) — la curva de cada
-   una se percibe como un gesto, no como algo que ya estaba puesto.
-   El footer no puede jugar a eso: es la última hoja y no puede quedarse
-   sticky (no hay nada después que lo cubra), así que su curvatura
-   nacía ya completa y quieta, sin ese mismo gesto de entrada.
-   Aquí se lo damos por su cuenta, con el mismo mecanismo .reveal/
-   .en-vista que usa el resto del sitio (IntersectionObserver + transición,
-   ver base.css): nace recta y se despliega a su curva final justo cuando
-   el footer entra en pantalla, en vez de estar ya puesta de golpe. */
 body.marketing .pie.reveal {
   border-radius: 0 0 0 0;
   transition: opacity var(--dur-reveal) var(--curva-reveal),
