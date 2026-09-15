@@ -105,6 +105,30 @@ body.marketing {
      flota directamente sobre él, sin costura. */
 }
 
+/* Petición del cliente, probando desde su propio iPhone 16: "el
+   contenido se pierde en algunos sitios... si hay que dejar los
+   textos más pequeños se hace, pero debe quedar la misma info".
+   Comprobado con scrollHeight/clientHeight en las 4 páginas a 393×660
+   (el ancho real de un iPhone y el alto que deja Safari con las
+   barras visibles, el caso más ajustado): varias secciones con
+   rejillas de 2 columnas que en móvil pasan a 1 sola (Nuestros
+   valores, Cómo enfocamos, los bloques de Servicios...) no cabían
+   enteras en 100svh — hasta 250px de sobra, que había que recorrer
+   con scroll interno antes de poder pasar a la siguiente. Nada se
+   perdía de verdad (segu­ía estando, con scroll dentro de la propia
+   sección), pero por lo ajustado del margen se notaba mucho más que
+   en escritorio y el cliente lo interpretó como que faltaba.
+   clamp() ya reduce estos títulos con el ancho de pantalla, pero su
+   propio mínimo (36px para --titulo-1) seguía siendo grande para una
+   pantalla de 393px de ancho — se baja aparte, solo por debajo de
+   480px, sin tocar la escala fluida de tablets/escritorio. */
+@media (max-width: 480px) {
+  body.marketing {
+    --titulo-1: clamp(26px, 7.5vw, 81px);
+    --titulo-3: 22px;
+  }
+}
+
 /* ---- Tipografía base: Inter 400/500, nunca 700, tracking negativo en display ---- */
 
 body.marketing h1, body.marketing h2, body.marketing h3, body.marketing h4 {
@@ -261,6 +285,12 @@ body.marketing main > article > .contenedor {
    que nunca se llegaba a ver completo). */
 body.marketing .mk-seccion-compacta {
   padding-bottom: var(--e-4) !important;
+}
+/* Aún más ajustado en móvil — mismo motivo, pero ahí el margen de
+   sobra importa más: la pantalla entera es mucho más baja, así que
+   cada pixel de padding que no hace falta cuenta más. */
+@media (max-width: 480px) {
+  body.marketing .mk-seccion-compacta { padding-bottom: var(--e-2) !important; }
 }
 
 /* Alternancia automática por posición: pedido del cliente porque con
@@ -915,6 +945,22 @@ body.marketing .marketing-hero__linea {
 @media (min-width: 768px) {
   .enfoque-mk { grid-template-columns: repeat(2, 1fr); gap: var(--e-6) var(--e-5); }
 }
+/* Móvil: los 4 items pasan de 2×2 a una sola columna apilada — el
+   doble de filas que en escritorio, así que cada gap y cada margen
+   cuentan el doble. margin-top con !important porque en el HTML viene
+   como estilo en línea (mismo valor en escritorio y en móvil hasta
+   ahora); el resto son valores que solo existían para la versión de
+   escritorio, sin una alternativa más ajustada para pantallas
+   estrechas. */
+@media (max-width: 480px) {
+  .enfoque-mk { gap: 10px; margin-top: 12px !important; }
+  /* Tamaño propio en móvil, no --titulo-1 (esa variable la comparten
+     los títulos de verdad de cada página — bajarla más para que el
+     numeral decorativo quepa mejor encogería también esos títulos,
+     que ya están en su tamaño mínimo legible). */
+  .enfoque-mk__item__numero { font-size: 22px; margin-bottom: 4px; }
+  .enfoque-mk__item h3 { margin-bottom: 4px; }
+}
 .enfoque-mk__item__numero {
   display: block;
   font-family: var(--f-titulos);
@@ -946,6 +992,10 @@ body.marketing .marketing-hero__linea {
 }
 @media (min-width: 900px) {
   .faq-mk-grid { grid-template-columns: .85fr 1.15fr; gap: var(--e-6); }
+}
+@media (max-width: 480px) {
+  .faq-mk-grid { gap: var(--e-3); }
+  .faq-mk-intro .pildora-mk-oscura { margin-top: var(--e-3) !important; }
 }
 .pildora-mk-oscura {
   display: inline-flex;
@@ -1220,6 +1270,19 @@ body.marketing .cierre-marketing__linea {
   align-items: start;
 }
 @media (min-width: 900px) { .servicio-bloque-mk__interior { grid-template-columns: .5fr 1fr; gap: var(--e-6); } }
+/* Móvil: bug real reportado por el cliente desde su iPhone — hasta
+   109px de sobra en el bloque de "Publicidad digital..." (el título
+   más largo de los cinco, más líneas al envolver). El propio título
+   ya se achica con --titulo-1 en móvil (ver la regla general más
+   arriba); aquí se recorta además el aire de sobra que no aporta
+   nada a la lectura: el padding-bottom del bloque (64px, pensado para
+   una sola columna de texto corto, no para icono+número+título+lista+
+   botón apilados) y los espacios entre esas piezas. */
+@media (max-width: 480px) {
+  .servicio-bloque-mk { padding-bottom: var(--e-3); }
+  .servicio-bloque-mk__interior { gap: var(--e-3); }
+  .servicio-bloque-mk__lista { gap: 6px; margin-top: var(--e-2); }
+}
 /* Petición del cliente: "mejorar visualmente" también esta pestaña —
    antes cada servicio era solo un número grande y texto, los cinco
    iguales salvo el color del numeral. Se añade una variable de acento
@@ -1377,6 +1440,21 @@ body.marketing .cierre-marketing__linea {
   gap: var(--e-5);
 }
 @media (min-width: 900px) { .nosotros-mk-grid { grid-template-columns: 1fr 1fr; } }
+/* Móvil: bug real reportado por el cliente desde su iPhone — la foto
+   de equipo a 4:5 (pensada para ir al lado del texto, en columna
+   propia, en escritorio) ocupa media pantalla de ALTO cuando pasa a
+   ir a todo el ancho del móvil debajo del texto (345px de ancho ≈
+   431px de alto a 4:5). !important porque el aspect-ratio real viene
+   como estilo en línea en el HTML. 3:2 no recorta mucho más de la
+   foto de lo que ya recorta el 4:5 original (la fuente es casi
+   cuadrada) y baja el alto a ~230px — ni de lejos toda la sección,
+   pero es la pieza más grande de las que sobraban. */
+@media (max-width: 480px) {
+  .nosotros-mk-grid { gap: 16px; }
+  .nosotros-mk-forma__foto {
+    aspect-ratio: 16/9 !important;
+  }
+}
 .nosotros-mk-forma { position: relative; }
 .nosotros-mk-forma__foto {
   display: block;
@@ -1533,6 +1611,14 @@ body.marketing .cierre-marketing__linea {
 }
 @media (min-width: 700px) {
   .mk-valores { grid-template-columns: repeat(2, 1fr); gap: var(--e-4); }
+}
+/* Móvil: las 4 tarjetas pasan de 2×2 a una columna — mismo motivo que
+   .enfoque-mk más arriba, el doble de "filas" que en escritorio. */
+@media (max-width: 480px) {
+  .mk-valores { gap: 8px; margin-top: 12px !important; }
+  .mk-valores__item { padding: 12px 14px; gap: 10px; }
+  .mk-valores__icono { width: 36px; height: 36px; }
+  .mk-valores__icono svg { width: 18px; height: 18px; }
 }
 .mk-valores__item:nth-child(1) { --mk-valores-acento: var(--mk-turquesa); --mk-valores-acento-rgb: var(--mk-turquesa-rgb); }
 .mk-valores__item:nth-child(2) { --mk-valores-acento: var(--mk-verde-lima); --mk-valores-acento-rgb: var(--mk-verde-lima-rgb); }
