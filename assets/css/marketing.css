@@ -449,24 +449,27 @@ body.marketing .pie {
   justify-content: space-between;
   gap: var(--e-3);
 }
+/* .nav-flotante--clara no tiene reglas propias a propósito: es el
+   mismo aspecto de arriba, y existe solo para que iniciarNavAdaptativa()
+   (app.js) pueda marcarlo explícitamente como estado "decidido por JS"
+   sin depender de la ausencia de --oscura. Ver esa función y el
+   comentario de --oscura más abajo. */
 
 /* Petición del cliente: la píldora de navegación debe adaptarse al
-   fondo que tiene detrás, no ser siempre del mismo tono claro. Sobre
-   el héroe azul de Inicio (única página con fondo oscuro al arrancar)
-   ya funciona bien tal cual, arriba: píldora clara, logo azul, letras
-   oscuras — buen contraste contra el degradado oscuro del héroe, "como
-   en el inicio". Pero Nosotros, Servicios y Contacto arrancan con un
-   fondo claro (blanco/crema): la misma píldora clara se notaba poco
-   ahí, casi se fundía con la sección de debajo en vez de destacar.
-   Aquí se invierte para esas 3 páginas: píldora en Dark Blue, logo en
-   blanco y letras claras — mismo filtro brightness(0) invert(1) que
-   ya usa el logo del footer para no necesitar un archivo de imagen
-   aparte (el PNG ya tiene canal alfa transparente de verdad).
-   :has(.marketing-hero) detecta Inicio (la única página con esa
-   sección) sin necesitar una clase aparte en el <body> por página —
-   si el día de mañana Inicio deja de tener héroe, o alguna otra
-   página lo suma, esta regla se ajusta sola. */
-body.marketing:not(:has(.marketing-hero)) .nav-flotante {
+   fondo que tiene DETRÁS EN CADA MOMENTO, no ser siempre del mismo
+   tono ni fija por página. Primera versión (ya superada): decidirlo
+   una sola vez por página con :has(.marketing-hero) — funcionaba al
+   cargar, pero en Inicio el héroe azul solo ocupa la primera pantalla;
+   en cuanto se hace scroll a una sección clara la píldora clara
+   quedaba fundida con el fondo, y al llegar al pie (azul oscuro en
+   las 4 páginas) tampoco volvía a aclararse. Ahora decide
+   iniciarNavAdaptativa() en app.js, en vivo, con IntersectionObserver:
+   mira qué hay justo detrás de la píldora (héroe o pie = oscuro,
+   cualquier otra sección = claro) y alterna estas dos clases. Se deja
+   .nav-flotante (sin modificador) con el aspecto claro por defecto —
+   así, si JS no llega a ejecutarse, el estado de partida sigue siendo
+   correcto en las 4 páginas tal y como se sirve el HTML. */
+body.marketing .nav-flotante.nav-flotante--oscura {
   background: var(--mk-azul-oscuro);
   border-color: rgba(243, 238, 231, .15);
 }
@@ -480,9 +483,9 @@ body.marketing:not(:has(.marketing-hero)) .nav-flotante {
    usa el footer), así que aquí se alterna cuál de las dos imágenes se
    ve en vez de intentar blanquear la azul con un filtro. */
 .nav-flotante__logo .nav-flotante__logo-img--blanco { display: none; }
-body.marketing:not(:has(.marketing-hero)) .nav-flotante__logo .nav-flotante__logo-img--azul { display: none; }
-body.marketing:not(:has(.marketing-hero)) .nav-flotante__logo .nav-flotante__logo-img--blanco { display: block; }
-body.marketing:not(:has(.marketing-hero)) .nav-flotante__nav a {
+body.marketing .nav-flotante--oscura .nav-flotante__logo .nav-flotante__logo-img--azul { display: none; }
+body.marketing .nav-flotante--oscura .nav-flotante__logo .nav-flotante__logo-img--blanco { display: block; }
+body.marketing .nav-flotante--oscura .nav-flotante__nav a {
   color: var(--mk-texto-claro);
 }
 /* Nada de Dark Pink M. aquí (el acento que se usa en el resto del
@@ -492,12 +495,16 @@ body.marketing:not(:has(.marketing-hero)) .nav-flotante__nav a {
    claro y translúcido detrás, manteniendo el texto blanco, da el
    mismo gesto de "esto está activo/interactivo" con contraste de
    sobra (>12:1). */
-body.marketing:not(:has(.marketing-hero)) .nav-flotante__nav a:hover,
-body.marketing:not(:has(.marketing-hero)) .nav-flotante__nav a:focus-visible,
-body.marketing:not(:has(.marketing-hero)) .nav-flotante__nav a[aria-current="page"] {
+body.marketing .nav-flotante--oscura .nav-flotante__nav a:hover,
+body.marketing .nav-flotante--oscura .nav-flotante__nav a:focus-visible,
+body.marketing .nav-flotante--oscura .nav-flotante__nav a[aria-current="page"] {
   background: rgba(243, 238, 231, .16);
   color: var(--mk-texto-claro);
 }
+/* Transición suave entre los dos estados — sin esto el cambio de
+   color al cruzar el héroe o el pie se nota como un parpadeo seco. */
+.nav-flotante,
+.nav-flotante__nav a { transition: background-color .25s ease, border-color .25s ease, color .25s ease; }
 
 .nav-flotante__logo svg,
 .nav-flotante__logo img { height: 52px; width: auto; display: block; }
@@ -836,6 +843,41 @@ body.marketing .marketing-hero__linea {
   border-color: rgba(243, 238, 231, .5); /* Linen a media opacidad, no un color aparte */
 }
 .pildora-mk--contorno:hover, .pildora-mk--contorno:focus-visible { background: var(--mk-crema); color: var(--mk-tinta); border-color: var(--mk-crema); }
+
+/* ---------- Fondo decorativo de la sección Servicios (Inicio) ----------
+   Diseño entregado por el cliente ya montado como PNG (cintas de la
+   identidad visual). Ancho 100% y alto por aspect-ratio (no
+   object-fit:cover a pantalla completa): así la imagen nunca se
+   recorta por los lados en ningún ancho de pantalla, solo se escala
+   entera — en vez de perder los extremos de las cintas en móvil,
+   donde la sección es mucho más alta y estrecha que la imagen
+   original (1992×1152, muy apaisada). Absoluta dentro de la propia
+   sección, que ya es position:sticky (no hace falta forzarle un
+   position:relative aparte) — pointer-events:none para que no
+   interfiera con nada clicable delante.
+   position:relative + z-index en .contenedor es obligatorio, no
+   decorativo: un position:absolute se pinta SIEMPRE después (encima)
+   de sus hermanos position:static sea cual sea su orden en el HTML —
+   sin esto el fondo taparía el título y las tarjetas en vez de quedar
+   detrás (el mismo motivo, ya documentado en otra sección de esta
+   hoja, del bug de la sección pegajosa que se colaba encima). */
+.mk-servicios-decorada__fondo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 1992 / 1152;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+.mk-servicios-decorada__fondo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.mk-servicios-decorada > .contenedor { position: relative; z-index: 1; }
 
 /* ---------- Los cinco servicios: tarjetas blancas de 50px sobre crema ---------- */
 

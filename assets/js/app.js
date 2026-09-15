@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarHeroScrubMarketing();
   iniciarMaquinaEscribir();
   iniciarCopiarCorreo();
+  iniciarNavAdaptativa();
 });
 
 /* ---------- Cabecera: se compacta al pasar 80px ---------- */
@@ -329,6 +330,90 @@ function iniciarMaquinaEscribir() {
   };
 
   window.setTimeout(escribirSiguienteCaracter, RETRASO_INICIAL_MS);
+}
+
+/* ---------- Nav flotante de Marketing: color según lo que hay detrás ----------
+   Petición del cliente: la píldora debe verse clara (fondo casi
+   blanco, logo azul) sobre fondos oscuros — el héroe de Inicio y el
+   pie de página, que en las 4 páginas usa el mismo azul oscuro — y
+   oscura (píldora azul, logo blanco) sobre el resto de fondos claros.
+   Y tiene que pasar EN VIVO según se hace scroll, no fijo por página:
+   en Inicio se pasa del héroe a secciones claras y de vuelta a azul
+   oscuro en el pie; en las otras 3 páginas (sin héroe) pasa lo mismo
+   solo con el pie.
+   Bug real, encontrado probando esto: cada <section> de Inicio es
+   position:sticky con altura 100svh (ver más arriba en marketing.css)
+   para el efecto de "una pantalla tapa a la anterior" al hacer scroll.
+   Eso significa que el héroe NUNCA deja de estar ahí ni de ocupar toda
+   la pantalla en su propio rectángulo — solo queda por debajo, tapado
+   por la siguiente sección que también se pega a top:0. Comprobado con
+   getBoundingClientRect: el rectángulo del héroe sigue midiendo
+   top:0/alto:100svh aunque lleves varias pantallas de scroll, así que
+   mirar solo su geometría (IntersectionObserver normal, o a mano)
+   dice "oscuro" case siempre, incluso con Servicios ya tapándolo del
+   todo. Lo que hace falta no es "¿el héroe ocupa ese hueco?" sino
+   "¿qué se ve REALMENTE ahí?" — y eso es exactamente lo que responde
+   document.elementFromPoint: mira qué elemento está pintado encima de
+   verdad en un punto, sin que le afecte que algo por debajo siga
+   técnicamente stuck. Se muestrea justo debajo de la píldora (nunca
+   sobre ella, o el resultado sería siempre la propia píldora) y se
+   sube con closest() hasta encontrar la sección más cercana.
+   El pie NO se mira con este mismo muestreo puntual: no es sticky (su
+   geometría real sí es de fiar), pero por el mismo diseño de secciones
+   ancladas a pantalla completa, la última sección de cada página deja
+   un hueco fijo de sobra que nunca se puede scrollear del todo — así
+   que, aun en el scroll máximo del documento, el pie puede quedarse
+   ocupando solo la parte de abajo de la pantalla sin llegar nunca a
+   asomar justo detrás de la píldora. Mirarlo por geometría propia (qué
+   porción de la pantalla ocupa ya) en vez de por ese punto exacto
+   evita que la píldora se quede "oscura" para siempre en vez de
+   aclararse al llegar abajo. */
+function iniciarNavAdaptativa() {
+  if (!document.body.classList.contains('marketing')) return;
+  const nav = document.querySelector('.nav-flotante');
+  const envoltorio = document.querySelector('.nav-flotante-envoltorio');
+  const pie = document.querySelector('footer.pie');
+  if (!nav || !envoltorio) return;
+
+  const PROPORCION_PIE_MINIMA = .2; // 20% de pantalla ya ocupada por el pie
+
+  const aplicarEstado = (oscuroDetras) => {
+    nav.classList.toggle('nav-flotante--oscura', !oscuroDetras);
+    nav.classList.toggle('nav-flotante--clara', oscuroDetras);
+  };
+
+  const pieDomina = () => {
+    if (!pie) return false;
+    const visible = window.innerHeight - Math.max(pie.getBoundingClientRect().top, 0);
+    return visible / window.innerHeight > PROPORCION_PIE_MINIMA;
+  };
+
+  const heroDetras = () => {
+    const x = Math.round(window.innerWidth / 2);
+    const y = Math.min(
+      Math.round(envoltorio.getBoundingClientRect().bottom) + 8,
+      window.innerHeight - 1
+    );
+    const elemento = document.elementFromPoint(x, y);
+    return !!(elemento && elemento.closest('.marketing-hero'));
+  };
+
+  const actualizar = () => {
+    aplicarEstado(pieDomina() || heroDetras());
+  };
+  actualizar();
+
+  let tramitando = false;
+  const enScroll = () => {
+    if (tramitando) return;
+    tramitando = true;
+    window.requestAnimationFrame(() => {
+      actualizar();
+      tramitando = false;
+    });
+  };
+  window.addEventListener('scroll', enScroll, { passive: true });
+  window.addEventListener('resize', actualizar, { passive: true });
 }
 
 /* ---------- Héroe de Marketing: copiar correo al portapapeles ---------- */
