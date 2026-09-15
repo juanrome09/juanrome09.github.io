@@ -1591,6 +1591,82 @@ body.marketing .cierre-marketing__linea {
 
 /* ---------- Contacto ---------- */
 
+/* Mismo colage decorativo que ya lleva el héroe de Servicios (mismo
+   motivo: "mejora el diseño como con las demás pestañas") — aquí con
+   los cuatro iconos del propio tema de la página (mensaje, teléfono,
+   correo, ubicación) en vez de los de servicio.
+
+   Bug real encontrado al montarlo: en Servicios cada bloque es su
+   propia sección de altura fija (100svh), así que un top:% ahí cae
+   donde se espera. Contacto es distinto — es una .mk-seccion-libre,
+   una sola sección sin sticky que contiene TODO el contenido de la
+   página, formulario incluido, así que su alto real son ~1300px o
+   más. Con el colage puesto directamente en la sección (inset:0) los
+   mismos top:% de Servicios calculaban contra esa altura enorme en
+   vez de contra la zona visible del título — dos de los cuatro
+   iconos aparecían muy por debajo, escondidos DETRÁS del panel opaco
+   "Datos y horario" (detectado comparando getBoundingClientRect del
+   icono contra el del panel: caía dentro de su rectángulo). Arreglo:
+   .mk-contacto-hero envuelve SOLO el título y la línea de intro, con
+   su propia altura (la de ese contenido, no la de toda la página), y
+   el colage se posiciona con píxeles sueltos dentro de esa zona en
+   vez de porcentajes de una altura que no le corresponde. */
+.mk-contacto-hero { position: relative; }
+.mk-contacto-hero-iconos {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.mk-contacto-hero-iconos__pieza {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(var(--mk-servicio-acento-rgb), .14);
+}
+.mk-contacto-hero-iconos__pieza svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: var(--mk-servicio-acento);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.mk-contacto-hero-iconos__pieza:nth-child(1) {
+  --mk-servicio-acento: var(--mk-turquesa); --mk-servicio-acento-rgb: var(--mk-turquesa-rgb);
+  top: -10px; right: 220px;
+  transform: rotate(-7deg);
+}
+.mk-contacto-hero-iconos__pieza:nth-child(2) {
+  --mk-servicio-acento: var(--mk-verde-mar); --mk-servicio-acento-rgb: var(--mk-verde-mar-rgb);
+  top: -20px; right: 20px;
+  width: 52px; height: 52px;
+  transform: rotate(8deg);
+}
+.mk-contacto-hero-iconos__pieza:nth-child(2) svg { width: 24px; height: 24px; }
+.mk-contacto-hero-iconos__pieza:nth-child(3) {
+  --mk-servicio-acento: var(--mk-dorado); --mk-servicio-acento-rgb: var(--mk-dorado-rgb);
+  top: 70px; right: -20px;
+  width: 68px; height: 68px;
+  transform: rotate(-5deg);
+}
+.mk-contacto-hero-iconos__pieza:nth-child(3) svg { width: 32px; height: 32px; }
+.mk-contacto-hero-iconos__pieza:nth-child(4) {
+  --mk-servicio-acento: var(--mk-violeta); --mk-servicio-acento-rgb: var(--mk-violeta-rgb);
+  top: 150px; right: 160px;
+  width: 46px; height: 46px;
+  transform: rotate(12deg);
+}
+.mk-contacto-hero-iconos__pieza:nth-child(4) svg { width: 21px; height: 21px; }
+@media (max-width: 899px) {
+  .mk-contacto-hero-iconos { display: none; }
+}
+
 .contacto-grid-mk {
   display: grid;
   gap: var(--e-5);
@@ -1605,6 +1681,76 @@ body.marketing .cierre-marketing__linea {
 }
 .contacto-panel-mk h2, .contacto-panel-mk h3 { color: var(--mk-tinta); }
 .contacto-panel-mk a { text-decoration: none; border-bottom: 1px solid var(--mk-gris); }
+
+/* Petición del cliente: "mejora el diseño como con las demás
+   pestañas" — antes cada dato (dirección, teléfono, correo, horario)
+   era solo un párrafo suelto con un <strong> delante, los cuatro
+   iguales. Mismo lenguaje que ya usan Nuestros valores y Servicios:
+   un icono propio por dato, en su insignia de color, con los mismos
+   cinco acentos y el mismo orden que en el resto del sitio. */
+.mk-contacto-dato {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--e-2);
+  margin-top: var(--e-3);
+}
+.mk-contacto-dato:first-of-type { margin-top: var(--e-2); }
+/* nth-of-type, no nth-child: el <h2> "Datos y horario" que precede a
+   estos cuatro <div> cuenta como hijo 1 para nth-child, así que con
+   nth-child cada color quedaba desplazado uno (y el cuarto dato,
+   Horario, se quedaba sin ninguno) — bug real, detectado al verificar
+   con getComputedStyle que "Horario" no tenía --mk-servicio-acento.
+   nth-of-type cuenta solo entre <div>, que aquí son únicamente estos
+   cuatro, así que 1-4 caen exactamente donde deben. */
+.mk-contacto-dato:nth-of-type(1) { --mk-servicio-acento: var(--mk-turquesa); --mk-servicio-acento-rgb: var(--mk-turquesa-rgb); }
+.mk-contacto-dato:nth-of-type(2) { --mk-servicio-acento: var(--mk-verde-lima); --mk-servicio-acento-rgb: var(--mk-verde-lima-rgb); }
+.mk-contacto-dato:nth-of-type(3) { --mk-servicio-acento: var(--mk-verde-mar); --mk-servicio-acento-rgb: var(--mk-verde-mar-rgb); }
+.mk-contacto-dato:nth-of-type(4) { --mk-servicio-acento: var(--mk-violeta); --mk-servicio-acento-rgb: var(--mk-violeta-rgb); }
+.mk-contacto-dato__icono {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(var(--mk-servicio-acento-rgb), .18);
+  margin-top: 2px;
+}
+.mk-contacto-dato__icono svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: var(--mk-servicio-acento);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.mk-contacto-dato p { margin: 0; }
+
+/* Botón de WhatsApp: petición del cliente, "el mismo que se usa en la
+   burbuja" — antes era un boton-mk-ghost genérico (blanco, con un
+   punto azul decorativo sin relación con WhatsApp). Mismo verde
+   (--whatsapp) y mismo icono SVG que .whatsapp-flotante (la burbuja
+   fija de la esquina), para que se lea como el mismo botón en vez de
+   dos elementos distintos que llevan al mismo sitio. */
+.mk-boton-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: var(--e-3);
+  padding: 12px 22px 12px 16px;
+  border-radius: var(--r-pildora);
+  background: var(--whatsapp);
+  color: #fff;
+  font-family: var(--f-cuerpo);
+  font-weight: 500;
+  font-size: var(--menor);
+  text-decoration: none;
+  transition: filter var(--dur-hover) ease;
+}
+.mk-boton-whatsapp:hover, .mk-boton-whatsapp:focus-visible { filter: brightness(1.08); }
+.mk-boton-whatsapp svg { width: 22px; height: 22px; flex-shrink: 0; }
 
 /* Campos de formulario, en Marketing, con el radio y tono MindMarket.
    Bug de contraste real: el campo (--mk-blanco) y el panel que lo
