@@ -193,3 +193,15 @@ body.asesoria { padding-top: 88px; } /* alto de la cabecera fija */
   margin-top: var(--e-3);
   display: inline-flex;
 }
+
+/* Mapa de ubicación — mismo criterio que en Marketing (ver
+   contacto-mapa en marketing.css): iframe de Google Maps sin clave de
+   API, gratuito, formato estándar para esto. */
+.contacto-mapa h2 { margin-bottom: var(--e-2); }
+.contacto-mapa__marco {
+  border-radius: var(--r-panel);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+.contacto-mapa__marco iframe { display: block; }

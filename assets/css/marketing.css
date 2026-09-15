@@ -1842,6 +1842,22 @@ body.marketing .cierre-marketing__linea {
 .mk-boton-whatsapp:hover, .mk-boton-whatsapp:focus-visible { filter: brightness(1.08); }
 .mk-boton-whatsapp svg { width: 22px; height: 22px; flex-shrink: 0; }
 
+/* Petición del cliente: un mapa de la ubicación de A360, con los
+   horarios reales sacados de su ficha de Google (los mismos datos que
+   ya usa el propio mapa, la única fuente pública real que hay de
+   ellos — antes decía "pendiente de confirmar"). El iframe de Google
+   Maps sin clave de API (maps.google.com/maps?...&output=embed) es el
+   método estándar y gratuito para esto — no hace falta ninguna cuenta
+   de facturación ni límite de peticiones, solo la URL. */
+.contacto-mapa h2 { margin-bottom: var(--e-2); }
+.contacto-mapa__marco {
+  border-radius: var(--r-panel);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+.contacto-mapa__marco iframe { display: block; }
+
 /* Campos de formulario, en Marketing, con el radio y tono MindMarket.
    Bug de contraste real: el campo (--mk-blanco) y el panel que lo
    rodea (--mk-arena) son el mismo Linen desde que se quitó el blanco
