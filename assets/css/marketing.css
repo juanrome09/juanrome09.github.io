@@ -1074,6 +1074,91 @@ body.marketing .cierre-marketing__linea {
 
 /* ---------- Servicios (página): tarjetas blancas alternando con arena ---------- */
 
+/* El héroe seguía viéndose simple con solo los chips (petición del
+   cliente: "agrega algo más, sigue esa misma línea") — se añade un
+   grupo de cinco insignias con los mismos iconos y colores de los
+   cinco servicios, dispersas como un colage flotante en la zona
+   derecha (donde antes solo estaba el logo de agua tenue), cada una
+   con un giro y tamaño ligeramente distinto para que no se lea como
+   una rejilla ordenada sino como algo puesto a mano. Puramente
+   decorativo (aria-hidden, no son enlaces — para eso ya están los
+   chips de abajo) y con position:absolute, así que no ocupa espacio
+   ni puede desbordar la sección. En móvil se oculta entero: no hay
+   ancho de sobra a la derecha del texto para que quepa sin
+   amontonarse encima. */
+.mk-servicios-hero-iconos {
+  /* !important: hay una regla más específica más arriba
+     ("section:has(> .mk-marca-agua) > *:not(.mk-marca-agua)") que le
+     pondría position:relative a CUALQUIER hermano de la marca de agua
+     — sin el !important, este contenedor perdería su position:absolute
+     y se quedaría con alto 0 (nada dentro le da altura en flujo
+     normal), y los porcentajes top:% de sus iconos (ver más abajo)
+     calcularían contra ese alto 0: todos los iconos se apilarían
+     arriba del todo en vez de repartirse por la sección. */
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.mk-servicios-hero-iconos__pieza {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}
+.mk-servicios-hero-iconos__pieza svg {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.mk-servicios-hero-iconos__pieza:nth-child(1) {
+  --mk-servicio-acento: var(--mk-turquesa); --mk-servicio-acento-rgb: var(--mk-turquesa-rgb);
+  top: 14%; right: 30%;
+  transform: rotate(-8deg);
+}
+.mk-servicios-hero-iconos__pieza:nth-child(2) {
+  /* top:15%, no menos: por debajo queda tapado por la píldora de
+     navegación flotante (fixed, siempre encima) — comprobado que a
+     4% quedaba oculto detrás sin que se notara visualmente el motivo. */
+  --mk-servicio-acento: var(--mk-verde-lima); --mk-servicio-acento-rgb: var(--mk-verde-lima-rgb);
+  top: 15%; right: 6%;
+  width: 56px; height: 56px;
+  transform: rotate(6deg);
+}
+.mk-servicios-hero-iconos__pieza:nth-child(3) {
+  --mk-servicio-acento: var(--mk-verde-mar); --mk-servicio-acento-rgb: var(--mk-verde-mar-rgb);
+  top: 42%; right: -2%;
+  width: 76px; height: 76px;
+  transform: rotate(-4deg);
+}
+.mk-servicios-hero-iconos__pieza:nth-child(3) svg { width: 36px; height: 36px; }
+.mk-servicios-hero-iconos__pieza:nth-child(4) {
+  --mk-servicio-acento: var(--mk-violeta); --mk-servicio-acento-rgb: var(--mk-violeta-rgb);
+  top: 68%; right: 26%;
+  transform: rotate(10deg);
+}
+.mk-servicios-hero-iconos__pieza:nth-child(5) {
+  --mk-servicio-acento: var(--mk-dorado); --mk-servicio-acento-rgb: var(--mk-dorado-rgb);
+  top: 80%; right: 18%;
+  width: 50px; height: 50px;
+  transform: rotate(-14deg);
+}
+.mk-servicios-hero-iconos__pieza:nth-child(5) svg { width: 24px; height: 24px; }
+.mk-servicios-hero-iconos__pieza {
+  background: rgba(var(--mk-servicio-acento-rgb), .14);
+}
+.mk-servicios-hero-iconos__pieza svg { stroke: var(--mk-servicio-acento); }
+@media (max-width: 899px) {
+  .mk-servicios-hero-iconos { display: none; }
+}
+
 /* Chips de acceso directo en el propio héroe — antes era solo el h1 y
    una línea de texto, plano. Un chip por servicio (mismo color de
    acento y mismo orden que el propio bloque al que enlaza) para que
