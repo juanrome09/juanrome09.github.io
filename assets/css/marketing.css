@@ -228,14 +228,22 @@ body.marketing .banda { padding-block: var(--e-6); }
    La causa real es otra: una sección más alta que la pantalla, sticky
    y sin overflow, no pierde su contenido porque deba dejar de ser
    sticky — lo pierde porque nada dentro de ella puede hacer scroll
-   propio. Con overflow-y:auto y una altura FIJA (no solo mínima) de
-   100svh, la sección sigue sticky siempre (misma altura, tapa siempre
-   a la de antes, la cubre siempre la siguiente) y, si su contenido no
-   cabe, se puede recorrer con scroll DENTRO de ella sin que se mueva
-   de sitio — el scroll del ratón/dedo sigue pasando de largo hacia la
-   página en cuanto se llega al final de ese scroll interno (scroll
-   chaining nativo del navegador, sin JS). Cuando el contenido sí cabe
-   (el caso normal), overflow-y:auto no cambia nada visualmente.
+   propio. La primera solución (ya retirada, ver más abajo) le daba
+   overflow-y:auto para poder recorrerla con scroll DENTRO de la
+   sección sin que se moviera de sitio.
+
+   Tercera versión de este bloque — overflow-y:auto retirado a
+   petición del cliente: ese scroll interno entraba en conflicto con
+   el scroll normal de la página (el gesto del ratón/dedo quedaba
+   "atrapado" recorriendo la sección en vez de pasar a la siguiente, y
+   además dejaba de funcionar bien al redimensionar la ventana). Se
+   acepta el trade-off: si el contenido de una sección no cabe entera
+   en 100svh, ahora se recorta en vez de poder recorrerse con scroll —
+   preferible, según el cliente, a un scroll interno que no funciona
+   bien. La altura sigue siendo FIJA (no solo mínima) porque de eso
+   depende el propio efecto de apilado de arriba: si la sección
+   creciera con su contenido, dejaría de tapar siempre exactamente a
+   la anterior.
 
    svh, no dvh: en móvil, al llegar abajo del todo y deslizar apenas
    hacia arriba, la barra de direcciones del navegador reaparece;
@@ -246,14 +254,14 @@ body.marketing main > article {
   position: sticky;
   top: 0;
   height: 100svh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
   background: var(--mk-crema);
   display: flex;
   flex-direction: column;
   /* Centrado, pero solo si cabe: si el contenido no entra entero,
      ancla arriba (para que lo primero que se vea sea siempre el
-     principio) y dentro ya hace scroll propio en vez de recortarse. */
+     principio) y lo que sobre por abajo se recorta, en vez de
+     centrarse partido por los dos extremos. */
   justify-content: safe center;
   /* El hueco del nav va aquí, no en el body: así el color de fondo de
      CADA sección llega hasta arriba del todo, detrás de la píldora
@@ -351,18 +359,17 @@ body.marketing main::after {
    hay que dar más scroll de lo normal... la transición debe ser
    limpia". Causa real: una sección con MÁS contenido del que cabe en
    100svh sigue siendo sticky (eso está bien, es la base de todo el
-   sistema), pero antes de poder pasar a la siguiente hay que agotar
-   primero su scroll interno (overflow-y:auto) — el ratón/dedo se
-   siente "atascado" un tramo mientras recorre ese sobrante. Para
+   sistema) pero, al tener su altura fija en 100svh (ver más arriba),
+   ese sobrante o se recorta o hay que dejarlo salir de la sección. Para
    contenido que cabe de sobra (la inmensa mayoría de las secciones)
-   esto no se nota porque no hay sobrante que recorrer. Pero una
-   sección con una imagen 16:9 a todo el ancho (Dónde trabajamos) o un
-   formulario completo de contacto (Contacto) es, de por sí, más alta
-   que una pantalla — no hay margen ni tipografía que recortar sin
-   destrozar el contenido, así que la única solución honesta es que
-   ESA sección concreta no finja ser "una pantalla exacta": que sea un
-   bloque normal, con su altura real, recorrido con el scroll normal
-   de la página — mismo criterio que ya se aplicó al footer.
+   esto no se nota porque no hay sobrante. Pero una sección con una
+   imagen 16:9 a todo el ancho (Dónde trabajamos) o un formulario
+   completo de contacto (Contacto) es, de por sí, más alta que una
+   pantalla — no hay margen ni tipografía que recortar sin destrozar el
+   contenido, así que la única solución honesta es que ESA sección
+   concreta no finja ser "una pantalla exacta": que sea un bloque
+   normal, con su altura real, recorrido con el scroll normal de la
+   página — mismo criterio que ya se aplicó al footer.
    .mk-seccion-libre marca esas excepciones a mano (Dónde trabajamos
    en Nosotros; la única sección de Contacto) sin tocar el
    comportamiento de apilado del resto.
@@ -901,6 +908,19 @@ body.marketing .marketing-hero__linea {
   border: 1px solid transparent;
   position: relative;
   transition: background-color var(--dur-hover) ease, border-color var(--dur-hover) ease, transform var(--dur-hover) ease;
+  /* Petición del cliente: los cinco botones "Ver servicio" deben quedar
+     a la misma altura entre sí (la del nº3, el más largo — "Publicidad
+     digital — Meta Ads y Google Ads" — que es el que más empuja su
+     propio botón hacia abajo). Como .servicios-marketing ya reparte
+     estas tarjetas en fila (grid en escritorio, flex en el carrusel de
+     móvil, ver más abajo), y ambos por defecto estiran los ítems de una
+     misma fila a la misma altura (align-items: stretch), basta con que
+     cada tarjeta sea ella misma un contenedor flex en columna y el
+     botón se ancle abajo con margin-top:auto — la tarjeta más alta (la
+     del nº3) fija la altura de todas, y el resto de botones bajan solos
+     hasta esa misma línea sin tocar nada por página ni por breakpoint. */
+  display: flex;
+  flex-direction: column;
 }
 /* Cada tarjeta se tiñe al hover con su propio color de índice — el
    mismo que su numeral, no un coral genérico igual en las cinco — con
@@ -954,7 +974,13 @@ body.marketing .marketing-hero__linea {
    Dark Pink M. — el resto de botones .boton-mk-coral de la web
    (Enviar consulta, etc.) siguen en naranja, sin tocar. */
 .servicio-panel-mk .boton-mk-coral {
-  margin-top: var(--e-3);
+  /* margin-top:auto (no un valor fijo) es lo que de verdad ancla el
+     botón abajo del todo dentro de la tarjeta flex de arriba;
+     align-self:flex-start evita que además se estire a lo ancho de la
+     tarjeta entera (el comportamiento por defecto de un ítem flex en
+     una columna stretch) y quede como una barra en vez de una píldora. */
+  margin-top: auto;
+  align-self: flex-start;
   background: var(--mk-rosa-oscuro);
   border-color: var(--mk-rosa-oscuro);
 }
@@ -1068,13 +1094,20 @@ body.marketing .marketing-hero__linea {
    escritorio, sin una alternativa más ajustada para pantallas
    estrechas. */
 @media (max-width: 480px) {
-  .enfoque-mk { gap: 10px; margin-top: 12px !important; }
+  /* Un poco más ajustado que antes: al quitar el scroll interno de las
+     secciones (petición del cliente, ver la regla general de arriba),
+     esta sección concreta —"Cómo enfocamos", la única de Inicio con 4
+     ítems apilados en una sola columna en móvil— se quedaba unos 40px
+     más alta que el hueco disponible, así que ese sobrante se recortaba
+     en vez de dejarse ver. Apretando gap y márgenes ya no hace falta
+     recortar nada. */
+  .enfoque-mk { gap: 4px; margin-top: 4px !important; }
   /* Tamaño propio en móvil, no --titulo-1 (esa variable la comparten
      los títulos de verdad de cada página — bajarla más para que el
      numeral decorativo quepa mejor encogería también esos títulos,
      que ya están en su tamaño mínimo legible). */
-  .enfoque-mk__item__numero { font-size: 22px; margin-bottom: 4px; }
-  .enfoque-mk__item h3 { margin-bottom: 4px; }
+  .enfoque-mk__item__numero { font-size: 20px; margin-bottom: 2px; }
+  .enfoque-mk__item h3 { margin-bottom: 2px; }
 }
 .enfoque-mk__item__numero {
   display: block;
@@ -1466,11 +1499,10 @@ body.marketing .cierre-marketing__linea {
    opacidad para no empastar el texto largo que hay encima. Puramente
    decorativa: position:absolute + z-index negativo, no ocupa espacio
    ni cambia la altura del bloque. */
-/* overflow-x, no el shorthand overflow: el shorthand pisaría el
-   overflow-y:auto que este mismo elemento ya tiene puesto (es un
-   main > article, con la regla general de las hojas sticky) y
-   volvería a romper el scroll interno del contenido que no cabe en
-   100svh — el mismo bug, ya cazado una vez esta sesión, en el footer. */
+/* Solo overflow-x: el eje Y ya lo trae oculto de la regla general de
+   las hojas sticky (main > article, ver más arriba) — no hace falta
+   repetirlo, y así si el día de mañana esa regla general cambia, esta
+   no se queda con un valor de overflow-y suelto y desactualizado. */
 .servicio-bloque-mk { position: relative; overflow-x: hidden; }
 .servicio-bloque-mk::after {
   content: '';
@@ -1730,8 +1762,13 @@ body.marketing .cierre-marketing__linea {
 /* Móvil: las 4 tarjetas pasan de 2×2 a una columna — mismo motivo que
    .enfoque-mk más arriba, el doble de "filas" que en escritorio. */
 @media (max-width: 480px) {
-  .mk-valores { gap: 8px; margin-top: 12px !important; }
-  .mk-valores__item { padding: 12px 14px; gap: 10px; }
+  /* Un poco más ajustado que antes: al quitar el scroll interno de las
+     secciones (petición del cliente, ver la regla general de main >
+     section más arriba), esta sección se quedaba unos 14px más alta
+     que el hueco disponible, y ese sobrante se recortaba en vez de
+     dejarse ver. */
+  .mk-valores { gap: 6px; margin-top: 4px !important; }
+  .mk-valores__item { padding: 10px 14px; gap: 10px; }
   .mk-valores__icono { width: 36px; height: 36px; }
   .mk-valores__icono svg { width: 18px; height: 18px; }
 }
