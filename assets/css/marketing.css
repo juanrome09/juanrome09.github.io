@@ -1074,6 +1074,51 @@ body.marketing .cierre-marketing__linea {
 
 /* ---------- Servicios (página): tarjetas blancas alternando con arena ---------- */
 
+/* Chips de acceso directo en el propio héroe — antes era solo el h1 y
+   una línea de texto, plano. Un chip por servicio (mismo color de
+   acento y mismo orden que el propio bloque al que enlaza) para que
+   ya desde arriba se vea que hay cinco servicios distintos, no una
+   sola pestaña de texto — y de paso deja saltar directo a cualquiera
+   sin desplazarse por los cuatro anteriores. */
+.mk-servicios-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.mk-servicios-chips a:nth-child(1) { --mk-servicio-acento: var(--mk-turquesa); --mk-servicio-acento-rgb: var(--mk-turquesa-rgb); }
+.mk-servicios-chips a:nth-child(2) { --mk-servicio-acento: var(--mk-verde-lima); --mk-servicio-acento-rgb: var(--mk-verde-lima-rgb); }
+.mk-servicios-chips a:nth-child(3) { --mk-servicio-acento: var(--mk-verde-mar); --mk-servicio-acento-rgb: var(--mk-verde-mar-rgb); }
+.mk-servicios-chips a:nth-child(4) { --mk-servicio-acento: var(--mk-violeta); --mk-servicio-acento-rgb: var(--mk-violeta-rgb); }
+.mk-servicios-chips a:nth-child(5) { --mk-servicio-acento: var(--mk-dorado); --mk-servicio-acento-rgb: var(--mk-dorado-rgb); }
+.mk-servicios-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px 8px 8px;
+  border-radius: 999px;
+  background: rgba(var(--mk-servicio-acento-rgb), .1);
+  color: var(--mk-tinta);
+  font-size: var(--menor);
+  text-decoration: none;
+  transition: background-color var(--dur-hover) ease;
+}
+.mk-servicios-chip:hover, .mk-servicios-chip:focus-visible {
+  background: rgba(var(--mk-servicio-acento-rgb), .22);
+}
+.mk-servicios-chip span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--mk-servicio-acento);
+  color: var(--mk-crema);
+  font-family: var(--f-titulos);
+  font-weight: 500;
+  font-size: 13px;
+}
+
 .servicio-bloque-mk {
   padding-block: var(--e-6);
 }
@@ -1090,19 +1135,94 @@ body.marketing .cierre-marketing__linea {
   align-items: start;
 }
 @media (min-width: 900px) { .servicio-bloque-mk__interior { grid-template-columns: .5fr 1fr; gap: var(--e-6); } }
+/* Petición del cliente: "mejorar visualmente" también esta pestaña —
+   antes cada servicio era solo un número grande y texto, los cinco
+   iguales salvo el color del numeral. Se añade una variable de acento
+   por posición (--mk-servicio-acento), mismo orden y mismos cinco
+   colores que ya usaban los numerales aquí y las tarjetas de
+   Servicios/Cómo enfocamos en Inicio — no una paleta nueva, solo se
+   reutiliza en más sitios dentro del mismo bloque: el icono, la marca
+   de check de la lista, el botón "Consultar" y la mancha de fondo. */
+.servicio-bloque-mk:nth-of-type(1) { --mk-servicio-acento: var(--mk-turquesa); --mk-servicio-acento-rgb: var(--mk-turquesa-rgb); }
+.servicio-bloque-mk:nth-of-type(2) { --mk-servicio-acento: var(--mk-verde-lima); --mk-servicio-acento-rgb: var(--mk-verde-lima-rgb); }
+.servicio-bloque-mk:nth-of-type(3) { --mk-servicio-acento: var(--mk-verde-mar); --mk-servicio-acento-rgb: var(--mk-verde-mar-rgb); }
+.servicio-bloque-mk:nth-of-type(4) { --mk-servicio-acento: var(--mk-violeta); --mk-servicio-acento-rgb: var(--mk-violeta-rgb); }
+.servicio-bloque-mk:nth-of-type(5) { --mk-servicio-acento: var(--mk-dorado); --mk-servicio-acento-rgb: var(--mk-dorado-rgb); }
 .servicio-bloque-mk__numero {
   font-family: var(--f-titulos);
   font-weight: 500;
   font-size: var(--titulo-1);
+  color: var(--mk-servicio-acento);
 }
-/* Mismo orden de color que los numerales de inicio (turquesa, verde
-   lima, verde mar, violeta, dorado): un 01 siempre es el mismo color
-   en toda la web, aquí en su versión a tamaño completo. */
-.servicio-bloque-mk:nth-of-type(1) .servicio-bloque-mk__numero { color: var(--mk-turquesa); }
-.servicio-bloque-mk:nth-of-type(2) .servicio-bloque-mk__numero { color: var(--mk-verde-lima); }
-.servicio-bloque-mk:nth-of-type(3) .servicio-bloque-mk__numero { color: var(--mk-verde-mar); }
-.servicio-bloque-mk:nth-of-type(4) .servicio-bloque-mk__numero { color: var(--mk-violeta); }
-.servicio-bloque-mk:nth-of-type(5) .servicio-bloque-mk__numero { color: var(--mk-dorado); }
+/* Insignia circular con el icono propio de cada servicio, encima del
+   numeral — mismo gesto "insignia de color" que ya usan las tarjetas
+   de Nuestros valores, para que las tres páginas compartan un mismo
+   lenguaje visual sin ser el mismo diseño calcado. */
+.servicio-bloque-mk__marca {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-2);
+}
+/* Bug real de overflow, no solo estética: por debajo de 900px la
+   rejilla .servicio-bloque-mk__interior pasa a una sola columna (ver
+   la media query de más abajo), así que el icono y el número dejan de
+   ir al lado del texto — pasan a ir ENCIMA. En columna (como en
+   escritorio) eso suma icono + separación + número como altura
+   extra ANTES de una fila de contenido que ya de por sí llena la
+   pantalla; en escritorio no pasaba nada porque esa columna nunca era
+   la más alta de las dos, pero en móvil sí lo era, y de sobra: se
+   quedaba corto por unos 78px, con scroll interno de más antes de
+   pasar al siguiente servicio — justo lo que se acaba de arreglar en
+   el resto de la web. Con el icono al lado del número (fila, no
+   columna) la altura de este bloque es como mucho la del propio
+   icono, la misma que ya tenía solo con el número. */
+@media (max-width: 899px) {
+  .servicio-bloque-mk__marca { flex-direction: row; align-items: center; gap: var(--e-2); }
+}
+.servicio-bloque-mk__icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(var(--mk-servicio-acento-rgb), .16);
+}
+.servicio-bloque-mk__icono svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: var(--mk-servicio-acento);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* Mancha de color muy difuminada de fondo, la misma idea que en
+   Nuestros valores — aquí sobre todo el bloque (article), no sobre
+   una tarjeta suelta, así que va bastante más grande y baja de
+   opacidad para no empastar el texto largo que hay encima. Puramente
+   decorativa: position:absolute + z-index negativo, no ocupa espacio
+   ni cambia la altura del bloque. */
+/* overflow-x, no el shorthand overflow: el shorthand pisaría el
+   overflow-y:auto que este mismo elemento ya tiene puesto (es un
+   main > article, con la regla general de las hojas sticky) y
+   volvería a romper el scroll interno del contenido que no cabe en
+   100svh — el mismo bug, ya cazado una vez esta sesión, en el footer. */
+.servicio-bloque-mk { position: relative; overflow-x: hidden; }
+.servicio-bloque-mk::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  right: -120px;
+  width: 420px;
+  height: 420px;
+  margin-top: -210px;
+  border-radius: 50%;
+  background: rgba(var(--mk-servicio-acento-rgb), .12);
+  filter: blur(60px);
+}
+.servicio-bloque-mk__interior { position: relative; z-index: 1; }
 .servicio-bloque-mk__lista {
   margin-top: var(--e-3);
   display: flex;
@@ -1111,18 +1231,59 @@ body.marketing .cierre-marketing__linea {
   max-width: 56ch;
 }
 .servicio-bloque-mk__lista li {
-  padding-left: var(--e-3);
-  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 18px;
 }
-.servicio-bloque-mk__lista li::before {
-  content: '';
-  position: absolute;
-  left: 0; top: .65em;
-  width: 8px; height: 8px;
+/* El check: mismo icono en las tres listas de cada servicio, color de
+   acento propio de ese servicio — sustituye el punto liso genérico de
+   antes (que era siempre coral, sin relación con el color del propio
+   servicio). */
+.servicio-bloque-mk__check {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  background: var(--mk-coral);
+  background: rgba(var(--mk-servicio-acento-rgb), .16);
 }
+.servicio-bloque-mk__check svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: var(--mk-servicio-acento);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* CTA "Consultar este servicio": antes un enlace de texto suelto,
+   ahora un botón fantasma con el color propio del servicio — mismo
+   patrón que .boton-mk-ghost (borde + relleno al hover), pero con
+   color por posición en vez de coral fijo, para que cierre el bloque
+   con el mismo acento que abre el icono de arriba. */
+.servicio-bloque-mk__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: var(--e-3);
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 1.5px solid var(--mk-servicio-acento);
+  color: var(--mk-servicio-acento);
+  font-family: var(--f-titulos);
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color var(--dur-hover) ease, color var(--dur-hover) ease;
+}
+.servicio-bloque-mk__cta span { transition: transform var(--dur-hover) ease; }
+.servicio-bloque-mk__cta:hover, .servicio-bloque-mk__cta:focus-visible {
+  background: var(--mk-servicio-acento);
+  color: var(--mk-crema);
+}
+.servicio-bloque-mk__cta:hover span, .servicio-bloque-mk__cta:focus-visible span { transform: translateX(4px); }
 
 /* ---------- Nosotros ---------- */
 
