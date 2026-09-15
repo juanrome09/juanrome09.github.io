@@ -1553,20 +1553,24 @@ body.marketing .cierre-marketing__linea {
 @media (hover: hover) and (pointer: fine) {
   .mk-valores__item:hover { transform: translateY(-6px); background: rgba(var(--mk-valores-acento-rgb), .14); }
 }
-/* La mancha difuminada: puro adorno, siempre detrás del icono y del
-   texto (z-index negativo dentro de su propio "isolate", así el
-   filter:blur no se cuela sobre elementos de fuera de la tarjeta). */
+/* La mancha de color: bug real reportado por el cliente ("hay un
+   desfase de color, del lado derecho no se ven bien") — el círculo de
+   130px con filter:blur(28px) de antes no era tan alto como la propia
+   tarjeta (129px), así que el blur no llegaba a disolver el borde del
+   todo: se veía un canto de color casi recto en vez de un degradado
+   suave, más notorio con verde lima y violeta (colores más vivos) que
+   con turquesa o verde mar. filter:blur en un elemento pequeño es
+   justo el caso donde peor se comporta (el navegador tiene que
+   "adivinar" cómo disolver un borde que apenas le sobra sitio).
+   Cambiado a radial-gradient: se disuelve matemáticamente a
+   transparente sin ningún borde que dibujar, así que no puede volver
+   a pasar sea cual sea el tamaño real de la tarjeta. */
 .mk-valores__item::after {
   content: '';
   position: absolute;
   z-index: -1;
-  top: -30px;
-  right: -30px;
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  background: rgba(var(--mk-valores-acento-rgb), .35);
-  filter: blur(28px);
+  inset: 0;
+  background: radial-gradient(circle at 100% 0%, rgba(var(--mk-valores-acento-rgb), .4), transparent 70%);
 }
 .mk-valores__icono {
   flex-shrink: 0;
