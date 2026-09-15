@@ -895,10 +895,14 @@ body.marketing .marketing-hero__linea {
   overflow: hidden;
   z-index: 0;
   pointer-events: none;
-  /* Petición del cliente: primero bajado al 20%, pero seguía "muy
-     fuerte" — al 10% queda de fondo, sutil de verdad, sin competir con
-     el título ni las tarjetas de delante. */
-  opacity: .1;
+  /* Petición del cliente: "transparencia" se refiere a lo que se le
+     resta al diseño original (100% opacidad), no a la opacidad final
+     directamente — un 10% de transparencia es opacity:.9 (casi entero,
+     apenas suavizado), no opacity:.1 (que lo deja casi invisible, como
+     pasó en los dos intentos anteriores: 20% de "transparencia" se
+     había puesto como opacity:.2 y luego opacity:.1, cuando debían ser
+     opacity:.8 y opacity:.9). */
+  opacity: .9;
 }
 .mk-fondo-decorativo img {
   display: block;
@@ -1052,21 +1056,20 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
 .trabajo-mk__pieza::before {
   content: '';
   position: absolute;
-  /* Petición del cliente: más notorio que la primera versión — más
-     bleed alrededor del recuadro (-20%→-32%) y el color más saturado
-     y sostenido antes de desvanecerse (más alfa, y "transparent" más
-     lejos del centro) en vez de apagarse enseguida. */
-  inset: -32%;
+  /* Ida y vuelta a petición del cliente: la primera versión (-20%,
+     menos alfa) se quedaba corta; la segunda (-32%, más alfa) se pasó
+     "ya es mucho"; este es el punto intermedio. */
+  inset: -26%;
   z-index: -1;
 }
 .trabajo-mk__pieza:nth-child(1)::before {
-  background: radial-gradient(rgba(var(--mk-turquesa-rgb), .8), transparent 78%);
+  background: radial-gradient(rgba(var(--mk-turquesa-rgb), .65), transparent 74%);
 }
 .trabajo-mk__pieza:nth-child(2)::before {
-  background: radial-gradient(rgba(var(--mk-dorado-rgb), .75), transparent 78%);
+  background: radial-gradient(rgba(var(--mk-dorado-rgb), .6), transparent 74%);
 }
 .trabajo-mk__pieza:nth-child(3)::before {
-  background: radial-gradient(rgba(var(--mk-violeta-rgb), .75), transparent 78%);
+  background: radial-gradient(rgba(var(--mk-violeta-rgb), .6), transparent 74%);
 }
 .trabajo-mk__pieza .placeholder-img {
   border-radius: var(--mk-r-imagen);
