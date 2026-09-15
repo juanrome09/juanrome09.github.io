@@ -868,16 +868,18 @@ body.marketing .marketing-hero__linea {
 /* ---------- Fondo decorativo genérico (Servicios, Cómo enfocamos, FAQ) ----------
    Las tres secciones de Inicio con un diseño de fondo entregado por el
    cliente ya montado como PNG comparten la misma mecánica, solo cambia
-   el PNG y su proporción propia (por eso aspect-ratio va en línea, en
-   el HTML de cada una, no aquí). Ancho 100% y alto por aspect-ratio
-   (no object-fit:cover a pantalla completa): así cada imagen nunca se
-   recorta por los lados en ningún ancho de pantalla, solo se escala
-   entera — en vez de perder los extremos del diseño en móvil, donde la
-   sección es mucho más alta y estrecha que las imágenes originales
-   (todas muy apaisadas). Absoluta dentro de la propia sección, que ya
-   es position:sticky (no hace falta forzarle un position:relative
-   aparte) — pointer-events:none para que no interfiera con nada
-   clicable delante.
+   el PNG. inset:0 (no solo width:100% + aspect-ratio, como en la
+   primera versión) para que el fondo cubra SIEMPRE el 100% del alto
+   real de la sección, sea cual sea — la primera versión, pensada para
+   no recortar nunca la imagen, dejaba un bloque vacío al final de la
+   sección en vez de cubrirla entera cuando la sección era más alta que
+   la proporción propia de la imagen (justo lo que pasaba en "Cómo
+   enfocamos"). Petición del cliente: mejor recortar o estirar el
+   diseño con tal de que llene todo el hueco, así que object-fit:cover
+   en vez de mantener la proporción a toda costa. Absoluta dentro de la
+   propia sección, que ya es position:sticky (no hace falta forzarle un
+   position:relative aparte) — pointer-events:none para que no
+   interfiera con nada clicable delante.
    position:relative + z-index en .contenedor es obligatorio, no
    decorativo: un position:absolute se pinta SIEMPRE después (encima)
    de sus hermanos position:static sea cual sea su orden en el HTML —
@@ -889,9 +891,7 @@ body.marketing .marketing-hero__linea {
    <section> del HTML. */
 .mk-fondo-decorativo {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+  inset: 0;
   overflow: hidden;
   z-index: 0;
   pointer-events: none;
