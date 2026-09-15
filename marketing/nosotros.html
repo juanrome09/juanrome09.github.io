@@ -78,18 +78,55 @@
     </div>
     <div class="contenedor">
       <div class="mk-mapa-mv">
+        <svg class="mk-mapa-mv__fondo" viewBox="0 0 1000 380" preserveAspectRatio="none" aria-hidden="true">
+          <g class="mk-mapa-mv__curvas-nivel">
+            <g transform="translate(230,150)">
+              <path transform="scale(1.35)" d="M -150,-20 C -140,-90 -40,-110 40,-90 C 130,-70 160,-10 130,50 C 100,100 20,110 -50,90 C -120,70 -160,40 -150,-20 Z" />
+              <path transform="scale(.95)" d="M -150,-20 C -140,-90 -40,-110 40,-90 C 130,-70 160,-10 130,50 C 100,100 20,110 -50,90 C -120,70 -160,40 -150,-20 Z" />
+              <path transform="scale(.6)" d="M -150,-20 C -140,-90 -40,-110 40,-90 C 130,-70 160,-10 130,50 C 100,100 20,110 -50,90 C -120,70 -160,40 -150,-20 Z" />
+            </g>
+            <g transform="translate(760,300) rotate(20)">
+              <path transform="scale(1.1)" d="M -150,-20 C -140,-90 -40,-110 40,-90 C 130,-70 160,-10 130,50 C 100,100 20,110 -50,90 C -120,70 -160,40 -150,-20 Z" />
+              <path transform="scale(.75)" d="M -150,-20 C -140,-90 -40,-110 40,-90 C 130,-70 160,-10 130,50 C 100,100 20,110 -50,90 C -120,70 -160,40 -150,-20 Z" />
+              <path transform="scale(.45)" d="M -150,-20 C -140,-90 -40,-110 40,-90 C 130,-70 160,-10 130,50 C 100,100 20,110 -50,90 C -120,70 -160,40 -150,-20 Z" />
+            </g>
+          </g>
+          <g class="mk-mapa-mv__icono" transform="translate(470,255)">
+            <path d="M0,40 L28,-10 L48,20 L68,-30 L100,40 Z" />
+          </g>
+          <g class="mk-mapa-mv__icono" transform="translate(150,330) scale(.8)">
+            <path d="M0,0 L0,60" />
+            <path class="mk-mapa-mv__bandera-tela" d="M0,4 L36,16 L0,30 Z" />
+          </g>
+          <g class="mk-mapa-mv__icono" transform="translate(600,120) scale(.6)">
+            <path d="M0,0 L26,26 M26,0 L0,26" />
+          </g>
+          <g class="mk-mapa-mv__icono" transform="translate(330,290) scale(.5)">
+            <path d="M0,0 L26,26 M26,0 L0,26" />
+          </g>
+        </svg>
         <svg class="mk-mapa-mv__ruta" viewBox="0 0 1000 380" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M 6 15 C 6 220, 6 220, 250 225 C 500 228, 850 205, 994 199" />
+          <path d="M 6 15 C 6 140, 90 160, 180 190 C 320 235, 260 290, 400 305 C 520 317, 560 250, 680 260 C 820 271, 900 235, 994 199" />
         </svg>
         <div class="mk-mapa-mv__punto mk-mapa-mv__punto--mision reveal">
-          <span class="mk-mapa-mv__pin" aria-hidden="true"></span>
+          <svg class="mk-mapa-mv__pin" viewBox="0 0 60 76" aria-hidden="true">
+            <circle cx="30" cy="66" r="9" class="mk-mapa-mv__pin-halo" />
+            <circle cx="30" cy="66" r="16" class="mk-mapa-mv__pin-halo mk-mapa-mv__pin-halo--ext" />
+            <path d="M30 66C30 66 52 38 52 21C52 9.4 42.2 0 30 0C17.8 0 8 9.4 8 21C8 38 30 66 30 66Z" class="mk-mapa-mv__pin-cuerpo" />
+            <circle cx="30" cy="21" r="8" class="mk-mapa-mv__pin-nucleo" />
+          </svg>
           <div>
             <h2 class="mk-titulo-degradado">Misión</h2>
             <p class="cuerpo-lg" style="margin-top:6px;max-width:38ch">Impulsar el crecimiento digital de nuestros clientes a través de estrategias de marketing innovadoras y personalizadas.</p>
           </div>
         </div>
         <div class="mk-mapa-mv__punto mk-mapa-mv__punto--vision reveal">
-          <span class="mk-mapa-mv__pin" aria-hidden="true"></span>
+          <svg class="mk-mapa-mv__pin" viewBox="0 0 60 76" aria-hidden="true">
+            <circle cx="30" cy="66" r="9" class="mk-mapa-mv__pin-halo" />
+            <circle cx="30" cy="66" r="16" class="mk-mapa-mv__pin-halo mk-mapa-mv__pin-halo--ext" />
+            <path d="M30 66C30 66 52 38 52 21C52 9.4 42.2 0 30 0C17.8 0 8 9.4 8 21C8 38 30 66 30 66Z" class="mk-mapa-mv__pin-cuerpo" />
+            <circle cx="30" cy="21" r="8" class="mk-mapa-mv__pin-nucleo" />
+          </svg>
           <div>
             <h2 class="mk-titulo-degradado">Visión</h2>
             <p class="cuerpo-lg" style="margin-top:6px;max-width:38ch">Ser la agencia de referencia en marketing digital en Ibiza, ayudando a empresas y emprendedores a alcanzar su máximo potencial en el entorno digital.</p>

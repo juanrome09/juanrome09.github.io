@@ -1154,22 +1154,31 @@ body.marketing .cierre-marketing__linea {
 }
 
 /* ---------- Misión y Visión: mapa de ruta ----------
-   Petición del cliente, a partir de una imagen de referencia (no hace
-   falta calcarla, pero sí acercarse): dos puntos de un trayecto — la
-   Misión como punto de partida, la Visión como destino — unidos por
-   una línea discontinua, cada uno con su propio "pin" de mapa. En vez
-   de dos bloques de texto sueltos y ya, esto da la idea de que la
-   Visión es a dónde se llega siguiendo la Misión, no dos frases
-   independientes.
-   position:relative + altura fija en escritorio para poder colocar el
-   SVG de la ruta y los dos puntos por encima uno del otro sin que se
-   estorben; en móvil (más abajo) vuelve a ser flujo normal apilado,
-   como antes del rediseño, porque una ruta diagonal no tiene sentido
-   en una columna estrecha. */
+   Petición del cliente, a partir de una imagen de referencia: un mapa
+   de curvas de nivel de fondo (no solo la línea discontinua suelta),
+   con un par de iconos sueltos (una montaña, una bandera, un par de
+   "x" de marcador de mapa) y dos puntos de un trayecto — la Misión
+   como punto de partida, la Visión como destino — unidos por una ruta
+   discontinua bien serpenteada, cada uno con su propio pin de mapa de
+   verdad (no un punto suelto) y su halo de "aquí estoy" debajo.
+
+   Tres capas separadas, todas dentro de .mk-mapa-mv (position:relative
+   + altura fija en escritorio):
+   1. .mk-mapa-mv__fondo — las curvas de nivel y los iconos sueltos,
+      un solo SVG en z-index:0, muy tenue (no debe competir con el
+      texto ni con la ruta).
+   2. .mk-mapa-mv__ruta — la línea discontinua, en z-index:0 también
+      pero pintada DESPUÉS del fondo (más marcada, color de marca).
+   3. .mk-mapa-mv__punto — los dos bloques de pin+texto, en z-index:1,
+      por encima de las dos capas anteriores.
+   En móvil (más abajo) todo esto desaparece salvo los pines: una ruta
+   y un mapa de fondo no tienen sitio en una columna estrecha, así que
+   vuelve a ser flujo normal apilado, como antes del rediseño. */
 .mk-mapa-mv {
   position: relative;
   height: 420px;
 }
+.mk-mapa-mv__fondo,
 .mk-mapa-mv__ruta {
   position: absolute;
   inset: 0;
@@ -1177,20 +1186,43 @@ body.marketing .cierre-marketing__linea {
   height: 100%;
   z-index: 0;
 }
+/* Curvas de nivel: la misma silueta irregular (un óvalo "abollado",
+   nunca un círculo perfecto — así no se lee como una diana) repetida
+   a tres tamaños dentro de un mismo <g>, imitando las líneas de un
+   mapa topográfico. Dos grupos, cada uno en una esquina vacía del
+   mapa (nunca debajo del texto de Misión/Visión), con un giro
+   distinto para que no se vean como copias exactas la una de la otra. */
+.mk-mapa-mv__curvas-nivel path {
+  fill: none;
+  stroke: var(--mk-tinta);
+  stroke-width: 1.5;
+  opacity: .1;
+}
+/* Montaña, bandera y "x" de marcador: mismo gris tenue que las curvas
+   de nivel, trazo sin relleno salvo el triángulo de la bandera. */
+.mk-mapa-mv__icono path {
+  fill: none;
+  stroke: var(--mk-tinta);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  opacity: .16;
+}
+.mk-mapa-mv__bandera-tela { fill: var(--mk-tinta); stroke: none; }
 .mk-mapa-mv__ruta path {
   fill: none;
   stroke: var(--mk-violeta);
   stroke-width: 3;
   stroke-linecap: round;
   stroke-dasharray: 2 14;
-  opacity: .55;
+  opacity: .6;
 }
 .mk-mapa-mv__punto {
   position: absolute;
   z-index: 1;
   display: flex;
   align-items: flex-start;
-  gap: var(--e-2);
+  gap: 10px;
   max-width: 400px;
 }
 .mk-mapa-mv__punto--mision { top: 0; left: 0; }
@@ -1201,26 +1233,29 @@ body.marketing .cierre-marketing__linea {
   flex-direction: row-reverse;
   margin-left: auto;
 }
-/* El pin: un punto sólido con dos halos concéntricos más claros
-   (rgba del mismo violeta, sin inventar un tono nuevo) — el mismo
-   gesto que el marcador de la imagen de referencia, sin necesitar un
-   icono/imagen aparte. */
+/* El pin de verdad (gota + núcleo blanco, como cualquier marcador de
+   mapa) en vez de un punto suelto, con su halo de "aquí estoy" — dos
+   círculos concéntricos más claros, mismo violeta con transparencia,
+   centrados en la PUNTA del pin (donde de verdad "toca" el mapa), no
+   en el pin entero. */
 .mk-mapa-mv__pin {
   flex-shrink: 0;
-  margin-top: 10px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--mk-violeta);
-  box-shadow: 0 0 0 7px rgba(var(--mk-violeta-rgb), .18), 0 0 0 14px rgba(var(--mk-violeta-rgb), .08);
+  width: 32px;
+  height: 41px;
+  overflow: visible;
 }
+.mk-mapa-mv__pin-halo { fill: var(--mk-violeta); }
+.mk-mapa-mv__pin-halo { opacity: .18; }
+.mk-mapa-mv__pin-halo--ext { opacity: .09; }
+.mk-mapa-mv__pin-cuerpo { fill: var(--mk-violeta); }
+.mk-mapa-mv__pin-nucleo { fill: var(--mk-crema); }
 .mk-mapa-mv__punto h2 { margin-bottom: 2px; }
 @media (max-width: 767px) {
-  /* Sin la ruta diagonal: en una columna estrecha no queda sitio para
-     que se lea, y con los dos puntos apilados normales (uno debajo del
-     otro) ya se entiende igual la idea de trayecto sin ella. */
+  /* Sin ruta ni mapa de fondo: en una columna estrecha no queda sitio
+     para que se lean, y con los dos puntos apilados normales (uno
+     debajo del otro) ya se entiende igual la idea de trayecto. */
   .mk-mapa-mv { height: auto; }
-  .mk-mapa-mv__ruta { display: none; }
+  .mk-mapa-mv__ruta, .mk-mapa-mv__fondo { display: none; }
   .mk-mapa-mv__punto {
     position: static;
     max-width: none;
