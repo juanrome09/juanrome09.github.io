@@ -895,10 +895,10 @@ body.marketing .marketing-hero__linea {
   overflow: hidden;
   z-index: 0;
   pointer-events: none;
-  /* Petición del cliente: el diseño se veía "muy fuerte" a opacidad
-     completa — al 20% queda de fondo, sutil, sin competir con el
-     título ni las tarjetas de delante. */
-  opacity: .2;
+  /* Petición del cliente: primero bajado al 20%, pero seguía "muy
+     fuerte" — al 10% queda de fondo, sutil de verdad, sin competir con
+     el título ni las tarjetas de delante. */
+  opacity: .1;
 }
 .mk-fondo-decorativo img {
   display: block;
@@ -1052,17 +1052,21 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
 .trabajo-mk__pieza::before {
   content: '';
   position: absolute;
-  inset: -20%;
+  /* Petición del cliente: más notorio que la primera versión — más
+     bleed alrededor del recuadro (-20%→-32%) y el color más saturado
+     y sostenido antes de desvanecerse (más alfa, y "transparent" más
+     lejos del centro) en vez de apagarse enseguida. */
+  inset: -32%;
   z-index: -1;
 }
 .trabajo-mk__pieza:nth-child(1)::before {
-  background: radial-gradient(rgba(var(--mk-turquesa-rgb), .55), transparent 70%);
+  background: radial-gradient(rgba(var(--mk-turquesa-rgb), .8), transparent 78%);
 }
 .trabajo-mk__pieza:nth-child(2)::before {
-  background: radial-gradient(rgba(var(--mk-dorado-rgb), .5), transparent 70%);
+  background: radial-gradient(rgba(var(--mk-dorado-rgb), .75), transparent 78%);
 }
 .trabajo-mk__pieza:nth-child(3)::before {
-  background: radial-gradient(rgba(var(--mk-violeta-rgb), .5), transparent 70%);
+  background: radial-gradient(rgba(var(--mk-violeta-rgb), .75), transparent 78%);
 }
 .trabajo-mk__pieza .placeholder-img {
   border-radius: var(--mk-r-imagen);
