@@ -1056,20 +1056,27 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
 .trabajo-mk__pieza::before {
   content: '';
   position: absolute;
-  /* Ida y vuelta a petición del cliente: la primera versión (-20%,
-     menos alfa) se quedaba corta; la segunda (-32%, más alfa) se pasó
-     "ya es mucho"; este es el punto intermedio. */
   inset: -26%;
   z-index: -1;
 }
+/* Bug real, el de "se ven los bordes de la caja": por defecto
+   radial-gradient dimensiona la elipse a farthest-corner, así que en
+   una caja rectangular (no cuadrada) el color todavía no ha llegado a
+   transparent del todo justo en el lado más corto — se nota como un
+   corte recto ahí, no como un resplandor difuminado. closest-side
+   dimensiona la elipse para que quepa entera dentro de la propia caja
+   (toca el lado más cercano, no la esquina más lejana), así que con
+   "transparent" bastante antes del 100% se apaga del todo sin llegar
+   nunca al borde — ya no hay ningún filo que se pueda ver. También más
+   tenue en general, a petición del cliente. */
 .trabajo-mk__pieza:nth-child(1)::before {
-  background: radial-gradient(rgba(var(--mk-turquesa-rgb), .65), transparent 74%);
+  background: radial-gradient(ellipse closest-side, rgba(var(--mk-turquesa-rgb), .4), transparent 85%);
 }
 .trabajo-mk__pieza:nth-child(2)::before {
-  background: radial-gradient(rgba(var(--mk-dorado-rgb), .6), transparent 74%);
+  background: radial-gradient(ellipse closest-side, rgba(var(--mk-dorado-rgb), .35), transparent 85%);
 }
 .trabajo-mk__pieza:nth-child(3)::before {
-  background: radial-gradient(rgba(var(--mk-violeta-rgb), .6), transparent 74%);
+  background: radial-gradient(ellipse closest-side, rgba(var(--mk-violeta-rgb), .35), transparent 85%);
 }
 .trabajo-mk__pieza .placeholder-img {
   border-radius: var(--mk-r-imagen);
