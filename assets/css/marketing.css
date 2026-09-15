@@ -1266,6 +1266,83 @@ body.marketing .cierre-marketing__linea {
   .mk-mapa-mv__punto--vision { margin-top: var(--e-4); }
 }
 
+/* ---------- Nuestros valores: tarjetas con icono ----------
+   Petición del cliente: "más diseño" también aquí, pero DISTINTO del
+   mapa de Misión/Visión — no otro mapa, ni la rejilla de numerales
+   grandes que ya usa "Cómo enfocamos" (misma clase .enfoque-mk,
+   deliberadamente sin tocar: es la de Inicio, no la de esta página).
+   Cuatro tarjetas con icono propio (línea, no relleno, mismo grosor
+   que el resto de iconos del sitio) dentro de una insignia circular
+   de color, más una mancha de color muy difuminada en la esquina de
+   cada tarjeta — el mismo gesto "insignia + mancha" en las cuatro,
+   pero cada una con su propio color, para que se lean como un
+   conjunto y no como cuatro piezas sueltas. Los cuatro colores son
+   los mismos complementarios y en el mismo orden que ya usan las
+   tarjetas de Servicios y "Cómo enfocamos" (turquesa, verde lima,
+   verde mar, violeta) — coherencia de marca, no una paleta nueva. */
+.mk-valores {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--e-3);
+}
+@media (min-width: 700px) {
+  .mk-valores { grid-template-columns: repeat(2, 1fr); gap: var(--e-4); }
+}
+.mk-valores__item:nth-child(1) { --mk-valores-acento: var(--mk-turquesa); --mk-valores-acento-rgb: var(--mk-turquesa-rgb); }
+.mk-valores__item:nth-child(2) { --mk-valores-acento: var(--mk-verde-lima); --mk-valores-acento-rgb: var(--mk-verde-lima-rgb); }
+.mk-valores__item:nth-child(3) { --mk-valores-acento: var(--mk-verde-mar); --mk-valores-acento-rgb: var(--mk-verde-mar-rgb); }
+.mk-valores__item:nth-child(4) { --mk-valores-acento: var(--mk-violeta); --mk-valores-acento-rgb: var(--mk-violeta-rgb); }
+.mk-valores__item {
+  position: relative;
+  display: flex;
+  gap: var(--e-3);
+  align-items: flex-start;
+  padding: 22px;
+  border-radius: var(--r-panel);
+  background: rgba(var(--mk-valores-acento-rgb), .08);
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform var(--dur-hover) ease, background-color var(--dur-hover) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .mk-valores__item:hover { transform: translateY(-6px); background: rgba(var(--mk-valores-acento-rgb), .14); }
+}
+/* La mancha difuminada: puro adorno, siempre detrás del icono y del
+   texto (z-index negativo dentro de su propio "isolate", así el
+   filter:blur no se cuela sobre elementos de fuera de la tarjeta). */
+.mk-valores__item::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: -30px;
+  right: -30px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: rgba(var(--mk-valores-acento-rgb), .35);
+  filter: blur(28px);
+}
+.mk-valores__icono {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(var(--mk-valores-acento-rgb), .18);
+}
+.mk-valores__icono svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: var(--mk-valores-acento);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.mk-valores__item h3 { margin-bottom: 4px; }
+
 /* ---------- Contacto ---------- */
 
 .contacto-grid-mk {
