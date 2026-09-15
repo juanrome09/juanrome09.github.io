@@ -460,13 +460,6 @@ body.marketing .pie {
   align-items: center;
   justify-content: space-between;
   gap: var(--e-3);
-  /* position:relative + isolation:isolate: solo hacen falta para la
-     textura de la píldora oscura (ver más abajo), pero se dejan aquí
-     en la regla base para no duplicar la píldora entera con :has() o
-     un selector aparte — sin efecto visible cuando no hay textura. */
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
 }
 /* .nav-flotante--clara no tiene reglas propias a propósito: es el
    mismo aspecto de arriba, y existe solo para que iniciarNavAdaptativa()
@@ -491,34 +484,6 @@ body.marketing .pie {
 body.marketing .nav-flotante.nav-flotante--oscura {
   background: var(--mk-azul-oscuro);
   border-color: rgba(243, 238, 231, .15);
-}
-/* Petición del cliente: textura de marca sobre el azul de la píldora.
-   Va en un ::before propio (no como filter/opacity de .nav-flotante
-   entera) precisamente para "no afectar al logo" — opacity en el
-   propio elemento atenuaría también el logo y las letras, que son
-   hijos suyos; en un pseudo-elemento aparte, con su propio z-index
-   negativo, la textura queda detrás de todo lo demás sin tocar la
-   opacidad de nada más. isolation:isolate en .nav-flotante (arriba)
-   es lo que evita que ese z-index negativo se escape por detrás de la
-   píldora entera en vez de quedarse solo detrás de su propio
-   contenido.
-   background-size EN PÍXELES + repeat, no cover: la píldora es mucho
-   más ancha que alta (una tira de ~60px de alto), y el archivo
-   original es apaisado al revés (1921×912, casi cuadrado); con cover,
-   ese aplastamiento vertical de 15× difumina el grano fino de la
-   textura hasta que se ve como una simple bruma gris lisa en vez de
-   una trama. Repitiéndola a su propio tamaño (pequeño, respetando su
-   proporción real) el grano se conserva. */
-body.marketing .nav-flotante.nav-flotante--oscura::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-image: url('/assets/img/fondo-marca-mk.png');
-  background-size: 240px 114px;
-  background-repeat: repeat;
-  opacity: .6;
-  pointer-events: none;
 }
 /* El logo del header es dos <img> superpuestas (azul y blanca), no un
    filtro CSS sobre una sola: brightness(0) invert(1) aplana TODO
@@ -708,6 +673,36 @@ body.marketing .marketing-hero {
   overflow: hidden;
 }
 @media (min-width: 1024px) { .marketing-hero { padding-inline: var(--canal-escritorio); } }
+
+/* Petición del cliente: textura de marca sobre el degradado del héroe
+   (no sobre el nav, donde se puso primero por error). z-index:-1
+   propio, no opacity/filter en .marketing-hero entera, para no
+   atenuar también el titular ni los botones — .marketing-hero ya es
+   position:sticky (todo main > section lo es, ver más arriba), y todo
+   position:sticky forma su propio contexto de apilamiento aunque no
+   tenga z-index propio, así que este z-index negativo ya queda
+   contenido dentro del héroe sin necesitar isolation:isolate aparte.
+   Se pinta detrás incluso del logo de fondo (.marketing-hero__fondo,
+   z-index:0) — la textura es la capa más de fondo de todas.
+   background-size:cover, no repeat: aquí sí toca cubrir la sección
+   entera (pedido explícito del cliente) y, a diferencia de la píldora
+   del nav, el héroe no es una tira desproporcionada — su proporción
+   real se parece bastante a la de la propia textura, así que cover no
+   la aplasta ni la difumina como pasaba allí. */
+.marketing-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url('/assets/img/fondo-marca-mk.png');
+  background-size: cover;
+  background-position: center;
+  /* A esta escala (toda la sección, no una píldora pequeña) el mismo
+     .6 que se probó en el nav se veía demasiado presente, compitiendo
+     con el titular y los botones. Bastante más baja aquí. */
+  opacity: .15;
+  pointer-events: none;
+}
 
 /* El fondo es position:absolute (capa de pintado "estática/posicionada
    sin desplazamiento" temprana); el resto de hijos del héroe necesita
