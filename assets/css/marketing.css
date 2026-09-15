@@ -152,13 +152,22 @@ body.marketing main > *:not(:first-child) {
 body.marketing .pie {
   border-radius: 50px 50px 0 0;
 }
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce), (max-height: 660px) {
   body.marketing main > section,
   body.marketing main > article {
-    position: relative;
-    height: auto;
-    overflow-y: visible;
+    position: relative !important;
+    height: auto !important;
+    /* overflow-x:hidden, no overflow:visible a secas: el resplandor
+       difuminado de "Nuestro trabajo" (.trabajo-mk__pieza::before)
+       asoma a propósito fuera de su propia tarjeta, y sin el
+       overflow:hidden de la sección eso se salía por el lado derecho
+       y generaba scroll horizontal real. El contenido que de verdad
+       hace falta destapar aquí es el vertical, así que overflow-x
+       sigue recortando y overflow-y se abre. */
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
   }
+  body.marketing main::after { height: 0 !important; }
 }
 
 .nav-flotante-envoltorio {
