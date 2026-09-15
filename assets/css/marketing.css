@@ -57,6 +57,11 @@ body.marketing {
                                  extremo final del degradado de los títulos de sección
                                  (ver más abajo); mismo color en los dos sitios, a
                                  petición del cliente. */
+  --mk-rosa-oscuro-rgb: 136, 48, 78; /* mismo Dark Pink M. de arriba, en R,G,B sueltos
+                                         para la "nube" translúcida del enlace activo
+                                         del nav sobre píldora clara (ver .nav-flotante__nav
+                                         a[aria-current] más abajo) — sin inventar un tono
+                                         nuevo, solo con alfa. */
   --mk-degradado-hero: linear-gradient(135deg, #0B3A54, #1E6FA0); /* Dark Blue > Steel Blue: degradado oficial del manual */
   --mk-degradado-pie: linear-gradient(135deg, #000000, #0B3A54);  /* Full Black > Dark Blue: degradado oficial del manual —
                                                                        antes se cambió a plano por la costura entre el cierre y
@@ -540,7 +545,16 @@ body.marketing .nav-flotante--oscura .nav-flotante__nav a[aria-current="page"] {
    M. (el mismo color de los botones "Ver servicio" y del degradado de
    los títulos — no un tono nuevo, se reutiliza el que ya existía). */
 .nav-flotante__nav a:hover, .nav-flotante__nav a:focus-visible { background: var(--mk-arena); color: var(--mk-rosa-oscuro); }
-.nav-flotante__nav a[aria-current="page"] { color: var(--mk-rosa-oscuro); }
+/* Petición del cliente: sobre la píldora clara, la página activa solo
+   se distinguía por el color de la letra — sin la "nube" (fondo)
+   que sí tiene el enlace activo sobre la píldora oscura (blanco
+   translúcido). Aquí, en vez de blanco, translúcido en el propio
+   Dark Pink M. — mismo gesto en las dos píldoras, cada una con el
+   tono que le toca. */
+.nav-flotante__nav a[aria-current="page"] {
+  background: rgba(var(--mk-rosa-oscuro-rgb), .16);
+  color: var(--mk-rosa-oscuro);
+}
 
 /* El único enlace del header que lleva a otro mundo (Asesoría) se
    distingue con su propio color. Petición del cliente: ya no el verde
@@ -851,40 +865,47 @@ body.marketing .marketing-hero__linea {
 }
 .pildora-mk--contorno:hover, .pildora-mk--contorno:focus-visible { background: var(--mk-crema); color: var(--mk-tinta); border-color: var(--mk-crema); }
 
-/* ---------- Fondo decorativo de la sección Servicios (Inicio) ----------
-   Diseño entregado por el cliente ya montado como PNG (cintas de la
-   identidad visual). Ancho 100% y alto por aspect-ratio (no
-   object-fit:cover a pantalla completa): así la imagen nunca se
+/* ---------- Fondo decorativo genérico (Servicios, Cómo enfocamos, FAQ) ----------
+   Las tres secciones de Inicio con un diseño de fondo entregado por el
+   cliente ya montado como PNG comparten la misma mecánica, solo cambia
+   el PNG y su proporción propia (por eso aspect-ratio va en línea, en
+   el HTML de cada una, no aquí). Ancho 100% y alto por aspect-ratio
+   (no object-fit:cover a pantalla completa): así cada imagen nunca se
    recorta por los lados en ningún ancho de pantalla, solo se escala
-   entera — en vez de perder los extremos de las cintas en móvil,
-   donde la sección es mucho más alta y estrecha que la imagen
-   original (1992×1152, muy apaisada). Absoluta dentro de la propia
-   sección, que ya es position:sticky (no hace falta forzarle un
-   position:relative aparte) — pointer-events:none para que no
-   interfiera con nada clicable delante.
+   entera — en vez de perder los extremos del diseño en móvil, donde la
+   sección es mucho más alta y estrecha que las imágenes originales
+   (todas muy apaisadas). Absoluta dentro de la propia sección, que ya
+   es position:sticky (no hace falta forzarle un position:relative
+   aparte) — pointer-events:none para que no interfiera con nada
+   clicable delante.
    position:relative + z-index en .contenedor es obligatorio, no
    decorativo: un position:absolute se pinta SIEMPRE después (encima)
    de sus hermanos position:static sea cual sea su orden en el HTML —
-   sin esto el fondo taparía el título y las tarjetas en vez de quedar
-   detrás (el mismo motivo, ya documentado en otra sección de esta
-   hoja, del bug de la sección pegajosa que se colaba encima). */
-.mk-servicios-decorada__fondo {
+   sin esto el fondo taparía el título y el resto del contenido en vez
+   de quedar detrás (el mismo motivo, ya documentado en otra sección de
+   esta hoja, del bug de la sección pegajosa que se colaba encima).
+   :has() detecta automáticamente cuál de las secciones lleva esta
+   decoración sin necesitar una clase de modificador aparte en cada
+   <section> del HTML. */
+.mk-fondo-decorativo {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  aspect-ratio: 1992 / 1152;
   overflow: hidden;
   z-index: 0;
   pointer-events: none;
 }
-.mk-servicios-decorada__fondo img {
+.mk-fondo-decorativo img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.mk-servicios-decorada > .contenedor { position: relative; z-index: 1; }
+body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
+  position: relative;
+  z-index: 1;
+}
 
 /* ---------- Los cinco servicios: tarjetas blancas de 50px sobre crema ---------- */
 
@@ -1006,6 +1027,38 @@ body.marketing .marketing-hero__linea {
      desbordamiento horizontal que había en escritorio (invisible,
      absorbido por el overflow-x:hidden del body, pero real). */
   min-width: 0;
+  position: relative;
+  /* isolation:isolate, no overflow:hidden: el resplandor de abajo debe
+     poder asomar más allá del propio recuadro (ese es justo el look de
+     referencia), pero necesita su propio contexto de apilamiento para
+     que el z-index negativo no se escape por detrás de la sección
+     entera en vez de quedarse solo detrás de esta pieza. */
+  isolation: isolate;
+}
+/* Petición del cliente, con una web de referencia: cada recuadro debe
+   verse "un poco difuminado" — un resplandor de color suave asomando
+   detrás y alrededor de la imagen, no la imagen en sí borrosa (eso sí
+   perdería la foto). radial-gradient, no filter:blur(): mismo motivo
+   que el de "Nuestros valores" más abajo en esta hoja — un blur() no
+   se disuelve del todo si la forma es comparable en tamaño al espacio
+   que tiene para desvanecerse; el gradiente da un borde perfectamente
+   suave sin ese límite. Un color distinto por pieza (no el mismo
+   coral/rosa repetido) para que las tres no se vean como una sola
+   mancha genérica. */
+.trabajo-mk__pieza::before {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  z-index: -1;
+}
+.trabajo-mk__pieza:nth-child(1)::before {
+  background: radial-gradient(rgba(var(--mk-turquesa-rgb), .55), transparent 70%);
+}
+.trabajo-mk__pieza:nth-child(2)::before {
+  background: radial-gradient(rgba(var(--mk-dorado-rgb), .5), transparent 70%);
+}
+.trabajo-mk__pieza:nth-child(3)::before {
+  background: radial-gradient(rgba(var(--mk-violeta-rgb), .5), transparent 70%);
 }
 .trabajo-mk__pieza .placeholder-img {
   border-radius: var(--mk-r-imagen);
