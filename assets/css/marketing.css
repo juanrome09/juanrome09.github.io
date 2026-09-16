@@ -1030,85 +1030,20 @@ body.marketing .cierre-marketing__linea {
   background: radial-gradient(ellipse closest-side, rgba(var(--mk-turquesa-rgb), .6), transparent 81%);
 }
 
-.mk-mapa-mv {
-  position: relative;
-  height: 420px;
+/* Misión/Visión — el mapa con pines y ruta punteada que había aquí
+   se sustituye por la imagen de fondo del cliente
+   (.mk-fondo-decorativo, mismo patrón reutilizado que en "Cómo
+   enfocamos" de Inicio); esto solo pone el título y el texto de cada
+   una en una rejilla simple encima. */
+.mk-mision-vision {
+  display: grid;
+  gap: var(--e-4);
+  grid-template-columns: 1fr;
 }
-.mk-mapa-mv__fondo,
-.mk-mapa-mv__ruta {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
+@media (min-width: 700px) {
+  .mk-mision-vision { grid-template-columns: 1fr 1fr; gap: var(--e-6); }
 }
-
-.mk-mapa-mv__curvas-nivel path {
-  fill: none;
-  stroke: var(--mk-tinta);
-  stroke-width: 1.5;
-  opacity: .1;
-}
-
-.mk-mapa-mv__icono path {
-  fill: none;
-  stroke: var(--mk-tinta);
-  stroke-width: 2.5;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-  opacity: .16;
-}
-.mk-mapa-mv__bandera-tela { fill: var(--mk-tinta); stroke: none; }
-.mk-mapa-mv__ruta path {
-  fill: none;
-  stroke: var(--mk-violeta);
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-dasharray: 2 14;
-  opacity: .6;
-}
-.mk-mapa-mv__punto {
-  position: absolute;
-  z-index: 1;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  max-width: 400px;
-}
-.mk-mapa-mv__punto--mision { top: 0; left: 0; }
-.mk-mapa-mv__punto--vision {
-  bottom: 0;
-  right: 0;
-  text-align: right;
-  flex-direction: row-reverse;
-  margin-left: auto;
-}
-
-.mk-mapa-mv__pin {
-  flex-shrink: 0;
-  width: 32px;
-  height: 41px;
-  overflow: visible;
-}
-.mk-mapa-mv__pin-halo { fill: var(--mk-violeta); }
-.mk-mapa-mv__pin-halo { opacity: .18; }
-.mk-mapa-mv__pin-halo--ext { opacity: .09; }
-.mk-mapa-mv__pin-cuerpo { fill: var(--mk-violeta); }
-.mk-mapa-mv__pin-nucleo { fill: var(--mk-crema); }
-.mk-mapa-mv__punto h2 { margin-bottom: 2px; }
-@media (max-width: 767px) {
-
-  .mk-mapa-mv { height: auto; }
-  .mk-mapa-mv__ruta, .mk-mapa-mv__fondo { display: none; }
-  .mk-mapa-mv__punto {
-    position: static;
-    max-width: none;
-    text-align: left !important;
-    flex-direction: row !important;
-    margin-left: 0;
-  }
-  .mk-mapa-mv__punto--vision { margin-top: var(--e-4); }
-}
+.mk-mision-vision__item h2 { margin-bottom: 2px; }
 
 /* Esta sección tenía muy poco contenido y "safe center" la dejaba
    flotando a media pantalla; el resto de secciones de la página
