@@ -893,23 +893,38 @@ body.marketing .cierre-marketing__linea {
 @media (max-width: 899px) {
   .servicio-bloque-mk__marca { flex-direction: row; align-items: center; gap: var(--e-2); }
 }
+/* Mismo criterio que .mk-marca-agua (grande, tenue, de fondo): el
+   icono deja de ser una insignia pequeña con círculo de color y pasa
+   a ser un trazo grande y suave detrás del número, sin mover su
+   posición (sigue siendo lo primero de la columna izquierda). El
+   stroke-width baja mucho porque, al ser un <svg> con viewBox propio,
+   el grosor del trazo escala junto con el tamaño — sin bajarlo, un
+   icono de 170px con el stroke-width de antes se vería como un
+   garabato grueso, no como una marca de agua. */
 .servicio-bloque-mk__icono {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: rgba(var(--mk-servicio-acento-rgb), .16);
+  width: 170px;
+  height: 170px;
+  border-radius: 0;
+  background: none;
 }
 .servicio-bloque-mk__icono svg {
-  width: 26px;
-  height: 26px;
+  width: 100%;
+  height: 100%;
   fill: none;
   stroke: var(--mk-servicio-acento);
-  stroke-width: 1.7;
+  stroke-width: .4;
   stroke-linecap: round;
   stroke-linejoin: round;
+  opacity: .18;
+}
+@media (max-width: 899px) {
+  .servicio-bloque-mk__icono { width: 110px; height: 110px; }
+}
+@media (max-width: 480px) {
+  .servicio-bloque-mk__icono { width: 76px; height: 76px; }
 }
 
 .servicio-bloque-mk { position: relative; overflow-x: hidden; }
@@ -1103,9 +1118,6 @@ body.marketing .cierre-marketing__linea {
    altas sin depender de cuánto contenido tenga cada una. */
 body.marketing main > section.mk-valores-seccion {
   justify-content: flex-start;
-}
-body.marketing main > section.mk-valores-seccion h2 {
-  margin-top: 20px;
 }
 body.marketing main > section.mk-valores-seccion h2 {
   margin-top: 50px;
