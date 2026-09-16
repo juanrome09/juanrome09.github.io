@@ -473,6 +473,11 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   position: relative;
   z-index: 1;
 }
+/* 30% de transparencia (client: "X% transparencia" = opacidad al
+   (100-X)%) sobre el .9 de base, solo para los fondos de
+   Misión/Visión y Dónde trabajamos — el resto de usos de
+   .mk-fondo-decorativo se queda como estaba. */
+.mk-fondo-decorativo--tenue { opacity: .7; }
 
 .servicios-marketing {
   display: grid;
@@ -1030,18 +1035,44 @@ body.marketing .cierre-marketing__linea {
   background: radial-gradient(ellipse closest-side, rgba(var(--mk-turquesa-rgb), .6), transparent 81%);
 }
 
-/* Misión/Visión — el mapa con pines y ruta punteada que había aquí
-   se sustituye por la imagen de fondo del cliente
-   (.mk-fondo-decorativo, mismo patrón reutilizado que en "Cómo
-   enfocamos" de Inicio); esto solo pone el título y el texto de cada
-   una en una rejilla simple encima. */
+/* Misión/Visión — el mapa con pines y ruta punteada que había aquí se
+   sustituye por la imagen de fondo del cliente (.mk-fondo-decorativo,
+   mismo patrón reutilizado que en "Cómo enfocamos" de Inicio).
+   .mk-mision-vision no va dentro de .contenedor (a diferencia del
+   resto de secciones) precisamente para poder colocarse con inset:0
+   sobre TODA la sección, igual que el propio fondo — así los % de
+   left/top de cada tarjeta se miden sobre la misma caja que la
+   imagen, y de verdad caen donde terminan sus líneas punteadas:
+   Misión donde empieza la línea azul (junto al pin, arriba a la
+   izquierda) y Visión donde termina la línea violeta (junto a la
+   bandera, a la derecha). Para mover cualquiera de las dos "a tu
+   gusto", solo hay que cambiar su left/right y su top de aquí abajo —
+   son % del ancho/alto de toda la sección, no de la tarjeta. */
 .mk-mision-vision {
-  display: grid;
-  gap: var(--e-4);
-  grid-template-columns: 1fr;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
-@media (min-width: 700px) {
-  .mk-mision-vision { grid-template-columns: 1fr 1fr; gap: var(--e-6); }
+.mk-mision-vision__item {
+  position: absolute;
+  max-width: 320px;
+}
+.mk-mision-vision__item--mision { left: 9%; top: 20%; }
+.mk-mision-vision__item--vision { right: 14%; top: 41%; text-align: right; }
+
+@media (max-width: 767px), (prefers-reduced-motion: reduce), (max-height: 660px) {
+  .mk-mision-vision {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-4);
+    padding-inline: var(--canal-movil);
+  }
+  .mk-mision-vision__item {
+    position: static;
+    max-width: none;
+    text-align: left !important;
+  }
 }
 .mk-mision-vision__item h2 { margin-bottom: 2px; }
 
