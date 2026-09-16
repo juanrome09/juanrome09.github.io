@@ -569,3 +569,17 @@ p {
   font-size: var(--menor);
   border: 1px dashed rgba(11, 58, 84, .35);
 }
+
+/* Botón "Ir a Marketing" / "Ir a Asesoría" (.nav-flotante__cambio-mundo,
+   definido en marketing.css y asesoria.css por separado): al pulsarlo,
+   antes de cambiar de web, un gesto breve de despedida — crece un poco
+   y se desliza hacia la izquierda — en vez de saltar a la otra web sin
+   transición ninguna. Ver iniciarTransicionCambioMundo() en app.js,
+   que añade esta clase, espera a que termine y solo entonces navega. */
+@keyframes cambio-mundo-despedida {
+  to { transform: scale(1.16) translateX(-16px); }
+}
+.nav-flotante__cambio-mundo.despidiendose {
+  animation: cambio-mundo-despedida .32s cubic-bezier(.3, .7, .35, 1) forwards;
+  pointer-events: none;
+}

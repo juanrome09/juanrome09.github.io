@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarMaquinaEscribir();
   iniciarCopiarCorreo();
   iniciarNavAdaptativa();
+  iniciarTransicionCambioMundo();
 });
 
 function iniciarCabeceraCompacta() {
@@ -364,5 +365,24 @@ function iniciarCopiarCorreo() {
       }
     } catch (error) {
     }
+  });
+}
+
+function iniciarTransicionCambioMundo() {
+  const enlace = document.querySelector('.nav-flotante__cambio-mundo');
+  if (!enlace) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const DURACION_MS = 320;
+
+  enlace.addEventListener('click', (evento) => {
+    if (enlace.classList.contains('despidiendose')) return;
+    evento.preventDefault();
+    const destino = enlace.href;
+    enlace.classList.add('despidiendose');
+    window.setTimeout(() => {
+      window.location.href = destino;
+    }, DURACION_MS);
   });
 }
