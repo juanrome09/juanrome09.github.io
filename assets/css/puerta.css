@@ -37,11 +37,12 @@ body.puerta > main {
 .puerta-cabecera__contacto a:focus-visible { color: var(--azul-acero); }
 
 /* ---------- Dos caminos, una marca: cada mitad reutiliza tal cual el
-   degradado y el logo de fondo (marca de agua) del héroe real de su
-   propia web — asesoria-hero y marketing-hero en assets/css — para
-   que quien llega aquí ya reconozca el tono de cada sitio antes de
-   entrar. El medallón central con el logo A360 es lo único nuevo:
-   marca visualmente que son la misma empresa vista desde dos ángulos. */
+   degradado del héroe real de su propia web — asesoria-hero y
+   marketing-hero en assets/css — para que quien llega aquí ya
+   reconozca el tono de cada sitio antes de entrar. El texto de cada
+   mitad se abre hacia su propio lado de la pantalla (Asesoría a la
+   izquierda, Marketing a la derecha), dejando el centro libre para el
+   logo A360 partido en dos colores — ver .puerta-logo más abajo. */
 .puerta-split {
   position: relative;
   flex: 1;
@@ -83,21 +84,12 @@ body.puerta > main {
 .puerta-mitad--asesoria { background: linear-gradient(135deg, #B8420F, var(--naranja)); }
 .puerta-mitad--marketing { background: linear-gradient(135deg, var(--azul-hondo), var(--azul-acero)); }
 
-.puerta-mitad__fondo {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-.puerta-mitad__fondo img {
-  position: absolute;
-  top: 50%;
-  width: clamp(360px, 55vw, 720px);
-  aspect-ratio: 1;
-  opacity: .14;
-}
-.puerta-mitad--asesoria .puerta-mitad__fondo img { right: -16%; transform: translateY(-46%); }
-.puerta-mitad--marketing .puerta-mitad__fondo img { left: -16%; transform: translateY(-46%); }
+/* Asesoría abre su contenido hacia la izquierda (el flex-start de
+   siempre); Marketing lo abre hacia la derecha, en espejo, para que
+   las dos mitades "miren" hacia fuera y dejen el centro despejado
+   para el logo partido. */
+.puerta-mitad--marketing { justify-content: flex-end; }
+.puerta-mitad--marketing .puerta-mitad__contenido { text-align: right; }
 
 .puerta-mitad__contenido { position: relative; z-index: 1; max-width: 440px; }
 
@@ -158,31 +150,71 @@ body.puerta > main {
 
 .puerta-mitad:focus-visible { outline: 3px solid var(--blanco); outline-offset: -6px; }
 
-.puerta-split__medallon {
+/* ---------- Logo central partido en dos colores: la misma imagen del
+   logo A360, una vez en naranja y otra en azul, cada una tapando solo
+   su mitad con clip-path. En reposo se ve mitad y mitad, como si el
+   propio logo marcara la costura entre las dos webs. Al pasar el
+   ratón (o el foco) por una mitad, esa capa de color crece hasta
+   cubrir el logo entero y la otra desaparece — el mismo gesto que ya
+   hace crecer el panel, pero llevado al logo, así se nota aún más
+   claro qué mitad estás a punto de abrir. */
+.puerta-logo {
   position: absolute;
   z-index: 2;
   top: 50%;
   left: 50%;
-  width: 108px;
-  height: 108px;
+  width: 130px;
+  height: 130px;
   transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: var(--blanco);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, .18);
-  display: none;
-  align-items: center;
-  justify-content: center;
   pointer-events: none;
-  animation: puerta-entra .5s cubic-bezier(.3, .1, .2, 1) .16s both;
+  filter: drop-shadow(0 10px 28px rgba(0, 0, 0, .22));
+  opacity: 0;
+  animation: puerta-logo-entra .5s ease .16s both;
 }
-.puerta-split__medallon img { width: 64%; height: 64%; object-fit: contain; }
-@media (min-width: 720px) and (min-height: 640px) {
-  .puerta-split__medallon { display: flex; }
+@keyframes puerta-logo-entra {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.puerta-logo__capa {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: clip-path .45s cubic-bezier(.3, .1, .2, 1);
+}
+/* Móvil (mitades apiladas, una encima de otra): el corte va horizontal,
+   arriba naranja y abajo azul — igual que se apilan las dos mitades. */
+.puerta-logo__capa--asesoria { clip-path: inset(0 0 50% 0); }
+.puerta-logo__capa--marketing { clip-path: inset(50% 0 0 0); }
+/* Escritorio (mitades lado a lado): el corte pasa a vertical. */
+@media (min-width: 720px) {
+  .puerta-logo__capa--asesoria { clip-path: inset(0 50% 0 0); }
+  .puerta-logo__capa--marketing { clip-path: inset(0 0 0 50%); }
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 720px) {
+  .puerta-split:has(.puerta-mitad--asesoria:hover) .puerta-logo__capa--asesoria,
+  .puerta-split:has(.puerta-mitad--asesoria:focus-visible) .puerta-logo__capa--asesoria {
+    clip-path: inset(0 0 0 0);
+  }
+  .puerta-split:has(.puerta-mitad--asesoria:hover) .puerta-logo__capa--marketing,
+  .puerta-split:has(.puerta-mitad--asesoria:focus-visible) .puerta-logo__capa--marketing {
+    clip-path: inset(0 0 0 100%);
+  }
+  .puerta-split:has(.puerta-mitad--marketing:hover) .puerta-logo__capa--marketing,
+  .puerta-split:has(.puerta-mitad--marketing:focus-visible) .puerta-logo__capa--marketing {
+    clip-path: inset(0 0 0 0);
+  }
+  .puerta-split:has(.puerta-mitad--marketing:hover) .puerta-logo__capa--asesoria,
+  .puerta-split:has(.puerta-mitad--marketing:focus-visible) .puerta-logo__capa--asesoria {
+    clip-path: inset(0 100% 0 0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .puerta-mitad, .puerta-split__medallon { animation: none; }
-  .puerta-mitad { transition: none; }
+  .puerta-mitad, .puerta-logo, .puerta-logo__capa { animation: none; transition: none; }
+  .puerta-logo { opacity: 1; }
 }
 
 .puerta-pie {
