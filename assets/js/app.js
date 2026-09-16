@@ -369,20 +369,44 @@ function iniciarCopiarCorreo() {
 }
 
 function iniciarTransicionCambioMundo() {
+  const CLAVE = 'a360-cambio-mundo';
+  const soportaTransicionNativa = 'onpagereveal' in window;
+  const nav = document.querySelector('.nav-flotante');
+
+  if (soportaTransicionNativa && nav) {
+    let llega = false;
+    try { llega = sessionStorage.getItem(CLAVE) === '1'; } catch (error) {}
+    if (llega) {
+      try { sessionStorage.removeItem(CLAVE); } catch (error) {}
+      window.addEventListener('pagereveal', (evento) => {
+        nav.style.viewTransitionName = 'cambio-mundo';
+        const transicion = evento.viewTransition;
+        const limpiar = () => { nav.style.viewTransitionName = ''; };
+        if (transicion && transicion.finished && typeof transicion.finished.then === 'function') {
+          transicion.finished.finally(limpiar);
+        } else {
+          window.setTimeout(limpiar, 600);
+        }
+      }, { once: true });
+    }
+  }
+
   const enlace = document.querySelector('.nav-flotante__cambio-mundo');
   if (!enlace) return;
-
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const DURACION_MS = 320;
-
   enlace.addEventListener('click', (evento) => {
+    if (soportaTransicionNativa) {
+      enlace.style.viewTransitionName = 'cambio-mundo';
+      try { sessionStorage.setItem(CLAVE, '1'); } catch (error) {}
+      return;
+    }
     if (enlace.classList.contains('despidiendose')) return;
     evento.preventDefault();
     const destino = enlace.href;
     enlace.classList.add('despidiendose');
     window.setTimeout(() => {
       window.location.href = destino;
-    }, DURACION_MS);
+    }, 480);
   });
 }

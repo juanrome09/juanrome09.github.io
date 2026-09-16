@@ -570,16 +570,42 @@ p {
   border: 1px dashed rgba(11, 58, 84, .35);
 }
 
-/* Botón "Ir a Marketing" / "Ir a Asesoría" (.nav-flotante__cambio-mundo,
-   definido en marketing.css y asesoria.css por separado): al pulsarlo,
-   antes de cambiar de web, un gesto breve de despedida — crece un poco
-   y se desliza hacia la izquierda — en vez de saltar a la otra web sin
-   transición ninguna. Ver iniciarTransicionCambioMundo() en app.js,
-   que añade esta clase, espera a que termine y solo entonces navega. */
-@keyframes cambio-mundo-despedida {
-  to { transform: scale(1.16) translateX(-16px); }
+/* Transición entre Marketing y Asesoría al pulsar .nav-flotante__cambio-mundo
+   (color de marca definido en marketing.css/asesoria.css por separado).
+   Con navegadores que soportan la View Transitions API entre documentos
+   (Chrome/Edge de momento), esta regla deja que sea el propio navegador
+   quien anime el cambio de página; iniciarTransicionCambioMundo() en
+   app.js le pone el mismo nombre ("cambio-mundo") al botón que se pulsa
+   y a la píldora .nav-flotante de la web de llegada, así el navegador
+   los trata como "el mismo elemento" de una página a otra: el botón
+   pequeño y coloreado crece hasta convertirse en la barra entera del
+   nav de la otra web, disolviendo su color en el tono claro con el que
+   esa píldora aparece siempre sobre el héroe. Sin soporte (Safari,
+   Firefox), esta regla no hace nada y se usa en su lugar el gesto de
+   más abajo: el botón crece y su color se apaga hacia blanco antes de
+   navegar. */
+@view-transition {
+  navigation: auto;
 }
+::view-transition-group(cambio-mundo) {
+  animation-duration: .5s;
+  animation-timing-function: cubic-bezier(.3, .1, .2, 1);
+}
+
+@keyframes cambio-mundo-despedida {
+  to {
+    transform: scale(1.06);
+    background-color: var(--blanco);
+    color: transparent;
+    box-shadow: 0 0 0 100vmax var(--blanco);
+  }
+}
+.nav-flotante-envoltorio:has(.despidiendose) { z-index: 300; }
 .nav-flotante__cambio-mundo.despidiendose {
-  animation: cambio-mundo-despedida .32s cubic-bezier(.3, .7, .35, 1) forwards;
+  animation: cambio-mundo-despedida .48s cubic-bezier(.3, .1, .2, 1) forwards;
   pointer-events: none;
+  position: relative;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-flotante__cambio-mundo.despidiendose { animation: none; }
 }
