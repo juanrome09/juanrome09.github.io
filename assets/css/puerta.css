@@ -52,8 +52,19 @@ body.puerta > main {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* flex-grow:4 → la mitad activa pasa a ocupar el 80% del ancho
+   (4 / (4+1)) sea cual sea el ancho de la ventana, así que su borde
+   siempre avanza más allá de donde está el logo central (que como
+   mucho ocupa el 40% del ancho, clamp de más arriba) y lo cubre
+   entero, no solo una parte. */
 @media (hover: hover) and (pointer: fine) and (min-width: 720px) {
-  .puerta-mitad:hover, .puerta-mitad:focus-visible { flex-grow: 1.35; }
+  .puerta-mitad:hover, .puerta-mitad:focus-visible { flex-grow: 4; }
+  .puerta-mitad:hover .puerta-mitad__contenido,
+  .puerta-mitad:focus-visible .puerta-mitad__contenido { opacity: 1; }
+  .puerta-split:has(.puerta-mitad:hover) .puerta-mitad:not(:hover) .puerta-mitad__contenido,
+  .puerta-split:has(.puerta-mitad:focus-visible) .puerta-mitad:not(:focus-visible) .puerta-mitad__contenido {
+    opacity: 0;
+  }
 }
 
 .puerta-mitad--asesoria { background: linear-gradient(135deg, #B8420F, var(--naranja)); }
@@ -70,7 +81,12 @@ body.puerta > main {
    la de Asesoría (que apunta a la derecha, su propio lado de avance). */
 .puerta-mitad--marketing .puerta-mitad__entrar { flex-direction: row-reverse; }
 
-.puerta-mitad__contenido { position: relative; z-index: 1; max-width: 440px; }
+.puerta-mitad__contenido {
+  position: relative;
+  z-index: 1;
+  max-width: 440px;
+  transition: opacity .3s ease;
+}
 
 .puerta-mitad__eyebrow {
   display: block;
@@ -156,7 +172,7 @@ body.puerta > main {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .puerta-mitad, .puerta-logo { animation: none; transition: none; }
+  .puerta-mitad, .puerta-logo, .puerta-mitad__contenido { animation: none; transition: none; }
   .puerta-logo { opacity: 1; }
 }
 
