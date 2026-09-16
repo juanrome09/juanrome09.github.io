@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarCopiarCorreo();
   iniciarNavAdaptativa();
   iniciarTransicionCambioMundo();
+  iniciarTemaPuerta();
 });
 
 function iniciarCabeceraCompacta() {
@@ -422,4 +423,23 @@ function iniciarTransicionCambioMundo() {
     enlace.style.viewTransitionName = 'cambio-mundo';
     try { sessionStorage.setItem(CLAVE, '1'); } catch (error) {}
   });
+}
+
+function iniciarTemaPuerta() {
+  const division = document.querySelector('.puerta-split');
+  const metaTema = document.querySelector('meta[name="theme-color"]');
+  if (!division || !metaTema) return;
+
+  const asesoria = division.querySelector('.puerta-mitad--asesoria');
+  const marketing = division.querySelector('.puerta-mitad--marketing');
+  if (!asesoria || !marketing) return;
+
+  const estilo = getComputedStyle(document.documentElement);
+  const colorNaranja = estilo.getPropertyValue('--naranja').trim();
+  const colorAzulHondo = estilo.getPropertyValue('--azul-hondo').trim();
+  const colorPorDefecto = metaTema.getAttribute('content');
+
+  asesoria.addEventListener('mouseenter', () => metaTema.setAttribute('content', colorNaranja));
+  marketing.addEventListener('mouseenter', () => metaTema.setAttribute('content', colorAzulHondo));
+  division.addEventListener('mouseleave', () => metaTema.setAttribute('content', colorPorDefecto));
 }

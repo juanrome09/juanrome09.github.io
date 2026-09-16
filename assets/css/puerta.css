@@ -11,31 +11,6 @@ body.puerta > main {
   flex: 1;
 }
 
-.puerta-cabecera {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--e-3);
-  padding: var(--e-3) var(--canal-movil);
-}
-@media (min-width: 1024px) {
-  .puerta-cabecera { padding: var(--e-3) var(--canal-escritorio); }
-}
-
-.puerta-cabecera__logo img { height: 44px; width: auto; display: block; }
-
-.puerta-cabecera__contacto {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--e-1) var(--e-3);
-  font-size: var(--menor);
-  font-weight: 700;
-}
-.puerta-cabecera__contacto a { color: var(--gris-tinta); }
-.puerta-cabecera__contacto a:hover,
-.puerta-cabecera__contacto a:focus-visible { color: var(--azul-acero); }
-
 /* ---------- Dos caminos, una marca: cada mitad reutiliza tal cual el
    degradado del héroe real de su propia web — asesoria-hero y
    marketing-hero en assets/css — para que quien llega aquí ya
@@ -167,8 +142,8 @@ body.puerta > main {
   z-index: 2;
   top: 50%;
   left: 50%;
-  width: 150px;
-  height: 150px;
+  width: 70px;
+  height: 70px;
   transform: translate(-50%, -50%);
   pointer-events: none;
   opacity: 0;
