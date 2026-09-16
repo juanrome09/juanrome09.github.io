@@ -1,4 +1,9 @@
-body.asesoria { padding-top: 88px; }
+body.asesoria {
+  /* Mismo naranja de marca (--naranja, base.css) en R,G,B sueltos —
+     para la "nube" translúcida del enlace activo del nav y el
+     resplandor del héroe, sin inventar un tono nuevo. */
+  --naranja-rgb: 233, 81, 23;
+}
 
 .asesoria a.enlace-cuerpo {
   color: var(--azul-acero);
@@ -6,51 +11,233 @@ body.asesoria { padding-top: 88px; }
   text-decoration: underline;
 }
 
-.cabecera--asesoria { border-bottom: 1px solid transparent; }
-.cabecera--asesoria .cabecera__interior { padding-inline: var(--canal-movil); }
-@media (min-width: 1024px) {
-  .cabecera--asesoria .cabecera__interior { padding-inline: var(--canal-escritorio); }
+/* El hueco para el nav flotante va en la primera sección de cada
+   página, no en el body (mismo motivo que en Marketing): así el color
+   de fondo de esa primera sección llega hasta arriba del todo, detrás
+   de la píldora, sin una costura del color de fondo del body. El
+   héroe de Inicio ya trae su propio padding-block-start equivalente,
+   así que esta regla no le afecta (no es su primer hijo real el que
+   la necesita, es el propio .asesoria-hero el que ya la tiene). */
+body.asesoria main > *:first-child:not(.asesoria-hero) {
+  padding-top: 104px;
+}
+/* Para el ancla del héroe ("Cómo trabajamos" → #como-trabajamos, ni
+   primer hijo ni con su propio hueco propio): sin esto, saltar al
+   ancla deja el título tapado justo debajo de la píldora flotante. */
+body.asesoria main > section {
+  scroll-margin-top: 104px;
 }
 
-.asesoria-hero {
-  padding-block: var(--e-6);
+/* ---------- Nav flotante — mismo patrón que Marketing, para que se
+   note que son webs hermanas, con la paleta propia de Asesoría (naranja
+   de marca en vez del rosa de Marketing) y su propio logo. Ver el
+   bloque equivalente en marketing.css: misma mecánica exacta, sin
+   riesgo de choque entre los dos porque cada página solo carga una de
+   las dos hojas de estilo. ---------- */
+.nav-flotante-envoltorio {
+  position: fixed;
+  inset-block-start: var(--e-2);
+  inset-inline: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  padding-inline: var(--canal-movil);
 }
-@media (min-width: 1024px) { .asesoria-hero { padding-block: var(--e-7); } }
-
-.asesoria-hero__grid {
-  display: grid;
-  gap: var(--e-5);
+.nav-flotante {
+  width: 100%;
+  max-width: var(--ancho-max);
+  background: var(--lino);
+  border: 1px solid var(--gris-claro);
+  border-radius: var(--r-pildora);
+  padding: 10px var(--e-3);
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: var(--e-3);
 }
-@media (min-width: 900px) {
-  .asesoria-hero__grid { grid-template-columns: 1.1fr 1fr; gap: var(--e-6); }
+body.asesoria .nav-flotante.nav-flotante--oscura {
+  background: var(--azul-hondo);
+  border-color: rgba(255, 255, 255, .15);
 }
+.nav-flotante__logo .nav-flotante__logo-img--blanco { display: none; }
+body.asesoria .nav-flotante--oscura .nav-flotante__logo .nav-flotante__logo-img--color { display: none; }
+body.asesoria .nav-flotante--oscura .nav-flotante__logo .nav-flotante__logo-img--blanco { display: block; }
+body.asesoria .nav-flotante--oscura .nav-flotante__nav a { color: var(--blanco); }
+body.asesoria .nav-flotante--oscura .nav-flotante__nav a:hover,
+body.asesoria .nav-flotante--oscura .nav-flotante__nav a:focus-visible,
+body.asesoria .nav-flotante--oscura .nav-flotante__nav a[aria-current="page"] {
+  background: rgba(255, 255, 255, .16);
+  color: var(--blanco);
+}
+.nav-flotante,
+.nav-flotante__nav a { transition: background-color .25s ease, border-color .25s ease, color .25s ease; }
+.nav-flotante__logo img { height: 52px; width: auto; display: block; }
+.nav-flotante__nav { display: none; align-items: center; gap: var(--e-4); }
+@media (min-width: 900px) { .nav-flotante__nav { display: flex; } }
+.nav-flotante__nav a {
+  font-family: var(--f-cuerpo);
+  font-weight: 500;
+  font-size: var(--menor);
+  color: var(--gris-tinta);
+  padding: 10px 16px;
+  border-radius: var(--r-pildora);
+  transition: background-color var(--dur-hover) ease, color var(--dur-hover) ease;
+}
+.nav-flotante__nav a:hover, .nav-flotante__nav a:focus-visible { background: var(--gris-claro); color: var(--naranja); }
+.nav-flotante__nav a[aria-current="page"] {
+  background: rgba(var(--naranja-rgb), .14);
+  color: var(--naranja);
+}
+/* El enlace que lleva a Marketing usa el color de MARKETING (azul
+   hondo, el mismo que domina su héroe y su nav), no el naranja propio
+   de Asesoría — mismo criterio, en espejo, que el botón "Ir a
+   Asesoría" de la web de Marketing, que usa naranja precisamente
+   porque lleva aquí. */
+/* Bug real, encontrado al probar el nav oscuro: azul-hondo es tanto
+   el color de este botón como el fondo de la propia píldora en su
+   estado --oscura — mismo tono sobre mismo tono, el botón
+   desaparecía. azul-acero (más claro) contrasta contra los dos
+   fondos posibles de la píldora (el claro y el oscuro), así que
+   sirve para los dos estados sin necesitar una regla aparte para
+   cada uno. */
+.nav-flotante__cambio-mundo {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--menor);
+  font-weight: 500;
+  color: var(--blanco);
+  background: var(--azul-acero);
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: var(--r-pildora);
+  transition: background-color var(--dur-hover) ease;
+}
+.nav-flotante__cambio-mundo:hover, .nav-flotante__cambio-mundo:focus-visible { background: var(--naranja); }
+body.asesoria .menu-movil__nav a { color: var(--gris-tinta); }
+body.asesoria .menu-movil__nav a:last-child { color: var(--azul-hondo); }
+.nav-flotante__movil-abrir {
+  display: flex;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--azul-acero);
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--dur-hover) ease;
+}
+.nav-flotante__movil-abrir:hover,
+.nav-flotante__movil-abrir:focus-visible { background: var(--gris-tinta); }
+@media (min-width: 900px) { .nav-flotante__movil-abrir { display: none; } }
 
-.asesoria-hero__texto h1 { margin-bottom: var(--e-2); }
-.asesoria-hero__texto p { margin-bottom: var(--e-4); }
-.asesoria-hero__acciones { display: flex; flex-wrap: wrap; gap: var(--e-2); }
-
-.asesoria-hero__visual {
+/* ---------- Héroe — misma mecánica que el de Marketing (titular
+   grande, línea a máquina de escribir, píldoras, logo de fondo que
+   sigue al ratón) pero en naranja: es la petición explícita del
+   cliente, "el hero igual al de marketing pero con fondo naranja" —
+   para que se note el parentesco entre las dos webs sin que se
+   confundan, cada una con su color.
+   min-height, no height:100svh + overflow:hidden: esta web no usa el
+   sistema de hojas ancladas de Marketing (aquí no hacía falta, el
+   cliente solo pidió el héroe y el nav, no todo el scroll), así que
+   no hay ningún motivo para forzar una altura fija que pueda recortar
+   contenido en una pantalla baja — con min-height nunca se recorta
+   nada, como mucho la sección queda más alta que la pantalla y se
+   recorre con scroll normal, tal y como ya pasa en el resto de esta
+   web. */
+.asesoria-hero {
   position: relative;
+  overflow: hidden;
+  min-height: min(100svh, 760px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block-start: calc(104px + var(--e-4));
+  padding-inline: var(--canal-movil);
+  padding-block-end: var(--e-4);
+  background: linear-gradient(135deg, #B8420F, var(--naranja));
+  color: var(--blanco);
 }
-.asesoria-hero__panel {
-  position: relative;
-  background: var(--lavado-azul);
-  border-radius: var(--r-panel);
-  padding: var(--e-2);
-  z-index: 1;
-}
-.asesoria-hero__forma {
+@media (min-width: 1024px) { .asesoria-hero { padding-inline: var(--canal-escritorio); } }
+.asesoria-hero::before {
+  content: '';
   position: absolute;
-  inset-block-end: -24px;
-  inset-inline-end: -24px;
-  width: 60%;
-  height: 55%;
-  background: var(--naranja);
-  border-radius: var(--r-panel);
-  transform: rotate(var(--rotacion));
-  z-index: 0;
+  inset: 0;
+  z-index: -1;
+  background-image: url('/assets/img/fondo-marca-mk.png');
+  background-size: cover;
+  background-position: center;
+  opacity: .12;
+  pointer-events: none;
 }
+.asesoria-hero > *:not(.asesoria-hero__fondo) { position: relative; z-index: 1; }
+.asesoria-hero__fondo { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.asesoria-hero__fondo-logo {
+  --tamano-logo-fondo: clamp(420px, 58vw, 1400px);
+  position: absolute;
+  top: 50%;
+  right: calc(var(--tamano-logo-fondo) / -8);
+  width: var(--tamano-logo-fondo);
+  aspect-ratio: 1;
+  margin-top: calc(var(--tamano-logo-fondo) / -2);
+  opacity: .14;
+  translate: 0px 0px;
+}
+@media (max-width: 768px) {
+  .asesoria-hero__fondo-logo {
+    right: auto;
+    left: 50%;
+    margin-top: 0;
+    transform: translate(-50%, -50%);
+  }
+}
+.asesoria-hero__titulo {
+  font-family: var(--f-titulos);
+  font-weight: 500;
+  font-size: var(--display);
+  line-height: .98;
+  color: var(--blanco);
+  max-width: 18ch;
+}
+.asesoria-hero__linea {
+  margin-top: var(--e-3);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--blanco);
+  opacity: .92;
+  max-width: 46ch;
+  min-height: 1.5em;
+}
+.asesoria-hero__cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--blanco);
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  animation: a-parpadeo 1s step-end infinite;
+}
+@keyframes a-parpadeo { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.asesoria-hero__pildoras { display: flex; flex-wrap: wrap; gap: var(--e-2); margin-top: var(--e-4); }
+.pildora-a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--lino);
+  color: var(--azul-hondo);
+  border: 1px solid transparent;
+  border-radius: var(--r-pildora);
+  padding: 11px 20px;
+  font-family: var(--f-cuerpo);
+  font-weight: 500;
+  font-size: var(--menor);
+  transition: background-color var(--dur-hover) ease;
+}
+.pildora-a:hover, .pildora-a:focus-visible { background: var(--azul-hondo); color: var(--blanco); }
+.pildora-a--contorno {
+  background: transparent;
+  color: var(--blanco);
+  border-color: rgba(255, 255, 255, .5);
+}
+.pildora-a--contorno:hover, .pildora-a--contorno:focus-visible { background: var(--lino); color: var(--azul-hondo); border-color: var(--lino); }
 
 .servicios-tira {
   display: grid;
@@ -141,12 +328,6 @@ body.asesoria { padding-top: 88px; }
   border-radius: var(--r-panel);
   overflow: hidden;
 }
-.nosotros-mapa-enlace {
-  display: block;
-  border-radius: var(--r-medio);
-  overflow: hidden;
-  border: 1px solid var(--gris-claro);
-}
 
 .contacto-grid {
   display: grid;
@@ -156,17 +337,39 @@ body.asesoria { padding-top: 88px; }
 @media (min-width: 900px) {
   .contacto-grid { grid-template-columns: 1.1fr .9fr; gap: var(--e-6); }
 }
+/* Azul hondo, no el turquesa genérico de la plantilla original: ese
+   turquesa no es un color de marca de A360 (viene de la plantilla
+   MindMarket de base, nunca se limpió para Asesoría) y desentonaba con
+   el resto de la web. El navy transmite justo lo que pide el cliente
+   aquí — confianza y seriedad — y es coherente con el resto de la
+   paleta (mismo tono que el nav oscuro y el cierre). */
 .contacto-panel {
-  background: var(--turquesa);
-  color: var(--azul-hondo);
+  background: var(--azul-hondo);
+  color: var(--blanco);
   border-radius: var(--r-panel);
   padding: var(--e-4);
 }
-.contacto-panel h2, .contacto-panel h3 { color: var(--azul-hondo); }
-.contacto-panel a { text-decoration: underline; text-underline-offset: 2px; }
+.contacto-panel h2, .contacto-panel h3 { color: var(--blanco); }
+.contacto-panel a { color: var(--blanco); text-decoration: underline; text-underline-offset: 2px; }
 .contacto-panel__whatsapp {
   margin-top: var(--e-3);
   display: inline-flex;
+}
+/* El HTML de este botón trae la clase .boton-oscuro (azul hondo) de
+   cuando el panel de al lado era claro — ahora que el panel es azul
+   hondo (ver más arriba), ese mismo azul sobre azul se volvía
+   invisible. Aquí, solo dentro de este panel, en naranja: mismo
+   contraste fuerte, y de paso el naranja de marca vuelve a aparecer
+   en la propia página de Contacto. */
+.contacto-panel .boton-oscuro {
+  background: var(--naranja);
+  border-color: var(--naranja);
+}
+.contacto-panel .boton-oscuro:hover,
+.contacto-panel .boton-oscuro:focus-visible {
+  background: var(--blanco);
+  color: var(--naranja);
+  border-color: var(--blanco);
 }
 
 .contacto-mapa h2 { margin-bottom: var(--e-2); }

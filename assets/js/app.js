@@ -230,8 +230,8 @@ function iniciarFormulario() {
 }
 
 function iniciarHeroScrubMarketing() {
-  const logo = document.querySelector('.marketing-hero__fondo-logo');
-  const heroSeccion = document.querySelector('.marketing-hero');
+  const logo = document.querySelector('.marketing-hero__fondo-logo, .asesoria-hero__fondo-logo');
+  const heroSeccion = document.querySelector('.marketing-hero, .asesoria-hero');
   if (!logo || !heroSeccion) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
@@ -275,7 +275,7 @@ function iniciarMaquinaEscribir() {
   if (!parrafo) return;
 
   const texto = parrafo.getAttribute('data-texto-maquina') || '';
-  const cursor = parrafo.querySelector('.marketing-hero__cursor');
+  const cursor = parrafo.querySelector('.marketing-hero__cursor, .asesoria-hero__cursor');
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     parrafo.textContent = texto;
@@ -299,7 +299,8 @@ function iniciarMaquinaEscribir() {
 }
 
 function iniciarNavAdaptativa() {
-  if (!document.body.classList.contains('marketing')) return;
+  const esSitioConNavFlotante = document.body.classList.contains('marketing') || document.body.classList.contains('asesoria');
+  if (!esSitioConNavFlotante) return;
   const nav = document.querySelector('.nav-flotante');
   const envoltorio = document.querySelector('.nav-flotante-envoltorio');
   const pie = document.querySelector('footer.pie');
@@ -325,7 +326,7 @@ function iniciarNavAdaptativa() {
       window.innerHeight - 1
     );
     const elemento = document.elementFromPoint(x, y);
-    return !!(elemento && elemento.closest('.marketing-hero'));
+    return !!(elemento && elemento.closest('.marketing-hero, .asesoria-hero'));
   };
 
   const actualizar = () => {

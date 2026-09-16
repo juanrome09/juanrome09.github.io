@@ -22,23 +22,24 @@
 
 <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
 
-<header class="cabecera cabecera--asesoria">
-  <div class="contenedor cabecera__interior">
-    <a class="cabecera__logo" href="/asesoria/" aria-label="A360 Asesoría — inicio">
-      <img src="/assets/img/logo-asesoria.png" width="547" height="652" alt="A360 Asesores" loading="eager">
+<div class="nav-flotante-envoltorio">
+  <div class="nav-flotante">
+    <a class="nav-flotante__logo" href="/asesoria/" aria-label="A360 Asesoría — inicio">
+      <img class="nav-flotante__logo-img--color" src="/assets/img/logo-asesoria.png" width="547" height="652" alt="A360 Asesoría" loading="eager">
+      <img class="nav-flotante__logo-img--blanco" src="/assets/img/logo-asesoria-blanco.png" width="547" height="652" alt="A360 Asesoría" loading="eager">
     </a>
-    <nav class="cabecera__nav" aria-label="Principal">
+    <nav class="nav-flotante__nav" aria-label="Principal">
       <a href="/asesoria/">Inicio</a>
       <a href="/asesoria/nosotros.html" aria-current="page">Nosotros</a>
       <a href="/asesoria/servicios.html">Servicios</a>
       <a href="/asesoria/contacto.html">Contacto</a>
-      <a class="cabecera__cambio-mundo" href="/marketing/">Ir a Marketing</a>
+      <a class="nav-flotante__cambio-mundo" href="/marketing/">Ir a Marketing</a>
     </nav>
-    <button class="cabecera__movil-abrir" data-menu-abrir aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú">
-      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect y="5" width="24" height="2" style="fill:var(--azul-hondo)"/><rect y="11" width="24" height="2" style="fill:var(--azul-hondo)"/><rect y="17" width="24" height="2" style="fill:var(--azul-hondo)"/></svg>
+    <button class="nav-flotante__movil-abrir" data-menu-abrir aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect y="5" width="24" height="2" style="fill:var(--lino)"/><rect y="11" width="24" height="2" style="fill:var(--lino)"/><rect y="17" width="24" height="2" style="fill:var(--lino)"/></svg>
     </button>
   </div>
-</header>
+</div>
 
 <div class="menu-movil" id="menu-movil" data-abierto="false">
   <div class="menu-movil__cabecera">
@@ -76,9 +77,9 @@
         </div>
       </div>
       <div>
-        <h2>Cómo trabajamos</h2>
+        <h2>Nuestro equipo</h2>
         <!-- PENDIENTE A360 -->
-        <p>Trato directo con quien lleva tu caso, respuesta por WhatsApp y explicaciones sin tecnicismos innecesarios. Preferimos resolver antes de que el problema crezca.</p>
+        <p>Profesionales graduados en cada área — fiscal, contable, laboral y societaria — bajo un mismo techo. Trato directo con quien lleva tu caso, sin intermediarios ni cuentas gestionadas desde fuera.</p>
       </div>
     </div>
   </section>
@@ -111,12 +112,8 @@
       <div>
         <h2>Dónde estamos</h2>
         <p>Calle del Sol, 12 bajos, local F · Santa Eulalia del Río (07840), Islas Baleares.</p>
-        <a class="nosotros-mapa-enlace" href="https://www.google.com/maps/search/?api=1&query=Calle+del+Sol+12+Santa+Eulalia+del+R%C3%ADo" target="_blank" rel="noopener" style="margin-top:var(--e-2)">
-          <!-- Mapa estático de la oficina · 16:9 · 1200×675 — placeholder, enlaza a Google Maps sin iframe -->
-          <div class="placeholder-img" style="aspect-ratio:16/9;width:100%;max-width:640px;background:var(--lavado-hondo)" role="img" aria-label="Mapa de la ubicación de A360, enlaza a Google Maps">
-            Ver ubicación en Google Maps
-          </div>
-        </a>
+        <!-- El mapa real y el horario ya están en Contacto — no se repite aquí, solo se enlaza. -->
+        <p style="margin-top:var(--e-2)"><a class="enlace-cuerpo" href="/asesoria/contacto.html#como-llegar">Ver el mapa y el horario</a></p>
       </div>
     </div>
   </section>

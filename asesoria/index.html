@@ -41,24 +41,24 @@
 
 <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
 
-<header class="cabecera cabecera--asesoria">
-  <div class="contenedor cabecera__interior">
-    <a class="cabecera__logo" href="/asesoria/" aria-label="A360 Asesoría — inicio">
-      <!-- Logotipo con título ASESORÍA — placeholder, ver assets/img/logo-fuente/LEEME.md -->
-      <img src="/assets/img/logo-asesoria.png" width="547" height="652" alt="A360 Asesores" loading="eager">
+<div class="nav-flotante-envoltorio">
+  <div class="nav-flotante">
+    <a class="nav-flotante__logo" href="/asesoria/" aria-label="A360 Asesoría — inicio">
+      <img class="nav-flotante__logo-img--color" src="/assets/img/logo-asesoria.png" width="547" height="652" alt="A360 Asesoría" loading="eager">
+      <img class="nav-flotante__logo-img--blanco" src="/assets/img/logo-asesoria-blanco.png" width="547" height="652" alt="A360 Asesoría" loading="eager">
     </a>
-    <nav class="cabecera__nav" aria-label="Principal">
+    <nav class="nav-flotante__nav" aria-label="Principal">
       <a href="/asesoria/" aria-current="page">Inicio</a>
       <a href="/asesoria/nosotros.html">Nosotros</a>
       <a href="/asesoria/servicios.html">Servicios</a>
       <a href="/asesoria/contacto.html">Contacto</a>
-      <a class="cabecera__cambio-mundo" href="/marketing/">Ir a Marketing</a>
+      <a class="nav-flotante__cambio-mundo" href="/marketing/">Ir a Marketing</a>
     </nav>
-    <button class="cabecera__movil-abrir" data-menu-abrir aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú">
-      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect y="5" width="24" height="2" style="fill:var(--azul-hondo)"/><rect y="11" width="24" height="2" style="fill:var(--azul-hondo)"/><rect y="17" width="24" height="2" style="fill:var(--azul-hondo)"/></svg>
+    <button class="nav-flotante__movil-abrir" data-menu-abrir aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect y="5" width="24" height="2" style="fill:var(--lino)"/><rect y="11" width="24" height="2" style="fill:var(--lino)"/><rect y="17" width="24" height="2" style="fill:var(--lino)"/></svg>
     </button>
   </div>
-</header>
+</div>
 
 <div class="menu-movil" id="menu-movil" data-abierto="false">
   <div class="menu-movil__cabecera">
@@ -78,26 +78,21 @@
 
 <main id="contenido">
 
-  <section class="contenedor asesoria-hero">
-    <div class="asesoria-hero__grid">
-      <div class="asesoria-hero__texto reveal">
-        <!-- PENDIENTE A360 -->
-        <h1>Asesoría fiscal, contable y laboral para empresas y autónomos de Ibiza</h1>
-        <p class="cuerpo-lg">Llevamos las cuentas, los impuestos y las nóminas de tu negocio para que tú te ocupes de lo demás. Trato directo, sin intermediarios.</p>
-        <div class="asesoria-hero__acciones">
-          <a class="boton boton-primario" href="https://wa.me/34649032854?text=Hola%2C%20escribo%20desde%20la%20web%20de%20A360%20Asesor%C3%ADa" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
-          <a class="boton boton-secundario" href="/asesoria/servicios.html">Ver los servicios</a>
-        </div>
-      </div>
-      <div class="asesoria-hero__visual reveal">
-        <span class="asesoria-hero__forma" aria-hidden="true"></span>
-        <div class="asesoria-hero__panel">
-          <!-- Foto equipo/oficina, pendiente de material real del cliente -->
-          <div class="placeholder-img" style="aspect-ratio:4/3;width:100%;background:var(--blanco);border-radius:var(--r-medio)" role="img" aria-label="Foto del equipo o la oficina de A360 Asesoría, pendiente de material del cliente">
-            Foto equipo · 4:3 · 1200×900
-          </div>
-        </div>
-      </div>
+  <section class="asesoria-hero">
+    <div class="asesoria-hero__fondo" aria-hidden="true">
+      <img class="asesoria-hero__fondo-logo" src="/assets/img/logo-a360-blanco.png" width="973" height="973" alt="">
+    </div>
+    <!-- PENDIENTE A360 -->
+    <h1 class="asesoria-hero__titulo reveal">Asesoría fiscal, contable y laboral para empresas y autónomos de Ibiza</h1>
+    <p class="asesoria-hero__linea asesoria-hero__linea--maquina" data-texto-maquina="Llevamos las cuentas, los impuestos y las nóminas de tu negocio para que tú te ocupes de lo demás."><span class="asesoria-hero__cursor" aria-hidden="true"></span></p>
+    <div class="asesoria-hero__pildoras reveal">
+      <a class="pildora-a" href="https://wa.me/34649032854?text=Hola%2C%20escribo%20desde%20la%20web%20de%20A360%20Asesor%C3%ADa" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
+      <a class="pildora-a" href="/asesoria/servicios.html">Ver los servicios</a>
+      <a class="pildora-a" href="/asesoria/#como-trabajamos">Cómo trabajamos</a>
+      <button class="pildora-a pildora-a--contorno" type="button" data-copiar-correo="info@asesores360.com">
+        <span>info@asesores360.com</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="8" y="8" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="2"/></svg>
+      </button>
     </div>
   </section>
 
@@ -129,7 +124,7 @@
     </div>
   </section>
 
-  <section class="banda banda-blanca">
+  <section class="banda banda-blanca" id="como-trabajamos">
     <div class="contenedor">
       <h2>Cómo trabajamos</h2>
       <div class="pasos" style="margin-top:var(--e-4)">
