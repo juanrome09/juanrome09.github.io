@@ -55,8 +55,15 @@ body.asesoria main > section {
   justify-content: space-between;
   gap: var(--e-3);
 }
+/* Corrección del cliente: el color de marca de Asesoría es el
+   naranja, no el azul — aunque el nombre de la clase (heredado del
+   mismo mecanismo de Marketing, donde sí es literalmente un tono
+   oscuro) siga siendo "--oscura", aquí es el estado que se ve sobre
+   fondo claro (la mayoría de la web) y debe ser naranja; "--clara"
+   (la píldora de arriba, sin modificador) es la que se ve blanca
+   sobre fondo oscuro (el héroe naranja y el pie azul). */
 body.asesoria .nav-flotante.nav-flotante--oscura {
-  background: var(--azul-hondo);
+  background: var(--naranja);
   border-color: rgba(255, 255, 255, .15);
 }
 .nav-flotante__logo .nav-flotante__logo-img--blanco { display: none; }
@@ -93,13 +100,12 @@ body.asesoria .nav-flotante--oscura .nav-flotante__nav a[aria-current="page"] {
    de Asesoría — mismo criterio, en espejo, que el botón "Ir a
    Asesoría" de la web de Marketing, que usa naranja precisamente
    porque lleva aquí. */
-/* Bug real, encontrado al probar el nav oscuro: azul-hondo es tanto
-   el color de este botón como el fondo de la propia píldora en su
-   estado --oscura — mismo tono sobre mismo tono, el botón
-   desaparecía. azul-acero (más claro) contrasta contra los dos
-   fondos posibles de la píldora (el claro y el oscuro), así que
-   sirve para los dos estados sin necesitar una regla aparte para
-   cada uno. */
+/* azul-acero (y azul-hondo al pasar el ratón) contrastan contra los
+   dos fondos posibles de la píldora — el claro (lino) y el naranja
+   de su estado --oscura — sin necesitar una regla aparte para cada
+   uno. Ojo si alguna vez alguno de los dos pasa a ser azul: chocaría
+   con el fondo de la píldora en ese estado (ya pasó una vez con
+   azul-hondo de fondo, ver el commit que lo corrigió). */
 .nav-flotante__cambio-mundo {
   display: inline-flex;
   align-items: center;
@@ -112,7 +118,7 @@ body.asesoria .nav-flotante--oscura .nav-flotante__nav a[aria-current="page"] {
   border-radius: var(--r-pildora);
   transition: background-color var(--dur-hover) ease;
 }
-.nav-flotante__cambio-mundo:hover, .nav-flotante__cambio-mundo:focus-visible { background: var(--naranja); }
+.nav-flotante__cambio-mundo:hover, .nav-flotante__cambio-mundo:focus-visible { background: var(--azul-hondo); }
 body.asesoria .menu-movil__nav a { color: var(--gris-tinta); }
 body.asesoria .menu-movil__nav a:last-child { color: var(--azul-hondo); }
 .nav-flotante__movil-abrir {
