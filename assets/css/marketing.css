@@ -915,10 +915,10 @@ body.marketing .cierre-marketing__linea {
   height: 100%;
   fill: none;
   stroke: var(--mk-servicio-acento);
-  stroke-width: .4;
+  stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
-  opacity: .18;
+  opacity: .4;
 }
 @media (max-width: 899px) {
   .servicio-bloque-mk__icono { width: 110px; height: 110px; }
