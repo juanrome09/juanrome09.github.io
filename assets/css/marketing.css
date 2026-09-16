@@ -994,7 +994,7 @@ body.marketing .cierre-marketing__linea {
     aspect-ratio: 16/9 !important;
   }
 }
-.nosotros-mk-forma { position: relative; }
+.nosotros-mk-forma { position: relative; isolation: isolate; }
 .nosotros-mk-forma__foto {
   display: block;
   position: relative;
@@ -1004,16 +1004,15 @@ body.marketing .cierre-marketing__linea {
   object-position: center;
   border-radius: var(--r-panel);
 }
-.nosotros-mk-forma__rect {
+/* Mismo resplandor difuminado que las fotos de "Nuestro trabajo"
+   (.trabajo-mk__pieza::before, en vez del recuadro azul plano de
+   antes). */
+.nosotros-mk-forma::before {
+  content: '';
   position: absolute;
-  inset-block-start: -20px;
-  inset-inline-end: -20px;
-  width: 55%;
-  height: 45%;
-  background: var(--mk-acento);
-  border-radius: var(--mk-r-imagen);
-  transform: none;
-  z-index: 0;
+  inset: -29%;
+  z-index: -1;
+  background: radial-gradient(ellipse closest-side, rgba(var(--mk-turquesa-rgb), .6), transparent 81%);
 }
 
 .mk-mapa-mv {
