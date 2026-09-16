@@ -1057,8 +1057,8 @@ body.marketing .cierre-marketing__linea {
   position: absolute;
   max-width: 320px;
 }
-.mk-mision-vision__item--mision { left: 9%; top: 20%; }
-.mk-mision-vision__item--vision { right: 14%; top: 41%; text-align: right; }
+.mk-mision-vision__item--mision { left: 13%; top: 30%; }
+.mk-mision-vision__item--vision { right: 13%; top: 55%; text-align: right; }
 
 @media (max-width: 767px), (prefers-reduced-motion: reduce), (max-height: 660px) {
   .mk-mision-vision {
