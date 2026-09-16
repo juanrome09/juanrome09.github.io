@@ -369,6 +369,24 @@ function iniciarCopiarCorreo() {
 }
 
 function iniciarTransicionCambioMundo() {
+  // El @view-transition de base.css crea una transición implícita en
+  // TODA navegación de esta web, la pulse alguien o no el botón de
+  // cambio de web — si esa transición se salta (que es lo normal en
+  // una navegación de un sitio a otro sin más), su promesa queda sin
+  // capturar y el navegador la reporta como error en consola. Esto va
+  // fuera de las comprobaciones de más abajo porque pasa siempre,
+  // independientemente de si esta página participa o no en el gesto.
+  const sanearTransicion = (evento) => {
+    if (evento.viewTransition) {
+      evento.viewTransition.ready.catch(() => {});
+      evento.viewTransition.finished.catch(() => {});
+    }
+  };
+  if ('onpageswap' in window) window.addEventListener('pageswap', sanearTransicion);
+  if ('onpagereveal' in window) {
+    window.addEventListener('pagereveal', sanearTransicion);
+  }
+
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   // Solo Chrome/Edge (de momento) entienden la View Transitions API entre

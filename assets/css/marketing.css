@@ -1095,6 +1095,16 @@ body.marketing .cierre-marketing__linea {
   .mk-mapa-mv__punto--vision { margin-top: var(--e-4); }
 }
 
+/* Esta sección tenía muy poco contenido y "safe center" la dejaba
+   flotando a media pantalla; el resto de secciones de la página
+   parecen empezar arriba porque su contenido es más alto y ese mismo
+   "safe center" cae al inicio en cuanto no cabe centrado — aquí se
+   fuerza ese mismo inicio arriba para que las cuatro se vean igual de
+   altas sin depender de cuánto contenido tenga cada una. */
+body.marketing main > section.mk-valores-seccion {
+  justify-content: flex-start;
+}
+
 .mk-valores {
   display: grid;
   grid-template-columns: 1fr;
@@ -1135,8 +1145,9 @@ body.marketing .cierre-marketing__linea {
   content: '';
   position: absolute;
   z-index: -1;
-  inset: 0;
-  background: radial-gradient(circle at 100% 0%, rgba(var(--mk-valores-acento-rgb), .4), transparent 70%);
+  inset: -10%;
+  background: radial-gradient(circle at 100% 0%, rgba(var(--mk-valores-acento-rgb), .7), transparent 75%);
+  filter: blur(10px);
 }
 .mk-valores__icono {
   flex-shrink: 0;
