@@ -142,8 +142,8 @@ body.puerta > main {
   z-index: 2;
   top: 50%;
   left: 50%;
-  width: 255px;
-  height: 255px;
+  width: clamp(140px, 40vw, 638px);
+  height: clamp(140px, 40vw, 638px);
   transform: translate(-50%, -50%);
   pointer-events: none;
   opacity: 0;
