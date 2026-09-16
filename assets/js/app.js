@@ -369,11 +369,18 @@ function iniciarCopiarCorreo() {
 }
 
 function iniciarTransicionCambioMundo() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // Solo Chrome/Edge (de momento) entienden la View Transitions API entre
+  // documentos — sin "pagereveal" no hay forma fiable de animar el cambio
+  // de página, así que en Safari/Firefox no se toca nada: el enlace
+  // navega tal cual, normal y al instante, sin ningún gesto de por medio.
+  if (!('onpagereveal' in window)) return;
+
   const CLAVE = 'a360-cambio-mundo';
-  const soportaTransicionNativa = 'onpagereveal' in window;
   const nav = document.querySelector('.nav-flotante');
 
-  if (soportaTransicionNativa && nav) {
+  if (nav) {
     let llega = false;
     try { llega = sessionStorage.getItem(CLAVE) === '1'; } catch (error) {}
     if (llega) {
@@ -393,20 +400,8 @@ function iniciarTransicionCambioMundo() {
 
   const enlace = document.querySelector('.nav-flotante__cambio-mundo');
   if (!enlace) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  enlace.addEventListener('click', (evento) => {
-    if (soportaTransicionNativa) {
-      enlace.style.viewTransitionName = 'cambio-mundo';
-      try { sessionStorage.setItem(CLAVE, '1'); } catch (error) {}
-      return;
-    }
-    if (enlace.classList.contains('despidiendose')) return;
-    evento.preventDefault();
-    const destino = enlace.href;
-    enlace.classList.add('despidiendose');
-    window.setTimeout(() => {
-      window.location.href = destino;
-    }, 480);
+  enlace.addEventListener('click', () => {
+    enlace.style.viewTransitionName = 'cambio-mundo';
+    try { sessionStorage.setItem(CLAVE, '1'); } catch (error) {}
   });
 }
