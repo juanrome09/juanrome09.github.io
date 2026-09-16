@@ -20,6 +20,8 @@
 </head>
 <body class="puerta">
 
+<a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
+
 <header class="puerta-cabecera">
   <a class="puerta-cabecera__logo" href="/" aria-label="A360 — inicio">
     <img src="/assets/img/logo-a360.png" width="656" height="656" alt="A360" loading="eager">
@@ -31,35 +33,38 @@
 </header>
 
 <main id="contenido">
-  <section class="puerta-hero">
-    <div class="puerta-hero__luna" aria-hidden="true">
-      <img src="/assets/img/logo-a360.png" width="973" height="973" alt="">
+  <h1 class="sr-solo">A360 — elige entre Asesoría o Marketing</h1>
+  <div class="puerta-split">
+
+    <div class="puerta-split__medallon" aria-hidden="true">
+      <img src="/assets/img/logo-a360.png" width="656" height="656" alt="">
     </div>
-    <h1 class="puerta-hero__titulo">A360</h1>
-    <p class="puerta-hero__eslogan">De invisible a inolvidable</p>
 
-    <nav class="puertas" aria-label="Elige un sitio">
-      <span class="puerta-forma puerta-forma--trapecio" aria-hidden="true"></span>
-      <span class="puerta-forma puerta-forma--circulo" aria-hidden="true"></span>
-      <span class="puerta-forma puerta-forma--pildora" aria-hidden="true"></span>
+    <a class="puerta-mitad puerta-mitad--asesoria" href="/asesoria/">
+      <div class="puerta-mitad__fondo" aria-hidden="true">
+        <img src="/assets/img/logo-a360-blanco.png" width="973" height="973" alt="">
+      </div>
+      <div class="puerta-mitad__contenido">
+        <span class="puerta-mitad__eyebrow">A360 Asesoría</span>
+        <span class="puerta-mitad__titulo">Asesoría</span>
+        <p class="puerta-mitad__descripcion">Fiscal, contable, laboral y societaria para empresas y autónomos de Ibiza.</p>
+        <span class="puerta-mitad__entrar">Entrar<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+    </a>
 
-      <a class="puerta-panel puerta-panel--asesoria" href="/asesoria/">
-        <div>
-          <span class="puerta-panel__titulo">Asesoría</span>
-          <p class="puerta-panel__descripcion">Fiscal, contable, laboral y societaria</p>
-        </div>
-        <span class="puerta-panel__entrar">Entrar</span>
-      </a>
+    <a class="puerta-mitad puerta-mitad--marketing" href="/marketing/">
+      <div class="puerta-mitad__fondo" aria-hidden="true">
+        <img src="/assets/img/logo-a360-blanco.png" width="973" height="973" alt="">
+      </div>
+      <div class="puerta-mitad__contenido">
+        <span class="puerta-mitad__eyebrow">A360 Marketing</span>
+        <span class="puerta-mitad__titulo">Marketing</span>
+        <p class="puerta-mitad__descripcion">Marca, redes, publicidad y desarrollo web con resultados medibles.</p>
+        <span class="puerta-mitad__entrar">Entrar<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+    </a>
 
-      <a class="puerta-panel puerta-panel--marketing" href="/marketing/">
-        <div>
-          <span class="puerta-panel__titulo">Marketing</span>
-          <p class="puerta-panel__descripcion">Marca, redes, publicidad y desarrollo web</p>
-        </div>
-        <span class="puerta-panel__entrar">Entrar</span>
-      </a>
-    </nav>
-  </section>
+  </div>
 </main>
 
 <footer class="puerta-pie">

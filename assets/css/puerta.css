@@ -1,7 +1,8 @@
 body.puerta {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  background: var(--lino);
 }
 
 body.puerta > main {
@@ -21,8 +22,7 @@ body.puerta > main {
   .puerta-cabecera { padding: var(--e-3) var(--canal-escritorio); }
 }
 
-.puerta-cabecera__logo svg,
-.puerta-cabecera__logo img { height: 48px; width: auto; display: block; }
+.puerta-cabecera__logo img { height: 44px; width: auto; display: block; }
 
 .puerta-cabecera__contacto {
   display: flex;
@@ -32,186 +32,157 @@ body.puerta > main {
   font-size: var(--menor);
   font-weight: 700;
 }
-.puerta-cabecera__contacto a { color: var(--azul-hondo); }
+.puerta-cabecera__contacto a { color: var(--gris-tinta); }
 .puerta-cabecera__contacto a:hover,
 .puerta-cabecera__contacto a:focus-visible { color: var(--azul-acero); }
 
-.puerta-hero {
+/* ---------- Dos caminos, una marca: cada mitad reutiliza tal cual el
+   degradado y el logo de fondo (marca de agua) del héroe real de su
+   propia web — asesoria-hero y marketing-hero en assets/css — para
+   que quien llega aquí ya reconozca el tono de cada sitio antes de
+   entrar. El medallón central con el logo A360 es lo único nuevo:
+   marca visualmente que son la misma empresa vista desde dos ángulos. */
+.puerta-split {
   position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: var(--e-4) var(--canal-movil) var(--e-3);
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.puerta-hero__luna {
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline-start: 50%;
-  width: min(85vw, 850px);
-  aspect-ratio: 1 / 1;
-  transform: translate(-50%, -46%) translateX(-40%);
-  opacity: 0;
-  z-index: -1;
-  animation: puerta-barrido 420ms cubic-bezier(.2, .7, .2, 1) both;
-}
-.puerta-hero__luna img { width: 100%; height: 100%; object-fit: contain; }
-
-@media (max-width: 640px) {
-  .puerta-hero__luna {
-    inset-inline-start: auto;
-    inset-inline-end: -10%;
-    transform: translateY(-46%) translateX(-40%);
-    width: 75vw;
-  }
-  @keyframes puerta-barrido-movil {
-    from { opacity: 0; transform: translateY(-46%) translateX(20%); }
-    to { opacity: 1; transform: translateY(-46%) translateX(0); }
-  }
-  .puerta-hero__luna { animation-name: puerta-barrido-movil; }
-}
-
-.puerta-hero__titulo {
-  font-family: var(--f-titulos);
-  font-weight: 700;
-  font-size: var(--display-xl);
-  line-height: .84;
-  letter-spacing: -.03em;
-  color: var(--azul-hondo);
-  opacity: 0;
-  animation: puerta-aparecer 420ms cubic-bezier(.2, .7, .2, 1) 380ms both;
-}
-
-.puerta-hero__eslogan {
-  margin-top: var(--e-2);
-  font-family: var(--f-cuerpo);
-  font-style: italic;
-  font-size: var(--cuerpo-lg);
-  color: var(--gris-tinta);
-  opacity: 0;
-  animation: puerta-aparecer 420ms cubic-bezier(.2, .7, .2, 1) 460ms both;
-}
-
-@keyframes puerta-barrido {
-  from { opacity: 0; transform: translate(-50%, -46%) translateX(-40%); }
-  to   { opacity: 1; transform: translate(-50%, -46%) translateX(0); }
-}
-@keyframes puerta-aparecer {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .puerta-hero__luna,
-  .puerta-hero__titulo,
-  .puerta-hero__eslogan {
-    animation: none;
-    opacity: 1;
-    transform: translate(-50%, -46%);
-  }
-  .puerta-hero__titulo, .puerta-hero__eslogan { transform: none; }
-}
-
-.puertas {
-  position: relative;
-  width: 100%;
-  max-width: var(--ancho-max);
-  margin-inline: auto;
-  margin-top: var(--e-5);
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--e-3);
+  min-height: 560px;
 }
 @media (min-width: 720px) {
-  .puertas { grid-template-columns: 1fr 1fr; }
+  .puerta-split { flex-direction: row; }
 }
 
-.puerta-panel {
+.puerta-mitad {
   position: relative;
+  flex: 1 1 0%;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 320px;
-  padding: var(--e-4);
-  border-radius: var(--r-panel);
-  border: 1px solid var(--negro);
-  transition: background-color var(--dur-panel) ease, color var(--dur-panel) ease;
-}
-
-.puerta-panel--asesoria { background: var(--lavado-azul); color: var(--azul-hondo); }
-.puerta-panel--marketing { background: var(--lavado-vino); color: var(--vino-hondo); }
-
-.puerta-panel--asesoria:hover, .puerta-panel--asesoria:focus-visible {
-  background: var(--azul-hondo);
+  align-items: flex-end;
+  padding: var(--e-5) var(--canal-movil) var(--e-6);
+  overflow: hidden;
+  isolation: isolate;
   color: var(--blanco);
+  text-decoration: none;
+  transition: flex-grow .45s cubic-bezier(.3, .1, .2, 1);
+  animation: puerta-entra .5s cubic-bezier(.3, .1, .2, 1) both;
 }
-.puerta-panel--marketing:hover, .puerta-panel--marketing:focus-visible {
-  background: var(--vino);
-  color: var(--blanco);
+@media (min-width: 1024px) {
+  .puerta-mitad { padding-inline: var(--canal-escritorio); }
+}
+.puerta-mitad--marketing { animation-delay: .08s; }
+
+@keyframes puerta-entra {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.puerta-panel__titulo {
-  font-family: var(--f-titulos);
-  font-weight: 700;
-  font-size: var(--titulo-1);
-  color: inherit;
+@media (hover: hover) and (pointer: fine) and (min-width: 720px) {
+  .puerta-mitad:hover, .puerta-mitad:focus-visible { flex-grow: 1.35; }
 }
-.puerta-panel__descripcion {
-  margin-top: var(--e-2);
-  font-family: var(--f-cuerpo);
-  font-size: var(--cuerpo);
-  color: inherit;
-  max-width: 32ch;
+
+.puerta-mitad--asesoria { background: linear-gradient(135deg, #B8420F, var(--naranja)); }
+.puerta-mitad--marketing { background: linear-gradient(135deg, var(--azul-hondo), var(--azul-acero)); }
+
+.puerta-mitad__fondo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
 }
-.puerta-panel__entrar {
-  align-self: flex-end;
-  margin-top: var(--e-4);
-  display: inline-flex;
-  align-items: center;
-  padding: 10px 22px;
-  border-radius: var(--r-pildora);
-  border: 1px solid currentColor;
+.puerta-mitad__fondo img {
+  position: absolute;
+  top: 50%;
+  width: clamp(360px, 55vw, 720px);
+  aspect-ratio: 1;
+  opacity: .14;
+}
+.puerta-mitad--asesoria .puerta-mitad__fondo img { right: -16%; transform: translateY(-46%); }
+.puerta-mitad--marketing .puerta-mitad__fondo img { left: -16%; transform: translateY(-46%); }
+
+.puerta-mitad__contenido { position: relative; z-index: 1; max-width: 440px; }
+
+.puerta-mitad__eyebrow {
+  display: block;
   font-family: var(--f-cuerpo);
   font-weight: 700;
   font-size: var(--menor);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  opacity: .85;
 }
 
-.puerta-forma {
-  position: absolute;
-  pointer-events: none;
-  transform: rotate(var(--rotacion));
+.puerta-mitad__titulo {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--f-titulos);
+  font-weight: 700;
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: .95;
+  letter-spacing: -.02em;
 }
-.puerta-forma--trapecio {
-  inset-block-start: -36px;
-  inset-inline-end: 9%;
-  width: 64px; height: 40px;
-  background: var(--naranja);
-  clip-path: polygon(20% 0, 80% 0, 100% 100%, 0% 100%);
-  display: none;
+
+.puerta-mitad__descripcion {
+  margin-top: var(--e-2);
+  font-family: var(--f-cuerpo);
+  font-size: var(--cuerpo-lg);
+  max-width: 34ch;
+  opacity: .92;
 }
-.puerta-forma--circulo {
-  inset-block-end: -28px;
-  inset-inline-start: 4%;
-  width: 30px; height: 30px;
-  border-radius: 50%;
-  background: var(--azul-acero);
-}
-.puerta-forma--pildora {
-  inset-block-start: 38%;
-  inset-inline-start: -12px;
-  width: 70px; height: 24px;
+
+.puerta-mitad__entrar {
+  margin-top: var(--e-4);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
   border-radius: var(--r-pildora);
-  background: var(--gris-claro);
-  display: none;
+  background: var(--lino);
+  font-family: var(--f-cuerpo);
+  font-weight: 700;
+  font-size: var(--menor);
+  transition: gap .25s ease;
 }
-@media (min-width: 900px) {
-  .puerta-forma--trapecio, .puerta-forma--pildora { display: block; }
-  .puerta-forma--circulo { width: 44px; height: 44px; inset-block-end: -34px; }
+.puerta-mitad--asesoria .puerta-mitad__entrar { color: var(--naranja); }
+.puerta-mitad--marketing .puerta-mitad__entrar { color: var(--vino); }
+.puerta-mitad__entrar svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.puerta-mitad:hover .puerta-mitad__entrar,
+.puerta-mitad:focus-visible .puerta-mitad__entrar { gap: 12px; }
+
+.puerta-mitad:focus-visible { outline: 3px solid var(--blanco); outline-offset: -6px; }
+
+.puerta-split__medallon {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: 108px;
+  height: 108px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--blanco);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .18);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  animation: puerta-entra .5s cubic-bezier(.3, .1, .2, 1) .16s both;
+}
+.puerta-split__medallon img { width: 64%; height: 64%; object-fit: contain; }
+@media (min-width: 720px) and (min-height: 640px) {
+  .puerta-split__medallon { display: flex; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .puerta-mitad, .puerta-split__medallon { animation: none; }
+  .puerta-mitad { transition: none; }
 }
 
 .puerta-pie {
