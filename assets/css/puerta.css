@@ -90,6 +90,10 @@ body.puerta > main {
    para el logo partido. */
 .puerta-mitad--marketing { justify-content: flex-end; }
 .puerta-mitad--marketing .puerta-mitad__contenido { text-align: right; }
+/* Flecha a la izquierda del texto y apuntando a la izquierda: es el
+   lado hacia donde crece esta mitad al pasar el ratón, en espejo con
+   la de Asesoría (que apunta a la derecha, su propio lado de avance). */
+.puerta-mitad--marketing .puerta-mitad__entrar { flex-direction: row-reverse; }
 
 .puerta-mitad__contenido { position: relative; z-index: 1; max-width: 440px; }
 
@@ -150,70 +154,34 @@ body.puerta > main {
 
 .puerta-mitad:focus-visible { outline: 3px solid var(--blanco); outline-offset: -6px; }
 
-/* ---------- Logo central partido en dos colores: la misma imagen del
-   logo A360, una vez en naranja y otra en azul, cada una tapando solo
-   su mitad con clip-path. En reposo se ve mitad y mitad, como si el
-   propio logo marcara la costura entre las dos webs. Al pasar el
-   ratón (o el foco) por una mitad, esa capa de color crece hasta
-   cubrir el logo entero y la otra desaparece — el mismo gesto que ya
-   hace crecer el panel, pero llevado al logo, así se nota aún más
-   claro qué mitad estás a punto de abrir. */
+/* ---------- Logo central: mismo logo blanco y misma opacidad tenue
+   que ya usan de marca de agua .marketing-hero__fondo-logo y
+   .asesoria-hero__fondo-logo — sin colores propios. Va por encima de
+   las dos mitades (no dentro de ninguna), así que el naranja o el
+   azul que se le ve son el fondo de verdad transparentando a través
+   suyo: cuando una mitad crece con el hover y su borde pasa por
+   encima de donde está el logo, el logo entero pasa a verse de ese
+   color sin que haga falta ni un color ni un clip-path de más. */
 .puerta-logo {
   position: absolute;
   z-index: 2;
   top: 50%;
   left: 50%;
-  width: 130px;
-  height: 130px;
+  width: 150px;
+  height: 150px;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  filter: drop-shadow(0 10px 28px rgba(0, 0, 0, .22));
   opacity: 0;
   animation: puerta-logo-entra .5s ease .16s both;
 }
+.puerta-logo img { width: 100%; height: 100%; object-fit: contain; opacity: .14; }
 @keyframes puerta-logo-entra {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-.puerta-logo__capa {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  transition: clip-path .45s cubic-bezier(.3, .1, .2, 1);
-}
-/* Móvil (mitades apiladas, una encima de otra): el corte va horizontal,
-   arriba naranja y abajo azul — igual que se apilan las dos mitades. */
-.puerta-logo__capa--asesoria { clip-path: inset(0 0 50% 0); }
-.puerta-logo__capa--marketing { clip-path: inset(50% 0 0 0); }
-/* Escritorio (mitades lado a lado): el corte pasa a vertical. */
-@media (min-width: 720px) {
-  .puerta-logo__capa--asesoria { clip-path: inset(0 50% 0 0); }
-  .puerta-logo__capa--marketing { clip-path: inset(0 0 0 50%); }
-}
-
-@media (hover: hover) and (pointer: fine) and (min-width: 720px) {
-  .puerta-split:has(.puerta-mitad--asesoria:hover) .puerta-logo__capa--asesoria,
-  .puerta-split:has(.puerta-mitad--asesoria:focus-visible) .puerta-logo__capa--asesoria {
-    clip-path: inset(0 0 0 0);
-  }
-  .puerta-split:has(.puerta-mitad--asesoria:hover) .puerta-logo__capa--marketing,
-  .puerta-split:has(.puerta-mitad--asesoria:focus-visible) .puerta-logo__capa--marketing {
-    clip-path: inset(0 0 0 100%);
-  }
-  .puerta-split:has(.puerta-mitad--marketing:hover) .puerta-logo__capa--marketing,
-  .puerta-split:has(.puerta-mitad--marketing:focus-visible) .puerta-logo__capa--marketing {
-    clip-path: inset(0 0 0 0);
-  }
-  .puerta-split:has(.puerta-mitad--marketing:hover) .puerta-logo__capa--asesoria,
-  .puerta-split:has(.puerta-mitad--marketing:focus-visible) .puerta-logo__capa--asesoria {
-    clip-path: inset(0 100% 0 0);
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
-  .puerta-mitad, .puerta-logo, .puerta-logo__capa { animation: none; transition: none; }
+  .puerta-mitad, .puerta-logo { animation: none; transition: none; }
   .puerta-logo { opacity: 1; }
 }
 
