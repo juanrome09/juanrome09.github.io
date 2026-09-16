@@ -1104,12 +1104,18 @@ body.marketing .cierre-marketing__linea {
 body.marketing main > section.mk-valores-seccion {
   justify-content: flex-start;
 }
+body.marketing main > section.mk-valores-seccion h2 {
+  margin-top: 20px;
+}
+body.marketing main > section.mk-valores-seccion h2 {
+  margin-top: 50px;
+}
 /* Un poco más de aire entre el título y las 4 tarjetas que el resto
    de secciones (var(--e-6) en vez del var(--e-4) de siempre) — punto
    medio entre "pegadas al título" y centrarlas del todo en la
    sección, que quedaba demasiado abajo. */
 body.marketing main > section.mk-valores-seccion .mk-valores {
-  margin-top: var(--e-6);
+  margin-top: var(--e-8);
 }
 
 .mk-valores {
