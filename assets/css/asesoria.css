@@ -106,7 +106,11 @@ body.asesoria .nav-flotante--oscura .nav-flotante__nav a[aria-current="page"] {
    uno. Ojo si alguna vez alguno de los dos pasa a ser azul: chocaría
    con el fondo de la píldora en ese estado (ya pasó una vez con
    azul-hondo de fondo, ver el commit que lo corrigió). */
-.nav-flotante__cambio-mundo {
+/* .nav-flotante__nav a.nav-flotante__cambio-mundo, no solo la clase
+   sola: el selector genérico ".nav-flotante__nav a" (más abajo, mismo
+   fichero) tiene más especificidad que una sola clase y le ganaba el
+   color de texto — se quedaba en gris-tinta en vez de blanco. */
+.nav-flotante__nav a.nav-flotante__cambio-mundo {
   display: inline-flex;
   align-items: center;
   font-size: var(--menor);
@@ -118,7 +122,8 @@ body.asesoria .nav-flotante--oscura .nav-flotante__nav a[aria-current="page"] {
   border-radius: var(--r-pildora);
   transition: background-color var(--dur-hover) ease;
 }
-.nav-flotante__cambio-mundo:hover, .nav-flotante__cambio-mundo:focus-visible { background: var(--azul-hondo); }
+.nav-flotante__nav a.nav-flotante__cambio-mundo:hover,
+.nav-flotante__nav a.nav-flotante__cambio-mundo:focus-visible { background: var(--azul-hondo); color: var(--blanco); }
 body.asesoria .menu-movil__nav a { color: var(--gris-tinta); }
 body.asesoria .menu-movil__nav a:last-child { color: var(--azul-hondo); }
 .nav-flotante__movil-abrir {
@@ -140,18 +145,16 @@ body.asesoria .menu-movil__nav a:last-child { color: var(--azul-hondo); }
    cliente, "el hero igual al de marketing pero con fondo naranja" —
    para que se note el parentesco entre las dos webs sin que se
    confundan, cada una con su color.
-   min-height, no height:100svh + overflow:hidden: esta web no usa el
-   sistema de hojas ancladas de Marketing (aquí no hacía falta, el
-   cliente solo pidió el héroe y el nav, no todo el scroll), así que
-   no hay ningún motivo para forzar una altura fija que pueda recortar
-   contenido en una pantalla baja — con min-height nunca se recorta
-   nada, como mucho la sección queda más alta que la pantalla y se
-   recorre con scroll normal, tal y como ya pasa en el resto de esta
-   web. */
+   height:100svh + overflow:hidden, igual que Marketing: petición
+   explícita del cliente, "el hero en pantalla completa al entrar,
+   así como en marketing". Como esta web no usa el sistema de hojas
+   ancladas de Marketing, una altura fija sí puede recortar contenido
+   en una pantalla baja — por eso el mismo media query de más abajo
+   (calcado del de marketing.css) libera la altura en esos casos. */
 .asesoria-hero {
   position: relative;
   overflow: hidden;
-  min-height: min(100svh, 760px);
+  height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -162,6 +165,16 @@ body.asesoria .menu-movil__nav a:last-child { color: var(--azul-hondo); }
   color: var(--blanco);
 }
 @media (min-width: 1024px) { .asesoria-hero { padding-inline: var(--canal-escritorio); } }
+/* Misma red de seguridad que .marketing-hero (marketing.css): en una
+   ventana baja o apaisada, 100svh + overflow:hidden puede recortar de
+   verdad el titular o las píldoras — aquí se libera la altura y se
+   deja que la sección crezca con su contenido en vez de recortarlo. */
+@media (prefers-reduced-motion: reduce), (max-height: 660px) {
+  .asesoria-hero {
+    height: auto;
+    min-height: 100svh;
+  }
+}
 .asesoria-hero::before {
   content: '';
   position: absolute;

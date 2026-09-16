@@ -242,7 +242,11 @@ body.marketing .nav-flotante--oscura .nav-flotante__nav a[aria-current="page"] {
   color: var(--mk-rosa-oscuro);
 }
 
-.nav-flotante__cambio-mundo {
+/* .nav-flotante__nav a.nav-flotante__cambio-mundo, no solo la clase
+   sola: el selector genérico ".nav-flotante__nav a" (más abajo, mismo
+   fichero) tiene más especificidad que una sola clase y le ganaba el
+   color de texto — se quedaba en mk-tinta en vez del claro. */
+.nav-flotante__nav a.nav-flotante__cambio-mundo {
   display: inline-flex;
   align-items: center;
   font-size: var(--menor);
@@ -254,7 +258,8 @@ body.marketing .nav-flotante--oscura .nav-flotante__nav a[aria-current="page"] {
   border-radius: var(--r-pildora);
   transition: background-color var(--dur-hover) ease;
 }
-.nav-flotante__cambio-mundo:hover, .nav-flotante__cambio-mundo:focus-visible { background: var(--mk-azul-oscuro); }
+.nav-flotante__nav a.nav-flotante__cambio-mundo:hover,
+.nav-flotante__nav a.nav-flotante__cambio-mundo:focus-visible { background: var(--mk-azul-oscuro); color: var(--mk-texto-claro); }
 
 body.marketing .menu-movil__nav a { color: var(--mk-tinta); }
 
