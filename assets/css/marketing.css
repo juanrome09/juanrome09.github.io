@@ -1104,6 +1104,22 @@ body.marketing .cierre-marketing__linea {
 body.marketing main > section.mk-valores-seccion {
   justify-content: flex-start;
 }
+/* El título se queda pegado arriba (línea de arriba), pero las 4
+   tarjetas se centran en el espacio que sobra por debajo: .contenedor
+   pasa a ocupar toda la altura de la sección y .mk-valores se centra
+   ahí dentro con márgenes automáticos, en vez de quedar pegado justo
+   debajo del título. */
+body.marketing main > section.mk-valores-seccion > .contenedor {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  gap: var(--e-4);
+}
+body.marketing main > section.mk-valores-seccion .mk-valores {
+  margin-top: auto;
+  margin-bottom: auto;
+}
 
 .mk-valores {
   display: grid;
@@ -1141,13 +1157,17 @@ body.marketing main > section.mk-valores-seccion {
   .mk-valores__item:hover { transform: translateY(-6px); background: rgba(var(--mk-valores-acento-rgb), .14); }
 }
 
+/* Sin filter:blur() aquí: Safari no lo recorta bien contra el
+   overflow:hidden + border-radius de .mk-valores__item y el brillo se
+   salía de la tarjeta por el lado derecho (mismo tipo de bug que ya
+   se corrigió antes en otro sitio). El brillo se consigue solo con el
+   degradado, que sí se recorta igual en todos los navegadores. */
 .mk-valores__item::after {
   content: '';
   position: absolute;
   z-index: -1;
-  inset: -10%;
-  background: radial-gradient(circle at 100% 0%, rgba(var(--mk-valores-acento-rgb), .7), transparent 75%);
-  filter: blur(10px);
+  inset: 0;
+  background: radial-gradient(circle at 100% 0%, rgba(var(--mk-valores-acento-rgb), .75), transparent 70%);
 }
 .mk-valores__icono {
   flex-shrink: 0;
