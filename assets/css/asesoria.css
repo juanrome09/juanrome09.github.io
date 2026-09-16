@@ -199,6 +199,16 @@ body.asesoria .menu-movil__nav a:last-child { color: var(--azul-hondo); }
   opacity: .14;
   translate: 0px 0px;
 }
+/* Mismo ajuste que .marketing-hero__fondo-logo para pantallas muy
+   grandes (ya probado ahí): sin esto, el clamp por sí solo se queda
+   corto de tamaño y descentrado en monitores anchos. */
+@media (min-width: 2400px) {
+  .asesoria-hero__fondo-logo {
+    --tamano-logo-fondo: 1600px;
+    right: 200px;
+    top: 45%;
+  }
+}
 @media (max-width: 768px) {
   .asesoria-hero__fondo-logo {
     right: auto;
