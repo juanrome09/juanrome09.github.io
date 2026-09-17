@@ -473,11 +473,11 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   position: relative;
   z-index: 1;
 }
-/* 30% de transparencia (client: "X% transparencia" = opacidad al
-   (100-X)%) sobre el .9 de base, solo para los fondos de
-   Misión/Visión y Dónde trabajamos — el resto de usos de
-   .mk-fondo-decorativo se queda como estaba. */
-.mk-fondo-decorativo--tenue { opacity: .7; }
+/* Transparencia de Misión/Visión y Dónde trabajamos — el resto de
+   usos de .mk-fondo-decorativo se queda como estaba. Primero .7,
+   ahora un 30-40% más transparente que eso (.45): un buen punto de
+   partida es fácil de afinar, cambia solo este número. */
+.mk-fondo-decorativo--tenue { opacity: .45; }
 
 .servicios-marketing {
   display: grid;
@@ -892,6 +892,7 @@ body.marketing .cierre-marketing__linea {
 .servicio-bloque-mk__marca {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: var(--e-2);
 }
 
@@ -1058,7 +1059,13 @@ body.marketing .cierre-marketing__linea {
   max-width: 320px;
 }
 .mk-mision-vision__item--mision { left: 13%; top: 30%; }
+/* text-align:right en .mk-mision-vision__item--vision no le llegaba
+   al <p> — base.css trae "p { text-align: left; }" a nivel global (la
+   herencia no cuenta como regla, así que un selector de etiqueta
+   suelto, por poca especificidad que tenga, le gana), así que hace
+   falta esta línea aparte apuntando directo al párrafo. */
 .mk-mision-vision__item--vision { right: 13%; top: 55%; text-align: right; }
+.mk-mision-vision__item--vision p { text-align: right; }
 
 @media (max-width: 767px), (prefers-reduced-motion: reduce), (max-height: 660px) {
   .mk-mision-vision {
@@ -1073,6 +1080,7 @@ body.marketing .cierre-marketing__linea {
     max-width: none;
     text-align: left !important;
   }
+  .mk-mision-vision__item p { text-align: left !important; }
 }
 .mk-mision-vision__item h2 { margin-bottom: 2px; }
 
