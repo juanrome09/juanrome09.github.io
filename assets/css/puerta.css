@@ -11,13 +11,6 @@ body.puerta > main {
   flex: 1;
 }
 
-/* ---------- Dos caminos, una marca: cada mitad reutiliza tal cual el
-   degradado del héroe real de su propia web — asesoria-hero y
-   marketing-hero en assets/css — para que quien llega aquí ya
-   reconozca el tono de cada sitio antes de entrar. El texto de cada
-   mitad se abre hacia su propio lado de la pantalla (Asesoría a la
-   izquierda, Marketing a la derecha), dejando el centro libre para el
-   logo A360 partido en dos colores — ver .puerta-logo más abajo. */
 .puerta-split {
   position: relative;
   flex: 1;
@@ -52,11 +45,6 @@ body.puerta > main {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* flex-grow:4 → la mitad activa pasa a ocupar el 80% del ancho
-   (4 / (4+1)) sea cual sea el ancho de la ventana, así que su borde
-   siempre avanza más allá de donde está el logo central (que como
-   mucho ocupa el 40% del ancho, clamp de más arriba) y lo cubre
-   entero, no solo una parte. */
 @media (hover: hover) and (pointer: fine) and (min-width: 720px) {
   .puerta-mitad:hover, .puerta-mitad:focus-visible { flex-grow: 4; }
   .puerta-mitad:hover .puerta-mitad__contenido,
@@ -70,15 +58,8 @@ body.puerta > main {
 .puerta-mitad--asesoria { background: linear-gradient(135deg, #B8420F, var(--naranja)); }
 .puerta-mitad--marketing { background: linear-gradient(135deg, var(--azul-hondo), var(--azul-acero)); }
 
-/* Asesoría abre su contenido hacia la izquierda (el flex-start de
-   siempre); Marketing lo abre hacia la derecha, en espejo, para que
-   las dos mitades "miren" hacia fuera y dejen el centro despejado
-   para el logo partido. */
 .puerta-mitad--marketing { justify-content: flex-end; }
 .puerta-mitad--marketing .puerta-mitad__contenido { text-align: right; }
-/* Flecha a la izquierda del texto y apuntando a la izquierda: es el
-   lado hacia donde crece esta mitad al pasar el ratón, en espejo con
-   la de Asesoría (que apunta a la derecha, su propio lado de avance). */
 .puerta-mitad--marketing .puerta-mitad__entrar { flex-direction: row-reverse; }
 
 .puerta-mitad__contenido {
@@ -145,14 +126,6 @@ body.puerta > main {
 
 .puerta-mitad:focus-visible { outline: 3px solid var(--blanco); outline-offset: -6px; }
 
-/* ---------- Logo central: mismo logo blanco y misma opacidad tenue
-   que ya usan de marca de agua .marketing-hero__fondo-logo y
-   .asesoria-hero__fondo-logo — sin colores propios. Va por encima de
-   las dos mitades (no dentro de ninguna), así que el naranja o el
-   azul que se le ve son el fondo de verdad transparentando a través
-   suyo: cuando una mitad crece con el hover y su borde pasa por
-   encima de donde está el logo, el logo entero pasa a verse de ese
-   color sin que haga falta ni un color ni un clip-path de más. */
 .puerta-logo {
   position: absolute;
   z-index: 2;

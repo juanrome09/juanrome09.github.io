@@ -1,8 +1,5 @@
 body.asesoria {
-  /* Mismo naranja de marca (--naranja, base.css) en R,G,B sueltos —
-     para la "nube" translúcida del enlace activo del nav y el
-     resplandor del héroe, sin inventar un tono nuevo. */
-  --naranja-rgb: 233, 81, 23;
+    --naranja-rgb: 233, 81, 23;
 }
 
 .asesoria a.enlace-cuerpo {
@@ -11,29 +8,13 @@ body.asesoria {
   text-decoration: underline;
 }
 
-/* El hueco para el nav flotante va en la primera sección de cada
-   página, no en el body (mismo motivo que en Marketing): así el color
-   de fondo de esa primera sección llega hasta arriba del todo, detrás
-   de la píldora, sin una costura del color de fondo del body. El
-   héroe de Inicio ya trae su propio padding-block-start equivalente,
-   así que esta regla no le afecta (no es su primer hijo real el que
-   la necesita, es el propio .asesoria-hero el que ya la tiene). */
 body.asesoria main > *:first-child:not(.asesoria-hero) {
   padding-top: 104px;
 }
-/* Para el ancla del héroe ("Cómo trabajamos" → #como-trabajamos, ni
-   primer hijo ni con su propio hueco propio): sin esto, saltar al
-   ancla deja el título tapado justo debajo de la píldora flotante. */
 body.asesoria main > section {
   scroll-margin-top: 104px;
 }
 
-/* ---------- Nav flotante — mismo patrón que Marketing, para que se
-   note que son webs hermanas, con la paleta propia de Asesoría (naranja
-   de marca en vez del rosa de Marketing) y su propio logo. Ver el
-   bloque equivalente en marketing.css: misma mecánica exacta, sin
-   riesgo de choque entre los dos porque cada página solo carga una de
-   las dos hojas de estilo. ---------- */
 .nav-flotante-envoltorio {
   position: fixed;
   inset-block-start: var(--e-2);
@@ -55,13 +36,6 @@ body.asesoria main > section {
   justify-content: space-between;
   gap: var(--e-3);
 }
-/* Corrección del cliente: el color de marca de Asesoría es el
-   naranja, no el azul — aunque el nombre de la clase (heredado del
-   mismo mecanismo de Marketing, donde sí es literalmente un tono
-   oscuro) siga siendo "--oscura", aquí es el estado que se ve sobre
-   fondo claro (la mayoría de la web) y debe ser naranja; "--clara"
-   (la píldora de arriba, sin modificador) es la que se ve blanca
-   sobre fondo oscuro (el héroe naranja y el pie azul). */
 body.asesoria .nav-flotante.nav-flotante--oscura {
   background: var(--naranja);
   border-color: rgba(255, 255, 255, .15);
@@ -95,21 +69,6 @@ body.asesoria .nav-flotante--oscura .nav-flotante__nav a[aria-current="page"] {
   background: rgba(var(--naranja-rgb), .14);
   color: var(--naranja);
 }
-/* El enlace que lleva a Marketing usa el color de MARKETING (azul
-   hondo, el mismo que domina su héroe y su nav), no el naranja propio
-   de Asesoría — mismo criterio, en espejo, que el botón "Ir a
-   Asesoría" de la web de Marketing, que usa naranja precisamente
-   porque lleva aquí. */
-/* azul-acero (y azul-hondo al pasar el ratón) contrastan contra los
-   dos fondos posibles de la píldora — el claro (lino) y el naranja
-   de su estado --oscura — sin necesitar una regla aparte para cada
-   uno. Ojo si alguna vez alguno de los dos pasa a ser azul: chocaría
-   con el fondo de la píldora en ese estado (ya pasó una vez con
-   azul-hondo de fondo, ver el commit que lo corrigió). */
-/* .nav-flotante__nav a.nav-flotante__cambio-mundo, no solo la clase
-   sola: el selector genérico ".nav-flotante__nav a" (más abajo, mismo
-   fichero) tiene más especificidad que una sola clase y le ganaba el
-   color de texto — se quedaba en gris-tinta en vez de blanco. */
 .nav-flotante__nav a.nav-flotante__cambio-mundo {
   display: inline-flex;
   align-items: center;
@@ -139,18 +98,6 @@ body.asesoria .menu-movil__nav a:last-child { color: var(--azul-hondo); }
 .nav-flotante__movil-abrir:focus-visible { background: var(--gris-tinta); }
 @media (min-width: 900px) { .nav-flotante__movil-abrir { display: none; } }
 
-/* ---------- Héroe — misma mecánica que el de Marketing (titular
-   grande, línea a máquina de escribir, píldoras, logo de fondo que
-   sigue al ratón) pero en naranja: es la petición explícita del
-   cliente, "el hero igual al de marketing pero con fondo naranja" —
-   para que se note el parentesco entre las dos webs sin que se
-   confundan, cada una con su color.
-   height:100svh + overflow:hidden, igual que Marketing: petición
-   explícita del cliente, "el hero en pantalla completa al entrar,
-   así como en marketing". Como esta web no usa el sistema de hojas
-   ancladas de Marketing, una altura fija sí puede recortar contenido
-   en una pantalla baja — por eso el mismo media query de más abajo
-   (calcado del de marketing.css) libera la altura en esos casos. */
 .asesoria-hero {
   position: relative;
   overflow: hidden;
@@ -165,10 +112,6 @@ body.asesoria .menu-movil__nav a:last-child { color: var(--azul-hondo); }
   color: var(--blanco);
 }
 @media (min-width: 1024px) { .asesoria-hero { padding-inline: var(--canal-escritorio); } }
-/* Misma red de seguridad que .marketing-hero (marketing.css): en una
-   ventana baja o apaisada, 100svh + overflow:hidden puede recortar de
-   verdad el titular o las píldoras — aquí se libera la altura y se
-   deja que la sección crezca con su contenido en vez de recortarlo. */
 @media (prefers-reduced-motion: reduce), (max-height: 660px) {
   .asesoria-hero {
     height: auto;
@@ -199,9 +142,6 @@ body.asesoria .menu-movil__nav a:last-child { color: var(--azul-hondo); }
   opacity: .14;
   translate: 0px 0px;
 }
-/* Mismo ajuste que .marketing-hero__fondo-logo para pantallas muy
-   grandes (ya probado ahí): sin esto, el clamp por sí solo se queda
-   corto de tamaño y descentrado en monitores anchos. */
 @media (min-width: 2400px) {
   .asesoria-hero__fondo-logo {
     --tamano-logo-fondo: 1600px;
@@ -366,12 +306,6 @@ body.asesoria .menu-movil__nav a:last-child { color: var(--azul-hondo); }
 @media (min-width: 900px) {
   .contacto-grid { grid-template-columns: 1.1fr .9fr; gap: var(--e-6); }
 }
-/* Azul hondo, no el turquesa genérico de la plantilla original: ese
-   turquesa no es un color de marca de A360 (viene de la plantilla
-   MindMarket de base, nunca se limpió para Asesoría) y desentonaba con
-   el resto de la web. El navy transmite justo lo que pide el cliente
-   aquí — confianza y seriedad — y es coherente con el resto de la
-   paleta (mismo tono que el nav oscuro y el cierre). */
 .contacto-panel {
   background: var(--azul-hondo);
   color: var(--blanco);
@@ -384,12 +318,6 @@ body.asesoria .menu-movil__nav a:last-child { color: var(--azul-hondo); }
   margin-top: var(--e-3);
   display: inline-flex;
 }
-/* El HTML de este botón trae la clase .boton-oscuro (azul hondo) de
-   cuando el panel de al lado era claro — ahora que el panel es azul
-   hondo (ver más arriba), ese mismo azul sobre azul se volvía
-   invisible. Aquí, solo dentro de este panel, en naranja: mismo
-   contraste fuerte, y de paso el naranja de marca vuelve a aparecer
-   en la propia página de Contacto. */
 .contacto-panel .boton-oscuro {
   background: var(--naranja);
   border-color: var(--naranja);

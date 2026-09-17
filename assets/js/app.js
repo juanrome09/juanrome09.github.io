@@ -370,13 +370,6 @@ function iniciarCopiarCorreo() {
 }
 
 function iniciarTransicionCambioMundo() {
-  // El @view-transition de base.css crea una transición implícita en
-  // TODA navegación de esta web, la pulse alguien o no el botón de
-  // cambio de web — si esa transición se salta (que es lo normal en
-  // una navegación de un sitio a otro sin más), su promesa queda sin
-  // capturar y el navegador la reporta como error en consola. Esto va
-  // fuera de las comprobaciones de más abajo porque pasa siempre,
-  // independientemente de si esta página participa o no en el gesto.
   const sanearTransicion = (evento) => {
     if (evento.viewTransition) {
       evento.viewTransition.ready.catch(() => {});
@@ -390,10 +383,6 @@ function iniciarTransicionCambioMundo() {
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  // Solo Chrome/Edge (de momento) entienden la View Transitions API entre
-  // documentos — sin "pagereveal" no hay forma fiable de animar el cambio
-  // de página, así que en Safari/Firefox no se toca nada: el enlace
-  // navega tal cual, normal y al instante, sin ningún gesto de por medio.
   if (!('onpagereveal' in window)) return;
 
   const CLAVE = 'a360-cambio-mundo';
@@ -439,7 +428,12 @@ function iniciarTemaPuerta() {
   const colorAzulHondo = estilo.getPropertyValue('--azul-hondo').trim();
   const colorPorDefecto = metaTema.getAttribute('content');
 
+  const alDefecto = () => metaTema.setAttribute('content', colorPorDefecto);
   asesoria.addEventListener('mouseenter', () => metaTema.setAttribute('content', colorNaranja));
+  asesoria.addEventListener('focus', () => metaTema.setAttribute('content', colorNaranja));
+  asesoria.addEventListener('blur', alDefecto);
   marketing.addEventListener('mouseenter', () => metaTema.setAttribute('content', colorAzulHondo));
-  division.addEventListener('mouseleave', () => metaTema.setAttribute('content', colorPorDefecto));
+  marketing.addEventListener('focus', () => metaTema.setAttribute('content', colorAzulHondo));
+  marketing.addEventListener('blur', alDefecto);
+  division.addEventListener('mouseleave', alDefecto);
 }

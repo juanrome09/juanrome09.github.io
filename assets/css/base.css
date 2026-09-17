@@ -61,14 +61,12 @@
   --azul-hondo: #0B3A54;
   --negro: #000000;
 
-
   --rojo-vivo: #F7374F;
   --vino: #88304E;
   --vino-hondo: #522546;
   --gris-tinta: #404040;
   --gris-claro: #E8E7E7;
   --lino: #F3EEE7;
-
 
   --turquesa: #51BCBD;
   --verde: #8DC04A;
@@ -77,23 +75,19 @@
   --dorado: #D1970F;
   --dorado-oscuro: #A07C32;
 
-
   --lavado-azul: #E4EEF4;
   --lavado-hondo: #E7EBEE;
   --lavado-vino: #F3EAED;
   --lavado-naranja: #FDEEE8;
 
-
   --whatsapp: #25D366;
 
   --blanco: #FFFFFF;
-
 
   --f-titulos: 'Kumbh Sans', system-ui, sans-serif;
   --f-cuerpo: 'Lato', system-ui, sans-serif;
   --f-cartel: 'Staatliches', system-ui, sans-serif;
   --f-versatil: 'Poetsen One', system-ui, sans-serif;
-
 
   --display-xl: clamp(64px, 12vw, 168px);
   --display: clamp(44px, 7vw, 104px);
@@ -106,13 +100,11 @@
 
   --medida-max: 68ch;
 
-
   --r-pildora: 999px;
   --r-panel: 24px;
   --r-medio: 12px;
   --r-nada: 0;
   --rotacion: 8deg;
-
 
   --e-1: 8px;
   --e-2: 16px;
@@ -126,7 +118,6 @@
   --ancho-max: 1200px;
   --canal-movil: 24px;
   --canal-escritorio: 48px;
-
 
   --dur-reveal: 520ms;
   --curva-reveal: cubic-bezier(.2, .7, .2, 1);
@@ -218,10 +209,6 @@ p {
 }
 .saltar-contenido:focus { top: var(--e-2); }
 
-/* Texto solo para lectores de pantalla — para un h1 real cuando el
-   diseño visual no tiene sitio para un título grande de más (p.ej. la
-   puerta de entrada, donde el título visual son los dos nombres de
-   cada mitad). */
 .sr-solo {
   position: absolute;
   width: 1px;
@@ -308,16 +295,6 @@ p {
   border-color: #082a3d;
 }
 
-.boton-secundario {
-  background: transparent;
-  color: var(--azul-hondo);
-  border: 1px solid var(--azul-hondo);
-}
-.boton-secundario:hover, .boton-secundario:focus-visible {
-  background: var(--azul-hondo);
-  color: var(--blanco);
-}
-
 .cabecera {
   position: fixed;
   inset-block-start: 0;
@@ -331,50 +308,6 @@ p {
 .cabecera.compacta {
   border-bottom-color: var(--gris-claro);
 }
-
-.cabecera__interior {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--e-3);
-  height: 88px;
-  transition: height var(--dur-panel) ease;
-}
-.cabecera.compacta .cabecera__interior { height: 64px; }
-
-.cabecera__logo img, .cabecera__logo svg { height: 58px; width: auto; display: block; transition: height var(--dur-panel) ease; }
-.cabecera.compacta .cabecera__logo img,
-.cabecera.compacta .cabecera__logo svg { height: 44px; }
-
-.cabecera__nav {
-  display: none;
-  align-items: center;
-  gap: var(--e-4);
-}
-@media (min-width: 900px) { .cabecera__nav { display: flex; } }
-
-.cabecera__nav a {
-  font-family: var(--f-cuerpo);
-  font-weight: 700;
-  font-size: var(--menor);
-}
-.cabecera__nav a[aria-current="page"] { color: var(--azul-acero); }
-
-.cabecera__cambio-mundo {
-  font-size: var(--menor);
-  font-weight: 700;
-  color: var(--azul-acero);
-  text-underline-offset: 2px;
-  text-decoration: underline;
-}
-
-.cabecera__movil-abrir {
-  display: flex;
-  width: 44px; height: 44px;
-  align-items: center;
-  justify-content: center;
-}
-@media (min-width: 900px) { .cabecera__movil-abrir { display: none; } }
 
 .menu-movil {
   position: fixed;
@@ -586,20 +519,6 @@ p {
   border: 1px dashed rgba(11, 58, 84, .35);
 }
 
-/* Transición entre Marketing y Asesoría al pulsar .nav-flotante__cambio-mundo
-   (color de marca definido en marketing.css/asesoria.css por separado).
-   Solo navegadores con la View Transitions API entre documentos
-   (Chrome/Edge de momento) entienden esto; iniciarTransicionCambioMundo()
-   en app.js le pone el mismo nombre ("cambio-mundo") al botón que se
-   pulsa y a la píldora .nav-flotante de la web de llegada, así el
-   navegador los trata como "el mismo elemento" de una página a otra: el
-   botón pequeño y coloreado crece hasta convertirse en la barra entera
-   del nav de la otra web, disolviendo su color en el tono claro con el
-   que esa píldora aparece siempre sobre el héroe. Sin soporte (Safari,
-   Firefox), tanto esta regla como el nombrado de app.js no hacen nada:
-   el enlace navega normal, sin ningún gesto — decisión explícita del
-   cliente antes que dejar un efecto a medias o con fallos en esos
-   navegadores. */
 @view-transition {
   navigation: auto;
 }

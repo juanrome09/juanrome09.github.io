@@ -17,7 +17,6 @@ body.marketing {
   --mk-degradado-hero: linear-gradient(135deg, #0B3A54, #1E6FA0);
   --mk-degradado-pie: linear-gradient(135deg, #000000, #0B3A54);
 
-
   --mk-turquesa: #51BCBD;
   --mk-verde-lima: #8DC04A;
   --mk-verde-mar: #1BA074;
@@ -30,10 +29,8 @@ body.marketing {
   --mk-violeta-rgb: 161, 60, 143;
   --mk-dorado-rgb: 209, 151, 15;
 
-
   --f-titulos: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --f-cuerpo: 'Inter', ui-sans-serif, system-ui, sans-serif;
-
 
   --display: clamp(48px, 10vw, 140px);
   --titulo-1: clamp(36px, 7vw, 81px);
@@ -42,7 +39,6 @@ body.marketing {
   --cuerpo-lg: 18px;
   --cuerpo: 17px;
   --menor: 15px;
-
 
   --r-panel: 50px;
   --r-medio: 10px;
@@ -157,14 +153,7 @@ body.marketing .pie {
   body.marketing main > article {
     position: relative !important;
     height: auto !important;
-    /* overflow-x:hidden, no overflow:visible a secas: el resplandor
-       difuminado de "Nuestro trabajo" (.trabajo-mk__pieza::before)
-       asoma a propósito fuera de su propia tarjeta, y sin el
-       overflow:hidden de la sección eso se salía por el lado derecho
-       y generaba scroll horizontal real. El contenido que de verdad
-       hace falta destapar aquí es el vertical, así que overflow-x
-       sigue recortando y overflow-y se abre. */
-    overflow-x: hidden !important;
+        overflow-x: hidden !important;
     overflow-y: visible !important;
   }
   body.marketing main::after { height: 0 !important; }
@@ -242,10 +231,6 @@ body.marketing .nav-flotante--oscura .nav-flotante__nav a[aria-current="page"] {
   color: var(--mk-rosa-oscuro);
 }
 
-/* .nav-flotante__nav a.nav-flotante__cambio-mundo, no solo la clase
-   sola: el selector genérico ".nav-flotante__nav a" (más abajo, mismo
-   fichero) tiene más especificidad que una sola clase y le ganaba el
-   color de texto — se quedaba en mk-tinta en vez del claro. */
 .nav-flotante__nav a.nav-flotante__cambio-mundo {
   display: inline-flex;
   align-items: center;
@@ -473,10 +458,6 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   position: relative;
   z-index: 1;
 }
-/* Transparencia de Misión/Visión y Dónde trabajamos — el resto de
-   usos de .mk-fondo-decorativo se queda como estaba. Primero .7,
-   ahora un 30-40% más transparente que eso (.45): un buen punto de
-   partida es fácil de afinar, cambia solo este número. */
 .mk-fondo-decorativo--tenue { opacity: .45; }
 
 .servicios-marketing {
@@ -899,14 +880,6 @@ body.marketing .cierre-marketing__linea {
 @media (max-width: 899px) {
   .servicio-bloque-mk__marca { flex-direction: row; align-items: center; gap: var(--e-2); }
 }
-/* Mismo criterio que .mk-marca-agua (grande, tenue, de fondo): el
-   icono deja de ser una insignia pequeña con círculo de color y pasa
-   a ser un trazo grande y suave detrás del número, sin mover su
-   posición (sigue siendo lo primero de la columna izquierda). El
-   stroke-width baja mucho porque, al ser un <svg> con viewBox propio,
-   el grosor del trazo escala junto con el tamaño — sin bajarlo, un
-   icono de 170px con el stroke-width de antes se vería como un
-   garabato grueso, no como una marca de agua. */
 .servicio-bloque-mk__icono {
   display: flex;
   align-items: center;
@@ -1025,9 +998,6 @@ body.marketing .cierre-marketing__linea {
   object-position: center;
   border-radius: var(--r-panel);
 }
-/* Mismo resplandor difuminado que las fotos de "Nuestro trabajo"
-   (.trabajo-mk__pieza::before, en vez del recuadro azul plano de
-   antes). */
 .nosotros-mk-forma::before {
   content: '';
   position: absolute;
@@ -1036,19 +1006,6 @@ body.marketing .cierre-marketing__linea {
   background: radial-gradient(ellipse closest-side, rgba(var(--mk-turquesa-rgb), .6), transparent 81%);
 }
 
-/* Misión/Visión — el mapa con pines y ruta punteada que había aquí se
-   sustituye por la imagen de fondo del cliente (.mk-fondo-decorativo,
-   mismo patrón reutilizado que en "Cómo enfocamos" de Inicio).
-   .mk-mision-vision no va dentro de .contenedor (a diferencia del
-   resto de secciones) precisamente para poder colocarse con inset:0
-   sobre TODA la sección, igual que el propio fondo — así los % de
-   left/top de cada tarjeta se miden sobre la misma caja que la
-   imagen, y de verdad caen donde terminan sus líneas punteadas:
-   Misión donde empieza la línea azul (junto al pin, arriba a la
-   izquierda) y Visión donde termina la línea violeta (junto a la
-   bandera, a la derecha). Para mover cualquiera de las dos "a tu
-   gusto", solo hay que cambiar su left/right y su top de aquí abajo —
-   son % del ancho/alto de toda la sección, no de la tarjeta. */
 .mk-mision-vision {
   position: absolute;
   inset: 0;
@@ -1059,11 +1016,6 @@ body.marketing .cierre-marketing__linea {
   max-width: 320px;
 }
 .mk-mision-vision__item--mision { left: 13%; top: 30%; }
-/* text-align:right en .mk-mision-vision__item--vision no le llegaba
-   al <p> — base.css trae "p { text-align: left; }" a nivel global (la
-   herencia no cuenta como regla, así que un selector de etiqueta
-   suelto, por poca especificidad que tenga, le gana), así que hace
-   falta esta línea aparte apuntando directo al párrafo. */
 .mk-mision-vision__item--vision { right: 13%; top: 55%; text-align: right; }
 .mk-mision-vision__item--vision p { text-align: right; }
 
@@ -1084,22 +1036,12 @@ body.marketing .cierre-marketing__linea {
 }
 .mk-mision-vision__item h2 { margin-bottom: 2px; }
 
-/* Esta sección tenía muy poco contenido y "safe center" la dejaba
-   flotando a media pantalla; el resto de secciones de la página
-   parecen empezar arriba porque su contenido es más alto y ese mismo
-   "safe center" cae al inicio en cuanto no cabe centrado — aquí se
-   fuerza ese mismo inicio arriba para que las cuatro se vean igual de
-   altas sin depender de cuánto contenido tenga cada una. */
 body.marketing main > section.mk-valores-seccion {
   justify-content: flex-start;
 }
 body.marketing main > section.mk-valores-seccion h2 {
   margin-top: 50px;
 }
-/* Un poco más de aire entre el título y las 4 tarjetas que el resto
-   de secciones (var(--e-6) en vez del var(--e-4) de siempre) — punto
-   medio entre "pegadas al título" y centrarlas del todo en la
-   sección, que quedaba demasiado abajo. */
 body.marketing main > section.mk-valores-seccion .mk-valores {
   margin-top: var(--e-8);
 }
@@ -1140,11 +1082,6 @@ body.marketing main > section.mk-valores-seccion .mk-valores {
   .mk-valores__item:hover { transform: translateY(-6px); background: rgba(var(--mk-valores-acento-rgb), .14); }
 }
 
-/* Sin filter:blur() aquí: Safari no lo recorta bien contra el
-   overflow:hidden + border-radius de .mk-valores__item y el brillo se
-   salía de la tarjeta por el lado derecho (mismo tipo de bug que ya
-   se corrigió antes en otro sitio). El brillo se consigue solo con el
-   degradado, que sí se recorta igual en todos los navegadores. */
 .mk-valores__item::after {
   content: '';
   position: absolute;
