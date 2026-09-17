@@ -851,7 +851,7 @@ body.marketing .cierre-marketing__linea {
   gap: var(--e-4);
   align-items: start;
 }
-@media (min-width: 900px) { .servicio-bloque-mk__interior { grid-template-columns: .5fr 1fr; gap: var(--e-6); } }
+@media (min-width: 900px) { .servicio-bloque-mk__interior { grid-template-columns: .35fr 1fr; gap: var(--e-5); } }
 
 @media (max-width: 480px) {
   .servicio-bloque-mk { padding-bottom: var(--e-3); }
