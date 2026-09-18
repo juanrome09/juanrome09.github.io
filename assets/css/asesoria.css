@@ -884,7 +884,7 @@ body.asesoria .cierre-asesoria .boton-primario:focus-visible {
 }
 
 /* Contacto */
-body.asesoria .contacto-panel { background: var(--dt-ink); }
+body.asesoria .contacto-panel { background: var(--azul-acero); }
 body.asesoria .contacto-panel h2,
 body.asesoria .contacto-panel h3 { color: #fff; }
 body.asesoria .contacto-panel .boton-oscuro {
@@ -1033,4 +1033,62 @@ body.asesoria .faq-grid__intro {
     transform: rotate(-.5deg);
     box-shadow: 0 40px 80px -32px rgba(19, 14, 48, .35);
   }
+}
+
+/* ==========================================================================
+   Más animación — el sitio ya calculaba --indice por elemento .reveal
+   (iniciarReveals(), app.js) pero no lo usaba: ahora entra en cascada
+   en vez de todo a la vez. Más un par de detalles puntuales.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  body.asesoria .reveal { transition-delay: calc(var(--indice, 0) * 90ms); }
+}
+
+/* FAQ: el "+" gira a "×" al abrir la pregunta — antes no había ninguna
+   señal visual de que el botón se pudiera desplegar */
+.acordeon__pregunta { gap: var(--e-3); }
+.acordeon__pregunta__icono {
+  position: relative;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+}
+.acordeon__pregunta__icono::before,
+.acordeon__pregunta__icono::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: currentColor;
+  transition: transform .3s ease;
+}
+.acordeon__pregunta__icono::before { width: 14px; height: 2px; transform: translate(-50%, -50%); }
+.acordeon__pregunta__icono::after { width: 2px; height: 14px; transform: translate(-50%, -50%); }
+.acordeon__pregunta[aria-expanded="true"] .acordeon__pregunta__icono::after { transform: translate(-50%, -50%) rotate(90deg) scale(0); }
+.acordeon__pregunta[aria-expanded="true"] .acordeon__pregunta__icono::before { transform: translate(-50%, -50%) rotate(180deg); }
+body.asesoria .acordeon__pregunta__icono { color: var(--naranja); }
+
+/* Cómo trabajamos: el marcador activo hace un pequeño "pop" cada vez
+   que el scroll cambia de paso */
+@keyframes proceso-pulso {
+  0% { transform: scale(.8); }
+  55% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  body.asesoria .proceso__marcador--activo .proceso__marcador__numero {
+    animation: proceso-pulso .45s cubic-bezier(.34, 1.56, .64, 1);
+  }
+}
+
+/* WhatsApp flotante: un pulso periódico y discreto para que no pase
+   desapercibido sin ser intrusivo (solo cuando no hay reveal.js activo) */
+@keyframes whatsapp-pulso {
+  0%, 88%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+  92% { box-shadow: 0 0 0 10px rgba(37, 211, 102, .18); }
+  96% { box-shadow: 0 0 0 18px rgba(37, 211, 102, 0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  body.asesoria .whatsapp-flotante { animation: whatsapp-pulso 6s ease-out infinite; }
 }
