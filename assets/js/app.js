@@ -190,7 +190,7 @@ function iniciarSombraTarjetas() {
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const tarjetas = document.querySelectorAll('.servicio-grande');
+  const tarjetas = document.querySelectorAll('.servicio-grande, .servicio-panel-mk');
   if (!tarjetas.length) return;
 
   const LIMITE_PX = 16;

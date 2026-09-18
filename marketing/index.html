@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="preload" href="/assets/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/kumbh-sans-var.woff2" as="font" type="font/woff2" crossorigin>
 <title>A360 Marketing · Branding, redes y publicidad en Ibiza</title>
 <meta name="description" content="Branding, redes sociales, publicidad digital, estrategia y desarrollo web. A360 Marketing, división de A360 Asesores en Santa Eulalia del Río, Ibiza.">
 <link rel="canonical" href="https://asesores360.com/marketing/">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/assets/img/favicon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="/assets/img/favicon-180.png">
-<meta name="theme-color" content="#0B3A54">
+<meta name="theme-color" content="#522546">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="A360 Marketing">
 <meta property="og:title" content="A360 Marketing · Branding, redes y publicidad digital">
@@ -80,13 +80,41 @@
     </a>
     <nav class="nav-flotante__nav" aria-label="Principal">
       <a href="/marketing/" aria-current="page">Inicio</a>
-      <a href="/marketing/nosotros.html">Nosotros</a>
-      <a href="/marketing/servicios.html">Servicios</a>
+      <div class="desplegable">
+        <button class="desplegable__boton" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="submenu-nosotros">
+          Nosotros
+          <svg class="desplegable__flecha" width="10" height="10" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="desplegable__panel" id="submenu-nosotros">
+          <div class="desplegable__panel__interior">
+            <a href="/marketing/nosotros.html">Quiénes somos</a>
+            <a href="/marketing/nosotros.html#mision-vision">Misión y visión</a>
+            <a href="/marketing/nosotros.html#valores">Valores</a>
+            <a href="/marketing/nosotros.html#donde-trabajamos">Dónde trabajamos</a>
+          </div>
+        </div>
+      </div>
+      <div class="desplegable">
+        <button class="desplegable__boton" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="submenu-servicios">
+          Servicios
+          <svg class="desplegable__flecha" width="10" height="10" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="desplegable__panel" id="submenu-servicios">
+          <div class="desplegable__panel__interior">
+            <a href="/marketing/servicios.html">Todos los servicios</a>
+            <a href="/marketing/servicios.html#servicio-01">Branding e identidad visual</a>
+            <a href="/marketing/servicios.html#servicio-02">Gestión de redes sociales</a>
+            <a href="/marketing/servicios.html#servicio-03">Publicidad, Meta Ads y Google Ads</a>
+            <a href="/marketing/servicios.html#servicio-04">Estrategia de marketing digital</a>
+            <a href="/marketing/servicios.html#servicio-05">Diseño y desarrollo web</a>
+          </div>
+        </div>
+      </div>
       <a href="/marketing/contacto.html">Contacto</a>
       <a class="nav-flotante__cambio-mundo" href="/asesoria/">Ir a Asesoría</a>
     </nav>
     <button class="nav-flotante__movil-abrir" data-menu-abrir aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú">
-      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect y="5" width="24" height="2" style="fill:var(--mk-blanco)"/><rect y="11" width="24" height="2" style="fill:var(--mk-blanco)"/><rect y="17" width="24" height="2" style="fill:var(--mk-blanco)"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect y="5" width="24" height="2"/><rect y="11" width="24" height="2"/><rect y="17" width="24" height="2"/></svg>
     </button>
   </div>
 </div>
@@ -100,8 +128,32 @@
   </div>
   <nav class="menu-movil__nav" aria-label="Principal móvil">
     <a href="/marketing/">Inicio</a>
-    <a href="/marketing/nosotros.html">Nosotros</a>
-    <a href="/marketing/servicios.html">Servicios</a>
+    <div class="desplegable">
+      <button class="desplegable__boton" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="submenu-nosotros-m">
+        Nosotros
+        <svg class="desplegable__flecha" width="14" height="14" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="desplegable__panel" id="submenu-nosotros-m">
+        <a href="/marketing/nosotros.html">Quiénes somos</a>
+        <a href="/marketing/nosotros.html#mision-vision">Misión y visión</a>
+        <a href="/marketing/nosotros.html#valores">Valores</a>
+        <a href="/marketing/nosotros.html#donde-trabajamos">Dónde trabajamos</a>
+      </div>
+    </div>
+    <div class="desplegable">
+      <button class="desplegable__boton" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="submenu-servicios-m">
+        Servicios
+        <svg class="desplegable__flecha" width="14" height="14" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="desplegable__panel" id="submenu-servicios-m">
+        <a href="/marketing/servicios.html">Todos los servicios</a>
+        <a href="/marketing/servicios.html#servicio-01">Branding e identidad visual</a>
+        <a href="/marketing/servicios.html#servicio-02">Gestión de redes sociales</a>
+        <a href="/marketing/servicios.html#servicio-03">Publicidad, Meta Ads y Google Ads</a>
+        <a href="/marketing/servicios.html#servicio-04">Estrategia de marketing digital</a>
+        <a href="/marketing/servicios.html#servicio-05">Diseño y desarrollo web</a>
+      </div>
+    </div>
     <a href="/marketing/contacto.html">Contacto</a>
     <a href="/asesoria/">Ir a Asesoría</a>
   </nav>
@@ -170,6 +222,36 @@
           <p class="menor">Webs rápidas y claras, construidas para convertir visitas.</p>
           <a class="boton-mk-coral" href="/marketing/servicios.html">Ver servicio</a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="banda banda-blanca mk-seccion-compacta">
+    <div class="contenedor">
+      <h2 class="reveal mk-titulo-degradado">Sectores a los que ayudamos</h2>
+      <!-- PENDIENTE A360 -->
+      <p class="cuerpo-lg reveal" style="margin-top:var(--e-2);max-width:56ch">Trabajamos con negocios de Ibiza de cualquier tamaño, adaptando cada estrategia al ritmo de su sector.</p>
+      <div class="mk-sectores reveal" style="margin-top:var(--e-4)">
+        <span class="mk-sectores__item">
+          <span class="mk-sectores__item__icono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h13v8a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V4Z"/><path d="M17 7h1a3 3 0 0 1 0 6h-1"/><path d="M8 2v2M12 2v2"/></svg></span>
+          <span>Hostelería y restauración</span>
+        </span>
+        <span class="mk-sectores__item">
+          <span class="mk-sectores__item__icono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21V10l9-6 9 6v11"/><path d="M9 21v-6h6v6"/></svg></span>
+          <span>Alojamiento y turismo</span>
+        </span>
+        <span class="mk-sectores__item">
+          <span class="mk-sectores__item__icono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span>
+          <span>Comercio y retail</span>
+        </span>
+        <span class="mk-sectores__item">
+          <span class="mk-sectores__item__icono" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span>
+          <span>Servicios profesionales</span>
+        </span>
+        <span class="mk-sectores__item">
+          <span class="mk-sectores__item__icono" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/><path d="M2 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 7H6"/></svg></span>
+          <span>Ecommerce y venta online</span>
+        </span>
       </div>
     </div>
   </section>

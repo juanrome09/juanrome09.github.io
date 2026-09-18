@@ -84,18 +84,23 @@ body.asesoria .nav-flotante--oscura .nav-flotante__nav > a[aria-current="page"] 
 .nav-flotante__nav a.nav-flotante__cambio-mundo:hover,
 .nav-flotante__nav a.nav-flotante__cambio-mundo:focus-visible { background: var(--azul-hondo); color: var(--blanco); }
 body.asesoria .menu-movil__nav a { color: var(--gris-tinta); }
-body.asesoria .menu-movil__nav a:last-child { color: var(--azul-hondo); }
+body.asesoria .menu-movil__nav > a:last-child { color: var(--azul-hondo); }
 .nav-flotante__movil-abrir {
   display: flex;
   width: 44px; height: 44px;
   border-radius: 50%;
-  background: var(--azul-acero);
+  background: var(--naranja);
   align-items: center;
   justify-content: center;
   transition: background-color var(--dur-hover) ease;
 }
+.nav-flotante__movil-abrir svg rect { fill: var(--blanco); transition: fill var(--dur-hover) ease; }
 .nav-flotante__movil-abrir:hover,
 .nav-flotante__movil-abrir:focus-visible { background: var(--gris-tinta); }
+body.asesoria .nav-flotante--oscura .nav-flotante__movil-abrir { background: var(--blanco); }
+body.asesoria .nav-flotante--oscura .nav-flotante__movil-abrir svg rect { fill: var(--naranja); }
+body.asesoria .nav-flotante--oscura .nav-flotante__movil-abrir:hover,
+body.asesoria .nav-flotante--oscura .nav-flotante__movil-abrir:focus-visible { background: var(--gris-claro); }
 @media (min-width: 900px) { .nav-flotante__movil-abrir { display: none; } }
 
 .desplegable__flecha { flex-shrink: 0; transition: transform var(--dur-hover) ease; }
