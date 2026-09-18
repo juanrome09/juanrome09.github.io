@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarTransicionCambioMundo();
   iniciarTemaPuerta();
   iniciarProcesoConScroll();
+  iniciarSombraTarjetas();
 });
 
 function iniciarCabeceraCompacta() {
@@ -183,6 +184,56 @@ function iniciarReveals() {
       }
     });
   }, 1200);
+}
+
+function iniciarSombraTarjetas() {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const tarjetas = document.querySelectorAll('.servicio-grande');
+  if (!tarjetas.length) return;
+
+  const LIMITE_PX = 16;
+
+  tarjetas.forEach((tarjeta) => {
+    let objetivoX = 0;
+    let objetivoY = 0;
+    let actualX = 0;
+    let actualY = 0;
+    let idFotograma = null;
+
+    const avanzar = () => {
+      actualX += (objetivoX - actualX) * 0.15;
+      actualY += (objetivoY - actualY) * 0.15;
+      tarjeta.style.setProperty('--sx', `${actualX.toFixed(1)}px`);
+      tarjeta.style.setProperty('--sy', `${actualY.toFixed(1)}px`);
+
+      if (Math.abs(objetivoX - actualX) > 0.1 || Math.abs(objetivoY - actualY) > 0.1) {
+        idFotograma = window.requestAnimationFrame(avanzar);
+      } else {
+        idFotograma = null;
+      }
+    };
+
+    const iniciarSeguimiento = () => {
+      if (idFotograma === null) idFotograma = window.requestAnimationFrame(avanzar);
+    };
+
+    tarjeta.addEventListener('mousemove', (evento) => {
+      const rect = tarjeta.getBoundingClientRect();
+      const relX = (evento.clientX - rect.left) / rect.width - 0.5;
+      const relY = (evento.clientY - rect.top) / rect.height - 0.5;
+      objetivoX = relX * 2 * LIMITE_PX;
+      objetivoY = relY * 2 * LIMITE_PX;
+      iniciarSeguimiento();
+    });
+
+    tarjeta.addEventListener('mouseleave', () => {
+      objetivoX = 0;
+      objetivoY = 0;
+      iniciarSeguimiento();
+    });
+  });
 }
 
 function iniciarProcesoConScroll() {
