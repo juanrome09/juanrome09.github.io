@@ -671,8 +671,9 @@ body.asesoria {
   --dt-canvas: #f9fbf2;
   --dt-meadow: #eff2e5;
   --dt-onyx: #000000;
-  --dt-serif: 'Hedvig Letters Serif', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-  --dt-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Tipografía de marca (Kumbh Sans / Lato), no la del prompt de estilo Ditto */
+  --dt-serif: var(--f-titulos);
+  --dt-sans: var(--f-cuerpo);
 }
 
 body.asesoria {
