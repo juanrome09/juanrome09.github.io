@@ -833,8 +833,14 @@ body.asesoria .campo select:focus-visible,
 body.asesoria .campo textarea:focus-visible { border-color: var(--dt-ink); }
 body.asesoria .campo-consentimiento label { color: var(--dt-slate); }
 
-/* Pie de página */
-body.asesoria footer.pie h3 { font-family: var(--dt-sans); color: #fff; }
+/* Pie de página — tipografía de marca (no la del prompt Ditto) y
+   degradado negro → naranja, sin círculos en los iconos de redes */
+body.asesoria footer.pie {
+  background: linear-gradient(135deg, #000000, var(--naranja));
+  font-family: var(--f-cuerpo);
+}
+body.asesoria footer.pie h3 { font-family: var(--f-titulos); color: #fff; }
+body.asesoria .pie__redes a { border-radius: 10px; }
 
 /* Manchas orgánicas decorativas — solo atmósfera, nunca en controles */
 body.asesoria #que-hacemos,
