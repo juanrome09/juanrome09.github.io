@@ -618,3 +618,257 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   width: 100%;
 }
 .contacto-mapa__marco iframe { display: block; }
+
+/* ==========================================================================
+   Ditto — sistema visual aplicado a todo el sitio de Asesoría.
+   No toca el hero (.asesoria-hero) ni la barra de navegación
+   (.nav-flotante y su lógica de estados), que quedan tal cual estaban.
+   ========================================================================== */
+
+body.asesoria {
+  --dt-ink: #130e30;
+  --dt-yellow: #ffe228;
+  --dt-moss: #59e25d;
+  --dt-fuchsia: #e261e5;
+  --dt-slate: #5f5c6e;
+  --dt-canvas: #f9fbf2;
+  --dt-meadow: #eff2e5;
+  --dt-onyx: #000000;
+  --dt-serif: 'Hedvig Letters Serif', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --dt-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+body.asesoria {
+  background: var(--dt-canvas);
+  color: var(--dt-ink);
+  font-family: var(--dt-sans);
+}
+
+body.asesoria h1:not(.asesoria-hero__titulo),
+body.asesoria h2,
+body.asesoria h3,
+body.asesoria h4 {
+  font-family: var(--dt-serif);
+  color: var(--dt-ink);
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+
+body.asesoria .boton { font-family: var(--dt-sans); }
+body.asesoria .campo label { color: var(--dt-ink); }
+body.asesoria .menor { color: var(--dt-slate); }
+body.asesoria .eslogan {
+  font-family: var(--dt-serif);
+  font-style: normal;
+  color: var(--dt-slate) !important;
+}
+body.asesoria .cuerpo-lg { color: var(--dt-slate); }
+.asesoria a.enlace-cuerpo { color: var(--dt-ink); text-decoration-color: var(--dt-slate); }
+
+/* Fondo de secciones: Canvas / Soft Meadow en vez de blanco/gris */
+body.asesoria .banda-blanca { background: var(--dt-canvas); }
+body.asesoria .banda-gris { background: var(--dt-meadow); }
+
+/* Botones */
+body.asesoria .boton-primario {
+  background: var(--dt-yellow);
+  border-color: var(--dt-yellow);
+  color: var(--dt-ink);
+}
+body.asesoria .boton-primario:hover,
+body.asesoria .boton-primario:focus-visible {
+  background: var(--dt-ink);
+  border-color: var(--dt-ink);
+  color: var(--dt-yellow);
+}
+body.asesoria .boton-oscuro {
+  background: var(--dt-ink);
+  border-color: var(--dt-ink);
+  color: #fff;
+}
+body.asesoria .boton-oscuro:hover,
+body.asesoria .boton-oscuro:focus-visible {
+  background: var(--dt-yellow);
+  border-color: var(--dt-yellow);
+  color: var(--dt-ink);
+}
+
+/* Qué hacemos: tarjetas grandes */
+body.asesoria .servicio-grande {
+  background: var(--dt-meadow);
+  border-color: transparent;
+  box-shadow: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  body.asesoria .servicio-grande:hover,
+  body.asesoria .servicio-grande:nth-child(2n):hover,
+  body.asesoria .servicio-grande:nth-child(2n+1):hover {
+    box-shadow: none;
+    background: var(--dt-canvas);
+    border-color: transparent;
+  }
+}
+body.asesoria .servicio-grande__icono,
+body.asesoria .servicio-grande:nth-child(2n) .servicio-grande__icono {
+  background: var(--dt-yellow);
+}
+body.asesoria .servicio-grande__icono svg,
+body.asesoria .servicio-grande:nth-child(2n) .servicio-grande__icono svg {
+  stroke: var(--dt-ink);
+}
+body.asesoria .servicio-grande__enlace { color: var(--dt-ink); }
+body.asesoria .servicio-grande__extra { color: var(--dt-slate); }
+
+/* Cómo trabajamos + bloques de servicios.html (comparten .servicio-bloque) */
+body.asesoria .servicio-bloque:nth-of-type(odd) .servicio-bloque__panel,
+body.asesoria .servicio-bloque:nth-of-type(even) .servicio-bloque__panel {
+  background: var(--dt-meadow);
+}
+body.asesoria .servicio-bloque__icono { background: var(--dt-yellow); }
+body.asesoria .servicio-bloque__icono svg,
+body.asesoria .servicio-bloque:nth-of-type(even) .servicio-bloque__icono svg { stroke: var(--dt-ink); }
+body.asesoria .servicio-bloque__numero,
+body.asesoria .servicio-bloque:nth-of-type(even) .servicio-bloque__numero,
+body.asesoria .paso-grande__numero,
+body.asesoria .paso-grande:nth-of-type(2) .paso-grande__numero,
+body.asesoria .paso-grande:nth-of-type(3) .paso-grande__numero { color: var(--dt-ink); }
+body.asesoria .paso-grande__extra,
+body.asesoria .servicio-bloque p:not(.menor) { color: var(--dt-slate); }
+body.asesoria .servicio-bloque__lista li::before { background: var(--dt-yellow); }
+
+/* Valores (Nosotros) */
+body.asesoria .servicio-filete,
+body.asesoria .servicio-filete:nth-child(2),
+body.asesoria .servicio-filete:nth-child(3),
+body.asesoria .servicio-filete:nth-child(4) { border-top-color: var(--dt-yellow); }
+
+/* Equipo */
+body.asesoria .equipo-tarjeta { background: var(--dt-meadow); }
+body.asesoria .equipo-tarjeta__avatar { background: var(--dt-yellow); }
+body.asesoria .equipo-tarjeta__avatar svg { stroke: var(--dt-ink); }
+
+/* Misión / Visión */
+body.asesoria .mision-vision-grid > div,
+body.asesoria .mision-vision-grid > div:nth-child(2) { border-top-color: var(--dt-yellow); }
+
+/* Preguntas frecuentes */
+body.asesoria .acordeon__item { border-top-color: rgba(19, 14, 48, .14); }
+body.asesoria .acordeon__item:last-child { border-bottom-color: rgba(19, 14, 48, .14); }
+body.asesoria .acordeon__pregunta { color: var(--dt-ink); font-family: var(--dt-serif); font-weight: 700; }
+body.asesoria .acordeon__respuesta__interior,
+body.asesoria .acordeon__respuesta__interior p { color: var(--dt-slate); }
+
+/* Cierre / CTA final */
+body.asesoria .cierre-asesoria { background: var(--dt-ink); }
+body.asesoria .cierre-asesoria h2,
+body.asesoria .cierre-asesoria p { color: #fff; }
+body.asesoria .cierre-asesoria .boton-primario:hover,
+body.asesoria .cierre-asesoria .boton-primario:focus-visible { color: var(--dt-yellow); }
+
+/* Contacto */
+body.asesoria .contacto-panel { background: var(--dt-ink); }
+body.asesoria .contacto-panel h2,
+body.asesoria .contacto-panel h3 { color: #fff; }
+body.asesoria .contacto-panel .boton-oscuro {
+  background: var(--dt-yellow);
+  border-color: var(--dt-yellow);
+  color: var(--dt-ink);
+}
+body.asesoria .contacto-panel .boton-oscuro:hover,
+body.asesoria .contacto-panel .boton-oscuro:focus-visible {
+  background: #fff;
+  border-color: #fff;
+  color: var(--dt-ink);
+}
+body.asesoria .contacto-dato__icono { background: rgba(255, 226, 40, .2); }
+body.asesoria .contacto-dato__icono svg { stroke: var(--dt-yellow); }
+
+body.asesoria .campo input,
+body.asesoria .campo select,
+body.asesoria .campo textarea {
+  border-color: var(--dt-onyx);
+  border-radius: var(--r-pildora);
+  background: #fff;
+}
+body.asesoria .campo textarea { border-radius: 24px; }
+body.asesoria .campo input:focus-visible,
+body.asesoria .campo select:focus-visible,
+body.asesoria .campo textarea:focus-visible { border-color: var(--dt-ink); }
+body.asesoria .campo-consentimiento label { color: var(--dt-slate); }
+
+/* Pie de página */
+body.asesoria footer.pie h3 { font-family: var(--dt-sans); color: #fff; }
+
+/* Manchas orgánicas decorativas — solo atmósfera, nunca en controles */
+body.asesoria #que-hacemos,
+body.asesoria #equipo,
+body.asesoria .cierre-asesoria {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+body.asesoria #que-hacemos > .contenedor,
+body.asesoria #equipo > .contenedor,
+body.asesoria .cierre-asesoria__contenido { position: relative; z-index: 1; }
+body.asesoria #que-hacemos::before,
+body.asesoria #equipo::before {
+  content: '';
+  position: absolute;
+  top: -90px;
+  right: -90px;
+  width: 320px;
+  height: 320px;
+  background: var(--dt-moss);
+  border-radius: 44% 56% 62% 38% / 41% 44% 56% 59%;
+  opacity: .16;
+  z-index: 0;
+  pointer-events: none;
+}
+body.asesoria #que-hacemos::after,
+body.asesoria #equipo::after {
+  content: '';
+  position: absolute;
+  bottom: -110px;
+  left: -110px;
+  width: 260px;
+  height: 260px;
+  background: var(--dt-fuchsia);
+  border-radius: 58% 42% 39% 61% / 55% 48% 52% 45%;
+  opacity: .12;
+  z-index: 0;
+  pointer-events: none;
+}
+body.asesoria .cierre-asesoria::before {
+  content: '';
+  position: absolute;
+  top: -70px;
+  left: 8%;
+  width: 220px;
+  height: 220px;
+  background: var(--dt-yellow);
+  border-radius: 42% 58% 53% 47% / 41% 44% 59% 56%;
+  opacity: .14;
+  z-index: 0;
+  pointer-events: none;
+}
+body.asesoria .cierre-asesoria::after {
+  content: '';
+  position: absolute;
+  bottom: -90px;
+  right: 6%;
+  width: 200px;
+  height: 200px;
+  background: var(--dt-moss);
+  border-radius: 55% 45% 48% 52% / 45% 55% 45% 55%;
+  opacity: .12;
+  z-index: 0;
+  pointer-events: none;
+}
+@media (max-width: 640px) {
+  body.asesoria #que-hacemos::before,
+  body.asesoria #que-hacemos::after,
+  body.asesoria #equipo::before,
+  body.asesoria #equipo::after,
+  body.asesoria .cierre-asesoria::before,
+  body.asesoria .cierre-asesoria::after { opacity: .08; }
+}
