@@ -851,15 +851,13 @@ body.asesoria .cierre-pie footer.pie { background: none; }
 
 /* Manchas orgánicas decorativas — solo atmósfera, nunca en controles */
 body.asesoria #que-hacemos,
-body.asesoria #equipo,
-body.asesoria .cierre-asesoria {
+body.asesoria #equipo {
   position: relative;
   overflow: hidden;
   isolation: isolate;
 }
 body.asesoria #que-hacemos > .contenedor,
-body.asesoria #equipo > .contenedor,
-body.asesoria .cierre-asesoria__contenido { position: relative; z-index: 1; }
+body.asesoria #equipo > .contenedor { position: relative; z-index: 1; }
 body.asesoria #que-hacemos::before,
 body.asesoria #equipo::before {
   content: '';
@@ -888,39 +886,11 @@ body.asesoria #equipo::after {
   z-index: 0;
   pointer-events: none;
 }
-body.asesoria .cierre-asesoria::before {
-  content: '';
-  position: absolute;
-  top: -70px;
-  left: 8%;
-  width: 220px;
-  height: 220px;
-  background: var(--dt-yellow);
-  border-radius: 42% 58% 53% 47% / 41% 44% 59% 56%;
-  opacity: .14;
-  z-index: 0;
-  pointer-events: none;
-}
-body.asesoria .cierre-asesoria::after {
-  content: '';
-  position: absolute;
-  bottom: -90px;
-  right: 6%;
-  width: 200px;
-  height: 200px;
-  background: var(--dt-moss);
-  border-radius: 55% 45% 48% 52% / 45% 55% 45% 55%;
-  opacity: .12;
-  z-index: 0;
-  pointer-events: none;
-}
 @media (max-width: 640px) {
   body.asesoria #que-hacemos::before,
   body.asesoria #que-hacemos::after,
   body.asesoria #equipo::before,
-  body.asesoria #equipo::after,
-  body.asesoria .cierre-asesoria::before,
-  body.asesoria .cierre-asesoria::after { opacity: .08; }
+  body.asesoria #equipo::after { opacity: .08; }
 }
 
 /* ==========================================================================
