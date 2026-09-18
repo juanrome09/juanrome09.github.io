@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarNavAdaptativa();
   iniciarTransicionCambioMundo();
   iniciarTemaPuerta();
+  iniciarProcesoConScroll();
 });
 
 function iniciarCabeceraCompacta() {
@@ -182,6 +183,29 @@ function iniciarReveals() {
       }
     });
   }, 1200);
+}
+
+function iniciarProcesoConScroll() {
+  const pasos = document.querySelectorAll('.proceso__paso[data-paso]');
+  const marcadores = document.querySelectorAll('.proceso__marcador[data-paso]');
+  if (!pasos.length || !marcadores.length || !('IntersectionObserver' in window)) return;
+
+  const activarPaso = (numero) => {
+    marcadores.forEach((marcador) => {
+      marcador.classList.toggle('proceso__marcador--activo', marcador.dataset.paso === numero);
+    });
+  };
+
+  const observador = new IntersectionObserver(
+    (entradas) => {
+      entradas.forEach((entrada) => {
+        if (entrada.isIntersecting) activarPaso(entrada.target.dataset.paso);
+      });
+    },
+    { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
+  );
+
+  pasos.forEach((paso) => observador.observe(paso));
 }
 
 function iniciarAcordeon() {

@@ -344,18 +344,24 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
 .servicio-filete:nth-child(4) { border-top-color: var(--naranja); }
 .servicio-filete h3 { margin-bottom: 8px; }
 
-.servicios-grande {
+/* Bento de servicios — Fiscal como bloque dominante (alto completo a la
+   izquierda), los otros tres pilares apilados a la derecha */
+.bento-servicios {
   display: grid;
   gap: var(--e-4);
   grid-template-columns: 1fr;
   counter-reset: servicio;
 }
-@media (min-width: 768px) {
-  .servicios-grande { grid-template-columns: repeat(12, 1fr); gap: var(--e-4); align-items: start; }
-  .servicios-grande > *:nth-child(1) { grid-column: span 7; }
-  .servicios-grande > *:nth-child(2) { grid-column: span 5; margin-top: var(--e-5); }
-  .servicios-grande > *:nth-child(3) { grid-column: span 5; }
-  .servicios-grande > *:nth-child(4) { grid-column: span 7; margin-top: var(--e-5); }
+@media (min-width: 860px) {
+  .bento-servicios {
+    grid-template-columns: 1.3fr 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    gap: var(--e-4);
+  }
+  .bento-servicios > *:nth-child(1) { grid-column: 1; grid-row: 1 / span 3; }
+  .bento-servicios > *:nth-child(2) { grid-column: 2; grid-row: 1; }
+  .bento-servicios > *:nth-child(3) { grid-column: 2; grid-row: 2; }
+  .bento-servicios > *:nth-child(4) { grid-column: 2; grid-row: 3; }
 }
 
 .servicio-grande {
@@ -363,11 +369,12 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   overflow: hidden;
   isolation: isolate;
   background: var(--blanco);
-  border: 1px solid var(--gris-claro);
   border-radius: var(--r-panel);
   padding: var(--e-4);
   counter-increment: servicio;
-  transition: transform var(--dur-hover) ease, border-color var(--dur-hover) ease, box-shadow var(--dur-hover) ease;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--dur-hover) ease, box-shadow var(--dur-hover) ease;
 }
 .servicio-grande > * { position: relative; z-index: 1; }
 .servicio-grande::after {
@@ -380,12 +387,13 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   font-weight: 700;
   font-size: clamp(96px, 11vw, 160px);
   line-height: 1;
-  color: var(--azul-hondo);
   opacity: .05;
   pointer-events: none;
+  transition: transform .4s ease, opacity .4s ease;
 }
 @media (hover: hover) and (pointer: fine) {
-  .servicio-grande:hover { transform: translateY(-4px); box-shadow: 0 24px 48px rgba(11, 58, 84, .12); }
+  .servicio-grande:hover { transform: translateY(-4px); }
+  .servicio-grande:hover::after { transform: translate(6px, 4px); }
 }
 .servicio-grande__icono {
   display: inline-flex;
@@ -396,6 +404,7 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   border-radius: 50%;
   background: rgba(var(--naranja-rgb), .12);
   margin-bottom: var(--e-3);
+  transition: transform var(--dur-hover) ease;
 }
 .servicio-grande__icono svg {
   width: 26px;
@@ -406,11 +415,9 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.servicio-grande:nth-child(2n) { border-color: var(--gris-claro); }
-.servicio-grande:nth-child(2n):hover { border-color: var(--azul-acero); }
-.servicio-grande:nth-child(2n) .servicio-grande__icono { background: rgba(30, 111, 160, .12); }
-.servicio-grande:nth-child(2n) .servicio-grande__icono svg { stroke: var(--azul-acero); }
-.servicio-grande:nth-child(2n+1):hover { border-color: var(--naranja); }
+@media (hover: hover) and (pointer: fine) {
+  .servicio-grande:hover .servicio-grande__icono { transform: translate(-4px, -4px); }
+}
 .servicio-grande h3 { margin-bottom: 8px; }
 .servicio-grande__extra { margin-top: var(--e-2); }
 .servicio-grande__enlace {
@@ -426,17 +433,72 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
 .servicio-grande__enlace span { transition: transform var(--dur-hover) ease; }
 .servicio-grande__enlace:hover span, .servicio-grande__enlace:focus-visible span { transform: translateX(4px); }
 
-.paso-grande__numero {
+/* Proceso — "Cómo trabajamos" en sticky scroll: columna de progreso fija
+   a la izquierda, tarjetas en scroll normal a la derecha */
+.proceso__grid {
+  display: grid;
+  gap: var(--e-5);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 1024px) {
+  .proceso__grid { grid-template-columns: .85fr 1.15fr; gap: var(--e-6); align-items: start; }
+  .proceso__sticky { position: sticky; top: 140px; }
+}
+.proceso__progreso {
+  margin-top: var(--e-5);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.proceso__marcador {
+  display: flex;
+  align-items: center;
+  gap: var(--e-2);
+  padding: 10px 14px;
+  border-radius: var(--r-pildora);
+  font-family: var(--f-cuerpo);
+  font-weight: 700;
+  color: var(--dt-slate, var(--gris-tinta));
+  transition: background-color .3s ease, color .3s ease;
+}
+.proceso__marcador__numero {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-family: var(--f-titulos);
+  font-size: 13px;
+  background: var(--gris-claro);
+  color: var(--gris-tinta);
+  transition: background-color .3s ease, color .3s ease;
+}
+.proceso__marcador--activo { background: var(--gris-claro); color: var(--azul-hondo); }
+.proceso__marcador--activo .proceso__marcador__numero { background: var(--naranja); color: #fff; }
+
+.proceso__pasos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-4);
+}
+.proceso__paso {
+  background: var(--blanco);
+  border-radius: var(--r-panel);
+  padding: var(--e-5);
+}
+.proceso__paso__numero {
+  display: block;
   font-family: var(--f-titulos);
   font-weight: 700;
-  font-size: clamp(72px, 9vw, 148px);
+  font-size: clamp(40px, 5vw, 64px);
   line-height: 1;
-  color: var(--azul-hondo);
+  color: var(--naranja);
+  margin-bottom: var(--e-2);
 }
-.paso-grande:nth-of-type(2) .paso-grande__numero { color: var(--naranja); }
-.paso-grande:nth-of-type(3) .paso-grande__numero { color: var(--azul-acero); }
-.paso-grande h3 { margin-bottom: 8px; }
-.paso-grande__extra { margin-top: var(--e-2); }
+.proceso__paso h3 { margin-bottom: 8px; }
+.proceso__paso__extra { margin-top: var(--e-2); }
 
 .equipo-grid {
   display: grid;
@@ -540,8 +602,6 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   flex-direction: column;
   gap: var(--e-2);
 }
-.servicio-bloque:nth-of-type(odd) .servicio-bloque__panel { background: var(--lavado-azul); }
-.servicio-bloque:nth-of-type(even) .servicio-bloque__panel { background: var(--lino); }
 .servicio-bloque__icono {
   display: flex;
   align-items: center;
@@ -560,7 +620,6 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.servicio-bloque:nth-of-type(even) .servicio-bloque__icono svg { stroke: var(--naranja); }
 .servicio-bloque__numero {
   font-family: var(--f-titulos);
   font-weight: 700;
@@ -568,7 +627,6 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   line-height: 1;
   color: var(--azul-hondo);
 }
-.servicio-bloque:nth-of-type(even) .servicio-bloque__numero { color: var(--naranja); }
 .servicio-bloque__lista { margin-top: var(--e-2); display: flex; flex-direction: column; gap: 8px; }
 .servicio-bloque__lista li { padding-left: var(--e-2); position: relative; }
 .servicio-bloque__lista li::before {
@@ -657,20 +715,20 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
 .contacto-mapa__marco iframe { display: block; }
 
 /* ==========================================================================
-   Ditto — sistema visual aplicado a todo el sitio de Asesoría.
+   Sistema Praxis — minimalismo sofisticado (off-white + tarjetas blancas
+   elevadas por sombra, naranja de marca como único acento).
    No toca el hero (.asesoria-hero) ni la barra de navegación
    (.nav-flotante y su lógica de estados), que quedan tal cual estaban.
    ========================================================================== */
 
 body.asesoria {
   --dt-ink: #130e30;
-  --dt-yellow: #ffe228;
-  --dt-moss: #59e25d;
-  --dt-fuchsia: #e261e5;
   --dt-slate: #5f5c6e;
-  --dt-canvas: #f9fbf2;
-  --dt-meadow: #eff2e5;
+  --dt-canvas: #F8F9FA;
+  --dt-card: #ffffff;
   --dt-onyx: #000000;
+  --dt-sombra: 0 20px 40px rgba(0, 0, 0, .05);
+  --dt-sombra-hover: 0 28px 56px rgba(0, 0, 0, .08);
   /* Tipografía de marca (Kumbh Sans / Lato), no la del prompt de estilo Ditto */
   --dt-serif: var(--f-titulos);
   --dt-sans: var(--f-cuerpo);
@@ -703,21 +761,22 @@ body.asesoria .eslogan {
 body.asesoria .cuerpo-lg { color: var(--dt-slate); }
 .asesoria a.enlace-cuerpo { color: var(--dt-ink); text-decoration-color: var(--dt-slate); }
 
-/* Fondo de secciones: Canvas / Soft Meadow en vez de blanco/gris */
-body.asesoria .banda-blanca { background: var(--dt-canvas); }
-body.asesoria .banda-gris { background: var(--dt-meadow); }
+/* Fondo de secciones: off-white / blanco, sin alternar tono fuerte —
+   la separación la da la elevación de las tarjetas, no el fondo */
+body.asesoria .banda-blanca { background: var(--dt-card); }
+body.asesoria .banda-gris { background: var(--dt-canvas); }
 
-/* Botones */
+/* Botones — naranja de marca como único acento, tinta como secundario */
 body.asesoria .boton-primario {
-  background: var(--dt-yellow);
-  border-color: var(--dt-yellow);
-  color: var(--dt-ink);
+  background: var(--naranja);
+  border-color: var(--naranja);
+  color: #fff;
 }
 body.asesoria .boton-primario:hover,
 body.asesoria .boton-primario:focus-visible {
   background: var(--dt-ink);
   border-color: var(--dt-ink);
-  color: var(--dt-yellow);
+  color: #fff;
 }
 body.asesoria .boton-oscuro {
   background: var(--dt-ink);
@@ -726,92 +785,104 @@ body.asesoria .boton-oscuro {
 }
 body.asesoria .boton-oscuro:hover,
 body.asesoria .boton-oscuro:focus-visible {
-  background: var(--dt-yellow);
-  border-color: var(--dt-yellow);
-  color: var(--dt-ink);
+  background: var(--naranja);
+  border-color: var(--naranja);
+  color: #fff;
 }
 
-/* Qué hacemos: tarjetas grandes */
+/* Qué hacemos: bento — tarjetas blancas con sombra difusa, sin borde */
 body.asesoria .servicio-grande {
-  background: var(--dt-meadow);
-  border-color: transparent;
-  box-shadow: none;
+  background: var(--dt-card);
+  box-shadow: var(--dt-sombra);
 }
 @media (hover: hover) and (pointer: fine) {
-  body.asesoria .servicio-grande:hover,
-  body.asesoria .servicio-grande:nth-child(2n):hover,
-  body.asesoria .servicio-grande:nth-child(2n+1):hover {
-    box-shadow: none;
-    background: var(--dt-canvas);
-    border-color: transparent;
-  }
+  body.asesoria .servicio-grande:hover { box-shadow: var(--dt-sombra-hover), 0 0 0 1px rgba(var(--naranja-rgb), .22); }
 }
-body.asesoria .servicio-grande__icono,
-body.asesoria .servicio-grande:nth-child(2n) .servicio-grande__icono {
-  background: var(--dt-yellow);
-}
-body.asesoria .servicio-grande__icono svg,
-body.asesoria .servicio-grande:nth-child(2n) .servicio-grande__icono svg {
-  stroke: var(--dt-ink);
-}
+body.asesoria .servicio-grande::after { color: var(--dt-ink); }
 body.asesoria .servicio-grande__enlace { color: var(--dt-ink); }
 body.asesoria .servicio-grande__extra { color: var(--dt-slate); }
 
-/* Cómo trabajamos + bloques de servicios.html (comparten .servicio-bloque) */
-body.asesoria .servicio-bloque:nth-of-type(odd) .servicio-bloque__panel,
-body.asesoria .servicio-bloque:nth-of-type(even) .servicio-bloque__panel {
-  background: var(--dt-meadow);
+/* Bloque dominante (Asesoría fiscal): tinta oscura, acento naranja */
+body.asesoria .servicio-grande--destacado {
+  background: var(--dt-ink);
+  box-shadow: var(--dt-sombra);
 }
-body.asesoria .servicio-bloque__icono { background: var(--dt-yellow); }
-body.asesoria .servicio-bloque__icono svg,
-body.asesoria .servicio-bloque:nth-of-type(even) .servicio-bloque__icono svg { stroke: var(--dt-ink); }
-body.asesoria .servicio-bloque__numero,
-body.asesoria .servicio-bloque:nth-of-type(even) .servicio-bloque__numero,
-body.asesoria .paso-grande__numero,
-body.asesoria .paso-grande:nth-of-type(2) .paso-grande__numero,
-body.asesoria .paso-grande:nth-of-type(3) .paso-grande__numero { color: var(--dt-ink); }
-body.asesoria .paso-grande__extra,
+@media (hover: hover) and (pointer: fine) {
+  body.asesoria .servicio-grande--destacado:hover { box-shadow: var(--dt-sombra-hover), 0 0 0 1px rgba(var(--naranja-rgb), .4); }
+}
+body.asesoria .servicio-grande--destacado h3,
+body.asesoria .servicio-grande--destacado .servicio-grande__enlace { color: #fff; }
+body.asesoria .servicio-grande--destacado .menor,
+body.asesoria .servicio-grande--destacado .servicio-grande__extra { color: rgba(255, 255, 255, .7); }
+body.asesoria .servicio-grande--destacado .servicio-grande__icono { background: var(--naranja); }
+body.asesoria .servicio-grande--destacado .servicio-grande__icono svg { stroke: #fff; }
+body.asesoria .servicio-grande--destacado::after { color: #fff; opacity: .06; }
+
+/* Cómo trabajamos — sticky scroll */
+body.asesoria .proceso__paso { background: var(--dt-card); box-shadow: var(--dt-sombra); }
+body.asesoria .proceso__paso__extra,
+body.asesoria .proceso__pasos p:not(.menor) { color: var(--dt-slate); }
+body.asesoria .proceso__marcador { color: var(--dt-slate); }
+body.asesoria .proceso__marcador__numero { background: var(--dt-canvas); color: var(--dt-slate); }
+body.asesoria .proceso__marcador--activo { background: var(--dt-canvas); color: var(--dt-ink); }
+body.asesoria .proceso__marcador--activo .proceso__marcador__numero { background: var(--naranja); color: #fff; }
+
+/* Bloques de servicios.html (.servicio-bloque) */
+body.asesoria .servicio-bloque__panel { background: var(--dt-canvas); }
+body.asesoria .servicio-bloque__icono { background: var(--naranja); }
+body.asesoria .servicio-bloque__icono svg { stroke: #fff; }
+body.asesoria .servicio-bloque__numero { color: var(--dt-ink); }
 body.asesoria .servicio-bloque p:not(.menor) { color: var(--dt-slate); }
-body.asesoria .servicio-bloque__lista li::before { background: var(--dt-yellow); }
+body.asesoria .servicio-bloque__lista li::before { background: var(--naranja); }
 
 /* Valores (Nosotros) */
 body.asesoria .servicio-filete,
 body.asesoria .servicio-filete:nth-child(2),
 body.asesoria .servicio-filete:nth-child(3),
-body.asesoria .servicio-filete:nth-child(4) { border-top-color: var(--dt-yellow); }
+body.asesoria .servicio-filete:nth-child(4) { border-top-color: var(--naranja); }
 
 /* Equipo */
-body.asesoria .equipo-tarjeta { background: var(--dt-meadow); }
-body.asesoria .equipo-tarjeta__avatar { background: var(--dt-yellow); }
-body.asesoria .equipo-tarjeta__avatar svg { stroke: var(--dt-ink); }
+body.asesoria .equipo-tarjeta { background: var(--dt-card); box-shadow: var(--dt-sombra); }
+body.asesoria .equipo-tarjeta__avatar { background: rgba(var(--naranja-rgb), .12); }
+body.asesoria .equipo-tarjeta__avatar svg { stroke: var(--naranja); }
 
 /* Misión / Visión */
 body.asesoria .mision-vision-grid > div,
-body.asesoria .mision-vision-grid > div:nth-child(2) { border-top-color: var(--dt-yellow); }
+body.asesoria .mision-vision-grid > div:nth-child(2) { border-top-color: var(--naranja); }
 
 /* Preguntas frecuentes */
-body.asesoria .acordeon__item { border-top-color: rgba(19, 14, 48, .14); }
-body.asesoria .acordeon__item:last-child { border-bottom-color: rgba(19, 14, 48, .14); }
+body.asesoria .acordeon__item { border-top-color: rgba(19, 14, 48, .1); }
+body.asesoria .acordeon__item:last-child { border-bottom-color: rgba(19, 14, 48, .1); }
 body.asesoria .acordeon__pregunta { color: var(--dt-ink); font-family: var(--dt-serif); font-weight: 700; }
 body.asesoria .acordeon__respuesta__interior,
 body.asesoria .acordeon__respuesta__interior p { color: var(--dt-slate); }
 
 /* Cierre / CTA final — unido visualmente al pie, comparten el mismo
-   degradado (ver .cierre-pie) */
+   degradado (ver .cierre-pie); el CTA va en blanco para destacar
+   sobre el propio degradado naranja */
 body.asesoria .cierre-asesoria { background: none; }
 body.asesoria .cierre-asesoria h2,
 body.asesoria .cierre-asesoria p { color: #fff; }
+body.asesoria .cierre-asesoria .boton-primario {
+  background: #fff;
+  border-color: #fff;
+  color: var(--dt-ink);
+}
 body.asesoria .cierre-asesoria .boton-primario:hover,
-body.asesoria .cierre-asesoria .boton-primario:focus-visible { color: var(--dt-yellow); }
+body.asesoria .cierre-asesoria .boton-primario:focus-visible {
+  background: var(--dt-ink);
+  border-color: var(--dt-ink);
+  color: #fff;
+}
 
 /* Contacto */
 body.asesoria .contacto-panel { background: var(--dt-ink); }
 body.asesoria .contacto-panel h2,
 body.asesoria .contacto-panel h3 { color: #fff; }
 body.asesoria .contacto-panel .boton-oscuro {
-  background: var(--dt-yellow);
-  border-color: var(--dt-yellow);
-  color: var(--dt-ink);
+  background: var(--naranja);
+  border-color: var(--naranja);
+  color: #fff;
 }
 body.asesoria .contacto-panel .boton-oscuro:hover,
 body.asesoria .contacto-panel .boton-oscuro:focus-visible {
@@ -819,8 +890,8 @@ body.asesoria .contacto-panel .boton-oscuro:focus-visible {
   border-color: #fff;
   color: var(--dt-ink);
 }
-body.asesoria .contacto-dato__icono { background: rgba(255, 226, 40, .2); }
-body.asesoria .contacto-dato__icono svg { stroke: var(--dt-yellow); }
+body.asesoria .contacto-dato__icono { background: rgba(var(--naranja-rgb), .2); }
+body.asesoria .contacto-dato__icono svg { stroke: var(--naranja); }
 
 body.asesoria .campo input,
 body.asesoria .campo select,
@@ -850,50 +921,6 @@ body.asesoria .pie__redes a { border-radius: 10px; }
 body.asesoria .cierre-pie { background: linear-gradient(135deg, #000000, var(--naranja)); }
 body.asesoria .cierre-pie footer.pie { background: none; }
 
-/* Manchas orgánicas decorativas — solo atmósfera, nunca en controles */
-body.asesoria #que-hacemos,
-body.asesoria #equipo {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-body.asesoria #que-hacemos > .contenedor,
-body.asesoria #equipo > .contenedor { position: relative; z-index: 1; }
-body.asesoria #que-hacemos::before,
-body.asesoria #equipo::before {
-  content: '';
-  position: absolute;
-  top: -90px;
-  right: -90px;
-  width: 320px;
-  height: 320px;
-  background: var(--dt-moss);
-  border-radius: 44% 56% 62% 38% / 41% 44% 56% 59%;
-  opacity: .16;
-  z-index: 0;
-  pointer-events: none;
-}
-body.asesoria #que-hacemos::after,
-body.asesoria #equipo::after {
-  content: '';
-  position: absolute;
-  bottom: -110px;
-  left: -110px;
-  width: 260px;
-  height: 260px;
-  background: var(--dt-fuchsia);
-  border-radius: 58% 42% 39% 61% / 55% 48% 52% 45%;
-  opacity: .12;
-  z-index: 0;
-  pointer-events: none;
-}
-@media (max-width: 640px) {
-  body.asesoria #que-hacemos::before,
-  body.asesoria #que-hacemos::after,
-  body.asesoria #equipo::before,
-  body.asesoria #equipo::after { opacity: .08; }
-}
-
 /* ==========================================================================
    Estructura 2026 — composición asimétrica: nada centrado por defecto,
    splits reales a izquierda/derecha, bento, offsets y superposición.
@@ -916,7 +943,7 @@ body.asesoria #equipo::after {
   line-height: 1.35;
   color: var(--dt-ink);
   padding-left: var(--e-3);
-  border-left: 3px solid var(--dt-yellow);
+  border-left: 3px solid var(--naranja);
 }
 @media (min-width: 860px) {
   .nosotros-intro-grid__cita { margin-top: var(--e-3); }
@@ -945,14 +972,14 @@ body.asesoria #equipo::after {
   position: absolute;
   inset: -16%;
   z-index: -1;
-  background: radial-gradient(ellipse closest-side, rgba(89, 226, 93, .35), transparent 72%);
+  background: radial-gradient(ellipse closest-side, rgba(var(--naranja-rgb), .3), transparent 72%);
 }
 .split-asimetrico__foto .nosotros-foto {
   transform: rotate(-1.4deg);
   box-shadow: 0 30px 60px -24px rgba(19, 14, 48, .3);
 }
 #donde-estamos .split-asimetrico__foto::before {
-  background: radial-gradient(ellipse closest-side, rgba(226, 97, 229, .32), transparent 72%);
+  background: radial-gradient(ellipse closest-side, rgba(var(--naranja-rgb), .18), transparent 72%);
 }
 #donde-estamos .split-asimetrico__foto .nosotros-foto { transform: rotate(1.4deg); }
 
@@ -962,13 +989,34 @@ body.asesoria #equipo::after {
   #valores .servicio-filete:nth-child(3) { transform: translateY(-14px); }
 }
 
-/* FAQ: columna de intro + CTA a la izquierda, acordeón a la derecha */
+/* FAQ: tarjeta blanca flotante (intro + CTA) a la izquierda,
+   acordeón a la derecha */
 .faq-grid {
   display: grid;
   gap: var(--e-4);
   align-items: start;
 }
 @media (min-width: 900px) { .faq-grid { grid-template-columns: .8fr 1.2fr; gap: var(--e-6); } }
+body.asesoria .faq-grid__intro {
+  background: var(--dt-card);
+  border-radius: var(--r-panel);
+  box-shadow: var(--dt-sombra);
+  padding: var(--e-5);
+}
+@media (min-width: 900px) {
+  body.asesoria .faq-grid__intro { position: sticky; top: 140px; }
+}
+.faq-grid__intro__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(var(--naranja-rgb), .12);
+  margin-bottom: var(--e-3);
+}
+.faq-grid__intro__icono svg { width: 22px; height: 22px; }
 .faq-grid__intro .boton { margin-top: var(--e-3); }
 
 /* Contacto: el panel oscuro flota ligeramente en vez de encajar a la perfección */
