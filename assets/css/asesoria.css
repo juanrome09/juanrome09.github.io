@@ -795,8 +795,9 @@ body.asesoria .acordeon__pregunta { color: var(--dt-ink); font-family: var(--dt-
 body.asesoria .acordeon__respuesta__interior,
 body.asesoria .acordeon__respuesta__interior p { color: var(--dt-slate); }
 
-/* Cierre / CTA final */
-body.asesoria .cierre-asesoria { background: var(--dt-ink); }
+/* Cierre / CTA final — unido visualmente al pie, comparten el mismo
+   degradado (ver .cierre-pie) */
+body.asesoria .cierre-asesoria { background: none; }
 body.asesoria .cierre-asesoria h2,
 body.asesoria .cierre-asesoria p { color: #fff; }
 body.asesoria .cierre-asesoria .boton-primario:hover,
@@ -841,6 +842,12 @@ body.asesoria footer.pie {
 }
 body.asesoria footer.pie h3 { font-family: var(--f-titulos); color: #fff; }
 body.asesoria .pie__redes a { border-radius: 10px; }
+
+/* "Hablemos de tu asesoría" + pie: mismo bloque, un único degradado
+   continuo (el envoltorio pinta el color, sección y footer van
+   transparentes para no cortar el degradado en dos) */
+body.asesoria .cierre-pie { background: linear-gradient(135deg, #000000, var(--naranja)); }
+body.asesoria .cierre-pie footer.pie { background: none; }
 
 /* Manchas orgánicas decorativas — solo atmósfera, nunca en controles */
 body.asesoria #que-hacemos,
