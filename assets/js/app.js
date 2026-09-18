@@ -3,6 +3,7 @@ const FORM_KEY = '{{FORM_KEY}}';
 document.addEventListener('DOMContentLoaded', () => {
   iniciarCabeceraCompacta();
   iniciarMenuMovil();
+  iniciarDesplegables();
   iniciarReveals();
   iniciarAcordeon();
   iniciarAnioFooter();
@@ -79,6 +80,68 @@ function iniciarMenuMovil() {
 
   menu.querySelectorAll('a').forEach((enlace) => {
     enlace.addEventListener('click', cerrarMenu);
+  });
+}
+
+function iniciarDesplegables() {
+  const desplegables = Array.from(document.querySelectorAll('.desplegable'));
+  if (!desplegables.length) return;
+
+  const cerrar = (el) => {
+    el.classList.remove('desplegable--abierto');
+    const boton = el.querySelector('.desplegable__boton');
+    if (boton) boton.setAttribute('aria-expanded', 'false');
+  };
+
+  const cerrarTodos = (excepto) => {
+    desplegables.forEach((el) => {
+      if (el !== excepto) cerrar(el);
+    });
+  };
+
+  const puedeHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  let temporizadorCierre = null;
+
+  desplegables.forEach((el) => {
+    const boton = el.querySelector('.desplegable__boton');
+    if (!boton) return;
+
+    boton.addEventListener('click', (evento) => {
+      evento.stopPropagation();
+      const abierto = el.classList.contains('desplegable--abierto');
+      cerrarTodos(el);
+      el.classList.toggle('desplegable--abierto', !abierto);
+      boton.setAttribute('aria-expanded', String(!abierto));
+    });
+
+    if (puedeHover && el.closest('.nav-flotante__nav')) {
+      el.addEventListener('mouseenter', () => {
+        if (temporizadorCierre) {
+          window.clearTimeout(temporizadorCierre);
+          temporizadorCierre = null;
+        }
+        cerrarTodos(el);
+        el.classList.add('desplegable--abierto');
+        boton.setAttribute('aria-expanded', 'true');
+      });
+      el.addEventListener('mouseleave', () => {
+        if (temporizadorCierre) window.clearTimeout(temporizadorCierre);
+        temporizadorCierre = window.setTimeout(() => {
+          cerrar(el);
+          temporizadorCierre = null;
+        }, 250);
+      });
+    }
+  });
+
+  document.addEventListener('click', (evento) => {
+    desplegables.forEach((el) => {
+      if (!el.contains(evento.target)) cerrar(el);
+    });
+  });
+
+  document.addEventListener('keydown', (evento) => {
+    if (evento.key === 'Escape') cerrarTodos(null);
   });
 }
 
