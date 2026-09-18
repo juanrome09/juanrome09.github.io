@@ -982,14 +982,32 @@ body.asesoria .cierre-pie footer.pie { background: none; }
   z-index: -1;
   background: radial-gradient(ellipse closest-side, rgba(var(--naranja-rgb), .3), transparent 72%);
 }
-.split-asimetrico__foto .nosotros-foto {
+.split-asimetrico__marco {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--r-panel);
   transform: rotate(-1.4deg);
   box-shadow: 0 30px 60px -24px rgba(19, 14, 48, .3);
 }
 #donde-estamos .split-asimetrico__foto::before {
   background: radial-gradient(ellipse closest-side, rgba(var(--naranja-rgb), .18), transparent 72%);
 }
-#donde-estamos .split-asimetrico__foto .nosotros-foto { transform: rotate(1.4deg); }
+#donde-estamos .split-asimetrico__marco { transform: rotate(1.4deg); }
+
+/* Zoom lento y continuo ("Ken Burns") en las fotos — imagen con
+   movimiento propio incluso sin hacer scroll. Vive fuera de @supports
+   porque no necesita animation-timeline: view(), solo un @keyframes
+   normal; en navegadores con soporte se combina además con el
+   "focus pull" ligado al scroll (ver más abajo) */
+@keyframes kenburns-foto {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  body.asesoria .split-asimetrico__marco .nosotros-foto {
+    animation: kenburns-foto 26s ease-in-out infinite alternate;
+  }
+}
 
 /* Nuestros valores: ritmo escalonado en vez de fila perfectamente alineada */
 @media (min-width: 1024px) {
@@ -1105,16 +1123,18 @@ body.asesoria .acordeon__pregunta__icono { color: var(--naranja); }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
 
-    /* Fotos de Nosotros: entran con un "focus pull" — no se toca su
-       transform (ya llevan una rotación fija) para no pelear con ella */
+    /* Fotos de Nosotros: entran con un "focus pull" (desenfocada → nítida
+       según el scroll) combinado con el zoom lento continuo de abajo —
+       dos animaciones sobre el mismo elemento, cada una con su propio
+       "reloj" (una ligada al scroll, la otra al tiempo) */
     @keyframes enfoque-scroll {
       from { opacity: 0; filter: blur(14px); }
       to { opacity: 1; filter: blur(0); }
     }
-    body.asesoria .split-asimetrico__foto .nosotros-foto {
-      animation: enfoque-scroll linear both;
-      animation-timeline: view();
-      animation-range: entry 0% cover 35%;
+    body.asesoria .split-asimetrico__marco .nosotros-foto {
+      animation: enfoque-scroll linear both, kenburns-foto 26s ease-in-out infinite alternate;
+      animation-timeline: view(), auto;
+      animation-range: entry 0% cover 35%, normal;
     }
 
     /* Iconos y numerales — pequeño resorte al entrar en pantalla */
@@ -1154,3 +1174,33 @@ body.asesoria .acordeon__pregunta__icono { color: var(--naranja); }
     }
   }
 }
+
+/* Calendario fiscal (Servicios) */
+.calendario-fiscal {
+  display: grid;
+  gap: var(--e-3);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) { .calendario-fiscal { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .calendario-fiscal { grid-template-columns: repeat(3, 1fr); } }
+body.asesoria .calendario-fiscal__item {
+  background: var(--dt-card);
+  border-radius: var(--r-panel);
+  padding: var(--e-3);
+  box-shadow: var(--dt-sombra);
+  transition: box-shadow var(--dur-hover) ease, transform var(--dur-hover) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  body.asesoria .calendario-fiscal__item:hover { box-shadow: var(--dt-sombra-hover); transform: translateY(-3px); }
+}
+body.asesoria .calendario-fiscal__fecha {
+  display: inline-block;
+  font-family: var(--f-titulos);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--naranja);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  margin-bottom: var(--e-2);
+}
+.calendario-fiscal__item h3 { margin-bottom: 6px; }

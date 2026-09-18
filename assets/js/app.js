@@ -237,26 +237,36 @@ function iniciarSombraTarjetas() {
 }
 
 function iniciarProcesoConScroll() {
-  const pasos = document.querySelectorAll('.proceso__paso[data-paso]');
-  const marcadores = document.querySelectorAll('.proceso__marcador[data-paso]');
-  if (!pasos.length || !marcadores.length || !('IntersectionObserver' in window)) return;
+  // Patrón "sticky scroll" genérico: cualquier bloque marcado con
+  // [data-scroll-activo] (columna .proceso__sticky fija a la izquierda +
+  // .proceso__pasos en scroll normal a la derecha) activa su propio
+  // marcador según qué paso está a la vista — cada bloque se resuelve de
+  // forma independiente, así que puede haber varios en la misma página
+  // (p. ej. "Cómo trabajamos" y "A quién ayudamos") sin que se pisen.
+  if (!('IntersectionObserver' in window)) return;
 
-  const activarPaso = (numero) => {
-    marcadores.forEach((marcador) => {
-      marcador.classList.toggle('proceso__marcador--activo', marcador.dataset.paso === numero);
-    });
-  };
+  document.querySelectorAll('[data-scroll-activo]').forEach((bloque) => {
+    const pasos = bloque.querySelectorAll('.proceso__pasos [data-paso]');
+    const marcadores = bloque.querySelectorAll('.proceso__progreso [data-paso]');
+    if (!pasos.length || !marcadores.length) return;
 
-  const observador = new IntersectionObserver(
-    (entradas) => {
-      entradas.forEach((entrada) => {
-        if (entrada.isIntersecting) activarPaso(entrada.target.dataset.paso);
+    const activarPaso = (numero) => {
+      marcadores.forEach((marcador) => {
+        marcador.classList.toggle('proceso__marcador--activo', marcador.dataset.paso === numero);
       });
-    },
-    { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
-  );
+    };
 
-  pasos.forEach((paso) => observador.observe(paso));
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        entradas.forEach((entrada) => {
+          if (entrada.isIntersecting) activarPaso(entrada.target.dataset.paso);
+        });
+      },
+      { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
+    );
+
+    pasos.forEach((paso) => observador.observe(paso));
+  });
 }
 
 function iniciarAcordeon() {
