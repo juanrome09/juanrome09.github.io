@@ -1092,3 +1092,65 @@ body.asesoria .acordeon__pregunta__icono { color: var(--naranja); }
 @media (prefers-reduced-motion: no-preference) {
   body.asesoria .whatsapp-flotante { animation: whatsapp-pulso 6s ease-out infinite; }
 }
+
+/* ==========================================================================
+   Animación ligada al scroll (Nosotros, Contacto, Servicios) — CSS puro,
+   sin JS: animation-timeline: view() liga el fotograma directamente a la
+   posición del elemento en el viewport según se hace scroll, en vez de
+   disparar una única transición al entrar (como .reveal). Mejora
+   progresiva: donde el navegador no lo soporta, el elemento se queda
+   simplemente en su estado final, sin animación — nunca roto.
+   ========================================================================== */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+
+    /* Fotos de Nosotros: entran con un "focus pull" — no se toca su
+       transform (ya llevan una rotación fija) para no pelear con ella */
+    @keyframes enfoque-scroll {
+      from { opacity: 0; filter: blur(14px); }
+      to { opacity: 1; filter: blur(0); }
+    }
+    body.asesoria .split-asimetrico__foto .nosotros-foto {
+      animation: enfoque-scroll linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+
+    /* Iconos y numerales — pequeño resorte al entrar en pantalla */
+    @keyframes resorte-scroll {
+      from { opacity: 0; transform: scale(.55); }
+      70% { opacity: 1; transform: scale(1.08); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    body.asesoria .equipo-tarjeta__avatar,
+    body.asesoria .servicio-bloque__icono,
+    body.asesoria .contacto-dato__icono {
+      animation: resorte-scroll ease-out both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 25%;
+    }
+
+    /* Números grandes de Servicios — suben mientras aparecen */
+    @keyframes numero-scroll {
+      from { opacity: 0; transform: translateY(28px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    body.asesoria .servicio-bloque__numero {
+      animation: numero-scroll ease-out both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+
+    /* El mapa de Contacto se revela con una pequeña escala */
+    @keyframes mapa-scroll {
+      from { opacity: 0; transform: scale(.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    body.asesoria .contacto-mapa__marco {
+      animation: mapa-scroll ease-out both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 40%;
+    }
+  }
+}
