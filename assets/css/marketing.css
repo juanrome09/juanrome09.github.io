@@ -187,13 +187,13 @@ body.marketing .nav-flotante.nav-flotante--oscura {
 .nav-flotante__logo .nav-flotante__logo-img--blanco { display: none; }
 body.marketing .nav-flotante--oscura .nav-flotante__logo .nav-flotante__logo-img--azul { display: none; }
 body.marketing .nav-flotante--oscura .nav-flotante__logo .nav-flotante__logo-img--blanco { display: block; }
-body.marketing .nav-flotante--oscura .nav-flotante__nav a {
+body.marketing .nav-flotante--oscura .nav-flotante__nav > a {
   color: var(--mk-texto-claro);
 }
 
-body.marketing .nav-flotante--oscura .nav-flotante__nav a:hover,
-body.marketing .nav-flotante--oscura .nav-flotante__nav a:focus-visible,
-body.marketing .nav-flotante--oscura .nav-flotante__nav a[aria-current="page"] {
+body.marketing .nav-flotante--oscura .nav-flotante__nav > a:hover,
+body.marketing .nav-flotante--oscura .nav-flotante__nav > a:focus-visible,
+body.marketing .nav-flotante--oscura .nav-flotante__nav > a[aria-current="page"] {
   background: rgba(243, 238, 231, .16);
   color: var(--mk-texto-claro);
 }
