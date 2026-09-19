@@ -3,7 +3,7 @@ body.puerta {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  background: var(--lino);
+  background: var(--gris-tinta);
 }
 
 body.puerta > main {
@@ -17,7 +17,7 @@ body.puerta > main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 560px;
+  min-height: 620px;
 }
 @media (min-width: 720px) {
   .puerta-split { flex-direction: row; }
@@ -33,31 +33,36 @@ body.puerta > main {
   isolation: isolate;
   color: var(--blanco);
   text-decoration: none;
-  transition: flex-grow .45s cubic-bezier(.3, .1, .2, 1);
-  animation: puerta-entra .5s cubic-bezier(.3, .1, .2, 1) both;
+  transition: flex-grow .5s cubic-bezier(.3, .1, .2, 1);
+  animation: puerta-entra .6s cubic-bezier(.2, .7, .2, 1) both;
 }
 @media (min-width: 1024px) {
   .puerta-mitad { padding-inline: var(--canal-escritorio); }
 }
-.puerta-mitad--marketing { animation-delay: .08s; }
+.puerta-mitad--marketing { animation-delay: .1s; }
 
 @keyframes puerta-entra {
-  from { opacity: 0; transform: translateY(18px); }
+  from { opacity: 0; transform: translateY(26px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @media (hover: hover) and (pointer: fine) and (min-width: 720px) {
   .puerta-mitad:hover, .puerta-mitad:focus-visible { flex-grow: 4; }
   .puerta-mitad:hover .puerta-mitad__contenido,
-  .puerta-mitad:focus-visible .puerta-mitad__contenido { opacity: 1; }
+  .puerta-mitad:focus-visible .puerta-mitad__contenido { opacity: 1; transform: translateY(0); }
   .puerta-split:has(.puerta-mitad:hover) .puerta-mitad:not(:hover) .puerta-mitad__contenido,
   .puerta-split:has(.puerta-mitad:focus-visible) .puerta-mitad:not(:focus-visible) .puerta-mitad__contenido {
     opacity: 0;
+    transform: translateY(6px);
   }
+  .puerta-split:has(.puerta-mitad:hover) .puerta-logo,
+  .puerta-split:has(.puerta-mitad:focus-visible) .puerta-logo { transform: translate(-50%, -50%) scale(1.06); }
+  .puerta-split:has(.puerta-mitad--asesoria:hover) .puerta-mitad__entrar,
+  .puerta-split:has(.puerta-mitad--marketing:hover) .puerta-mitad__entrar { transform: scale(1.03); }
 }
 
-.puerta-mitad--asesoria { background: linear-gradient(135deg, #B8420F, var(--naranja)); }
-.puerta-mitad--marketing { background: linear-gradient(135deg, var(--vino-hondo), var(--vino)); }
+.puerta-mitad--asesoria { background: linear-gradient(160deg, var(--azul-hondo), var(--azul-acero) 88%); }
+.puerta-mitad--marketing { background: linear-gradient(200deg, var(--vino-hondo), var(--vino) 88%); }
 
 .puerta-mitad::before {
   content: '';
@@ -67,19 +72,30 @@ body.puerta > main {
   background-image: url('/assets/img/fondo-marca-mk.png');
   background-size: cover;
   background-position: center;
-  opacity: .15;
+  opacity: .18;
+  pointer-events: none;
+}
+.puerta-mitad::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse 90% 70% at 50% 100%, rgba(0, 0, 0, .32), transparent 70%);
   pointer-events: none;
 }
 
 .puerta-mitad--marketing { justify-content: flex-end; }
-.puerta-mitad--marketing .puerta-mitad__contenido { text-align: right; }
+.puerta-mitad--marketing .puerta-mitad__contenido { text-align: right; align-items: flex-end; }
 .puerta-mitad--marketing .puerta-mitad__entrar { flex-direction: row-reverse; }
 
 .puerta-mitad__contenido {
   position: relative;
   z-index: 1;
-  max-width: 440px;
-  transition: opacity .3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 100%;
+  transition: opacity .35s ease, transform .35s ease;
 }
 
 .puerta-mitad__eyebrow {
@@ -87,23 +103,24 @@ body.puerta > main {
   font-family: var(--f-cuerpo);
   font-weight: 700;
   font-size: var(--menor);
-  letter-spacing: .06em;
+  letter-spacing: .12em;
   text-transform: uppercase;
-  opacity: .85;
+  opacity: .8;
 }
 
 .puerta-mitad__titulo {
   display: block;
-  margin-top: 6px;
-  font-family: var(--f-titulos);
-  font-weight: 700;
-  font-size: clamp(40px, 6vw, 72px);
-  line-height: .95;
-  letter-spacing: -.02em;
+  margin-top: var(--e-1);
+  font-family: var(--f-cartel);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: clamp(52px, 9vw, 132px);
+  line-height: .88;
+  letter-spacing: .006em;
 }
 
 .puerta-mitad__descripcion {
-  margin-top: var(--e-2);
+  margin-top: var(--e-3);
   font-family: var(--f-cuerpo);
   font-size: var(--cuerpo-lg);
   max-width: 34ch;
@@ -121,9 +138,9 @@ body.puerta > main {
   font-family: var(--f-cuerpo);
   font-weight: 700;
   font-size: var(--menor);
-  transition: gap .25s ease;
+  transition: gap .25s ease, transform .25s ease;
 }
-.puerta-mitad--asesoria .puerta-mitad__entrar { color: var(--naranja); }
+.puerta-mitad--asesoria .puerta-mitad__entrar { color: var(--azul-acero); }
 .puerta-mitad--marketing .puerta-mitad__entrar { color: var(--vino); }
 .puerta-mitad__entrar svg {
   width: 16px;
@@ -139,6 +156,32 @@ body.puerta > main {
 
 .puerta-mitad:focus-visible { outline: 3px solid var(--blanco); outline-offset: -6px; }
 
+/* Lema, centrado sobre la costura de las dos mitades */
+.puerta-lema {
+  position: absolute;
+  z-index: 3;
+  top: var(--e-4);
+  left: 50%;
+  transform: translateX(-50%) rotate(-2.5deg);
+  margin: 0;
+  padding: 8px 22px;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, .1);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, .3);
+  border-radius: var(--r-pildora);
+  color: var(--blanco);
+  font-family: var(--f-versatil);
+  font-size: clamp(13px, 1.6vw, 17px);
+  letter-spacing: .01em;
+  opacity: 0;
+  animation: puerta-logo-entra .6s ease .3s both;
+  pointer-events: none;
+}
+@media (max-width: 719px) {
+  .puerta-lema { top: var(--e-3); font-size: 13px; padding: 6px 16px; }
+}
+
 /* Logo central */
 .puerta-logo {
   position: absolute;
@@ -150,17 +193,18 @@ body.puerta > main {
   transform: translate(-50%, -50%);
   pointer-events: none;
   opacity: 0;
+  transition: transform .6s cubic-bezier(.2, .7, .2, 1);
   animation: puerta-logo-entra .5s ease .16s both;
 }
-.puerta-logo img { width: 100%; height: 100%; object-fit: contain; opacity: .14; }
+.puerta-logo img { width: 100%; height: 100%; object-fit: contain; opacity: .16; }
 @keyframes puerta-logo-entra {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .puerta-mitad, .puerta-logo, .puerta-mitad__contenido { animation: none; transition: none; }
-  .puerta-logo { opacity: 1; }
+  .puerta-mitad, .puerta-logo, .puerta-mitad__contenido, .puerta-lema { animation: none; transition: none; }
+  .puerta-logo, .puerta-lema { opacity: 1; }
 }
 
 /* Pie de página */
@@ -168,7 +212,8 @@ body.puerta > main {
   padding: var(--e-3) var(--canal-movil) var(--e-4);
   text-align: center;
   font-size: var(--menor);
-  color: var(--gris-tinta);
+  color: rgba(255, 255, 255, .68);
+  background: var(--gris-tinta);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -177,5 +222,5 @@ body.puerta > main {
 @media (min-width: 1024px) {
   .puerta-pie { padding-inline: var(--canal-escritorio); }
 }
-.puerta-pie a { font-weight: 700; color: var(--naranja); }
+.puerta-pie a { font-weight: 700; color: var(--blanco); }
 .puerta-pie a:hover, .puerta-pie a:focus-visible { text-decoration: underline; }
