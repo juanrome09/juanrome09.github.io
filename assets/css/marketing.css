@@ -62,7 +62,12 @@ body.marketing h1 { font-size: var(--display); line-height: 1.18; letter-spacing
 body.marketing h2 { font-size: var(--titulo-1); line-height: 1.22; letter-spacing: -.05em; }
 body.marketing h3 { font-size: var(--titulo-3); line-height: 1.25; letter-spacing: normal; }
 
-body.marketing h1.mk-titulo-degradado, body.marketing h2.mk-titulo-degradado { color: var(--mk-vino-oscuro); display: inline-block; }
+body.marketing h1.mk-titulo-degradado, body.marketing h2.mk-titulo-degradado {
+  color: var(--mk-vino-oscuro);
+  display: inline-block;
+  padding-bottom: .16em;
+  margin-bottom: -.16em;
+}
 @supports (background-clip: text) or (-webkit-background-clip: text) {
   body.marketing h1.mk-titulo-degradado, body.marketing h2.mk-titulo-degradado {
     background: linear-gradient(90deg, var(--mk-vino-oscuro), var(--mk-rosa-oscuro));
