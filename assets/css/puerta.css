@@ -1,3 +1,4 @@
+/* Página de bienvenida (elige Asesoría o Marketing) */
 body.puerta {
   min-height: 100dvh;
   display: flex;
@@ -56,7 +57,19 @@ body.puerta > main {
 }
 
 .puerta-mitad--asesoria { background: linear-gradient(135deg, #B8420F, var(--naranja)); }
-.puerta-mitad--marketing { background: linear-gradient(135deg, var(--azul-hondo), var(--azul-acero)); }
+.puerta-mitad--marketing { background: linear-gradient(135deg, var(--vino-hondo), var(--vino)); }
+
+.puerta-mitad::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url('/assets/img/fondo-marca-mk.png');
+  background-size: cover;
+  background-position: center;
+  opacity: .15;
+  pointer-events: none;
+}
 
 .puerta-mitad--marketing { justify-content: flex-end; }
 .puerta-mitad--marketing .puerta-mitad__contenido { text-align: right; }
@@ -126,6 +139,7 @@ body.puerta > main {
 
 .puerta-mitad:focus-visible { outline: 3px solid var(--blanco); outline-offset: -6px; }
 
+/* Logo central */
 .puerta-logo {
   position: absolute;
   z-index: 2;
@@ -149,6 +163,7 @@ body.puerta > main {
   .puerta-logo { opacity: 1; }
 }
 
+/* Pie de página */
 .puerta-pie {
   padding: var(--e-3) var(--canal-movil) var(--e-4);
   text-align: center;
@@ -162,5 +177,5 @@ body.puerta > main {
 @media (min-width: 1024px) {
   .puerta-pie { padding-inline: var(--canal-escritorio); }
 }
-.puerta-pie a { font-weight: 700; color: var(--azul-acero); }
+.puerta-pie a { font-weight: 700; color: var(--naranja); }
 .puerta-pie a:hover, .puerta-pie a:focus-visible { text-decoration: underline; }

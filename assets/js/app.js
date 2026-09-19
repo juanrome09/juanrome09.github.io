@@ -1,5 +1,8 @@
+/* Clave de acceso de Web3Forms — placeholder, hay que sustituirlo por la
+   clave real del cliente antes de publicar o el formulario no enviará. */
 const FORM_KEY = '{{FORM_KEY}}';
 
+/* Arranque: un inicializador por función de la página */
 document.addEventListener('DOMContentLoaded', () => {
   iniciarCabeceraCompacta();
   iniciarMenuMovil();
@@ -18,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarSombraTarjetas();
 });
 
+/* Nav: encoge la cabecera al hacer scroll */
 function iniciarCabeceraCompacta() {
   const cabecera = document.querySelector('.cabecera');
   if (!cabecera) return;
@@ -29,6 +33,7 @@ function iniciarCabeceraCompacta() {
   window.addEventListener('scroll', actualizar, { passive: true });
 }
 
+/* Nav: abre/cierra el menú a pantalla completa en móvil */
 function iniciarMenuMovil() {
   const abrir = document.querySelector('[data-menu-abrir]');
   const cerrar = document.querySelector('[data-menu-cerrar]');
@@ -85,6 +90,7 @@ function iniciarMenuMovil() {
   });
 }
 
+/* Nav: desplegables de Nosotros/Servicios (escritorio y móvil) */
 function iniciarDesplegables() {
   const desplegables = Array.from(document.querySelectorAll('.desplegable'));
   if (!desplegables.length) return;
@@ -147,6 +153,7 @@ function iniciarDesplegables() {
   });
 }
 
+/* Animación: revela los elementos .reveal al entrar en pantalla */
 function iniciarReveals() {
   const elementos = document.querySelectorAll('.reveal');
   if (!elementos.length) return;
@@ -186,6 +193,7 @@ function iniciarReveals() {
   }, 1200);
 }
 
+/* Animación: la sombra de las tarjetas de servicio sigue al cursor */
 function iniciarSombraTarjetas() {
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -236,13 +244,8 @@ function iniciarSombraTarjetas() {
   });
 }
 
+/* Animación: sticky scroll de [data-scroll-activo] (Cómo trabajamos, etc.) */
 function iniciarProcesoConScroll() {
-  // Patrón "sticky scroll" genérico: cualquier bloque marcado con
-  // [data-scroll-activo] (columna .proceso__sticky fija a la izquierda +
-  // .proceso__pasos en scroll normal a la derecha) activa su propio
-  // marcador según qué paso está a la vista — cada bloque se resuelve de
-  // forma independiente, así que puede haber varios en la misma página
-  // (p. ej. "Cómo trabajamos" y "A quién ayudamos") sin que se pisen.
   if (!('IntersectionObserver' in window)) return;
 
   document.querySelectorAll('[data-scroll-activo]').forEach((bloque) => {
@@ -269,6 +272,7 @@ function iniciarProcesoConScroll() {
   });
 }
 
+/* FAQ: abre/cierra las preguntas del acordeón */
 function iniciarAcordeon() {
   const preguntas = document.querySelectorAll('.acordeon__pregunta');
   preguntas.forEach((boton) => {
@@ -284,12 +288,14 @@ function iniciarAcordeon() {
   });
 }
 
+/* Pie de página: año actual en el copyright */
 function iniciarAnioFooter() {
   document.querySelectorAll('[data-anio]').forEach((el) => {
     el.textContent = new Date().getFullYear();
   });
 }
 
+/* Contacto: valida y envía el formulario a Web3Forms */
 function iniciarFormulario() {
   const formulario = document.querySelector('[data-formulario-contacto]');
   if (!formulario) return;
@@ -379,6 +385,7 @@ function iniciarFormulario() {
   });
 }
 
+/* Hero: el logo de fondo sigue al cursor (parallax) */
 function iniciarHeroScrubMarketing() {
   const logo = document.querySelector('.marketing-hero__fondo-logo, .asesoria-hero__fondo-logo');
   const heroSeccion = document.querySelector('.marketing-hero, .asesoria-hero');
@@ -420,6 +427,7 @@ function iniciarHeroScrubMarketing() {
   observador.observe(heroSeccion);
 }
 
+/* Hero: efecto máquina de escribir en el subtítulo */
 function iniciarMaquinaEscribir() {
   const parrafo = document.querySelector('[data-texto-maquina]');
   if (!parrafo) return;
@@ -448,6 +456,7 @@ function iniciarMaquinaEscribir() {
   window.setTimeout(escribirSiguienteCaracter, RETRASO_INICIAL_MS);
 }
 
+/* Nav: cambia entre estado claro y oscuro según la sección visible */
 function iniciarNavAdaptativa() {
   const esSitioConNavFlotante = document.body.classList.contains('marketing') || document.body.classList.contains('asesoria');
   if (!esSitioConNavFlotante) return;
@@ -497,6 +506,7 @@ function iniciarNavAdaptativa() {
   window.addEventListener('resize', actualizar, { passive: true });
 }
 
+/* Hero: copia el correo al portapapeles al pulsar la píldora */
 function iniciarCopiarCorreo() {
   const boton = document.querySelector('[data-copiar-correo]');
   if (!boton || !navigator.clipboard) return;
@@ -517,6 +527,7 @@ function iniciarCopiarCorreo() {
   });
 }
 
+/* Toggle Asesoría/Marketing: transición al cambiar de web */
 function iniciarTransicionCambioMundo() {
   const sanearTransicion = (evento) => {
     if (evento.viewTransition) {
@@ -562,6 +573,7 @@ function iniciarTransicionCambioMundo() {
   });
 }
 
+/* Página de bienvenida: accesibilidad por teclado de las dos mitades */
 function iniciarTemaPuerta() {
   const division = document.querySelector('.puerta-split');
   const metaTema = document.querySelector('meta[name="theme-color"]');

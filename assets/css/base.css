@@ -1,3 +1,4 @@
+/* Fuentes */
 @font-face {
   font-family: 'Kumbh Sans';
   font-style: normal;
@@ -54,6 +55,7 @@
   src: url('../fonts/inter-var.woff2') format('woff2');
 }
 
+/* Variables globales (colores, tipografía, espaciados) */
 :root {
 
   --naranja: #E95117;
@@ -125,6 +127,7 @@
   --dur-panel: 180ms;
 }
 
+/* Reset y elementos base */
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
@@ -185,12 +188,6 @@ p {
 .cuerpo-lg { font-size: var(--cuerpo-lg); line-height: 1.6; }
 .menor { font-size: var(--menor); line-height: 1.5; }
 
-.eslogan {
-  font-family: var(--f-cuerpo);
-  font-style: italic;
-  font-size: var(--cuerpo-lg);
-}
-
 :focus-visible {
   outline: 2px solid var(--azul-acero);
   outline-offset: 3px;
@@ -221,6 +218,7 @@ p {
   border: 0;
 }
 
+/* Toggle Asesoría / Marketing (nav) */
 .cambio-mundo-toggle {
   display: inline-flex;
   align-items: center;
@@ -268,6 +266,7 @@ p {
   }
 }
 
+/* Utilidades de layout */
 .contenedor {
   max-width: var(--ancho-max);
   margin-inline: auto;
@@ -284,6 +283,7 @@ p {
 .banda-gris { background: var(--gris-claro); }
 .banda-blanca { background: var(--blanco); }
 
+/* Animación de entrada al hacer scroll */
 .reveal {
   opacity: 0;
   transform: translateY(20px);
@@ -298,6 +298,7 @@ p {
   .reveal { opacity: 1; transform: none; transition: none; }
 }
 
+/* Botones */
 .boton {
   display: inline-flex;
   align-items: center;
@@ -333,6 +334,7 @@ p {
   border-color: #082a3d;
 }
 
+/* Cabecera simple (legal.html) */
 .cabecera {
   position: fixed;
   inset-block-start: 0;
@@ -347,6 +349,7 @@ p {
   border-bottom-color: var(--gris-claro);
 }
 
+/* Menú móvil */
 .menu-movil {
   position: fixed;
   inset: 0;
@@ -391,6 +394,7 @@ p {
   .menu-movil { transition: none; }
 }
 
+/* Botón flotante de WhatsApp */
 .whatsapp-flotante {
   position: fixed;
   inset-block-end: var(--e-2);
@@ -406,6 +410,7 @@ p {
 }
 .whatsapp-flotante svg { width: 28px; height: 28px; }
 
+/* Acordeón (FAQ) */
 .acordeon__item {
   border-top: 1px solid var(--gris-claro);
 }
@@ -436,6 +441,7 @@ p {
   color: var(--gris-tinta);
 }
 
+/* Formulario de contacto */
 .campo { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--e-3); }
 
 .campo label {
@@ -498,7 +504,7 @@ p {
   display: none;
 }
 .formulario__estado[data-visible="true"] { display: block; }
-.formulario__estado[data-tipo="exito"] { background: var(--lavado-azul); color: var(--azul-hondo); }
+.formulario__estado[data-tipo="exito"] { background: rgba(27, 160, 116, .12); color: var(--verde-mar); }
 .formulario__estado[data-tipo="error"] { background: var(--lavado-naranja); color: var(--vino-hondo); }
 
 .campo-trampa {
@@ -509,6 +515,7 @@ p {
   overflow: hidden;
 }
 
+/* Pie de página */
 .pie {
   position: relative;
   color: var(--blanco);
@@ -543,6 +550,7 @@ p {
   opacity: .85;
 }
 
+/* Placeholder de imagen (contenido pendiente) */
 .placeholder-img {
   position: relative;
   display: flex;
@@ -557,6 +565,7 @@ p {
   border: 1px dashed rgba(11, 58, 84, .35);
 }
 
+/* Transición de página al cambiar entre Asesoría y Marketing */
 @view-transition {
   navigation: auto;
 }

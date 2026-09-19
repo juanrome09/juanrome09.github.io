@@ -1,3 +1,4 @@
+/* Variables propias de Asesoría */
 body.asesoria {
     --naranja-rgb: 233, 81, 23;
 }
@@ -15,6 +16,7 @@ body.asesoria main > section {
   scroll-margin-top: 104px;
 }
 
+/* Nav */
 .nav-flotante-envoltorio {
   position: fixed;
   inset-block-start: var(--e-2);
@@ -221,6 +223,7 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   color: var(--gris-tinta);
 }
 
+/* Hero */
 .asesoria-hero {
   position: relative;
   z-index: 0;
@@ -349,8 +352,7 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
 .servicio-filete:nth-child(4) { border-top-color: var(--naranja); }
 .servicio-filete h3 { margin-bottom: 8px; }
 
-/* Bento de servicios — Fiscal como bloque dominante (alto completo a la
-   izquierda), los otros tres pilares apilados a la derecha */
+/* Inicio: Qué hacemos (bento) */
 .bento-servicios {
   display: grid;
   gap: var(--e-4);
@@ -438,8 +440,7 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
 .servicio-grande__enlace span { transition: transform var(--dur-hover) ease; }
 .servicio-grande__enlace:hover span, .servicio-grande__enlace:focus-visible span { transform: translateX(4px); }
 
-/* Proceso — "Cómo trabajamos" en sticky scroll: columna de progreso fija
-   a la izquierda, tarjetas en scroll normal a la derecha */
+/* Inicio: Cómo trabajamos / A quién ayudamos (sticky scroll) */
 .proceso__grid {
   display: grid;
   gap: var(--e-5);
@@ -536,7 +537,6 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   height: 64px;
   margin: 0 auto var(--e-2);
   border-radius: 50%;
-  background: var(--lavado-azul);
 }
 .equipo-tarjeta__avatar svg {
   width: 28px;
@@ -719,13 +719,7 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
 }
 .contacto-mapa__marco iframe { display: block; }
 
-/* ==========================================================================
-   Sistema Praxis — minimalismo sofisticado (off-white + tarjetas blancas
-   elevadas por sombra, naranja de marca como único acento).
-   No toca el hero (.asesoria-hero) ni la barra de navegación
-   (.nav-flotante y su lógica de estados), que quedan tal cual estaban.
-   ========================================================================== */
-
+/* Sistema visual (tokens de color, sombra y tipografía) */
 body.asesoria {
   --dt-ink: #130e30;
   --dt-slate: #5f5c6e;
@@ -734,7 +728,6 @@ body.asesoria {
   --dt-onyx: #000000;
   --dt-sombra: 0 20px 40px rgba(0, 0, 0, .05);
   --dt-sombra-hover: 0 28px 56px rgba(0, 0, 0, .08);
-  /* Tipografía de marca (Kumbh Sans / Lato), no la del prompt de estilo Ditto */
   --dt-serif: var(--f-titulos);
   --dt-sans: var(--f-cuerpo);
 }
@@ -758,20 +751,13 @@ body.asesoria h4 {
 body.asesoria .boton { font-family: var(--dt-sans); }
 body.asesoria .campo label { color: var(--dt-ink); }
 body.asesoria .menor { color: var(--dt-slate); }
-body.asesoria .eslogan {
-  font-family: var(--dt-serif);
-  font-style: normal;
-  color: var(--dt-slate) !important;
-}
 body.asesoria .cuerpo-lg { color: var(--dt-slate); }
 .asesoria a.enlace-cuerpo { color: var(--dt-ink); text-decoration-color: var(--dt-slate); }
 
-/* Fondo de secciones: off-white / blanco, sin alternar tono fuerte —
-   la separación la da la elevación de las tarjetas, no el fondo */
 body.asesoria .banda-blanca { background: var(--dt-card); }
 body.asesoria .banda-gris { background: var(--dt-canvas); }
 
-/* Botones — naranja de marca como único acento, tinta como secundario */
+/* Botones */
 body.asesoria .boton-primario {
   background: var(--naranja);
   border-color: var(--naranja);
@@ -795,9 +781,6 @@ body.asesoria .boton-oscuro:focus-visible {
   color: #fff;
 }
 
-/* Qué hacemos: bento — tarjetas blancas con sombra difusa, sin borde.
-   --sx/--sy los mueve iniciarSombraTarjetas() (app.js) para que la
-   sombra "huya" del cursor dentro de la tarjeta, como un objeto físico */
 body.asesoria .servicio-grande {
   --sx: 0px;
   --sy: 0px;
@@ -870,9 +853,7 @@ body.asesoria .acordeon__pregunta { color: var(--dt-ink); font-family: var(--dt-
 body.asesoria .acordeon__respuesta__interior,
 body.asesoria .acordeon__respuesta__interior p { color: var(--dt-slate); }
 
-/* Cierre / CTA final — unido visualmente al pie, comparten el mismo
-   degradado (ver .cierre-pie); el CTA va en blanco para destacar
-   sobre el propio degradado naranja */
+/* Cierre / CTA final */
 body.asesoria .cierre-asesoria { background: none; }
 body.asesoria .cierre-asesoria h2,
 body.asesoria .cierre-asesoria p { color: #fff; }
@@ -919,8 +900,7 @@ body.asesoria .campo select:focus-visible,
 body.asesoria .campo textarea:focus-visible { border-color: var(--dt-ink); }
 body.asesoria .campo-consentimiento label { color: var(--dt-slate); }
 
-/* Pie de página — tipografía de marca (no la del prompt Ditto) y
-   degradado negro → naranja, sin círculos en los iconos de redes */
+/* Pie de página */
 body.asesoria footer.pie {
   background: linear-gradient(135deg, #000000, var(--naranja));
   font-family: var(--f-cuerpo);
@@ -928,19 +908,10 @@ body.asesoria footer.pie {
 body.asesoria footer.pie h3 { font-family: var(--f-titulos); color: #fff; }
 body.asesoria .pie__redes a { border-radius: 10px; }
 
-/* "Hablemos de tu asesoría" + pie: mismo bloque, un único degradado
-   continuo (el envoltorio pinta el color, sección y footer van
-   transparentes para no cortar el degradado en dos) */
 body.asesoria .cierre-pie { background: linear-gradient(135deg, #000000, var(--naranja)); }
 body.asesoria .cierre-pie footer.pie { background: none; }
 
-/* ==========================================================================
-   Estructura 2026 — composición asimétrica: nada centrado por defecto,
-   splits reales a izquierda/derecha, bento, offsets y superposición.
-   No toca el hero ni el nav.
-   ========================================================================== */
-
-/* Intro de Nosotros: titular a la izquierda, cita grande a la derecha */
+/* Nosotros */
 .nosotros-intro-grid {
   display: grid;
   gap: var(--e-3);
@@ -962,8 +933,6 @@ body.asesoria .cierre-pie footer.pie { background: none; }
   .nosotros-intro-grid__cita { margin-top: var(--e-3); }
 }
 
-/* Split foto/texto real — sustituye a los bloques que quedaban en una sola
-   columna sin importar el ancho de pantalla */
 .split-asimetrico {
   display: grid;
   gap: var(--e-4);
@@ -999,11 +968,6 @@ body.asesoria .cierre-pie footer.pie { background: none; }
 }
 #donde-estamos .split-asimetrico__marco { transform: rotate(1.4deg); }
 
-/* Zoom lento y continuo ("Ken Burns") en las fotos — imagen con
-   movimiento propio incluso sin hacer scroll. Vive fuera de @supports
-   porque no necesita animation-timeline: view(), solo un @keyframes
-   normal; en navegadores con soporte se combina además con el
-   "focus pull" ligado al scroll (ver más abajo) */
 @keyframes kenburns-foto {
   from { transform: scale(1); }
   to { transform: scale(1.08); }
@@ -1014,14 +978,12 @@ body.asesoria .cierre-pie footer.pie { background: none; }
   }
 }
 
-/* Nuestros valores: ritmo escalonado en vez de fila perfectamente alineada */
 @media (min-width: 1024px) {
   #valores .servicio-filete:nth-child(2) { transform: translateY(28px); }
   #valores .servicio-filete:nth-child(3) { transform: translateY(-14px); }
 }
 
-/* FAQ: tarjeta blanca flotante (intro + CTA) a la izquierda,
-   acordeón a la derecha */
+/* FAQ */
 .faq-grid {
   display: grid;
   gap: var(--e-4);
@@ -1050,7 +1012,6 @@ body.asesoria .faq-grid__intro {
 .faq-grid__intro__icono svg { width: 22px; height: 22px; }
 .faq-grid__intro .boton { margin-top: var(--e-3); }
 
-/* Contacto: el panel oscuro flota ligeramente en vez de encajar a la perfección */
 @media (min-width: 900px) {
   body.asesoria .contacto-panel {
     transform: rotate(-.5deg);
@@ -1058,18 +1019,11 @@ body.asesoria .faq-grid__intro {
   }
 }
 
-/* ==========================================================================
-   Más animación — el sitio ya calculaba --indice por elemento .reveal
-   (iniciarReveals(), app.js) pero no lo usaba: ahora entra en cascada
-   en vez de todo a la vez. Más un par de detalles puntuales.
-   ========================================================================== */
-
+/* Animaciones */
 @media (prefers-reduced-motion: no-preference) {
   body.asesoria .reveal { transition-delay: calc(var(--indice, 0) * 90ms); }
 }
 
-/* FAQ: el "+" gira a "×" al abrir la pregunta — antes no había ninguna
-   señal visual de que el botón se pudiera desplegar */
 .acordeon__pregunta { gap: var(--e-3); }
 .acordeon__pregunta__icono {
   position: relative;
@@ -1092,8 +1046,6 @@ body.asesoria .faq-grid__intro {
 .acordeon__pregunta[aria-expanded="true"] .acordeon__pregunta__icono::before { transform: translate(-50%, -50%) rotate(180deg); }
 body.asesoria .acordeon__pregunta__icono { color: var(--naranja); }
 
-/* Cómo trabajamos: el marcador activo hace un pequeño "pop" cada vez
-   que el scroll cambia de paso */
 @keyframes proceso-pulso {
   0% { transform: scale(.8); }
   55% { transform: scale(1.15); }
@@ -1105,8 +1057,6 @@ body.asesoria .acordeon__pregunta__icono { color: var(--naranja); }
   }
 }
 
-/* WhatsApp flotante: un pulso periódico y discreto para que no pase
-   desapercibido sin ser intrusivo (solo cuando no hay reveal.js activo) */
 @keyframes whatsapp-pulso {
   0%, 88%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
   92% { box-shadow: 0 0 0 10px rgba(37, 211, 102, .18); }
@@ -1116,22 +1066,10 @@ body.asesoria .acordeon__pregunta__icono { color: var(--naranja); }
   body.asesoria .whatsapp-flotante { animation: whatsapp-pulso 6s ease-out infinite; }
 }
 
-/* ==========================================================================
-   Animación ligada al scroll (Nosotros, Contacto, Servicios) — CSS puro,
-   sin JS: animation-timeline: view() liga el fotograma directamente a la
-   posición del elemento en el viewport según se hace scroll, en vez de
-   disparar una única transición al entrar (como .reveal). Mejora
-   progresiva: donde el navegador no lo soporta, el elemento se queda
-   simplemente en su estado final, sin animación — nunca roto.
-   ========================================================================== */
-
+/* Animación ligada al scroll (progressive enhancement, sin JS) */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
 
-    /* Fotos de Nosotros: entran con un "focus pull" (desenfocada → nítida
-       según el scroll) combinado con el zoom lento continuo de abajo —
-       dos animaciones sobre el mismo elemento, cada una con su propio
-       "reloj" (una ligada al scroll, la otra al tiempo) */
     @keyframes enfoque-scroll {
       from { opacity: 0; filter: blur(14px); }
       to { opacity: 1; filter: blur(0); }

@@ -1,3 +1,4 @@
+/* Variables y tipografía */
 body.marketing {
 
   --mk-acento: var(--vino);
@@ -161,6 +162,7 @@ body.marketing .pie {
   body.marketing main::after { height: 0 !important; }
 }
 
+/* Nav */
 .nav-flotante-envoltorio {
   position: fixed;
   inset-block-start: var(--e-2);
@@ -404,6 +406,7 @@ body.marketing .nav-flotante--oscura .nav-flotante__movil-abrir:focus-visible { 
 
 .boton-mk-coral:hover, .boton-mk-coral:focus-visible { background: var(--mk-vino-oscuro); border-color: var(--mk-vino-oscuro); }
 
+/* Hero */
 body.marketing .marketing-hero {
 
   background: var(--mk-degradado-hero);
@@ -595,6 +598,7 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
 .mk-fondo-decorativo--tenue { opacity: .45; }
 .mk-fondo-decorativo--tenue img { filter: blur(4px); }
 
+/* Inicio: Servicios */
 .servicios-marketing {
   display: grid;
   gap: var(--e-4);
@@ -680,6 +684,7 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   border-color: var(--mk-vino-oscuro);
 }
 
+/* Inicio: Nuestro trabajo */
 .trabajo-mk {
   display: grid;
   gap: var(--e-3);
@@ -750,6 +755,7 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   }
 }
 
+/* Inicio: Cómo enfocamos cada proyecto */
 .enfoque-mk {
   display: grid;
   gap: var(--e-4);
@@ -782,6 +788,7 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
 .enfoque-mk__item:nth-child(4) .enfoque-mk__item__numero { color: var(--mk-violeta); }
 .enfoque-mk__item h3 { color: var(--mk-tinta); font-size: var(--titulo-3); margin-bottom: 6px; }
 
+/* FAQ */
 .faq-mk-grid {
   display: grid;
   gap: var(--e-5);
@@ -833,6 +840,7 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   max-width: 62ch;
 }
 
+/* Cierre / CTA final */
 body.marketing .cierre-marketing__contenido {
   text-align: center;
   padding-block: var(--e-8);
@@ -939,6 +947,7 @@ body.marketing .cierre-marketing__linea {
   .mk-servicios-hero-iconos { display: none; }
 }
 
+/* Servicios.html: chips de navegación rápida */
 .mk-servicios-chips {
   display: flex;
   flex-wrap: wrap;
@@ -978,6 +987,7 @@ body.marketing .cierre-marketing__linea {
   font-size: 13px;
 }
 
+/* Servicios.html: bloques de detalle */
 .servicio-bloque-mk {
   padding-block: var(--e-6);
 }
@@ -1139,6 +1149,7 @@ body.marketing .cierre-marketing__linea {
 }
 .servicio-bloque-mk__cta:hover span, .servicio-bloque-mk__cta:focus-visible span { transform: translateX(4px); }
 
+/* Nosotros */
 .nosotros-mk-grid {
   display: grid;
   gap: var(--e-5);
@@ -1273,6 +1284,7 @@ body.marketing main > section.mk-valores-seccion .mk-valores {
 }
 .mk-valores__item h3 { margin-bottom: 4px; }
 
+/* Contacto */
 .mk-contacto-hero { position: relative; }
 .mk-contacto-hero-iconos {
   position: absolute;
@@ -1430,6 +1442,7 @@ body.marketing .placeholder-img {
   background: var(--mk-arena) !important;
 }
 
+/* Pie de página */
 body.marketing .pie {
   background: var(--mk-degradado-pie) !important;
   color: var(--mk-texto-claro);
@@ -1464,6 +1477,7 @@ body.marketing .pie.reveal.en-vista {
   body.marketing .pie.reveal { border-radius: 50px 50px 0 0; }
 }
 
+/* Animaciones */
 @media (prefers-reduced-motion: no-preference) {
   body.marketing .reveal { transition-delay: calc(var(--indice, 0) * 90ms); }
 }
@@ -1512,6 +1526,7 @@ body.marketing .pie.reveal.en-vista {
   }
 }
 
+/* Inicio: Por qué A360 Marketing */
 .mk-porque {
   display: grid;
   grid-template-columns: 1fr;

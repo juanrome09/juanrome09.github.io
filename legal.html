@@ -9,7 +9,7 @@
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/assets/img/favicon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="/assets/img/favicon-180.png">
-<meta name="theme-color" content="#0B3A54">
+<meta name="theme-color" content="#E95117">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="A360">
 <meta property="og:title" content="Aviso legal, privacidad y cookies · A360">
@@ -23,10 +23,11 @@
 <link rel="stylesheet" href="/assets/css/base.css">
 <style>
   body.legal { padding-top: 88px; }
+  body.legal h1, body.legal h2 { color: var(--gris-tinta); }
   .legal-cabecera { border-bottom: 1px solid var(--gris-claro); }
   .legal-cabecera__interior { display:flex; align-items:center; justify-content:space-between; height:88px; }
   .legal-nav-ancla { display:flex; gap: var(--e-3); flex-wrap:wrap; margin-block: var(--e-4); }
-  .legal-nav-ancla a { font-weight:700; color: var(--azul-acero); text-decoration: underline; text-underline-offset: 2px; }
+  .legal-nav-ancla a { font-weight:700; color: var(--naranja); text-decoration: underline; text-underline-offset: 2px; }
   .legal-seccion { padding-block: var(--e-5); border-top: 1px solid var(--gris-claro); }
   .legal-seccion:first-of-type { border-top: 0; }
   .legal-seccion h2 { margin-bottom: var(--e-2); }
@@ -39,12 +40,13 @@
 
 <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
 
+<!-- Cabecera -->
 <header class="cabecera legal-cabecera">
   <div class="contenedor legal-cabecera__interior">
     <a href="/" aria-label="A360 — inicio">
       <img src="/assets/img/logo-a360.png" width="656" height="656" alt="A360" loading="eager" style="height:44px;width:auto">
     </a>
-    <a href="/" style="font-weight:700;color:var(--azul-acero)">Volver al inicio</a>
+    <a href="/" style="font-weight:700;color:var(--naranja)">Volver al inicio</a>
   </div>
 </header>
 
@@ -88,7 +90,7 @@
   <section class="legal-seccion" id="privacidad">
     <h2>Política de privacidad</h2>
     <h3>Responsable del tratamiento</h3>
-    <p>A360 Ibiza Asesores, S.L. (CIF B16615999), con domicilio en Calle del Sol, 12, planta 0, local F, 07840 Santa Eulària des Riu, Ibiza, Illes Balears. Correo de contacto: <a class="enlace-cuerpo" href="mailto:info@asesores360.com" style="color:var(--azul-acero);text-decoration:underline;text-underline-offset:2px">info@asesores360.com</a>.</p>
+    <p>A360 Ibiza Asesores, S.L. (CIF B16615999), con domicilio en Calle del Sol, 12, planta 0, local F, 07840 Santa Eulària des Riu, Ibiza, Illes Balears. Correo de contacto: <a class="enlace-cuerpo" href="mailto:info@asesores360.com" style="color:var(--naranja);text-decoration:underline;text-underline-offset:2px">info@asesores360.com</a>.</p>
     <h3>Finalidad</h3>
     <p>Gestionar las consultas recibidas a través de los formularios de contacto de A360 Asesoría y A360 Marketing y responder a las solicitudes de información. Si la consulta deriva en la contratación de un servicio, los datos se usan además para gestionar esa relación: elaboración de presupuestos, prestación del servicio y facturación.</p>
     <h3>Base jurídica</h3>
@@ -98,24 +100,25 @@
     <h3>Plazo de conservación</h3>
     <p>Los datos de una consulta se conservan mientras sea necesario para atenderla y, como máximo, durante un año si no llega a haber contratación. Los datos de quienes contratan un servicio se conservan mientras dure la relación y, después, durante los plazos de prescripción legalmente exigibles en materia fiscal y mercantil.</p>
     <h3>Derechos</h3>
-    <p>Puedes ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad, así como retirar el consentimiento en cualquier momento, escribiendo a <a class="enlace-cuerpo" href="mailto:info@asesores360.com" style="color:var(--azul-acero);text-decoration:underline;text-underline-offset:2px">info@asesores360.com</a>. También puedes presentar una reclamación ante la Agencia Española de Protección de Datos (<a class="enlace-cuerpo" href="https://www.aepd.es" target="_blank" rel="noopener" style="color:var(--azul-acero);text-decoration:underline;text-underline-offset:2px">aepd.es</a>) si consideras que no hemos atendido tu solicitud correctamente.</p>
+    <p>Puedes ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad, así como retirar el consentimiento en cualquier momento, escribiendo a <a class="enlace-cuerpo" href="mailto:info@asesores360.com" style="color:var(--naranja);text-decoration:underline;text-underline-offset:2px">info@asesores360.com</a>. También puedes presentar una reclamación ante la Agencia Española de Protección de Datos (<a class="enlace-cuerpo" href="https://www.aepd.es" target="_blank" rel="noopener" style="color:var(--naranja);text-decoration:underline;text-underline-offset:2px">aepd.es</a>) si consideras que no hemos atendido tu solicitud correctamente.</p>
   </section>
 
   <section class="legal-seccion" id="cookies">
     <h2>Política de cookies</h2>
     <p>Esta web no utiliza cookies propias de analítica ni de publicidad. No incorpora Google Analytics ni píxeles de seguimiento. Solo se emplearían cookies técnicas si en algún momento resultaran estrictamente necesarias para el funcionamiento del sitio.</p>
-    <p style="margin-top:var(--e-2)">Algunos enlaces (WhatsApp, Instagram, Facebook) llevan a servicios de terceros que gestionan sus propias cookies conforme a su política de privacidad, ajena a este sitio.</p>
+    <p style="margin-top:var(--e-2)">La página de contacto incrusta un mapa de Google Maps, que puede establecer sus propias cookies técnicas al cargarse. Algunos enlaces (WhatsApp, Instagram, Facebook) llevan además a servicios de terceros que gestionan sus propias cookies conforme a su política de privacidad, ajena a este sitio.</p>
     <p style="margin-top:var(--e-2)">Si en el futuro se incorporan herramientas de analítica o publicidad, esta política se actualizará y se informará mediante un banner de consentimiento antes de activarlas.</p>
   </section>
 </main>
 
-<footer class="pie" style="background:var(--azul-hondo)">
+<!-- Footer -->
+<footer class="pie" style="background:var(--naranja)">
   <div class="contenedor pie__legal">
     <span>© <span data-anio></span> A360. Todos los derechos reservados.</span>
     <a href="/" style="color:#fff">Volver al inicio</a>
   </div>
 </footer>
 
-<script src="/assets/js/app.js"></script>
+<script src="/assets/js/app.js" defer></script>
 </body>
 </html>
