@@ -431,12 +431,12 @@ p {
   background: var(--whatsapp);
   filter: blur(13px);
   opacity: .35;
-  animation: whatsapp-respirar 2.6s ease-in-out infinite;
+  animation: whatsapp-respirar 3.6s ease-in-out infinite;
   pointer-events: none;
 }
 @keyframes whatsapp-respirar {
-  0%, 100% { opacity: .3; transform: scale(.75); }
-  50% { opacity: .75; transform: scale(1.35); }
+  0%, 100% { opacity: .22; transform: scale(.92); }
+  50% { opacity: .45; transform: scale(1.1); }
 }
 @media (prefers-reduced-motion: reduce) {
   .whatsapp-flotante::before { animation: none; opacity: .4; }
