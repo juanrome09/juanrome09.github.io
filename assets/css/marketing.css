@@ -1507,55 +1507,48 @@ body.marketing .pie.reveal.en-vista {
   }
 }
 
-.mk-sectores {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.mk-porque {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--e-3);
 }
-.mk-sectores__item:nth-child(1) { --mk-servicio-acento: var(--mk-turquesa); --mk-servicio-acento-rgb: var(--mk-turquesa-rgb); }
-.mk-sectores__item:nth-child(2) { --mk-servicio-acento: var(--mk-verde-lima); --mk-servicio-acento-rgb: var(--mk-verde-lima-rgb); }
-.mk-sectores__item:nth-child(3) { --mk-servicio-acento: var(--mk-verde-mar); --mk-servicio-acento-rgb: var(--mk-verde-mar-rgb); }
-.mk-sectores__item:nth-child(4) { --mk-servicio-acento: var(--mk-violeta); --mk-servicio-acento-rgb: var(--mk-violeta-rgb); }
-.mk-sectores__item:nth-child(5) { --mk-servicio-acento: var(--mk-dorado); --mk-servicio-acento-rgb: var(--mk-dorado-rgb); }
-.mk-sectores__item {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 22px 14px 14px;
-  border-radius: 999px;
-  background: rgba(var(--mk-servicio-acento-rgb), .1);
-  border: 1px solid rgba(var(--mk-servicio-acento-rgb), .22);
-  transition: background-color var(--dur-hover) ease, transform var(--dur-hover) ease;
+@media (min-width: 700px) {
+  .mk-porque { grid-template-columns: repeat(2, 1fr); gap: var(--e-4); }
+}
+.mk-porque__item {
+  display: flex;
+  gap: var(--e-3);
+  align-items: flex-start;
+  padding: 22px;
+  border-radius: var(--r-panel);
+  background: var(--mk-arena);
+  transition: background-color var(--dur-hover) ease;
 }
 @media (hover: hover) and (pointer: fine) {
-  .mk-sectores__item:hover { background: rgba(var(--mk-servicio-acento-rgb), .2); transform: translateY(-3px); }
+  .mk-porque__item:hover { background: rgba(var(--mk-rosa-oscuro-rgb), .1); }
 }
-.mk-sectores__item__icono {
+.mk-porque__item__icono {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background: var(--mk-servicio-acento);
-  flex-shrink: 0;
+  background: rgba(var(--mk-rosa-oscuro-rgb), .14);
 }
-.mk-sectores__item__icono svg {
-  width: 17px;
-  height: 17px;
+.mk-porque__item__icono svg {
+  width: 26px;
+  height: 26px;
   fill: none;
-  stroke: var(--mk-crema);
-  stroke-width: 1.8;
+  stroke: var(--mk-rosa-oscuro);
+  stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.mk-sectores__item span:last-child {
-  font-family: var(--f-cuerpo);
-  font-weight: 500;
-  font-size: var(--menor);
-  color: var(--mk-tinta);
-}
+.mk-porque__item h3 { margin-bottom: 4px; }
+.mk-porque__item p { margin: 0; }
 @media (max-width: 480px) {
-  .mk-sectores { gap: 8px; }
-  .mk-sectores__item { padding: 10px 16px 10px 10px; }
+  .mk-porque { gap: 10px; }
+  .mk-porque__item { padding: 16px; gap: var(--e-2); }
 }
