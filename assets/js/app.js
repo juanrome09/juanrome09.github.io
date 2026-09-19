@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarTemaPuerta();
   iniciarProcesoConScroll();
   iniciarSombraTarjetas();
+  iniciarChatWhatsapp();
 });
 
 /* Nav: encoge la cabecera al hacer scroll */
@@ -597,4 +598,100 @@ function iniciarTemaPuerta() {
   marketing.addEventListener('focus', () => metaTema.setAttribute('content', colorAzulHondo));
   marketing.addEventListener('blur', alDefecto);
   division.addEventListener('mouseleave', alDefecto);
+}
+
+/* Botón flotante de WhatsApp: abre un mini chat con el mensaje editable antes de enviar */
+function iniciarChatWhatsapp() {
+  const boton = document.querySelector('.whatsapp-flotante');
+  if (!boton) return;
+
+  const coincidencia = (boton.getAttribute('href') || '').match(/wa\.me\/(\d+)\?text=(.*)$/);
+  if (!coincidencia) return;
+  const telefono = coincidencia[1];
+  const mensajeInicial = decodeURIComponent(coincidencia[2]);
+
+  const nombre = document.body.classList.contains('asesoria') ? 'A360 Asesoría'
+    : document.body.classList.contains('marketing') ? 'A360 Marketing'
+    : 'A360';
+
+  const panel = document.createElement('div');
+  panel.className = 'whatsapp-chat';
+  panel.setAttribute('data-abierto', 'false');
+  panel.innerHTML = `
+    <div class="whatsapp-chat__cabecera">
+      <span class="whatsapp-chat__avatar" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.35 5.08L2 22l5.06-1.32A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2Zm5.2 14.2c-.22.6-1.28 1.15-1.76 1.2-.45.06-1 .09-1.62-.1a13 13 0 0 1-1.48-.55c-2.6-1.12-4.3-3.75-4.43-3.92-.13-.17-1.06-1.41-1.06-2.69s.67-1.9.9-2.16c.24-.26.52-.32.7-.32l.5.01c.16 0 .37-.06.58.44.22.52.74 1.8.8 1.93.06.13.1.28.02.45-.08.17-.13.28-.26.43l-.39.46c-.13.13-.26.27-.11.53.15.26.67 1.11 1.44 1.8.99.89 1.83 1.16 2.09 1.29.26.13.41.11.56-.07.16-.17.65-.76.83-1.02.17-.26.35-.22.58-.13.24.09 1.52.72 1.78.85.26.13.43.2.5.3.06.11.06.62-.16 1.22Z"/></svg>
+      </span>
+      <span class="whatsapp-chat__info">
+        <strong>${nombre}</strong>
+        <small>Normalmente responde en el día</small>
+      </span>
+      <button type="button" class="whatsapp-chat__cerrar" aria-label="Cerrar chat">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="whatsapp-chat__cuerpo">
+      <p class="whatsapp-chat__burbuja">¡Hola! 👋 Escribe tu mensaje (puedes cambiar el que ya te dejamos) y te respondemos por WhatsApp.</p>
+    </div>
+    <form class="whatsapp-chat__compositor">
+      <textarea class="whatsapp-chat__campo" rows="1" aria-label="Tu mensaje para WhatsApp"></textarea>
+      <button type="submit" class="whatsapp-chat__enviar" aria-label="Enviar por WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M3 11.5L21 3l-7.5 18-3-7.5-7.5-2z"/></svg>
+      </button>
+    </form>
+  `;
+  boton.insertAdjacentElement('afterend', panel);
+
+  const campo = panel.querySelector('.whatsapp-chat__campo');
+  const botonCerrar = panel.querySelector('.whatsapp-chat__cerrar');
+  const formulario = panel.querySelector('.whatsapp-chat__compositor');
+  let ultimoFoco = null;
+
+  const ajustarAltura = () => {
+    campo.style.height = 'auto';
+    campo.style.height = `${campo.scrollHeight}px`;
+  };
+  campo.addEventListener('input', ajustarAltura);
+
+  const abrirChat = () => {
+    ultimoFoco = document.activeElement;
+    if (!campo.value) campo.value = mensajeInicial;
+    panel.setAttribute('data-abierto', 'true');
+    boton.setAttribute('aria-expanded', 'true');
+    window.setTimeout(() => { ajustarAltura(); campo.focus(); campo.select(); }, 10);
+  };
+
+  const cerrarChat = () => {
+    panel.setAttribute('data-abierto', 'false');
+    boton.setAttribute('aria-expanded', 'false');
+    if (ultimoFoco) ultimoFoco.focus();
+  };
+
+  boton.setAttribute('aria-haspopup', 'dialog');
+  boton.setAttribute('aria-expanded', 'false');
+  boton.addEventListener('click', (evento) => {
+    evento.preventDefault();
+    if (panel.getAttribute('data-abierto') === 'true') cerrarChat();
+    else abrirChat();
+  });
+
+  botonCerrar.addEventListener('click', cerrarChat);
+
+  panel.addEventListener('keydown', (evento) => {
+    if (evento.key === 'Escape') cerrarChat();
+  });
+
+  document.addEventListener('click', (evento) => {
+    if (panel.getAttribute('data-abierto') !== 'true') return;
+    if (panel.contains(evento.target) || boton.contains(evento.target)) return;
+    cerrarChat();
+  });
+
+  formulario.addEventListener('submit', (evento) => {
+    evento.preventDefault();
+    const texto = campo.value.trim();
+    if (!texto) { campo.focus(); return; }
+    window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(texto)}`, '_blank', 'noopener');
+    cerrarChat();
+  });
 }

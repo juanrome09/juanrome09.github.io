@@ -1462,11 +1462,6 @@ body.marketing .pie.reveal.en-vista {
   body.marketing .pie.reveal { border-radius: 50px 50px 0 0; }
 }
 
-/* Animaciones */
-@media (prefers-reduced-motion: no-preference) {
-  body.marketing .reveal { transition-delay: calc(var(--indice, 0) * 90ms); }
-}
-
 .servicios-marketing { counter-reset: mkservicio; }
 .servicio-panel-mk {
   --sx: 0px;

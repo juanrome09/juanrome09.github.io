@@ -1006,11 +1006,6 @@ body.asesoria .faq-grid__intro {
   }
 }
 
-/* Animaciones */
-@media (prefers-reduced-motion: no-preference) {
-  body.asesoria .reveal { transition-delay: calc(var(--indice, 0) * 90ms); }
-}
-
 .acordeon__pregunta { gap: var(--e-3); }
 .acordeon__pregunta__icono {
   position: relative;
