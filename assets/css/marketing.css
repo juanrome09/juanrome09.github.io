@@ -235,21 +235,6 @@ body.marketing .nav-flotante--oscura .nav-flotante__nav > a[aria-current="page"]
   color: var(--mk-rosa-oscuro);
 }
 
-.nav-flotante__nav a.nav-flotante__cambio-mundo {
-  display: inline-flex;
-  align-items: center;
-  font-size: var(--menor);
-  font-weight: 500;
-  color: var(--mk-texto-claro);
-  background: var(--mk-coral);
-  text-decoration: none;
-  padding: 10px 16px;
-  border-radius: var(--r-pildora);
-  transition: background-color var(--dur-hover) ease;
-}
-.nav-flotante__nav a.nav-flotante__cambio-mundo:hover,
-.nav-flotante__nav a.nav-flotante__cambio-mundo:focus-visible { background: var(--mk-vino-oscuro); color: var(--mk-texto-claro); }
-
 body.marketing .menu-movil__nav a { color: var(--mk-tinta); }
 
 body.marketing .menu-movil__nav > a:last-child { color: var(--mk-coral); }

@@ -246,7 +246,7 @@ p {
   background: rgba(0, 0, 0, .08);
 }
 .cambio-mundo-toggle .cambio-mundo-toggle__opcion--asesoria[aria-current="true"] {
-  background: var(--naranja);
+  background: var(--azul-acero);
   color: var(--blanco);
 }
 .cambio-mundo-toggle .cambio-mundo-toggle__opcion--marketing[aria-current="true"] {
