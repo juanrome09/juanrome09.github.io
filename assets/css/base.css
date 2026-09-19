@@ -415,11 +415,32 @@ p {
   box-shadow: 0 8px 24px -6px rgba(0, 0, 0, .35);
   transition: transform var(--dur-hover) ease, box-shadow var(--dur-hover) ease;
 }
-.whatsapp-flotante svg { width: 34px; height: 34px; }
+.whatsapp-flotante svg { width: 34px; height: 34px; position: relative; z-index: 1; }
 @media (hover: hover) and (pointer: fine) {
   .whatsapp-flotante:hover { transform: scale(1.06); box-shadow: 0 10px 28px -6px rgba(0, 0, 0, .4); }
 }
 .whatsapp-flotante:focus-visible { outline: 3px solid var(--whatsapp-oscuro); outline-offset: 3px; }
+
+/* Luz verde que "respira" detrás del botón; el botón en sí no se mueve */
+.whatsapp-flotante::before {
+  content: '';
+  position: absolute;
+  inset: -16px;
+  z-index: 0;
+  border-radius: 50%;
+  background: var(--whatsapp);
+  filter: blur(13px);
+  opacity: .35;
+  animation: whatsapp-respirar 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes whatsapp-respirar {
+  0%, 100% { opacity: .3; transform: scale(.75); }
+  50% { opacity: .75; transform: scale(1.35); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-flotante::before { animation: none; opacity: .4; }
+}
 
 /* Mini chat de WhatsApp (se abre al pulsar el botón flotante) */
 .whatsapp-chat {
