@@ -435,8 +435,8 @@ p {
   pointer-events: none;
 }
 @keyframes whatsapp-respirar {
-  0%, 100% { opacity: .22; transform: scale(.92); }
-  50% { opacity: .45; transform: scale(1.1); }
+  0%, 100% { opacity: .16; transform: scale(.96); }
+  50% { opacity: .3; transform: scale(1.04); }
 }
 @media (prefers-reduced-motion: reduce) {
   .whatsapp-flotante::before { animation: none; opacity: .4; }
