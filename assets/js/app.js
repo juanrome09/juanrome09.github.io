@@ -565,11 +565,12 @@ function iniciarTransicionCambioMundo() {
     }
   }
 
-  const enlace = document.querySelector('.nav-flotante__cambio-mundo');
-  if (!enlace) return;
-  enlace.addEventListener('click', () => {
-    enlace.style.viewTransitionName = 'cambio-mundo';
-    try { sessionStorage.setItem(CLAVE, '1'); } catch (error) {}
+  const enlaces = document.querySelectorAll('.cambio-mundo-toggle__opcion:not([aria-current="true"])');
+  enlaces.forEach((enlace) => {
+    enlace.addEventListener('click', () => {
+      enlace.style.viewTransitionName = 'cambio-mundo';
+      try { sessionStorage.setItem(CLAVE, '1'); } catch (error) {}
+    });
   });
 }
 
