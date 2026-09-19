@@ -285,7 +285,7 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   font-family: var(--f-titulos);
   font-weight: 500;
   font-size: var(--display);
-  line-height: .98;
+  line-height: 1.18;
   color: var(--blanco);
   max-width: 18ch;
 }

@@ -58,9 +58,9 @@ body.marketing h1, body.marketing h2, body.marketing h3, body.marketing h4 {
   font-weight: 500;
   color: var(--mk-tinta);
 }
-body.marketing h1 { font-size: var(--display); line-height: .95; letter-spacing: -.06em; }
-body.marketing h2 { font-size: var(--titulo-1); line-height: 1.15; letter-spacing: -.05em; }
-body.marketing h3 { font-size: var(--titulo-3); line-height: 1.2; letter-spacing: normal; }
+body.marketing h1 { font-size: var(--display); line-height: 1.18; letter-spacing: -.06em; }
+body.marketing h2 { font-size: var(--titulo-1); line-height: 1.22; letter-spacing: -.05em; }
+body.marketing h3 { font-size: var(--titulo-3); line-height: 1.25; letter-spacing: normal; }
 
 body.marketing h1.mk-titulo-degradado, body.marketing h2.mk-titulo-degradado { color: var(--mk-vino-oscuro); display: inline-block; }
 @supports (background-clip: text) or (-webkit-background-clip: text) {
@@ -505,7 +505,7 @@ body.marketing .marketing-hero__titulo {
   font-family: var(--f-titulos);
   font-weight: 500;
   font-size: var(--display);
-  line-height: .95;
+  line-height: 1.18;
   letter-spacing: -.06em;
   color: var(--mk-texto-claro);
   max-width: 16ch;

@@ -173,8 +173,8 @@ h1, h2, h3, h4 {
   color: var(--azul-hondo);
 }
 
-h1 { font-size: var(--titulo-1); line-height: 1.05; letter-spacing: -.02em; }
-h2 { font-size: var(--titulo-2); line-height: 1.15; letter-spacing: -.015em; }
+h1 { font-size: var(--titulo-1); line-height: 1.12; letter-spacing: -.02em; }
+h2 { font-size: var(--titulo-2); line-height: 1.22; letter-spacing: -.015em; }
 h3 { font-size: var(--titulo-3); line-height: 1.3; }
 
 p {
@@ -219,6 +219,44 @@ p {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+.cambio-mundo-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--r-pildora);
+  background: var(--gris-claro);
+  flex-shrink: 0;
+}
+.cambio-mundo-toggle .cambio-mundo-toggle__opcion {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: var(--r-pildora);
+  font-family: var(--f-cuerpo);
+  font-weight: 600;
+  font-size: var(--menor);
+  color: var(--gris-tinta);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--dur-hover) ease, color var(--dur-hover) ease;
+}
+.cambio-mundo-toggle .cambio-mundo-toggle__opcion:not([aria-current="true"]):hover,
+.cambio-mundo-toggle .cambio-mundo-toggle__opcion:not([aria-current="true"]):focus-visible {
+  background: rgba(0, 0, 0, .08);
+}
+.cambio-mundo-toggle .cambio-mundo-toggle__opcion--asesoria[aria-current="true"] {
+  background: var(--naranja);
+  color: var(--blanco);
+}
+.cambio-mundo-toggle .cambio-mundo-toggle__opcion--marketing[aria-current="true"] {
+  background: var(--vino);
+  color: var(--blanco);
+}
+@media (max-width: 480px) {
+  .cambio-mundo-toggle__opcion { padding: 8px 10px; font-size: 13px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
