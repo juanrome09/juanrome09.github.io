@@ -602,6 +602,33 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   flex-direction: column;
   gap: var(--e-2);
 }
+
+/* Panel con foto real en vez de icono, con marco girado a juego con el resto de la web */
+.servicio-bloque__panel--foto {
+  position: relative;
+  isolation: isolate;
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+  background: none;
+}
+.servicio-bloque__panel--foto::before {
+  content: '';
+  position: absolute;
+  inset: -10%;
+  z-index: -1;
+  background: radial-gradient(ellipse closest-side, rgba(var(--azul-acero-rgb), .28), transparent 72%);
+}
+.servicio-bloque__foto {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: var(--r-panel);
+  transform: rotate(-1.4deg);
+  box-shadow: 0 30px 60px -24px rgba(11, 58, 84, .35);
+}
+.servicio-bloque--invertido .servicio-bloque__foto { transform: rotate(1.4deg); }
 .servicio-bloque__icono {
   display: flex;
   align-items: center;
@@ -818,12 +845,15 @@ body.asesoria .proceso__marcador__numero { background: var(--dt-canvas); color: 
 body.asesoria .proceso__marcador--activo { background: var(--dt-canvas); color: var(--dt-ink); }
 body.asesoria .proceso__marcador--activo .proceso__marcador__numero { background: var(--azul-acero); color: #fff; }
 
-/* A quién ayudamos: los 5 números siempre en naranja de marca */
+/* A quién ayudamos y De la primera duda a la gestión mensual: números siempre en naranja de marca */
 body.asesoria #sectores .proceso__marcador__numero,
-body.asesoria #sectores .proceso__marcador--activo .proceso__marcador__numero { background: var(--naranja); color: #fff; }
+body.asesoria #sectores .proceso__marcador--activo .proceso__marcador__numero,
+body.asesoria #como-trabajamos .proceso__marcador__numero,
+body.asesoria #como-trabajamos .proceso__marcador--activo .proceso__marcador__numero { background: var(--naranja); color: #fff; }
 
 /* Bloques de servicios.html (.servicio-bloque) */
 body.asesoria .servicio-bloque__panel { background: var(--dt-canvas); }
+body.asesoria .servicio-bloque__panel--foto { background: none; }
 body.asesoria .servicio-bloque__icono { background: var(--azul-acero); }
 body.asesoria .servicio-bloque__icono svg { stroke: #fff; }
 body.asesoria .servicio-bloque__numero { color: var(--dt-ink); }
