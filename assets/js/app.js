@@ -258,6 +258,9 @@ function iniciarProcesoConScroll() {
       marcadores.forEach((marcador) => {
         marcador.classList.toggle('proceso__marcador--activo', marcador.dataset.paso === numero);
       });
+      pasos.forEach((paso) => {
+        paso.classList.toggle('proceso__paso--activo', paso.dataset.paso === numero);
+      });
     };
 
     const observador = new IntersectionObserver(

@@ -59,6 +59,13 @@ body.puerta > main {
   .puerta-split:has(.puerta-mitad:focus-visible) .puerta-logo { transform: translate(-50%, -50%) scale(1.06); }
   .puerta-split:has(.puerta-mitad--asesoria:hover) .puerta-mitad__entrar,
   .puerta-split:has(.puerta-mitad--marketing:hover) .puerta-mitad__entrar { transform: scale(1.03); }
+
+  .puerta-split:has(.puerta-mitad--asesoria:hover) .puerta-lema--asesoria,
+  .puerta-split:has(.puerta-mitad--asesoria:focus-visible) .puerta-lema--asesoria,
+  .puerta-split:has(.puerta-mitad--marketing:hover) .puerta-lema--marketing,
+  .puerta-split:has(.puerta-mitad--marketing:focus-visible) .puerta-lema--marketing {
+    opacity: 1;
+  }
 }
 
 .puerta-mitad--asesoria { background: linear-gradient(160deg, var(--azul-hondo), var(--azul-acero) 88%); }
@@ -156,7 +163,9 @@ body.puerta > main {
 
 .puerta-mitad:focus-visible { outline: 3px solid var(--blanco); outline-offset: -6px; }
 
-/* Lema, centrado sobre la costura de las dos mitades */
+/* Lema, centrado sobre la costura de las dos mitades: cada mitad tiene la suya,
+   y solo se ve la del lado sobre el que estás (hover/foco). En móvil, donde las
+   mitades no se expanden, no se muestra ninguna. */
 .puerta-lema {
   position: absolute;
   z-index: 3;
@@ -175,11 +184,11 @@ body.puerta > main {
   font-size: clamp(13px, 1.6vw, 17px);
   letter-spacing: .01em;
   opacity: 0;
-  animation: puerta-logo-entra .6s ease .3s both;
+  transition: opacity .3s ease;
   pointer-events: none;
 }
 @media (max-width: 719px) {
-  .puerta-lema { top: var(--e-3); font-size: 13px; padding: 6px 16px; }
+  .puerta-lema { display: none; }
 }
 
 /* Logo central */
@@ -203,8 +212,8 @@ body.puerta > main {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .puerta-mitad, .puerta-logo, .puerta-mitad__contenido, .puerta-lema { animation: none; transition: none; }
-  .puerta-logo, .puerta-lema { opacity: 1; }
+  .puerta-mitad, .puerta-logo, .puerta-mitad__contenido { animation: none; transition: none; }
+  .puerta-logo { opacity: 1; }
 }
 
 /* Pie de página */
