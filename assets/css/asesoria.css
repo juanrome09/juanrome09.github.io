@@ -1070,25 +1070,76 @@ body.asesoria main + footer.pie.reveal.en-vista {
 #valores h2 {
   font-size: clamp(34px, 4.4vw, 52px);
 }
-.nosotros-intro-grid {
+/* Quiénes somos: cabecera editorial, más aire bajo el nav y un acento dorado */
+.quienes-somos-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--lino);
+  padding-block: var(--e-6) var(--e-8);
+}
+body.asesoria main > section.quienes-somos-hero:first-child {
+  padding-top: 176px;
+}
+@media (max-width: 767px) {
+  body.asesoria main > section.quienes-somos-hero:first-child { padding-top: 136px; }
+}
+
+.quienes-somos-hero__fondo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.quienes-somos-hero__fondo img {
+  position: absolute;
+  top: 50%;
+  right: -8%;
+  width: clamp(320px, 36vw, 560px);
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+  opacity: .05;
+}
+
+.quienes-somos-hero__grid {
   display: grid;
-  gap: var(--e-3);
+  gap: var(--e-6);
   grid-template-columns: 1fr;
 }
 @media (min-width: 860px) {
-  .nosotros-intro-grid { grid-template-columns: 1.15fr .85fr; gap: var(--e-6); align-items: start; }
+  .quienes-somos-hero__grid { grid-template-columns: 1.2fr .8fr; gap: var(--e-7); align-items: end; }
 }
-.nosotros-intro-grid__cita {
-  font-family: var(--dt-serif);
+
+.quienes-somos-hero__eyebrow {
+  display: inline-block;
+  font-family: var(--f-cuerpo);
   font-weight: 700;
-  font-size: clamp(22px, 2.4vw, 30px);
-  line-height: 1.35;
-  color: var(--dt-ink);
-  padding-left: var(--e-3);
-  border-left: 3px solid var(--azul-acero);
+  font-size: 13px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--dorado);
+  margin-bottom: var(--e-3);
 }
-@media (min-width: 860px) {
-  .nosotros-intro-grid__cita { margin-top: var(--e-3); }
+
+.quienes-somos-hero__cita {
+  margin: 0;
+  padding-left: var(--e-4);
+  border-left: 2px solid var(--dorado);
+}
+.quienes-somos-hero__cita__comilla {
+  display: block;
+  width: 40px;
+  height: auto;
+  fill: var(--dorado);
+}
+.quienes-somos-hero__cita p {
+  font-family: var(--f-cuerpo);
+  font-style: italic;
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.4;
+  color: var(--azul-hondo);
+  margin-top: var(--e-1);
 }
 
 .split-asimetrico {
