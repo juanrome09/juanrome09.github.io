@@ -131,11 +131,23 @@
   </nav>
 </div>
 
+<!-- Recolorea el logo a los dos azules de marca: cuerpo en azul-acero, anillo/360 en un azul más claro -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="logo-duotono" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="0.299 0.587 0.114 0 0  0.299 0.587 0.114 0 0  0.299 0.587 0.114 0 0  0 0 0 1 0" result="gris"/>
+    <feComponentTransfer in="gris">
+      <feFuncR type="discrete" tableValues="0.043 0.118 0.647"/>
+      <feFuncG type="discrete" tableValues="0.227 0.435 0.773"/>
+      <feFuncB type="discrete" tableValues="0.329 0.627 0.851"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
 <main id="contenido">
 
   <section class="quienes-somos-hero">
     <div class="quienes-somos-hero__fondo" aria-hidden="true">
-      <img src="/assets/img/logo-a360-azul.png" width="973" height="973" alt="">
+      <img class="quienes-somos-hero__fondo-logo" src="/assets/img/logo-a360.png" width="973" height="973" alt="">
     </div>
     <div class="contenedor quienes-somos-hero__grid">
       <div>

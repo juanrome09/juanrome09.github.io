@@ -622,22 +622,20 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
 }
 .mision-vision__item--vision { border-top-color: var(--azul-acero); }
 .mision-vision__etiqueta {
-  display: inline-block;
-  font-family: var(--f-cuerpo);
+  display: block;
+  font-family: var(--f-titulos);
   font-weight: 700;
-  font-size: 13px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
+  font-size: clamp(28px, 3.2vw, 36px);
+  line-height: 1.1;
   color: var(--naranja);
   margin-bottom: var(--e-3);
 }
 .mision-vision__item--vision .mision-vision__etiqueta { color: var(--azul-acero); }
 .mision-vision__texto {
-  font-family: var(--f-titulos);
-  font-weight: 500;
-  font-size: clamp(19px, 2vw, 25px);
-  line-height: 1.5;
-  color: var(--azul-hondo);
+  font-family: var(--f-cuerpo);
+  font-size: var(--cuerpo-lg);
+  line-height: 1.6;
+  color: var(--gris-tinta);
 }
 
 .faq {
@@ -1104,14 +1102,29 @@ body.asesoria main + footer.pie.reveal.en-vista {
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  background: var(--lino);
+  background: var(--lavado-azul);
   padding-block: var(--e-6) var(--e-8);
 }
+.quienes-somos-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: var(--azul-acero);
+  opacity: .07;
+  -webkit-mask-image: url('/assets/img/fondo-marca-mk.png');
+  mask-image: url('/assets/img/fondo-marca-mk.png');
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  -webkit-mask-position: center;
+  mask-position: center;
+  pointer-events: none;
+}
 body.asesoria main > section.quienes-somos-hero:first-child {
-  padding-top: 176px;
+  padding-top: 220px;
 }
 @media (max-width: 767px) {
-  body.asesoria main > section.quienes-somos-hero:first-child { padding-top: 136px; }
+  body.asesoria main > section.quienes-somos-hero:first-child { padding-top: 160px; }
 }
 
 .quienes-somos-hero__fondo {
@@ -1121,14 +1134,15 @@ body.asesoria main > section.quienes-somos-hero:first-child {
   overflow: hidden;
   pointer-events: none;
 }
-.quienes-somos-hero__fondo img {
+.quienes-somos-hero__fondo-logo {
   position: absolute;
   top: 50%;
   right: -8%;
   width: clamp(320px, 36vw, 560px);
   aspect-ratio: 1;
   transform: translateY(-50%);
-  opacity: .05;
+  opacity: .35;
+  filter: url(#logo-duotono);
 }
 
 .quienes-somos-hero__grid {
