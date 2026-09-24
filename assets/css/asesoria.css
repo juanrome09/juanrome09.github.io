@@ -1055,6 +1055,11 @@ body.asesoria footer.pie {
   background: linear-gradient(135deg, #000000, var(--azul-hondo));
   font-family: var(--f-cuerpo);
 }
+/* Eslogan cuando el footer no viene precedido de un cierre-asesoria (p. ej. Contacto) */
+body.asesoria footer.pie > .cierre-asesoria__contenido {
+  text-align: center;
+  padding-block: var(--e-6) var(--e-3);
+}
 body.asesoria footer.pie h3 { font-family: var(--f-titulos); color: #fff; }
 body.asesoria .pie__redes a { border-radius: 10px; }
 
@@ -1120,11 +1125,13 @@ body.asesoria main + footer.pie.reveal.en-vista {
   mask-position: center;
   pointer-events: none;
 }
-body.asesoria main > section.quienes-somos-hero:first-child {
+body.asesoria main > section.quienes-somos-hero:first-child,
+body.asesoria main > section.servicios-hero:first-child {
   padding-top: 220px;
 }
 @media (max-width: 767px) {
-  body.asesoria main > section.quienes-somos-hero:first-child { padding-top: 160px; }
+  body.asesoria main > section.quienes-somos-hero:first-child,
+  body.asesoria main > section.servicios-hero:first-child { padding-top: 160px; }
 }
 
 .quienes-somos-hero__fondo {
@@ -1196,7 +1203,8 @@ body.asesoria main > section.quienes-somos-hero:first-child {
 }
 
 /* Trato directo, sin intermediarios */
-.trato-directo__eyebrow {
+.trato-directo__eyebrow,
+.servicios-hero__eyebrow {
   display: inline-block;
   font-family: var(--f-cuerpo);
   font-weight: 700;
@@ -1418,32 +1426,82 @@ body.asesoria .acordeon__pregunta__icono { color: var(--azul-acero); }
   }
 }
 
-/* Calendario fiscal (Servicios) */
+/* Calendario fiscal (Servicios): cada tarjeta imita una hoja de calendario de pared */
+.calendario-fiscal__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--f-cuerpo);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--naranja);
+  margin-bottom: var(--e-2);
+}
+.calendario-fiscal__eyebrow svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .calendario-fiscal {
   display: grid;
-  gap: var(--e-3);
+  gap: var(--e-4);
   grid-template-columns: 1fr;
 }
 @media (min-width: 640px) { .calendario-fiscal { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1024px) { .calendario-fiscal { grid-template-columns: repeat(3, 1fr); } }
+
 body.asesoria .calendario-fiscal__item {
+  position: relative;
   background: var(--dt-card);
   border-radius: var(--r-panel);
-  padding: var(--e-3);
+  overflow: hidden;
   box-shadow: var(--dt-sombra);
   transition: box-shadow var(--dur-hover) ease, transform var(--dur-hover) ease;
 }
 @media (hover: hover) and (pointer: fine) {
   body.asesoria .calendario-fiscal__item:hover { box-shadow: var(--dt-sombra-hover); transform: translateY(-3px); }
 }
-body.asesoria .calendario-fiscal__fecha {
-  display: inline-block;
+
+/* Pestaña superior: la "hoja arrancada" del calendario, con sus dos anillas */
+body.asesoria .calendario-fiscal__pestana {
+  position: relative;
+  padding: var(--e-3) var(--e-4) calc(var(--e-2) + 6px);
+  background: var(--naranja);
+}
+body.asesoria .calendario-fiscal__item:nth-child(2) .calendario-fiscal__pestana { background: var(--azul-acero); }
+body.asesoria .calendario-fiscal__item:nth-child(3) .calendario-fiscal__pestana { background: var(--azul-hondo); }
+body.asesoria .calendario-fiscal__item:nth-child(4) .calendario-fiscal__pestana { background: var(--azul-acero); }
+body.asesoria .calendario-fiscal__item:nth-child(5) .calendario-fiscal__pestana { background: var(--naranja); }
+.calendario-fiscal__pestana::before,
+.calendario-fiscal__pestana::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--dt-card);
+  box-shadow: inset 0 1px 3px rgba(11, 58, 84, .35);
+}
+.calendario-fiscal__pestana::before { left: 22px; }
+.calendario-fiscal__pestana::after { right: 22px; }
+.calendario-fiscal__pestana span {
+  display: block;
   font-family: var(--f-titulos);
   font-weight: 700;
   font-size: 13px;
-  color: var(--azul-acero);
+  color: #fff;
   text-transform: uppercase;
   letter-spacing: .03em;
-  margin-bottom: var(--e-2);
+  text-align: center;
 }
+
+.calendario-fiscal__cuerpo { padding: var(--e-3) var(--e-3) var(--e-4); }
 .calendario-fiscal__item h3 { margin-bottom: 6px; }
