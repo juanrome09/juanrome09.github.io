@@ -936,8 +936,8 @@ body.asesoria .banda-gris { background: var(--dt-canvas); }
 
 /* Botones */
 body.asesoria .boton-primario {
-  background: var(--naranja);
-  border-color: var(--naranja);
+  background: var(--naranja-texto);
+  border-color: var(--naranja-texto);
   color: #fff;
 }
 body.asesoria .boton-primario:hover,
@@ -1007,7 +1007,7 @@ body.asesoria .proceso__marcador--activo .proceso__marcador__numero { background
 body.asesoria #sectores .proceso__marcador__numero,
 body.asesoria #sectores .proceso__marcador--activo .proceso__marcador__numero,
 body.asesoria #como-trabajamos .proceso__marcador__numero,
-body.asesoria #como-trabajamos .proceso__marcador--activo .proceso__marcador__numero { background: var(--naranja); color: #fff; }
+body.asesoria #como-trabajamos .proceso__marcador--activo .proceso__marcador__numero { background: var(--naranja-texto); color: #fff; }
 
 /* Bloques de servicios.html (.servicio-bloque) */
 body.asesoria .servicio-bloque__panel { background: var(--dt-canvas); }

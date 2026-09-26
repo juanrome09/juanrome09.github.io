@@ -976,6 +976,10 @@ body.marketing .cierre-marketing__linea {
   font-weight: 500;
   font-size: 13px;
 }
+/* Ajuste de contraste AA: el turquesa de marca (--turquesa) no llega a
+   4.5:1 con el texto claro de este círculo a 13px. Se corrige solo aquí
+   (sin tocar --turquesa, que se sigue usando en el resto del sitio). */
+.mk-servicios-chips a:nth-child(1) span { background: #2F7677; }
 
 /* Servicios.html: bloques de detalle */
 .servicio-bloque-mk {

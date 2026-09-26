@@ -59,6 +59,12 @@
 :root {
 
   --naranja: #E95117;
+  /* Variante de --naranja para texto claro pequeño/negrita sobre fondo naranja
+     (botones, badges): el naranja de marca solo da 3.71:1 en esos casos,
+     por debajo del 4.5:1 de WCAG AA. No sustituye a --naranja en el resto
+     de usos (iconos, bordes, acentos grandes), donde el contraste no aplica. */
+  --naranja-texto: #C43F0F;
+  --naranja-texto-hover: #A8360C;
   --azul-acero: #1E6FA0;
   --azul-hondo: #0B3A54;
   --negro: #000000;
@@ -320,13 +326,13 @@ p {
 }
 
 .boton-primario {
-  background: var(--naranja);
+  background: var(--naranja-texto);
   color: var(--blanco);
-  border: 1px solid var(--naranja);
+  border: 1px solid var(--naranja-texto);
 }
 .boton-primario:hover, .boton-primario:focus-visible {
-  background: #cf4610;
-  border-color: #cf4610;
+  background: var(--naranja-texto-hover);
+  border-color: var(--naranja-texto-hover);
 }
 
 .boton-oscuro {
