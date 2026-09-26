@@ -1,7 +1,9 @@
 # Auditoría SEO / GEO / AEO — A360 (asesores360.com)
 
-**Fecha:** 2026-09-26 · **Rama:** `seo/optimizacion` · **Estado del sitio:** no publicado (sin `CNAME`, sin dominio propio conectado a GitHub Pages)
+**Fecha del informe original:** 2026-09-26 · **Última actualización:** 2026-09-26 (Fase 3, quick wins + bloque técnico aplicados) · **Rama:** `seo/optimizacion` · **Estado del sitio:** no publicado (dominio aún sin conectar en el DNS real; `CNAME` ya está en el repo)
 **Autor:** Auditoría técnica asistida (Claude Code), sobre el repo real. Nada de lo que sigue es especulativo salvo que se indique explícitamente como "a confirmar".
+
+> **Estado de la Fase 3 (ver sección 6 para el detalle):** aplicados todos los quick wins y el bloque técnico que no requerían tu elección explícita. Quedan 3 decisiones pendientes de tu respuesta antes de tocarlas: colores de contraste (2.4.3), contenido del home-selector (2.1.3) y la forma final del `telephone` en JSON-LD (2.5.7). El resto de esta sección 1 y la sección 2 se dejan tal cual se escribieron en la auditoría original — el estado real y actualizado está en la sección 6.
 
 ---
 
@@ -393,3 +395,121 @@ Ver tablas completas en la sección **2.4**. Resumen de un vistazo (móvil):
 6. ¿Vale la pena separar cada servicio en su propia URL (2.10.2), o preferís mantener la estructura actual de anclas y reforzar el contenido dentro de la misma página?
 
 Quedo a la espera de tu OK para este documento (y de las respuestas que quieras darme ya) antes de tocar ningún archivo del sitio.
+
+---
+
+## 6. Fase 3 — progreso, Lighthouse antes/después y estado real (actualizado 2026-09-26)
+
+### 6.1 Corrección a la auditoría original
+
+Al implementar el enlazado de `@id` (bloque técnico) encontré que el hallazgo **2.5.3 estaba mal**: dije que faltaba `BreadcrumbList` en todo el sitio, pero en realidad **ya existía en 6 de las 10 páginas** (`asesoria/nosotros.html`, `asesoria/servicios.html`, `asesoria/contacto.html`, `marketing/nosotros.html`, `marketing/servicios.html`, `marketing/contacto.html`). Solo faltaba en las 2 páginas de inicio (`asesoria/index.html`, `marketing/index.html`) y, razonablemente, no aplica a `/` ni a `legal.html`. Ya está corregido (ver 6.2).
+
+### 6.2 Qué se aplicó (commits en `seo/optimizacion`)
+
+| # | Bloque | Commit | Archivos principales |
+|---|---|---|---|
+| 1 | Imágenes → WebP + fallback PNG (2.4.1 / 2.3.3) | `a4ce81c` | 4 fotos de `asesoria/servicios.html` + 4 fotos más pesadas del resto del sitio |
+| 2 | Dominio → `www.asesores360.com` + política de bots IA (2.1.2 / 2.2.1 / 2.8.2) | `39738f6` | `CNAME`, `robots.txt`, `sitemap.xml`, las 10 páginas HTML |
+| 3 | `legalName`/`taxID` reales + títulos SEO (2.5.6 / 2.3.2) | `6d6319f` | 5 bloques JSON-LD, 7 `<title>`/`og:title`/`twitter:title` |
+| 4 | `llms.txt` (2.8.1) | `26bd9a2` | `llms.txt` (nuevo) |
+| 5 | Grafo JSON-LD con `@id` + `BreadcrumbList` en las 2 home (2.5.2 / 2.5.3) | `9ea05da` | `index.html`, `asesoria/index.html`, `asesoria/contacto.html`, `marketing/index.html`, `marketing/contacto.html` |
+| 6 | Página 404 (2.2.5) | `55cba3c` | `404.html` (nuevo), `assets/css/puerta.css` |
+| 7 | Script de generación de `sitemap.xml` (2.2.1) | `ef4d1a2` | `scripts/generar_sitemap.py` (nuevo), `sitemap.xml` |
+
+Todos los bloques JSON-LD se validaron con un parser real (`JSON.parse`) tras cada cambio — los 10+ bloques siguen siendo JSON válido. Cada bloque de imágenes y el 404 se verificaron visualmente en el navegador.
+
+### 6.3 Pendiente — 3 decisiones que esperan tu respuesta (no se tocó nada de esto)
+
+**A) Contraste de color (2.4.3)** — opciones con ratio real calculado (fórmula WCAG, luminancia relativa):
+
+*Badge naranja del scroll + botón primario de Contacto (texto blanco sobre `#E95117`, ratio actual 3.71:1, necesita 4.5:1):*
+
+| Opción | Color de fondo propuesto | Ratio vs. blanco | Cómo se ve |
+|---|---|---|---|
+| A | `#C43F0F` (naranja −12% luminosidad) | **5.17:1** ✅ | Prácticamente el mismo naranja, un pelín más profundo |
+| B | `#B23A0E` (naranja −20%) | **5.99:1** ✅ | Un poco más tirando a terracota, más margen de sobra |
+| C | `#0B3A54` (azul-hondo de marca, en vez de naranja) | **12.02:1** ✅✅ | Cambia el acento de estos 3 elementos de naranja a azul — más contraste que necesario, pero coherente con el resto de azules del sitio |
+
+*Chips de servicios de Marketing (texto `#F3EEE7` sobre turquesa `#51BCBD`, ratio actual 1.96:1):*
+
+| Opción | Color de fondo propuesto | Ratio vs. texto claro actual | Cómo se ve |
+|---|---|---|---|
+| D | `#2F7677` (turquesa −25%) | **4.57:1** ✅ | Mismo turquesa, notablemente más oscuro |
+| E | `#245B5C` (turquesa −35%) | **6.67:1** ✅✅ | Más oscuro todavía, casi un petróleo |
+
+Mi recomendación: **A** para el naranja (cambio casi imperceptible) y **D** para el turquesa (el mínimo cambio que ya cumple). Decime cuáles aplico.
+
+**B) Contenido del home-selector (2.1.3)** — propuesta de texto (sin cambiar el diseño de las dos mitades):
+
+Añadir una sola línea, discreta, dentro del `<footer class="puerta-pie">` ya existente (donde hoy solo hay dirección/email/teléfono/aviso legal), como primer elemento del footer:
+
+> "Asesoría fiscal, contable, laboral y societaria — y marketing digital — bajo una misma marca en Ibiza."
+
+Por qué ahí y no en el centro de la pantalla: el footer ya es donde vive el texto "secundario" de esta página (dirección, contacto), así que sumar una frase de contexto no compite visualmente con el selector de dos mitades, que sigue siendo el 100% del foco. Si preferís otra ubicación (p. ej. como subtítulo bajo el logo, arriba del todo) o otro texto, decímelo y lo ajusto antes de implementarlo.
+
+**C) `telephone` en JSON-LD (2.5.7)** — propuesta final para las 5 entidades (`Organization`, 2×`AccountingService`, 2×`MarketingAgency`):
+
+```json
+"telephone": "+34971339488",
+"contactPoint": {
+  "@type": "ContactPoint",
+  "contactType": "customer service",
+  "telephone": "+34971339488",
+  "url": "https://wa.me/34649032854"
+}
+```
+
+Es decir: el fijo (`971339488`) pasa a ser el `telephone` principal en las 5 entidades (hoy la `Organization` de la puerta usa el móvil de WhatsApp), y añado un `contactPoint` con ese mismo fijo más la `url` de WhatsApp — schema.org no tiene un tipo dedicado a "WhatsApp", así que la vía estándar es exponer el enlace `wa.me` como URL de contacto dentro del `contactPoint`, no como un segundo `telephone`. Decime si aplico esto tal cual.
+
+### 6.4 Instrucciones de DNS (para el registrador)
+
+Para que `www.asesores360.com` sirva el sitio desde GitHub Pages y `asesores360.com` (sin `www`) redirija automáticamente:
+
+1. **Registro CNAME** (subdominio `www`):
+   - Tipo: `CNAME`
+   - Nombre/host: `www`
+   - Valor/destino: `juanrome09.github.io`
+   - TTL: el que tenga por defecto el panel (3600 o "automático" están bien)
+
+2. **Registros A** (apex/raíz `asesores360.com`, las 4 IPs de GitHub Pages):
+   - Tipo: `A`, Nombre/host: `@` (o vacío, según el panel) → `185.199.108.153`
+   - Tipo: `A`, Nombre/host: `@` → `185.199.109.153`
+   - Tipo: `A`, Nombre/host: `@` → `185.199.110.153`
+   - Tipo: `A`, Nombre/host: `@` → `185.199.111.153`
+
+3. **Registros AAAA** (opcional pero recomendado, IPv6):
+   - Tipo: `AAAA`, Nombre/host: `@` → `2606:50c0:8000::153`
+   - Tipo: `AAAA`, Nombre/host: `@` → `2606:50c0:8001::153`
+   - Tipo: `AAAA`, Nombre/host: `@` → `2606:50c0:8002::153`
+   - Tipo: `AAAA`, Nombre/host: `@` → `2606:50c0:8003::153`
+
+4. **En GitHub** (Settings → Pages, del repo `juanrome09/juanrome09.github.io`):
+   - Custom domain: escribir `www.asesores360.com` y guardar (esto es lo que hace que GitHub reconozca el `CNAME` que ya está en el repo y configure la redirección automática del apex → `www`).
+   - Esperar a que el check DNS se ponga en verde (puede tardar minutos u horas según la propagación).
+   - Marcar **"Enforce HTTPS"** en cuanto la casilla deje de estar bloqueada (GitHub la habilita sola cuando termina de emitir el certificado; si no aparece de inmediato, reintentar en unas horas).
+
+Nota: estas 4 IPs son las que documenta GitHub para Pages y llevan años estables, pero confirmá en `docs.github.com` → "Managing a custom domain" que no hayan cambiado antes de cargarlas, por si acaso.
+
+**Quién gestiona el DNS:** tu mensaje decía "[yo / el cliente / NOMBRE DEL REGISTRADOR]" sin completar — decime cuál de las tres opciones aplica, así sé si esto te lo llevás vos o hay que coordinarlo con alguien más.
+
+### 6.5 Lighthouse — antes / después (mismas 9 páginas, misma metodología)
+
+| Página | Perf antes → después | LCP antes → después | Peso total antes → después |
+|---|---|---|---|
+| `/` (móvil) | 96 → 96 | 2.6s → 2.4s | 253KB → 254KB |
+| `/` (escritorio) | 100 → 100 | 0.5s → 0.6s | 253KB → 254KB |
+| `/asesoria/` (móvil) | 94 → 93 | 2.9s → 3.0s | 318KB → 319KB |
+| `/asesoria/` (escritorio) | 100 → 100 | 0.6s → 0.6s | 318KB → 319KB |
+| `/asesoria/servicios.html` (móvil) | **73 → 92** | **25.7s → 3.2s** | **7294KB → 440KB** |
+| `/asesoria/contacto.html` (móvil) | 95 → 95 | 2.6s → 2.6s | 730KB → 730KB |
+| `/marketing/` (móvil) | 89 → 89 | 3.5s → 3.5s | 2077KB → 1339KB |
+| `/marketing/servicios.html` (móvil) | 96 → 95 | 2.6s → 2.7s | 273KB → 273KB |
+| `/marketing/contacto.html` (móvil) | 97 → 97 | 2.4s → 2.4s | 705KB → 705KB |
+
+El cambio grande es exactamente donde se esperaba: `asesoria/servicios.html` pasa de ser la peor página del sitio a estar en línea con el resto (LCP de 25.7s a 3.2s, un 94% menos de peso). Las variaciones de ±1 punto en el resto son ruido normal de Lighthouse entre corridas, no una regresión real. `marketing/` bajó 738KB de peso total (por las fotos optimizadas que usa) aunque su score de Performance no cambió — su cuello de botella no eran esas imágenes.
+
+Accesibilidad no cambió en ninguna página (96-100, con los mismos 3 fallos de contraste ya documentados) porque ese fix está pendiente de tu elección (6.3-A).
+
+### 6.6 Qué falta para cerrar la Fase 3
+
+Solo tus respuestas a 6.3 (A, B, C) y a "quién gestiona el DNS" en 6.4. En cuanto las tenga, aplico esos 3 cambios, corro Lighthouse una vez más si el de contraste toca CSS visible, y quedamos listos para la Fase 4.
