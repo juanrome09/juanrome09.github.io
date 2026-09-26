@@ -698,6 +698,11 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   transition: border-color var(--dur-hover) ease;
 }
 
+.trabajo-mk__pieza picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 .trabajo-mk__foto {
   display: block;
   width: 100%;

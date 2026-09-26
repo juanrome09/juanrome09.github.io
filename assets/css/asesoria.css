@@ -766,6 +766,11 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
 }
 .servicio-bloque__panel--foto::before { background: var(--azul-hondo); transform: rotate(-6deg); }
 .servicio-bloque__panel--foto::after { background: var(--naranja); transform: rotate(-3deg) translate(6%, 5%); }
+.servicio-bloque__panel--foto picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 .servicio-bloque__foto {
   display: block;
   width: 100%;
