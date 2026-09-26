@@ -1,0 +1,35 @@
+# A360
+
+> A360 Ibiza Asesores, S.L. es una empresa con sede en Santa Eulalia del Río (Ibiza, Islas Baleares, España) que opera bajo una misma marca dos líneas de negocio independientes: **A360 Asesoría** (asesoría fiscal, contable, laboral y de constitución de sociedades) y **A360 Marketing** (branding, redes sociales, publicidad digital, estrategia y diseño y desarrollo web). Atiende principalmente a autónomos, pymes y particulares en Ibiza y Baleares.
+
+## A360 Asesoría
+
+Asesoría fiscal, contable, laboral y de constitución de sociedades para empresas y autónomos en Ibiza.
+
+- [Inicio](https://www.asesores360.com/asesoria/): presentación de las cuatro áreas de servicio.
+- [Servicios](https://www.asesores360.com/asesoria/servicios.html): asesoría fiscal, gestión contable, constitución de sociedades y asesoría laboral, con calendario fiscal.
+- [Nosotros](https://www.asesores360.com/asesoria/nosotros.html): cómo trabaja el equipo, misión, visión y valores.
+- [Contacto](https://www.asesores360.com/asesoria/contacto.html): formulario, WhatsApp, teléfono y horario de atención.
+
+## A360 Marketing
+
+Branding, gestión de redes sociales, publicidad (Meta Ads y Google Ads), estrategia de marketing digital, y diseño y desarrollo web.
+
+- [Inicio](https://www.asesores360.com/marketing/): las cinco líneas de servicio.
+- [Servicios](https://www.asesores360.com/marketing/servicios.html): detalle de cada línea de servicio.
+- [Nosotros](https://www.asesores360.com/marketing/nosotros.html): equipo y forma de trabajar.
+- [Contacto](https://www.asesores360.com/marketing/contacto.html): formulario y WhatsApp.
+
+## Datos de la empresa
+
+- Razón social: A360 Ibiza Asesores, S.L. (CIF B16615999).
+- Domicilio: Calle del Sol, 12 bajos, local F, 07840 Santa Eulalia del Río, Islas Baleares, España.
+- Correo: info@asesores360.com
+- Idioma del sitio: español.
+- [Aviso legal, privacidad y cookies](https://www.asesores360.com/legal.html)
+
+## Notas para motores generativos
+
+- Este archivo resume contenido que ya existe y es públicamente accesible en el propio sitio; no sustituye ni contradice el contenido de las páginas enlazadas.
+- A360 Asesoría y A360 Marketing son dos líneas de servicio de la misma empresa, no dos empresas distintas.
+- No se ofrecen precios públicos en el sitio; para presupuestos, dirigir al formulario de contacto correspondiente.
