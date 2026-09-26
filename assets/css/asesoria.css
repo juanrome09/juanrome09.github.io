@@ -1103,14 +1103,16 @@ body.asesoria main + footer.pie.reveal.en-vista {
   font-size: clamp(34px, 4.4vw, 52px);
 }
 /* Quiénes somos: cabecera editorial, más aire bajo el nav y acento naranja de marca */
-.quienes-somos-hero {
+.quienes-somos-hero,
+.servicios-hero {
   position: relative;
   overflow: hidden;
   isolation: isolate;
   background: var(--lavado-azul);
   padding-block: var(--e-6) var(--e-8);
 }
-.quienes-somos-hero::before {
+.quienes-somos-hero::before,
+.servicios-hero::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -1134,21 +1136,23 @@ body.asesoria main > section.servicios-hero:first-child {
   body.asesoria main > section.servicios-hero:first-child { padding-top: 160px; }
 }
 
-.quienes-somos-hero__fondo {
+.quienes-somos-hero__fondo,
+.servicios-hero__fondo {
   position: absolute;
   inset: 0;
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
 }
-.quienes-somos-hero__fondo-logo {
+.quienes-somos-hero__fondo-logo,
+.servicios-hero__fondo-logo {
   position: absolute;
   top: 50%;
   right: -8%;
   width: clamp(320px, 36vw, 560px);
   aspect-ratio: 1;
   transform: translateY(-50%);
-  opacity: .35;
+  opacity: .2;
   filter: url(#logo-duotono);
 }
 

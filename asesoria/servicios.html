@@ -131,9 +131,24 @@
   </nav>
 </div>
 
+<!-- Recolorea el logo a los dos azules de marca: cuerpo en azul-acero, anillo/360 en un azul más claro -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="logo-duotono" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="0.299 0.587 0.114 0 0  0.299 0.587 0.114 0 0  0.299 0.587 0.114 0 0  0 0 0 1 0" result="gris"/>
+    <feComponentTransfer in="gris">
+      <feFuncR type="discrete" tableValues="0.043 0.118 0.647"/>
+      <feFuncG type="discrete" tableValues="0.227 0.435 0.773"/>
+      <feFuncB type="discrete" tableValues="0.329 0.627 0.851"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
 <main id="contenido">
 
-  <section class="banda banda-blanca servicios-hero">
+  <section class="banda servicios-hero">
+    <div class="servicios-hero__fondo" aria-hidden="true">
+      <img class="servicios-hero__fondo-logo" src="/assets/img/logo-a360.png" width="973" height="973" alt="">
+    </div>
     <div class="contenedor">
       <span class="servicios-hero__eyebrow reveal">Fiscal · Contable · Societaria · Laboral</span>
       <h1 class="reveal">Nuestros servicios</h1>
@@ -152,10 +167,12 @@
         <!-- PENDIENTE A360 -->
         <p>Presentamos tus impuestos dentro de plazo y te explicamos qué pagas y por qué. Revisamos tu situación fiscal para que no pagues de más ni te arriesgues a una sanción.</p>
         <ul class="servicio-bloque__lista">
-          <li>Declaraciones trimestrales y anuales</li>
-          <li>IVA, IRPF e Impuesto de Sociedades</li>
-          <li>Planificación fiscal para tu actividad</li>
-          <li>Atención a requerimientos de Hacienda</li>
+          <li>IVA, retenciones e IRPF trimestral (modelos 303, 111 y 130)</li>
+          <li>Resúmenes anuales de IVA y retenciones (modelos 390 y 190)</li>
+          <li>Declaración de la Renta e Impuesto de Sociedades</li>
+          <li>Operaciones intracomunitarias y con terceros (349 y 347)</li>
+          <li>Aplazamientos, alegaciones y recursos ante Hacienda</li>
+          <li>Atención a requerimientos e inspecciones de la Agencia Tributaria</li>
         </ul>
         <p style="margin-top:var(--e-2)"><a class="enlace-cuerpo" href="/asesoria/contacto.html">Consultar este servicio</a></p>
       </div>
@@ -170,10 +187,10 @@
         <!-- PENDIENTE A360 -->
         <p>Llevamos tu contabilidad al día y los libros oficiales en regla, listos para cualquier revisión. Tú recibes la información clara cuando la necesitas.</p>
         <ul class="servicio-bloque__lista">
-          <li>Contabilidad mensual</li>
-          <li>Libros oficiales de registro</li>
-          <li>Cuentas anuales y depósito en el Registro</li>
-          <li>Informes de situación cuando los pidas</li>
+          <li>Contabilidad mensual adaptada a tu actividad (autónomo, módulos o sociedad)</li>
+          <li>Libro registro diario y libro de socios</li>
+          <li>Cuentas anuales y depósito en el Registro Mercantil</li>
+          <li>Certificados de retenciones e informes de situación cuando los pidas</li>
         </ul>
         <p style="margin-top:var(--e-2)"><a class="enlace-cuerpo" href="/asesoria/contacto.html">Consultar este servicio</a></p>
       </div>
@@ -188,10 +205,12 @@
         <!-- PENDIENTE A360 -->
         <p>Te acompañamos en todo el trámite: desde elegir la forma jurídica hasta el alta activa en Hacienda y Seguridad Social.</p>
         <ul class="servicio-bloque__lista">
-          <li>Constitución de sociedades limitadas</li>
-          <li>Alta de autónomos</li>
-          <li>Trámites en Hacienda y Seguridad Social</li>
-          <li>Asesoramiento sobre la forma jurídica</li>
+          <li>Constitución de sociedades limitadas y alta de autónomos</li>
+          <li>Alta, baja y modificaciones censales en Hacienda (modelo 036/037)</li>
+          <li>Apertura de centro de trabajo y solicitud de CCC</li>
+          <li>Registro de nombre comercial o marca</li>
+          <li>Contratos de alquiler y trámites de licencia de actividad</li>
+          <li>Certificado electrónico y asesoramiento sobre la forma jurídica</li>
         </ul>
         <p style="margin-top:var(--e-2)"><a class="enlace-cuerpo" href="/asesoria/contacto.html">Consultar este servicio</a></p>
       </div>
@@ -206,10 +225,11 @@
         <!-- PENDIENTE A360 -->
         <p>Nóminas, contratos y seguros sociales gestionados cada mes sin errores, con la normativa laboral siempre al día.</p>
         <ul class="servicio-bloque__lista">
-          <li>Elaboración de nóminas</li>
-          <li>Altas, bajas y contratos</li>
-          <li>Seguros sociales</li>
-          <li>Asesoramiento en despidos y sanciones</li>
+          <li>Altas, bajas y contratos, con su comunicación al SEPE</li>
+          <li>Elaboración de nóminas, seguros sociales y finiquitos</li>
+          <li>Gestión de bajas médicas, accidentes laborales e indemnizaciones</li>
+          <li>Certificados de estar al corriente e informes de vida laboral</li>
+          <li>Acompañamiento en inspecciones de Trabajo y Seguridad Social</li>
         </ul>
         <p style="margin-top:var(--e-2)"><a class="enlace-cuerpo" href="/asesoria/contacto.html">Consultar este servicio</a></p>
       </div>
