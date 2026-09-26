@@ -15,4 +15,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://www.asesores360.com/sitemap.xml
+Sitemap: https://juanrome09.github.io/sitemap.xml

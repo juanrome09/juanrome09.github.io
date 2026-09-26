@@ -6,19 +6,19 @@
 
 Asesoría fiscal, contable, laboral y de constitución de sociedades para empresas y autónomos en Ibiza.
 
-- [Inicio](https://www.asesores360.com/asesoria/): presentación de las cuatro áreas de servicio.
-- [Servicios](https://www.asesores360.com/asesoria/servicios.html): asesoría fiscal, gestión contable, constitución de sociedades y asesoría laboral, con calendario fiscal.
-- [Nosotros](https://www.asesores360.com/asesoria/nosotros.html): cómo trabaja el equipo, misión, visión y valores.
-- [Contacto](https://www.asesores360.com/asesoria/contacto.html): formulario, WhatsApp, teléfono y horario de atención.
+- [Inicio](https://juanrome09.github.io/asesoria/): presentación de las cuatro áreas de servicio.
+- [Servicios](https://juanrome09.github.io/asesoria/servicios.html): asesoría fiscal, gestión contable, constitución de sociedades y asesoría laboral, con calendario fiscal.
+- [Nosotros](https://juanrome09.github.io/asesoria/nosotros.html): cómo trabaja el equipo, misión, visión y valores.
+- [Contacto](https://juanrome09.github.io/asesoria/contacto.html): formulario, WhatsApp, teléfono y horario de atención.
 
 ## A360 Marketing
 
 Branding, gestión de redes sociales, publicidad (Meta Ads y Google Ads), estrategia de marketing digital, y diseño y desarrollo web.
 
-- [Inicio](https://www.asesores360.com/marketing/): las cinco líneas de servicio.
-- [Servicios](https://www.asesores360.com/marketing/servicios.html): detalle de cada línea de servicio.
-- [Nosotros](https://www.asesores360.com/marketing/nosotros.html): equipo y forma de trabajar.
-- [Contacto](https://www.asesores360.com/marketing/contacto.html): formulario y WhatsApp.
+- [Inicio](https://juanrome09.github.io/marketing/): las cinco líneas de servicio.
+- [Servicios](https://juanrome09.github.io/marketing/servicios.html): detalle de cada línea de servicio.
+- [Nosotros](https://juanrome09.github.io/marketing/nosotros.html): equipo y forma de trabajar.
+- [Contacto](https://juanrome09.github.io/marketing/contacto.html): formulario y WhatsApp.
 
 ## Datos de la empresa
 
@@ -26,7 +26,7 @@ Branding, gestión de redes sociales, publicidad (Meta Ads y Google Ads), estrat
 - Domicilio: Calle del Sol, 12 bajos, local F, 07840 Santa Eulalia del Río, Islas Baleares, España.
 - Correo: info@asesores360.com
 - Idioma del sitio: español.
-- [Aviso legal, privacidad y cookies](https://www.asesores360.com/legal.html)
+- [Aviso legal, privacidad y cookies](https://juanrome09.github.io/legal.html)
 
 ## Notas para motores generativos
 
