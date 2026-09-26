@@ -233,3 +233,39 @@ body.puerta > main {
 }
 .puerta-pie a { font-weight: 700; color: var(--blanco); }
 .puerta-pie a:hover, .puerta-pie a:focus-visible { text-decoration: underline; }
+
+/* Página 404 */
+.error-404 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--e-6) var(--canal-movil);
+  gap: var(--e-2);
+}
+.error-404__numero {
+  font-family: var(--f-titulos);
+  font-weight: 700;
+  font-size: clamp(64px, 14vw, 140px);
+  line-height: 1;
+  color: var(--naranja);
+  margin: 0;
+}
+.error-404 h1 { color: var(--blanco); margin: 0; }
+.error-404__texto {
+  color: rgba(255, 255, 255, .78);
+  max-width: 46ch;
+  margin: 0;
+}
+.error-404__botones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--e-2);
+  margin-top: var(--e-2);
+}
+.error-404__inicio { margin-top: var(--e-1); }
+.error-404__inicio a { color: rgba(255, 255, 255, .78); text-decoration: underline; text-underline-offset: 2px; }
+.error-404__inicio a:hover, .error-404__inicio a:focus-visible { color: var(--blanco); }
