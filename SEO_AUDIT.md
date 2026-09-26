@@ -3,7 +3,7 @@
 **Fecha del informe original:** 2026-09-26 · **Última actualización:** 2026-09-26 (Fase 3, quick wins + bloque técnico aplicados) · **Rama:** `seo/optimizacion` · **Estado del sitio:** no publicado (dominio aún sin conectar en el DNS real; `CNAME` ya está en el repo)
 **Autor:** Auditoría técnica asistida (Claude Code), sobre el repo real. Nada de lo que sigue es especulativo salvo que se indique explícitamente como "a confirmar".
 
-> **Estado de la Fase 3 (ver sección 6 para el detalle):** aplicados todos los quick wins y el bloque técnico que no requerían tu elección explícita. Quedan 3 decisiones pendientes de tu respuesta antes de tocarlas: colores de contraste (2.4.3), contenido del home-selector (2.1.3) y la forma final del `telephone` en JSON-LD (2.5.7). El resto de esta sección 1 y la sección 2 se dejan tal cual se escribieron en la auditoría original — el estado real y actualizado está en la sección 6.
+> **Estado de la Fase 3 (ver sección 6 para el detalle):** completa. Se aplicaron todos los quick wins, el bloque técnico y las 3 decisiones que requerían tu elección (contraste, home-selector, telephone en JSON-LD). Queda un hallazgo nuevo sin resolver (contraste en 3 chips más de Marketing, sección 6.3) y una pregunta abierta sobre quién gestiona el DNS (sección 6.4) — ninguno bloquea pasar a la Fase 4. El resto de esta sección 1 y la sección 2 se dejan tal cual se escribieron en la auditoría original — el estado real y actualizado está en la sección 6.
 
 ---
 
@@ -418,48 +418,27 @@ Al implementar el enlazado de `@id` (bloque técnico) encontré que el hallazgo 
 
 Todos los bloques JSON-LD se validaron con un parser real (`JSON.parse`) tras cada cambio — los 10+ bloques siguen siendo JSON válido. Cada bloque de imágenes y el 404 se verificaron visualmente en el navegador.
 
-### 6.3 Pendiente — 3 decisiones que esperan tu respuesta (no se tocó nada de esto)
+### 6.3 Las 3 decisiones — ya aplicadas con tu aprobación
 
-**A) Contraste de color (2.4.3)** — opciones con ratio real calculado (fórmula WCAG, luminancia relativa):
+Elegiste las 3 opciones recomendadas; ya están implementadas y verificadas:
 
-*Badge naranja del scroll + botón primario de Contacto (texto blanco sobre `#E95117`, ratio actual 3.71:1, necesita 4.5:1):*
+- **Contraste naranja:** opción A (`#C43F0F`, 5.17:1) aplicada vía una nueva variable `--naranja-texto` (no se tocó `--naranja`, que sigue siendo el vivo de marca en el resto de usos). Commit `1b6cd69`.
+- **Contraste turquesa:** opción D (`#2F7677`, 4.57:1) aplicada solo al primer chip de servicios de Marketing. Mismo commit.
+- **Home-selector:** línea añadida al footer de la puerta tal cual se propuso. Commit `145c683`.
+- **`telephone` en JSON-LD:** normalizado en las 5 entidades. Commit `1b5e5f6` (el cambio de `index.html` quedó, sin querer, agrupado dentro del commit `145c683` del footer en vez de en el suyo propio — el código es correcto en ambos casos, es solo el mensaje de commit el que no lo menciona).
 
-| Opción | Color de fondo propuesto | Ratio vs. blanco | Cómo se ve |
-|---|---|---|---|
-| A | `#C43F0F` (naranja −12% luminosidad) | **5.17:1** ✅ | Prácticamente el mismo naranja, un pelín más profundo |
-| B | `#B23A0E` (naranja −20%) | **5.99:1** ✅ | Un poco más tirando a terracota, más margen de sobra |
-| C | `#0B3A54` (azul-hondo de marca, en vez de naranja) | **12.02:1** ✅✅ | Cambia el acento de estos 3 elementos de naranja a azul — más contraste que necesario, pero coherente con el resto de azules del sitio |
+**Verificación con Lighthouse tras el fix:** `asesoria/` y `asesoria/contacto.html` pasan de 96 a **100** de Accesibilidad. `marketing/servicios.html` se queda en 96 porque el fix solo tocó el chip #1 (turquesa) — ver el hallazgo nuevo abajo.
 
-*Chips de servicios de Marketing (texto `#F3EEE7` sobre turquesa `#51BCBD`, ratio actual 1.96:1):*
+**Hallazgo nuevo, sin resolver todavía:** al revisar el resto de chips de `marketing/servicios.html` encontré que **3 de los otros 4 colores de acento tienen el mismo problema de contraste** (el círculo con texto claro):
 
-| Opción | Color de fondo propuesto | Ratio vs. texto claro actual | Cómo se ve |
-|---|---|---|---|
-| D | `#2F7677` (turquesa −25%) | **4.57:1** ✅ | Mismo turquesa, notablemente más oscuro |
-| E | `#245B5C` (turquesa −35%) | **6.67:1** ✅✅ | Más oscuro todavía, casi un petróleo |
+| Chip | Color | Ratio actual |
+|---|---|---|
+| 02 — Redes (verde-lima `#8DC04A`) | 1.86:1 | ❌ |
+| 03 — Publicidad (verde-mar `#1BA074`) | 2.88:1 | ❌ |
+| 04 — Estrategia (violeta `#A13C8F`) | 5.11:1 | ✅ (ya cumple) |
+| 05 — Web (dorado `#D1970F`) | 2.23:1 | ❌ |
 
-Mi recomendación: **A** para el naranja (cambio casi imperceptible) y **D** para el turquesa (el mínimo cambio que ya cumple). Decime cuáles aplico.
-
-**B) Contenido del home-selector (2.1.3)** — propuesta de texto (sin cambiar el diseño de las dos mitades):
-
-Añadir una sola línea, discreta, dentro del `<footer class="puerta-pie">` ya existente (donde hoy solo hay dirección/email/teléfono/aviso legal), como primer elemento del footer:
-
-> "Asesoría fiscal, contable, laboral y societaria — y marketing digital — bajo una misma marca en Ibiza."
-
-Por qué ahí y no en el centro de la pantalla: el footer ya es donde vive el texto "secundario" de esta página (dirección, contacto), así que sumar una frase de contexto no compite visualmente con el selector de dos mitades, que sigue siendo el 100% del foco. Si preferís otra ubicación (p. ej. como subtítulo bajo el logo, arriba del todo) o otro texto, decímelo y lo ajusto antes de implementarlo.
-
-**C) `telephone` en JSON-LD (2.5.7)** — propuesta final para las 5 entidades (`Organization`, 2×`AccountingService`, 2×`MarketingAgency`):
-
-```json
-"telephone": "+34971339488",
-"contactPoint": {
-  "@type": "ContactPoint",
-  "contactType": "customer service",
-  "telephone": "+34971339488",
-  "url": "https://wa.me/34649032854"
-}
-```
-
-Es decir: el fijo (`971339488`) pasa a ser el `telephone` principal en las 5 entidades (hoy la `Organization` de la puerta usa el móvil de WhatsApp), y añado un `contactPoint` con ese mismo fijo más la `url` de WhatsApp — schema.org no tiene un tipo dedicado a "WhatsApp", así que la vía estándar es exponer el enlace `wa.me` como URL de contacto dentro del `contactPoint`, no como un segundo `telephone`. Decime si aplico esto tal cual.
+No toqué esto porque tu aprobación fue específicamente para el turquesa — si querés que lo corrija igual (mismo criterio: oscurecer cada color ~25-30% solo en este círculo, sin tocar las variables `--verde`/`--verde-mar`/`--dorado` compartidas), decímelo y te paso las 3 opciones con hex + ratio como hice con el turquesa.
 
 ### 6.4 Instrucciones de DNS (para el registrador)
 
@@ -508,8 +487,11 @@ Nota: estas 4 IPs son las que documenta GitHub para Pages y llevan años estable
 
 El cambio grande es exactamente donde se esperaba: `asesoria/servicios.html` pasa de ser la peor página del sitio a estar en línea con el resto (LCP de 25.7s a 3.2s, un 94% menos de peso). Las variaciones de ±1 punto en el resto son ruido normal de Lighthouse entre corridas, no una regresión real. `marketing/` bajó 738KB de peso total (por las fotos optimizadas que usa) aunque su score de Performance no cambió — su cuello de botella no eran esas imágenes.
 
-Accesibilidad no cambió en ninguna página (96-100, con los mismos 3 fallos de contraste ya documentados) porque ese fix está pendiente de tu elección (6.3-A).
+Accesibilidad en esta tabla (antes de los 3 fixes de la sección 6.3) seguía en 96-100 con los 3 fallos de contraste documentados. Tras aplicar el fix elegido, **una segunda corrida confirma:** `asesoria/` y `asesoria/contacto.html` pasan de 96 a **100**. `marketing/servicios.html` se queda en 96 — el fix solo cubrió uno de los 5 chips, ver el hallazgo nuevo en 6.3.
 
 ### 6.6 Qué falta para cerrar la Fase 3
 
-Solo tus respuestas a 6.3 (A, B, C) y a "quién gestiona el DNS" en 6.4. En cuanto las tenga, aplico esos 3 cambios, corro Lighthouse una vez más si el de contraste toca CSS visible, y quedamos listos para la Fase 4.
+Solo dos cosas, ninguna bloqueante para pasar a la Fase 4 si preferís seguir ahora:
+
+1. Quién gestiona el DNS (pregunta al final de 6.4), para coordinar la conexión real del dominio.
+2. Si querés que corrija también los otros 3 chips de Marketing con el mismo problema de contraste (hallazgo nuevo en 6.3) — puedo pasarte las opciones de color en cuanto lo confirmes.
