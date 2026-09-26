@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarProcesoConScroll();
   iniciarSombraTarjetas();
   iniciarChatWhatsapp();
+  iniciarBusqueda();
 });
 
 /* Nav: encoge la cabecera al hacer scroll */
@@ -696,5 +697,136 @@ function iniciarChatWhatsapp() {
     if (!texto) { campo.focus(); return; }
     window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(texto)}`, '_blank', 'noopener');
     cerrarChat();
+  });
+}
+
+/* Búsqueda: índice a mano de las páginas y secciones de cada web —
+   no hay backend ni build, así que se mantiene aquí y se actualiza
+   a mano si se añade o cambia una página. */
+const INDICE_BUSQUEDA = [
+  // Asesoría
+  { sitio: 'asesoria', titulo: 'Inicio', ruta: '/asesoria/', palabras: 'inicio asesoria fiscal contable laboral societaria un despacho cuatro especialidades' },
+  { sitio: 'asesoria', titulo: 'Todos los servicios', ruta: '/asesoria/servicios.html', palabras: 'servicios asesoria' },
+  { sitio: 'asesoria', titulo: 'Asesoría fiscal', ruta: '/asesoria/servicios.html#fiscal', palabras: 'fiscal impuestos iva irpf modelo 130 303 declaracion renta sociedades hacienda' },
+  { sitio: 'asesoria', titulo: 'Gestión contable', ruta: '/asesoria/servicios.html#contable', palabras: 'contable contabilidad libros oficiales cuentas anuales' },
+  { sitio: 'asesoria', titulo: 'Constitución de sociedades', ruta: '/asesoria/servicios.html#societaria', palabras: 'societaria constituir sociedad alta autonomos sl' },
+  { sitio: 'asesoria', titulo: 'Asesoría laboral', ruta: '/asesoria/servicios.html#laboral', palabras: 'laboral nominas contratos seguros sociales' },
+  { sitio: 'asesoria', titulo: 'Calendario fiscal', ruta: '/asesoria/servicios.html#calendario-fiscal', palabras: 'calendario fiscal plazos trimestral fechas' },
+  { sitio: 'asesoria', titulo: 'Quiénes somos', ruta: '/asesoria/nosotros.html', palabras: 'quienes somos nosotros' },
+  { sitio: 'asesoria', titulo: 'Nuestro equipo', ruta: '/asesoria/nosotros.html#equipo', palabras: 'equipo trato directo sin intermediarios' },
+  { sitio: 'asesoria', titulo: 'Nuestros valores', ruta: '/asesoria/nosotros.html#valores', palabras: 'valores mision vision' },
+  { sitio: 'asesoria', titulo: 'Dónde estamos', ruta: '/asesoria/nosotros.html#donde-estamos', palabras: 'donde estamos ubicacion direccion oficina mapa santa eulalia' },
+  { sitio: 'asesoria', titulo: 'Contacto', ruta: '/asesoria/contacto.html', palabras: 'contacto whatsapp telefono formulario horario' },
+  // Marketing
+  { sitio: 'marketing', titulo: 'Inicio', ruta: '/marketing/', palabras: 'inicio marketing branding redes publicidad estrategia web' },
+  { sitio: 'marketing', titulo: 'Todos los servicios', ruta: '/marketing/servicios.html', palabras: 'servicios marketing' },
+  { sitio: 'marketing', titulo: 'Branding e identidad visual', ruta: '/marketing/servicios.html#servicio-01', palabras: 'branding identidad visual logo marca' },
+  { sitio: 'marketing', titulo: 'Gestión de redes sociales', ruta: '/marketing/servicios.html#servicio-02', palabras: 'redes sociales instagram contenido community manager' },
+  { sitio: 'marketing', titulo: 'Publicidad, Meta Ads y Google Ads', ruta: '/marketing/servicios.html#servicio-03', palabras: 'publicidad ads meta google anuncios campañas' },
+  { sitio: 'marketing', titulo: 'Estrategia de marketing digital', ruta: '/marketing/servicios.html#servicio-04', palabras: 'estrategia marketing digital plan' },
+  { sitio: 'marketing', titulo: 'Diseño y desarrollo web', ruta: '/marketing/servicios.html#servicio-05', palabras: 'diseño desarrollo web pagina sitio' },
+  { sitio: 'marketing', titulo: 'Quiénes somos', ruta: '/marketing/nosotros.html', palabras: 'quienes somos nosotros' },
+  { sitio: 'marketing', titulo: 'Misión y visión', ruta: '/marketing/nosotros.html#mision-vision', palabras: 'mision vision' },
+  { sitio: 'marketing', titulo: 'Valores', ruta: '/marketing/nosotros.html#valores', palabras: 'valores' },
+  { sitio: 'marketing', titulo: 'Dónde trabajamos', ruta: '/marketing/nosotros.html#donde-trabajamos', palabras: 'donde trabajamos oficina ubicacion santa eulalia' },
+  { sitio: 'marketing', titulo: 'Contacto', ruta: '/marketing/contacto.html', palabras: 'contacto whatsapp formulario' },
+];
+
+/* Quita tildes para que buscar "asesoria" encuentre "Asesoría" */
+function normalizarBusqueda(texto) {
+  return texto
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '');
+}
+
+/* Nav: barra de búsqueda rápida (overlay tipo "command palette") */
+function iniciarBusqueda() {
+  const overlay = document.getElementById('busqueda-overlay');
+  const boton = document.querySelector('[data-busqueda-abrir]');
+  const botonCerrar = document.querySelector('[data-busqueda-cerrar]');
+  const input = document.getElementById('busqueda-input');
+  const lista = document.getElementById('busqueda-resultados');
+  const vacio = document.getElementById('busqueda-vacio');
+  if (!overlay || !boton || !input || !lista || !vacio) return;
+
+  const sitioActual = document.body.classList.contains('marketing') ? 'marketing' : 'asesoria';
+  const resultados = INDICE_BUSQUEDA.filter((item) => item.sitio === sitioActual);
+
+  let ultimoFoco = null;
+
+  const abrirBusqueda = () => {
+    ultimoFoco = document.activeElement;
+    overlay.setAttribute('data-abierto', 'true');
+    document.body.style.overflow = 'hidden';
+    input.value = '';
+    renderizar([]);
+    input.focus();
+  };
+
+  const cerrarBusqueda = () => {
+    overlay.setAttribute('data-abierto', 'false');
+    document.body.style.overflow = '';
+    if (ultimoFoco) ultimoFoco.focus();
+  };
+
+  const renderizar = (items) => {
+    lista.innerHTML = '';
+    items.forEach((item) => {
+      const li = document.createElement('li');
+      li.className = 'busqueda-panel__resultado';
+      const a = document.createElement('a');
+      a.href = item.ruta;
+      a.innerHTML = `<span class="busqueda-panel__resultado-titulo"></span><span class="busqueda-panel__resultado-ruta"></span>`;
+      a.querySelector('.busqueda-panel__resultado-titulo').textContent = item.titulo;
+      a.querySelector('.busqueda-panel__resultado-ruta').textContent = item.ruta;
+      li.appendChild(a);
+      lista.appendChild(li);
+    });
+  };
+
+  const buscar = () => {
+    const consulta = normalizarBusqueda(input.value.trim());
+    if (!consulta) {
+      renderizar([]);
+      vacio.hidden = true;
+      return;
+    }
+    const coincidencias = resultados.filter((item) =>
+      normalizarBusqueda(`${item.titulo} ${item.palabras}`).includes(consulta)
+    );
+    renderizar(coincidencias);
+    vacio.hidden = coincidencias.length > 0;
+  };
+
+  boton.addEventListener('click', abrirBusqueda);
+  if (botonCerrar) botonCerrar.addEventListener('click', cerrarBusqueda);
+
+  overlay.addEventListener('click', (evento) => {
+    if (evento.target === overlay) cerrarBusqueda();
+  });
+
+  input.addEventListener('input', buscar);
+
+  overlay.addEventListener('keydown', (evento) => {
+    if (evento.key === 'Escape') {
+      cerrarBusqueda();
+      return;
+    }
+    if (evento.key === 'Enter') {
+      const primero = lista.querySelector('a');
+      if (primero) window.location.href = primero.getAttribute('href');
+    }
+  });
+
+  /* Atajo de teclado: "/" abre la búsqueda, salvo si ya se está
+     escribiendo en un campo de texto */
+  document.addEventListener('keydown', (evento) => {
+    if (evento.key !== '/' || overlay.getAttribute('data-abierto') === 'true') return;
+    const enCampo = ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName) ||
+      document.activeElement.isContentEditable;
+    if (enCampo) return;
+    evento.preventDefault();
+    abrirBusqueda();
   });
 }

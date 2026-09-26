@@ -706,6 +706,122 @@ p {
   opacity: .85;
 }
 
+/* Variante compacta: para páginas sin bloque de cierre antes del footer,
+   donde no hace falta un pie tan alto */
+.pie--compacto .pie__interior { padding-block: var(--e-4); gap: var(--e-4); }
+.pie--compacto .pie__legal { padding-block: var(--e-2); }
+
+/* Nav: botón de búsqueda, siempre visible (a diferencia de .nav-flotante__nav,
+   que se oculta en móvil, y de .nav-flotante__movil-abrir, que se oculta en
+   escritorio) — agrupados para que ambos se vean juntos a la derecha del nav */
+.nav-flotante__acciones {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.busqueda-boton {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--dur-hover) ease;
+}
+.busqueda-boton svg { stroke: var(--blanco); }
+
+/* Búsqueda: overlay a pantalla completa con un panel centrado tipo "command palette" */
+.busqueda-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(10, 10, 10, .55);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12vh 20px 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .2s ease;
+}
+.busqueda-overlay[data-abierto="true"] {
+  opacity: 1;
+  visibility: visible;
+}
+.busqueda-panel {
+  width: 100%;
+  max-width: 560px;
+  background: var(--blanco);
+  border-radius: var(--r-panel);
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .5);
+  overflow: hidden;
+  transform: translateY(-12px);
+  transition: transform .2s ease;
+}
+.busqueda-overlay[data-abierto="true"] .busqueda-panel { transform: translateY(0); }
+.busqueda-panel__cabecera {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--gris-claro);
+}
+.busqueda-panel__icono { flex-shrink: 0; stroke: var(--gris-tinta); opacity: .5; }
+.busqueda-panel__input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font: inherit;
+  font-size: 17px;
+  color: var(--gris-tinta);
+  background: none;
+}
+.busqueda-panel__input::-webkit-search-cancel-button { display: none; }
+.busqueda-panel__cerrar {
+  flex-shrink: 0;
+  display: flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--gris-tinta);
+  opacity: .6;
+  transition: background-color var(--dur-hover) ease, opacity var(--dur-hover) ease;
+}
+.busqueda-panel__cerrar svg { stroke: currentColor; }
+.busqueda-panel__cerrar:hover, .busqueda-panel__cerrar:focus-visible {
+  background: var(--gris-claro);
+  opacity: 1;
+}
+.busqueda-panel__resultados {
+  max-height: 50vh;
+  overflow-y: auto;
+  padding: 8px;
+}
+.busqueda-panel__resultados:empty { padding: 0; }
+.busqueda-panel__resultado a {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: var(--gris-tinta);
+}
+.busqueda-panel__resultado a:hover,
+.busqueda-panel__resultado a:focus-visible { background: var(--gris-claro); }
+.busqueda-panel__resultado-titulo { font-weight: 700; }
+.busqueda-panel__resultado-ruta { font-size: var(--menor); opacity: .6; }
+.busqueda-panel__vacio {
+  padding: 24px 20px;
+  text-align: center;
+  color: var(--gris-tinta);
+  opacity: .6;
+}
+@media (prefers-reduced-motion: reduce) {
+  .busqueda-overlay, .busqueda-panel { transition: none; }
+}
+
 /* Placeholder de imagen (contenido pendiente) */
 .placeholder-img {
   position: relative;

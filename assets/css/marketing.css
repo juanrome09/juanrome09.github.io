@@ -375,6 +375,14 @@ body.marketing .nav-flotante--oscura .nav-flotante__movil-abrir:hover,
 body.marketing .nav-flotante--oscura .nav-flotante__movil-abrir:focus-visible { background: var(--mk-arena); }
 @media (min-width: 900px) { .nav-flotante__movil-abrir { display: none; } }
 
+.busqueda-boton { background: var(--mk-acento); }
+.busqueda-boton svg { stroke: var(--mk-texto-claro); }
+.busqueda-boton:hover, .busqueda-boton:focus-visible { background: var(--mk-tinta); }
+body.marketing .nav-flotante--oscura .busqueda-boton { background: var(--mk-texto-claro); }
+body.marketing .nav-flotante--oscura .busqueda-boton svg { stroke: var(--mk-acento); }
+body.marketing .nav-flotante--oscura .busqueda-boton:hover,
+body.marketing .nav-flotante--oscura .busqueda-boton:focus-visible { background: var(--mk-arena); }
+
 .boton-mk-coral {
   display: inline-flex;
   align-items: center;
