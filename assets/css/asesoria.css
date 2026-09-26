@@ -381,16 +381,12 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
 .servicio-grande {
   position: relative;
   isolation: isolate;
-  background: var(--blanco);
   border-radius: var(--r-panel);
-  padding: var(--e-4);
   counter-increment: servicio;
-  display: flex;
-  flex-direction: column;
   transition: transform var(--dur-hover) ease;
 }
-.servicio-grande > * { position: relative; z-index: 1; }
-/* Escuadra decorativa: solo una esquina, no la tarjeta entera */
+/* Escuadra decorativa: solo una esquina, no la tarjeta entera.
+   Vive en el elemento exterior (sin overflow) para poder asomar fuera de la tarjeta. */
 .servicio-grande::before {
   content: '';
   position: absolute;
@@ -406,18 +402,33 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   border-left: 2px solid var(--azul-hondo);
   border-radius: 10px 0 0 0;
 }
+.servicio-grande:not(.servicio-grande--destacado)::before {
+  right: -14px;
+  border-right: 2px solid var(--azul-hondo);
+  border-radius: 0 10px 0 0;
+}
+/* Envoltorio interior: aquí viven el contenido y el número gigante, con
+   overflow oculto para que el número quede recortado por las esquinas
+   redondeadas sin necesidad de ocultar la escuadra del elemento exterior */
+.servicio-grande__interior {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: inherit;
+  height: 100%;
+  background: var(--blanco);
+  padding: var(--e-4);
+  display: flex;
+  flex-direction: column;
+}
+.servicio-grande__interior > * { position: relative; z-index: 1; }
 /* La tarjeta destacada abarca 3 filas: ancla el enlace abajo del todo
    para no dejar un hueco muerto al final de la tarjeta */
 .servicio-grande--destacado .servicio-grande__enlace {
   margin-top: auto;
   padding-top: var(--e-4);
 }
-.servicio-grande:not(.servicio-grande--destacado)::before {
-  right: -14px;
-  border-right: 2px solid var(--azul-hondo);
-  border-radius: 0 10px 0 0;
-}
-.servicio-grande::after {
+.servicio-grande__interior::after {
   content: counter(servicio, decimal-leading-zero);
   position: absolute;
   right: -6px;
@@ -429,11 +440,19 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   line-height: 1;
   opacity: .05;
   pointer-events: none;
-  transition: transform .4s ease, opacity .4s ease;
+  transition: transform .4s ease, opacity .4s ease, color .3s ease;
 }
 @media (hover: hover) and (pointer: fine) {
   .servicio-grande:hover { transform: translateY(-4px); }
-  .servicio-grande:hover::after { transform: translate(6px, 4px); }
+  body.asesoria .servicio-grande:hover .servicio-grande__interior::after {
+    transform: translate(6px, 4px);
+    color: var(--azul-acero);
+    opacity: .16;
+  }
+  body.asesoria .servicio-grande--destacado:hover .servicio-grande__interior::after {
+    color: var(--naranja);
+    opacity: .16;
+  }
 }
 .servicio-grande__icono {
   display: inline-flex;
@@ -523,26 +542,50 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   gap: var(--e-4);
 }
 .proceso__paso {
+  position: relative;
   background: var(--blanco);
   border-radius: var(--r-panel);
   padding: var(--e-5);
   border: 1px solid transparent;
-  transition: border-color .3s ease, box-shadow .3s ease;
+  transition: border-color .35s ease, box-shadow .35s ease, background-color .35s ease;
 }
-/* Ventana activa según el scroll — estilo provisional, pendiente del diseño definitivo */
+/* Escuadra en la esquina, a juego con "Un despacho, cuatro especialidades" */
+.proceso__paso::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  width: 44px;
+  height: 44px;
+  border-top: 2px solid var(--azul-hondo);
+  border-left: 2px solid var(--azul-hondo);
+  border-radius: 10px 0 0 0;
+  z-index: 2;
+  pointer-events: none;
+}
+/* Cada bloque de scroll tiene su propio acento: naranja en "A quién ayudamos",
+   azul-acero en "De la primera duda..." */
+#sectores { --acento: var(--naranja); --acento-rgb: var(--naranja-rgb); --acento-fondo: var(--lavado-naranja); }
+#como-trabajamos { --acento: var(--azul-acero); --acento-rgb: var(--azul-acero-rgb); --acento-fondo: var(--lavado-azul); }
+
+/* Ventana activa según el scroll: la tarjeta se tiñe del acento del bloque
+   y su número crece, para que avanzar en el scroll se note de verdad */
 .proceso__paso--activo {
-  border-color: rgba(var(--azul-acero-rgb), .35);
+  border-color: rgba(var(--acento-rgb), .4);
   box-shadow: 0 20px 40px -28px rgba(11, 58, 84, .35);
 }
-#sectores .proceso__paso--activo { border-color: rgba(var(--naranja-rgb), .45); }
 .proceso__paso__numero {
   display: block;
   font-family: var(--f-titulos);
   font-weight: 700;
   font-size: clamp(40px, 5vw, 64px);
   line-height: 1;
-  color: var(--azul-acero);
+  color: var(--acento, var(--azul-acero));
   margin-bottom: var(--e-2);
+  transition: font-size .4s ease, color .4s ease;
+}
+.proceso__paso--activo .proceso__paso__numero {
+  font-size: clamp(56px, 7vw, 92px);
 }
 .proceso__paso h3 { margin-bottom: 8px; }
 .proceso__paso__extra { margin-top: var(--e-2); }
@@ -913,25 +956,27 @@ body.asesoria .boton-oscuro:focus-visible {
 body.asesoria .servicio-grande {
   --sx: 0px;
   --sy: 0px;
+}
+body.asesoria .servicio-grande .servicio-grande__interior {
   background: var(--dt-card);
   box-shadow: var(--dt-sombra);
 }
 @media (hover: hover) and (pointer: fine) {
-  body.asesoria .servicio-grande:hover {
+  body.asesoria .servicio-grande:hover .servicio-grande__interior {
     box-shadow: calc(var(--sx) * -1) calc(22px - var(--sy)) 44px -14px rgba(0, 0, 0, .16), 0 0 0 1px rgba(var(--azul-acero-rgb), .22);
   }
 }
-body.asesoria .servicio-grande::after { color: var(--dt-ink); }
+body.asesoria .servicio-grande__interior::after { color: var(--dt-ink); }
 body.asesoria .servicio-grande__enlace { color: var(--dt-ink); }
 body.asesoria .servicio-grande__extra { color: var(--dt-slate); }
 
 /* Bloque dominante (Asesoría fiscal): tinta oscura, acento naranja */
-body.asesoria .servicio-grande--destacado {
+body.asesoria .servicio-grande--destacado .servicio-grande__interior {
   background: var(--dt-ink);
   box-shadow: var(--dt-sombra);
 }
 @media (hover: hover) and (pointer: fine) {
-  body.asesoria .servicio-grande--destacado:hover {
+  body.asesoria .servicio-grande--destacado:hover .servicio-grande__interior {
     box-shadow: calc(var(--sx) * -1) calc(22px - var(--sy)) 44px -14px rgba(0, 0, 0, .34), 0 0 0 1px rgba(var(--azul-acero-rgb), .4);
   }
 }
@@ -941,10 +986,11 @@ body.asesoria .servicio-grande--destacado .menor,
 body.asesoria .servicio-grande--destacado .servicio-grande__extra { color: rgba(255, 255, 255, .7); }
 body.asesoria .servicio-grande--destacado .servicio-grande__icono { background: var(--naranja); }
 body.asesoria .servicio-grande--destacado .servicio-grande__icono svg { stroke: #fff; }
-body.asesoria .servicio-grande--destacado::after { color: #fff; opacity: .06; }
+body.asesoria .servicio-grande--destacado .servicio-grande__interior::after { color: #fff; opacity: .06; }
 
 /* Cómo trabajamos — sticky scroll */
 body.asesoria .proceso__paso { background: var(--dt-card); box-shadow: var(--dt-sombra); }
+body.asesoria .proceso__paso--activo { background: var(--acento-fondo); }
 body.asesoria .proceso__paso__extra,
 body.asesoria .proceso__pasos p:not(.menor) { color: var(--dt-slate); }
 body.asesoria .proceso__marcador { color: var(--dt-slate); }
@@ -1054,11 +1100,6 @@ body.asesoria main > section:has(> .marca-agua) > *:not(.marca-agua) {
 body.asesoria footer.pie {
   background: linear-gradient(135deg, #000000, var(--azul-hondo));
   font-family: var(--f-cuerpo);
-}
-/* Eslogan cuando el footer no viene precedido de un cierre-asesoria (p. ej. Contacto) */
-body.asesoria footer.pie > .cierre-asesoria__contenido {
-  text-align: center;
-  padding-block: var(--e-6) var(--e-3);
 }
 body.asesoria footer.pie h3 { font-family: var(--f-titulos); color: #fff; }
 body.asesoria .pie__redes a { border-radius: 10px; }
@@ -1308,11 +1349,27 @@ body.asesoria main > section.servicios-hero:first-child {
 }
 @media (min-width: 900px) { .faq-grid { grid-template-columns: .8fr 1.2fr; gap: var(--e-6); } }
 body.asesoria .faq-grid__intro {
-  background: var(--dt-card);
+  position: relative;
+  background: var(--azul-hondo);
   border-radius: var(--r-panel);
   box-shadow: var(--dt-sombra);
   padding: var(--e-5);
 }
+body.asesoria .faq-grid__intro::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  width: 44px;
+  height: 44px;
+  border-top: 2px solid var(--naranja);
+  border-left: 2px solid var(--naranja);
+  border-radius: 10px 0 0 0;
+  z-index: 2;
+  pointer-events: none;
+}
+body.asesoria .faq-grid__intro h2 { color: #fff; }
+body.asesoria .faq-grid__intro p { color: rgba(255, 255, 255, .75); }
 @media (min-width: 900px) {
   body.asesoria .faq-grid__intro { position: sticky; top: 140px; }
 }
@@ -1323,7 +1380,7 @@ body.asesoria .faq-grid__intro {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: rgba(var(--azul-acero-rgb), .12);
+  background: rgba(255, 255, 255, .15);
   margin-bottom: var(--e-3);
 }
 .faq-grid__intro__icono svg { width: 22px; height: 22px; }
