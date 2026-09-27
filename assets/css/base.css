@@ -711,13 +711,16 @@ p {
 .pie--compacto .pie__interior { padding-block: var(--e-4); gap: var(--e-4); }
 .pie--compacto .pie__legal { padding-block: var(--e-2); }
 
-/* Nav: botón de búsqueda, siempre visible (a diferencia de .nav-flotante__nav,
-   que se oculta en móvil, y de .nav-flotante__movil-abrir, que se oculta en
-   escritorio) — agrupados para que ambos se vean juntos a la derecha del nav */
-.nav-flotante__acciones {
+/* Nav: envoltorio del lado derecho (búsqueda + nav + botón de menú móvil).
+   Antes .nav-flotante repartía 3 hijos con justify-content:space-between,
+   lo que forzaba dos huecos iguales y dejaba un espacio enorme antes del
+   icono de búsqueda (que era el único hijo visible del 3º grupo en
+   escritorio). Con un solo envoltorio, .nav-flotante vuelve a tener 2
+   hijos (logo + este) y ese hueco forzado desaparece. */
+.nav-flotante__derecha {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--e-3);
 }
 .busqueda-boton {
   display: flex;
@@ -726,6 +729,7 @@ p {
   border-radius: 50%;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   transition: background-color var(--dur-hover) ease;
 }
 .busqueda-boton svg { stroke: var(--blanco); }
@@ -809,8 +813,14 @@ p {
   color: var(--gris-tinta);
 }
 .busqueda-panel__resultado a:hover,
-.busqueda-panel__resultado a:focus-visible { background: var(--gris-claro); }
+.busqueda-panel__resultado a:focus-visible,
+.busqueda-panel__resultado[aria-selected="true"] a { background: var(--gris-claro); }
 .busqueda-panel__resultado-titulo { font-weight: 700; }
+.busqueda-panel__resultado-titulo mark {
+  background: none;
+  color: var(--naranja-texto);
+  font-weight: 700;
+}
 .busqueda-panel__resultado-ruta { font-size: var(--menor); opacity: .6; }
 .busqueda-panel__vacio {
   padding: 24px 20px;

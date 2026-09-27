@@ -732,12 +732,31 @@ const INDICE_BUSQUEDA = [
   { sitio: 'marketing', titulo: 'Contacto', ruta: '/marketing/contacto.html', palabras: 'contacto whatsapp formulario' },
 ];
 
-/* Quita tildes para que buscar "asesoria" encuentre "Asesoría" */
+/* Quita tildes (reemplazo letra a letra, no NFD, para que el índice de
+   una coincidencia sea el mismo en el texto normalizado y en el original
+   — así se puede resaltar la coincidencia sin desalinear posiciones) */
 function normalizarBusqueda(texto) {
-  return texto
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '');
+  const mapa = { á: 'a', é: 'e', í: 'i', ó: 'o', ú: 'u', ü: 'u', ñ: 'n' };
+  return texto.toLowerCase().replace(/[áéíóúüñ]/g, (c) => mapa[c] || c);
+}
+
+function escaparHtml(texto) {
+  const div = document.createElement('div');
+  div.textContent = texto;
+  return div.innerHTML;
+}
+
+/* Envuelve en <mark> la primera coincidencia de `consulta` (ya
+   normalizada) dentro de `texto`, conservando tildes/mayúsculas del
+   texto original */
+function resaltarCoincidencia(texto, consulta) {
+  if (!consulta) return escaparHtml(texto);
+  const indice = normalizarBusqueda(texto).indexOf(consulta);
+  if (indice === -1) return escaparHtml(texto);
+  const antes = texto.slice(0, indice);
+  const medio = texto.slice(indice, indice + consulta.length);
+  const despues = texto.slice(indice + consulta.length);
+  return `${escaparHtml(antes)}<mark>${escaparHtml(medio)}</mark>${escaparHtml(despues)}`;
 }
 
 /* Nav: barra de búsqueda rápida (overlay tipo "command palette") */
@@ -754,13 +773,67 @@ function iniciarBusqueda() {
   const resultados = INDICE_BUSQUEDA.filter((item) => item.sitio === sitioActual);
 
   let ultimoFoco = null;
+  let actuales = [];
+  let indiceActivo = -1;
+
+  const focosDelPanel = () =>
+    Array.from(overlay.querySelectorAll('a, button, input')).filter((el) => el.offsetParent !== null);
+
+  const marcarActivo = (nuevoIndice) => {
+    const opciones = lista.querySelectorAll('.busqueda-panel__resultado');
+    opciones.forEach((li) => li.setAttribute('aria-selected', 'false'));
+    indiceActivo = nuevoIndice;
+    if (indiceActivo < 0 || indiceActivo >= opciones.length) {
+      input.removeAttribute('aria-activedescendant');
+      return;
+    }
+    const activa = opciones[indiceActivo];
+    activa.setAttribute('aria-selected', 'true');
+    input.setAttribute('aria-activedescendant', activa.id);
+    activa.scrollIntoView({ block: 'nearest' });
+  };
+
+  const renderizar = (items, consulta) => {
+    actuales = items;
+    lista.innerHTML = '';
+    items.forEach((item, i) => {
+      const li = document.createElement('li');
+      li.className = 'busqueda-panel__resultado';
+      li.id = `busqueda-opcion-${i}`;
+      li.setAttribute('role', 'option');
+      li.setAttribute('aria-selected', 'false');
+      const a = document.createElement('a');
+      a.href = item.ruta;
+      a.tabIndex = -1;
+      const titulo = document.createElement('span');
+      titulo.className = 'busqueda-panel__resultado-titulo';
+      titulo.innerHTML = resaltarCoincidencia(item.titulo, consulta);
+      const ruta = document.createElement('span');
+      ruta.className = 'busqueda-panel__resultado-ruta';
+      ruta.textContent = item.ruta;
+      a.append(titulo, ruta);
+      li.appendChild(a);
+      li.addEventListener('mouseenter', () => marcarActivo(i));
+      lista.appendChild(li);
+    });
+    marcarActivo(items.length ? 0 : -1);
+  };
+
+  const buscar = () => {
+    const consulta = normalizarBusqueda(input.value.trim());
+    const coincidencias = consulta
+      ? resultados.filter((item) => normalizarBusqueda(`${item.titulo} ${item.palabras}`).includes(consulta))
+      : resultados;
+    renderizar(coincidencias, consulta);
+    vacio.hidden = coincidencias.length > 0;
+  };
 
   const abrirBusqueda = () => {
     ultimoFoco = document.activeElement;
     overlay.setAttribute('data-abierto', 'true');
     document.body.style.overflow = 'hidden';
     input.value = '';
-    renderizar([]);
+    buscar();
     input.focus();
   };
 
@@ -770,33 +843,9 @@ function iniciarBusqueda() {
     if (ultimoFoco) ultimoFoco.focus();
   };
 
-  const renderizar = (items) => {
-    lista.innerHTML = '';
-    items.forEach((item) => {
-      const li = document.createElement('li');
-      li.className = 'busqueda-panel__resultado';
-      const a = document.createElement('a');
-      a.href = item.ruta;
-      a.innerHTML = `<span class="busqueda-panel__resultado-titulo"></span><span class="busqueda-panel__resultado-ruta"></span>`;
-      a.querySelector('.busqueda-panel__resultado-titulo').textContent = item.titulo;
-      a.querySelector('.busqueda-panel__resultado-ruta').textContent = item.ruta;
-      li.appendChild(a);
-      lista.appendChild(li);
-    });
-  };
-
-  const buscar = () => {
-    const consulta = normalizarBusqueda(input.value.trim());
-    if (!consulta) {
-      renderizar([]);
-      vacio.hidden = true;
-      return;
-    }
-    const coincidencias = resultados.filter((item) =>
-      normalizarBusqueda(`${item.titulo} ${item.palabras}`).includes(consulta)
-    );
-    renderizar(coincidencias);
-    vacio.hidden = coincidencias.length > 0;
+  const navegarAOpcion = (li) => {
+    const enlace = li && li.querySelector('a');
+    if (enlace) window.location.href = enlace.getAttribute('href');
   };
 
   boton.addEventListener('click', abrirBusqueda);
@@ -806,6 +855,11 @@ function iniciarBusqueda() {
     if (evento.target === overlay) cerrarBusqueda();
   });
 
+  lista.addEventListener('click', (evento) => {
+    const li = evento.target.closest('.busqueda-panel__resultado');
+    if (li) marcarActivo(Array.from(lista.children).indexOf(li));
+  });
+
   input.addEventListener('input', buscar);
 
   overlay.addEventListener('keydown', (evento) => {
@@ -813,9 +867,35 @@ function iniciarBusqueda() {
       cerrarBusqueda();
       return;
     }
+    if (evento.key === 'ArrowDown') {
+      evento.preventDefault();
+      if (actuales.length) marcarActivo((indiceActivo + 1) % actuales.length);
+      return;
+    }
+    if (evento.key === 'ArrowUp') {
+      evento.preventDefault();
+      if (actuales.length) marcarActivo((indiceActivo - 1 + actuales.length) % actuales.length);
+      return;
+    }
     if (evento.key === 'Enter') {
-      const primero = lista.querySelector('a');
-      if (primero) window.location.href = primero.getAttribute('href');
+      evento.preventDefault();
+      const opciones = lista.querySelectorAll('.busqueda-panel__resultado');
+      navegarAOpcion(opciones[indiceActivo] || opciones[0]);
+      return;
+    }
+    if (evento.key !== 'Tab') return;
+
+    /* Foco atrapado dentro del panel mientras está abierto */
+    const focos = focosDelPanel();
+    if (!focos.length) return;
+    const primero = focos[0];
+    const ultimo = focos[focos.length - 1];
+    if (evento.shiftKey && document.activeElement === primero) {
+      evento.preventDefault();
+      ultimo.focus();
+    } else if (!evento.shiftKey && document.activeElement === ultimo) {
+      evento.preventDefault();
+      primero.focus();
     }
   });
 

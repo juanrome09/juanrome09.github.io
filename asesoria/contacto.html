@@ -82,7 +82,11 @@
       <img class="nav-flotante__logo-img--color" src="/assets/img/logo-a360.png" width="973" height="973" alt="A360 Asesoría" loading="eager">
       <img class="nav-flotante__logo-img--blanco" src="/assets/img/logo-a360-blanco.png" width="973" height="973" alt="A360 Asesoría" loading="eager">
     </a>
-    <nav class="nav-flotante__nav" aria-label="Principal">
+    <div class="nav-flotante__derecha">
+      <button class="busqueda-boton" type="button" data-busqueda-abrir aria-label="Buscar en la web">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+      <nav class="nav-flotante__nav" aria-label="Principal">
       <a href="/asesoria/">Inicio</a>
       <div class="desplegable">
         <button class="desplegable__boton" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="submenu-nosotros">
@@ -118,11 +122,7 @@
         <a href="/asesoria/" class="cambio-mundo-toggle__opcion cambio-mundo-toggle__opcion--asesoria" aria-current="true">Asesoría</a>
         <a href="/marketing/" class="cambio-mundo-toggle__opcion cambio-mundo-toggle__opcion--marketing">Marketing</a>
       </div>
-    </nav>
-    <div class="nav-flotante__acciones">
-      <button class="busqueda-boton" type="button" data-busqueda-abrir aria-label="Buscar en la web">
-        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
-      </button>
+      </nav>
       <button class="nav-flotante__movil-abrir" data-menu-abrir aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú">
         <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect y="5" width="24" height="2"/><rect y="11" width="24" height="2"/><rect y="17" width="24" height="2"/></svg>
       </button>
@@ -178,12 +178,12 @@
   <div class="busqueda-panel" role="dialog" aria-modal="true" aria-label="Buscar en la web">
     <div class="busqueda-panel__cabecera">
       <svg class="busqueda-panel__icono" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
-      <input class="busqueda-panel__input" type="search" id="busqueda-input" placeholder="Buscar páginas, servicios..." autocomplete="off" aria-label="Buscar en la web">
+      <input class="busqueda-panel__input" type="search" id="busqueda-input" placeholder="Buscar páginas, servicios..." autocomplete="off" aria-label="Buscar en la web" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-controls="busqueda-resultados">
       <button class="busqueda-panel__cerrar" type="button" data-busqueda-cerrar aria-label="Cerrar búsqueda">
         <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
       </button>
     </div>
-    <ul class="busqueda-panel__resultados" id="busqueda-resultados"></ul>
+    <ul class="busqueda-panel__resultados" id="busqueda-resultados" role="listbox" aria-label="Resultados de búsqueda"></ul>
     <p class="busqueda-panel__vacio" id="busqueda-vacio" hidden>Sin resultados. Probá con otra palabra.</p>
   </div>
 </div>
