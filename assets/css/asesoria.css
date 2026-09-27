@@ -359,12 +359,6 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
 .valor-item:nth-child(2) .valor-item__palabra { color: var(--naranja); }
 .valor-item:nth-child(3) .valor-item__palabra { color: var(--azul-acero); }
 
-/* margin, no transform: el .reveal de la tarjeta ya anima su propio transform */
-@media (min-width: 640px) {
-  .valor-item:nth-child(2) { margin-top: 32px; }
-  .valor-item:nth-child(3) { margin-top: 24px; }
-  .valor-item:nth-child(4) { margin-top: 56px; }
-}
 
 /* Inicio: Qué hacemos (bento) */
 .bento-servicios {
@@ -846,17 +840,10 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
 .contacto-panel__whatsapp {
   margin-top: var(--e-3);
   display: inline-flex;
+  align-items: center;
 }
-.contacto-panel .boton-oscuro {
-  background: var(--naranja);
-  border-color: var(--naranja);
-}
-.contacto-panel .boton-oscuro:hover,
-.contacto-panel .boton-oscuro:focus-visible {
-  background: var(--blanco);
-  color: var(--naranja);
-  border-color: var(--blanco);
-}
+.contacto-panel__whatsapp svg { width: 20px; height: 20px; flex-shrink: 0; fill: #fff; }
+.contacto-panel .boton-oscuro { transition: filter var(--dur-hover) ease; }
 
 .contacto-dato {
   display: flex;
@@ -1059,15 +1046,13 @@ body.asesoria .contacto-panel { background: var(--azul-hondo); }
 body.asesoria .contacto-panel h2,
 body.asesoria .contacto-panel h3 { color: #fff; }
 body.asesoria .contacto-panel .boton-oscuro {
-  background: var(--naranja);
-  border-color: var(--naranja);
+  background: var(--whatsapp);
+  border-color: var(--whatsapp);
   color: #fff;
 }
 body.asesoria .contacto-panel .boton-oscuro:hover,
 body.asesoria .contacto-panel .boton-oscuro:focus-visible {
-  background: #fff;
-  border-color: #fff;
-  color: var(--dt-ink);
+  filter: brightness(1.08);
 }
 body.asesoria .contacto-dato__icono { background: rgba(var(--naranja-rgb), .2); }
 body.asesoria .contacto-dato__icono svg { stroke: var(--naranja); }
@@ -1106,6 +1091,63 @@ body.asesoria .campo-consentimiento label { color: var(--dt-slate); }
 body.asesoria main > section:has(> .marca-agua) > *:not(.marca-agua) {
   position: relative;
   z-index: 1;
+}
+
+/* Contacto: iconos de los 4 servicios flotando en el fondo del hero,
+   mismo recurso que la portada de servicios de Marketing pero con los
+   iconos y colores de Asesoría */
+body.asesoria .contacto-iconos-flotantes {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+body.asesoria .contacto-iconos-flotantes__pieza {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(var(--acento-rgb), .14);
+}
+body.asesoria .contacto-iconos-flotantes__pieza svg {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: var(--acento);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+body.asesoria .contacto-iconos-flotantes__pieza:nth-child(1) {
+  --acento: var(--naranja); --acento-rgb: var(--naranja-rgb);
+  top: 10%; left: 6%;
+  transform: rotate(-8deg);
+}
+body.asesoria .contacto-iconos-flotantes__pieza:nth-child(2) {
+  --acento: var(--azul-acero); --acento-rgb: var(--azul-acero-rgb);
+  top: 62%; left: 10%;
+  width: 56px; height: 56px;
+  transform: rotate(6deg);
+}
+body.asesoria .contacto-iconos-flotantes__pieza:nth-child(2) svg { width: 26px; height: 26px; }
+body.asesoria .contacto-iconos-flotantes__pieza:nth-child(3) {
+  --acento: var(--azul-acero); --acento-rgb: var(--azul-acero-rgb);
+  top: 16%; right: 8%;
+  width: 76px; height: 76px;
+  transform: rotate(-4deg);
+}
+body.asesoria .contacto-iconos-flotantes__pieza:nth-child(3) svg { width: 36px; height: 36px; }
+body.asesoria .contacto-iconos-flotantes__pieza:nth-child(4) {
+  --acento: var(--naranja); --acento-rgb: var(--naranja-rgb);
+  top: 68%; right: 12%;
+  transform: rotate(10deg);
+}
+@media (max-width: 899px) {
+  body.asesoria .contacto-iconos-flotantes { display: none; }
 }
 
 /* Pie de página */

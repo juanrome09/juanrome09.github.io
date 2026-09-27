@@ -722,6 +722,11 @@ p {
   align-items: center;
   gap: var(--e-3);
 }
+/* Aire extra entre los enlaces (Contacto) y el icono de búsqueda, para
+   que se note que la búsqueda es un bloque aparte y no un enlace más */
+@media (min-width: 900px) {
+  .busqueda-boton { margin-inline-start: var(--e-3); }
+}
 /* Copia del selector Asesoría/Marketing que vive junto a la búsqueda,
    fuera de .nav-flotante__nav: se oculta en el mismo punto de corte
    (900px) para no amontonar el pie de página móvil, donde el cambio de
