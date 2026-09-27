@@ -837,6 +837,7 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
 }
 .contacto-panel h2, .contacto-panel h3 { color: var(--blanco); }
 .contacto-panel a { color: var(--blanco); text-decoration: underline; text-underline-offset: 2px; }
+.contacto-panel a.boton { text-decoration: none; }
 .contacto-panel__whatsapp {
   margin-top: var(--e-3);
   display: inline-flex;
@@ -941,15 +942,13 @@ body.asesoria .boton-primario:focus-visible {
   color: #fff;
 }
 body.asesoria .boton-oscuro {
-  background: var(--naranja);
-  border-color: var(--naranja);
+  background: var(--whatsapp);
+  border-color: var(--whatsapp);
   color: #fff;
 }
 body.asesoria .boton-oscuro:hover,
 body.asesoria .boton-oscuro:focus-visible {
-  background: var(--azul-acero);
-  border-color: var(--azul-acero);
-  color: #fff;
+  filter: brightness(1.08);
 }
 
 body.asesoria .servicio-grande {
@@ -1433,6 +1432,7 @@ body.asesoria .faq-grid__intro p { color: rgba(255, 255, 255, .75); }
 }
 .faq-grid__intro__icono svg { width: 22px; height: 22px; }
 .faq-grid__intro .boton { margin-top: var(--e-3); }
+.faq-grid__whatsapp svg { width: 20px; height: 20px; flex-shrink: 0; fill: #fff; }
 
 @media (min-width: 900px) {
   body.asesoria .contacto-panel {

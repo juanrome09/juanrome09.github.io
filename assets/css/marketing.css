@@ -59,15 +59,21 @@ body.marketing h1, body.marketing h2, body.marketing h3, body.marketing h4 {
   font-weight: 500;
   color: var(--mk-tinta);
 }
-body.marketing h1 { font-size: var(--display); line-height: 1.18; letter-spacing: -.06em; }
-body.marketing h2 { font-size: var(--titulo-1); line-height: 1.22; letter-spacing: -.05em; }
-body.marketing h3 { font-size: var(--titulo-3); line-height: 1.25; letter-spacing: normal; }
+body.marketing h1 { font-size: var(--display); line-height: 1.28; letter-spacing: -.06em; }
+body.marketing h2 { font-size: var(--titulo-1); line-height: 1.32; letter-spacing: -.05em; }
+body.marketing h3 { font-size: var(--titulo-3); line-height: 1.3; letter-spacing: normal; }
 
+/* .mk-titulo-degradado necesita display:inline-block para que el degradado
+   (background-clip:text) no se repita línea por línea — pero eso hace que
+   la "caja" del título la marque line-height, no las letras reales, y con
+   tildes/mayúsculas acentuadas altas (Á, É, Ó...) o descendentes (g, j, y)
+   el recorte quedaba muy justo. padding-block simétrico arriba y abajo (no
+   solo abajo) le da aire a los dos lados por igual. */
 body.marketing h1.mk-titulo-degradado, body.marketing h2.mk-titulo-degradado {
   color: var(--mk-vino-oscuro);
   display: inline-block;
-  padding-bottom: .16em;
-  margin-bottom: -.16em;
+  padding-block: .12em;
+  margin-block: -.12em;
 }
 @supports (background-clip: text) or (-webkit-background-clip: text) {
   body.marketing h1.mk-titulo-degradado, body.marketing h2.mk-titulo-degradado {
@@ -1357,6 +1363,7 @@ body.marketing main > section.mk-valores-seccion .mk-valores {
 }
 .contacto-panel-mk h2, .contacto-panel-mk h3 { color: var(--mk-tinta); }
 .contacto-panel-mk a { text-decoration: none; border-bottom: 1px solid var(--mk-gris); }
+.contacto-panel-mk .mk-boton-whatsapp { border-bottom: none; }
 
 .mk-contacto-dato {
   display: flex;
@@ -1408,7 +1415,7 @@ body.marketing main > section.mk-valores-seccion .mk-valores {
   transition: filter var(--dur-hover) ease;
 }
 .mk-boton-whatsapp:hover, .mk-boton-whatsapp:focus-visible { filter: brightness(1.08); }
-.mk-boton-whatsapp svg { width: 22px; height: 22px; flex-shrink: 0; }
+.mk-boton-whatsapp svg { width: 22px; height: 22px; flex-shrink: 0; fill: #fff; }
 
 .contacto-mapa h2 { margin-bottom: var(--e-2); }
 .contacto-mapa__marco {
