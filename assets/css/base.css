@@ -722,6 +722,14 @@ p {
   align-items: center;
   gap: var(--e-3);
 }
+/* Copia del selector Asesoría/Marketing que vive junto a la búsqueda,
+   fuera de .nav-flotante__nav: se oculta en el mismo punto de corte
+   (900px) para no amontonar el pie de página móvil, donde el cambio de
+   mundo ya está disponible dentro del menú a pantalla completa. */
+.cambio-mundo-toggle--nav { display: none; }
+@media (min-width: 900px) {
+  .cambio-mundo-toggle--nav { display: inline-flex; }
+}
 .busqueda-boton {
   display: flex;
   width: 40px;
@@ -805,9 +813,7 @@ p {
 }
 .busqueda-panel__resultados:empty { padding: 0; }
 .busqueda-panel__resultado a {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  display: block;
   padding: 10px 12px;
   border-radius: 12px;
   color: var(--gris-tinta);
@@ -821,7 +827,6 @@ p {
   color: var(--naranja-texto);
   font-weight: 700;
 }
-.busqueda-panel__resultado-ruta { font-size: var(--menor); opacity: .6; }
 .busqueda-panel__vacio {
   padding: 24px 20px;
   text-align: center;

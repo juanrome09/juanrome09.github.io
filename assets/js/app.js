@@ -808,10 +808,7 @@ function iniciarBusqueda() {
       const titulo = document.createElement('span');
       titulo.className = 'busqueda-panel__resultado-titulo';
       titulo.innerHTML = resaltarCoincidencia(item.titulo, consulta);
-      const ruta = document.createElement('span');
-      ruta.className = 'busqueda-panel__resultado-ruta';
-      ruta.textContent = item.ruta;
-      a.append(titulo, ruta);
+      a.appendChild(titulo);
       li.appendChild(a);
       li.addEventListener('mouseenter', () => marcarActivo(i));
       lista.appendChild(li);
