@@ -711,16 +711,19 @@ p {
 .pie--compacto .pie__interior { padding-block: var(--e-4); gap: var(--e-4); }
 .pie--compacto .pie__legal { padding-block: var(--e-2); }
 
-/* Nav: envoltorio del lado derecho (búsqueda + selector de mundo + botón
-   de menú móvil), separado de .nav-flotante__nav. .nav-flotante vuelve a
-   tener 3 hijos (logo, nav, este envoltorio) con justify-content:space-between,
-   así que el hueco logo↔Inicio y el hueco Contacto↔búsqueda se reparten
-   el mismo espacio disponible y quedan iguales — sin sumar márgenes
-   nuevos ni agrandar la barra. */
+/* Nav: envoltorio del lado derecho, contiene los enlaces (.nav-flotante__nav),
+   el botón de búsqueda, el selector de mundo y el botón de menú móvil, todos
+   juntos. .nav-flotante solo tiene 2 hijos (logo y este envoltorio) con
+   justify-content:space-between. */
 .nav-flotante__derecha {
   display: flex;
   align-items: center;
   gap: var(--e-3);
+}
+/* Un poco más de aire entre "Contacto" y el botón de búsqueda que el gap
+   general de .nav-flotante__derecha, sin agrandar la barra. */
+@media (min-width: 900px) {
+  .busqueda-boton { margin-inline-start: var(--e-2); }
 }
 /* Copia del selector Asesoría/Marketing que vive junto a la búsqueda,
    fuera de .nav-flotante__nav: se oculta en el mismo punto de corte
