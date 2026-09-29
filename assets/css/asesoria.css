@@ -845,6 +845,9 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
 }
 .contacto-panel__whatsapp svg { width: 20px; height: 20px; flex-shrink: 0; fill: #fff; }
 .contacto-panel .boton-oscuro { transition: filter var(--dur-hover) ease; }
+@media (max-width: 480px) {
+  .contacto-panel__whatsapp { white-space: normal; text-align: center; width: 100%; }
+}
 
 .contacto-dato {
   display: flex;
@@ -1433,6 +1436,12 @@ body.asesoria .faq-grid__intro p { color: rgba(255, 255, 255, .75); }
 .faq-grid__intro__icono svg { width: 22px; height: 22px; }
 .faq-grid__intro .boton { margin-top: var(--e-3); }
 .faq-grid__whatsapp svg { width: 20px; height: 20px; flex-shrink: 0; fill: #fff; }
+/* En móviles estrechos, icono + "Escríbenos por WhatsApp" no cabe en una sola
+   línea dentro del panel (que tiene bastante padding) y desborda la página;
+   se deja envolver en dos líneas y ocupar el ancho disponible. */
+@media (max-width: 480px) {
+  .faq-grid__whatsapp { white-space: normal; text-align: center; width: 100%; }
+}
 
 @media (min-width: 900px) {
   body.asesoria .contacto-panel {
