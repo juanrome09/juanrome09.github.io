@@ -823,6 +823,7 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
     display: flex;
     grid-template-columns: none;
     flex-wrap: nowrap;
+    align-items: stretch;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
@@ -831,6 +832,13 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
     padding-inline: var(--canal-movil);
     padding-bottom: var(--e-2);
     scrollbar-width: none;
+    /* El scroll-behavior:smooth global (base.css) peleaba con el scroll-snap
+       nativo de este carrusel horizontal: al soltar el dedo, el navegador
+       intentaba animar el ajuste del snap por encima del propio gesto
+       táctil, lo que se sentía como que la foto "saltaba" verticalmente a
+       mitad del deslizamiento. En un carrusel táctil el ajuste lo hace el
+       propio sistema de scroll-snap; se vuelve a scroll instantáneo aquí. */
+    scroll-behavior: auto;
   }
   .servicios-marketing::-webkit-scrollbar,
   .trabajo-mk::-webkit-scrollbar { display: none; }
@@ -840,6 +848,12 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
     flex: 0 0 82%;
     max-width: 340px;
   }
+  /* Las 3 piezas de "Nuestro trabajo" traen cada una su propio aspect-ratio
+     en línea (5/4, 1/1, 5/4), pensado para el grid de escritorio. En el
+     carrusel móvil eso las deja con alturas distintas, así que al deslizar
+     de una a otra la imagen visible "sube y baja" de sitio. Se fuerza la
+     misma proporción cuadrada en las tres para que queden fijas en vertical. */
+  .trabajo-mk > .trabajo-mk__pieza { aspect-ratio: 1 / 1 !important; }
 }
 
 /* Inicio: Cómo enfocamos cada proyecto */
@@ -910,8 +924,11 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   flex-shrink: 0;
 }
 
-.faq-mk .acordeon__item { border-top-color: var(--mk-niebla); }
-.faq-mk .acordeon__item:last-child { border-bottom-color: var(--mk-niebla); }
+/* --mk-niebla (#E8E7E7) es casi blanco puro: sobre el fondo crema de esta
+   sección la línea divisoria del acordeón prácticamente desaparecía, en
+   escritorio y en móvil. Se sustituye por un gris con más presencia. */
+.faq-mk .acordeon__item { border-top-color: rgba(64, 64, 64, .22); }
+.faq-mk .acordeon__item:last-child { border-bottom-color: rgba(64, 64, 64, .22); }
 .faq-mk .acordeon__pregunta {
   font-family: var(--f-titulos);
   font-weight: 500;
@@ -919,15 +936,7 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   color: var(--mk-tinta);
 }
 @media (max-width: 767px) {
-  .faq-mk .acordeon__pregunta { font-size: 19px; line-height: 1.3; }
-  /* Las líneas divisorias del acordeón se apoyaban en que la sección tuviera
-     overflow:hidden y 100svh de alto (ver el bloque de "MÓVIL: flujo lineal"
-     más arriba, que ya lo desactiva); sin eso se veían bien, pero con poco
-     aire entre pregunta y pregunta. Más padding vertical y un color algo más
-     visible que --mk-niebla para que la línea se lea con claridad. */
-  .faq-mk .acordeon__item { border-top-color: rgba(64, 64, 64, .16); }
-  .faq-mk .acordeon__item:last-child { border-bottom-color: rgba(64, 64, 64, .16); }
-  .faq-mk .acordeon__pregunta { padding-block: var(--e-3); }
+  .faq-mk .acordeon__pregunta { font-size: 19px; line-height: 1.3; padding-block: var(--e-3); }
 }
 .faq-mk .acordeon__respuesta__interior {
   font-family: var(--f-cuerpo);
