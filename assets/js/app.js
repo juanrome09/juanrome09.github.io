@@ -35,7 +35,9 @@ function iniciarCabeceraCompacta() {
   window.addEventListener('scroll', actualizar, { passive: true });
 }
 
-/* Nav: abre/cierra el menú a pantalla completa en móvil */
+/* Nav: abre/cierra el menú desplegable compacto en móvil.
+   No es una pantalla completa, así que no se bloquea el scroll de la página:
+   el panel está anclado al nav (que es fijo) y se cierra al pulsar fuera. */
 function iniciarMenuMovil() {
   const abrir = document.querySelector('[data-menu-abrir]');
   const cerrar = document.querySelector('[data-menu-cerrar]');
@@ -44,6 +46,8 @@ function iniciarMenuMovil() {
 
   let ultimoFoco = null;
 
+  const estaAbierto = () => menu.getAttribute('data-abierto') === 'true';
+
   const focosDelMenu = () =>
     Array.from(menu.querySelectorAll('a, button:not([disabled])'));
 
@@ -51,20 +55,31 @@ function iniciarMenuMovil() {
     ultimoFoco = document.activeElement;
     menu.setAttribute('data-abierto', 'true');
     abrir.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
     const focos = focosDelMenu();
     if (focos.length) focos[0].focus();
   };
 
-  const cerrarMenu = () => {
+  const cerrarMenu = ({ devolverFoco = true } = {}) => {
+    if (!estaAbierto()) return;
     menu.setAttribute('data-abierto', 'false');
     abrir.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-    if (ultimoFoco) ultimoFoco.focus();
+    if (devolverFoco && ultimoFoco) ultimoFoco.focus();
   };
 
-  abrir.addEventListener('click', abrirMenu);
-  if (cerrar) cerrar.addEventListener('click', cerrarMenu);
+  /* El propio botón hace de interruptor: pulsarlo otra vez cierra el panel */
+  abrir.addEventListener('click', () => {
+    if (estaAbierto()) cerrarMenu();
+    else abrirMenu();
+  });
+  if (cerrar) cerrar.addEventListener('click', () => cerrarMenu());
+
+  /* Pulsar fuera del panel (y fuera del botón) lo cierra, sin devolver el
+     foco para no robárselo a lo que el usuario acaba de tocar */
+  document.addEventListener('click', (evento) => {
+    if (!estaAbierto()) return;
+    if (menu.contains(evento.target) || abrir.contains(evento.target)) return;
+    cerrarMenu({ devolverFoco: false });
+  });
 
   menu.addEventListener('keydown', (evento) => {
     if (evento.key === 'Escape') {
@@ -87,8 +102,10 @@ function iniciarMenuMovil() {
     }
   });
 
+  /* Al seguir un enlace del menú no se devuelve el foco al botón: o se cambia
+     de página, o se salta a un ancla de la misma */
   menu.querySelectorAll('a').forEach((enlace) => {
-    enlace.addEventListener('click', cerrarMenu);
+    enlace.addEventListener('click', () => cerrarMenu({ devolverFoco: false }));
   });
 }
 

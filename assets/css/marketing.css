@@ -54,6 +54,16 @@ body.marketing {
   }
 }
 
+/* El H1 del hero fuerza "A360 Marketing" en una sola línea (nowrap en el
+   propio HTML) para que no se corte el nombre de marca. Pero --display
+   nunca baja de 48px, así que en pantallas muy estrechas ese bloque podía
+   desbordar el ancho de la pantalla. Se permite partir en dos líneas ahí. */
+@media (max-width: 420px) {
+  .marketing-hero__titulo span[style*="nowrap"] {
+    white-space: normal !important;
+  }
+}
+
 body.marketing h1, body.marketing h2, body.marketing h3, body.marketing h4 {
   font-family: var(--f-titulos);
   font-weight: 500;
@@ -168,6 +178,47 @@ body.marketing .pie {
   body.marketing main::after { height: 0 !important; }
 }
 
+/* MÓVIL: flujo lineal y continuo, sin sticky.
+   En escritorio las secciones se apilan con position:sticky — cada una ocupa
+   la pantalla y la siguiente la va tapando. En móvil ese efecto bloqueaba la
+   sensación de scroll y recortaba las secciones con más texto, así que aquí
+   se desactiva del todo: altura según contenido, nada de overflow oculto, sin
+   el relleno de 40svh del final y sin las esquinas redondeadas del apilado
+   (que en flujo normal dejaban muescas del color del fondo). */
+@media (max-width: 899px) {
+  body.marketing main > section,
+  body.marketing main > article {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 0;
+    overflow-x: clip;
+    overflow-y: visible;
+    justify-content: flex-start;
+    padding-top: var(--e-6) !important;
+    padding-bottom: var(--e-6) !important;
+    border-radius: 0;
+  }
+  /* Solo la primera sección tiene que dejar libre la barra fija del nav */
+  body.marketing main > *:first-child {
+    padding-top: calc(var(--alto-nav-movil) + var(--e-2) + var(--e-4)) !important;
+  }
+  body.marketing main::after { height: 0; }
+
+  /* El hero conserva su presencia a pantalla completa, pero crece si el texto
+     no cabe en vez de recortarlo */
+  body.marketing .marketing-hero {
+    height: auto;
+    min-height: 100svh;
+    justify-content: center;
+  }
+
+  /* "Nuestros valores" repartía su contenido para llenar los 100svh;
+     en flujo lineal esos márgenes enormes sobran */
+  body.marketing main > section.mk-valores-seccion h2 { margin-top: 0; }
+  body.marketing main > section.mk-valores-seccion .mk-valores { margin-top: var(--e-4); }
+}
+
 /* Nav */
 .nav-flotante-envoltorio {
   position: fixed;
@@ -241,6 +292,12 @@ body.marketing .nav-flotante--oscura .nav-flotante__nav > a[aria-current="page"]
   color: var(--mk-rosa-oscuro);
 }
 
+/* El panel del menú móvil hereda el color de la barra del nav, para que se
+   lea como una prolongación de ella y no como una capa ajena */
+body.marketing .menu-movil {
+  background: var(--mk-blanco);
+  border-color: var(--mk-niebla);
+}
 body.marketing .menu-movil__nav a { color: var(--mk-tinta); }
 
 body.marketing .menu-movil__nav > a:last-child { color: var(--mk-coral); }
@@ -334,16 +391,20 @@ body.marketing .nav-flotante--oscura .desplegable__panel a:focus-visible {
   color: var(--mk-texto-claro);
 }
 
+/* Menú móvil compacto: mismo diseño que en Asesoría — pestañas y submenús
+   centrados, panel desplegable en lugar de pantalla completa (base.css) */
 .menu-movil__nav .desplegable { display: flex; flex-direction: column; }
 .menu-movil__nav .desplegable__boton {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--e-2);
+  justify-content: center;
+  gap: 8px;
   width: 100%;
+  padding-block: 12px;
+  border-radius: var(--r-medio);
   font-family: var(--f-titulos);
   font-weight: 700;
-  font-size: var(--titulo-3);
+  font-size: var(--cuerpo-lg);
   color: var(--mk-tinta);
 }
 .menu-movil__nav .desplegable__panel {
@@ -353,13 +414,14 @@ body.marketing .nav-flotante--oscura .desplegable__panel a:focus-visible {
   flex-direction: column;
   transition: max-height 220ms ease;
 }
-.menu-movil__nav .desplegable--abierto .desplegable__panel { max-height: 320px; margin-top: var(--e-2); }
+.menu-movil__nav .desplegable--abierto .desplegable__panel { max-height: 340px; margin-bottom: var(--e-1); }
 .menu-movil__nav .desplegable__panel a {
-  padding-block: 10px;
-  padding-inline-start: var(--e-2);
+  padding-block: 9px;
+  padding-inline: 0;
+  text-align: center;
   font-family: var(--f-cuerpo);
   font-weight: 500;
-  font-size: var(--cuerpo);
+  font-size: var(--menor);
   color: var(--mk-gris);
 }
 
@@ -506,6 +568,27 @@ body.marketing .marketing-hero {
 body.marketing main > section:has(> .mk-marca-agua) > *:not(.mk-marca-agua) {
   position: relative;
   z-index: 1;
+}
+
+/* "Dónde trabajamos": contenedor de la fotografía con proporción fija y
+   overflow oculto, para que el object-fit:cover recorte dentro del propio
+   marco (y no en el borde del img, que con el zoom de Ken Burns dejaba
+   asomar la esquina sin recortar) y el radio de borde no se vea
+   desproporcionado en pantallas estrechas. */
+.mk-foto-donde-trabajamos {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  border-radius: clamp(20px, 5vw, var(--mk-r-imagen));
+}
+.mk-foto-donde-trabajamos img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 body.marketing .marketing-hero__titulo {
@@ -769,12 +852,13 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   .enfoque-mk { grid-template-columns: repeat(2, 1fr); gap: var(--e-6) var(--e-5); }
 }
 
+/* Antes estos valores estaban comprimidos al máximo (gap 4px) para que la
+   sección entrara en los 100svh del apilado sticky. En móvil ya no hay
+   apilado, así que recuperan un ritmo legible. */
 @media (max-width: 480px) {
-
-  .enfoque-mk { gap: 4px; margin-top: 4px !important; }
-
-  .enfoque-mk__item__numero { font-size: 20px; margin-bottom: 2px; }
-  .enfoque-mk__item h3 { margin-bottom: 2px; }
+  .enfoque-mk { gap: var(--e-3); margin-top: var(--e-3) !important; }
+  .enfoque-mk__item__numero { font-size: 28px; margin-bottom: 4px; }
+  .enfoque-mk__item h3 { margin-bottom: 4px; }
 }
 .enfoque-mk__item__numero {
   display: block;
@@ -836,6 +920,14 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
 }
 @media (max-width: 767px) {
   .faq-mk .acordeon__pregunta { font-size: 19px; line-height: 1.3; }
+  /* Las líneas divisorias del acordeón se apoyaban en que la sección tuviera
+     overflow:hidden y 100svh de alto (ver el bloque de "MÓVIL: flujo lineal"
+     más arriba, que ya lo desactiva); sin eso se veían bien, pero con poco
+     aire entre pregunta y pregunta. Más padding vertical y un color algo más
+     visible que --mk-niebla para que la línea se lea con claridad. */
+  .faq-mk .acordeon__item { border-top-color: rgba(64, 64, 64, .16); }
+  .faq-mk .acordeon__item:last-child { border-bottom-color: rgba(64, 64, 64, .16); }
+  .faq-mk .acordeon__pregunta { padding-block: var(--e-3); }
 }
 .faq-mk .acordeon__respuesta__interior {
   font-family: var(--f-cuerpo);
@@ -1164,6 +1256,12 @@ body.marketing .cierre-marketing__linea {
 }
 @media (min-width: 900px) { .nosotros-mk-grid { grid-template-columns: 1fr 1fr; } }
 
+/* El GIF del equipo (video-equipo-mk.gif) se oculta en móvil: pesa, se
+   reproduce sin control y no aporta frente al texto en pantallas pequeñas */
+@media (max-width: 899px) {
+  .nosotros-mk-forma { display: none; }
+}
+
 @media (max-width: 480px) {
   .nosotros-mk-grid { gap: 16px; }
   .nosotros-mk-forma__foto {
@@ -1201,7 +1299,11 @@ body.marketing .cierre-marketing__linea {
 .mk-mision-vision__item--vision { right: 13%; top: 55%; text-align: right; }
 .mk-mision-vision__item--vision p { text-align: right; }
 
-@media (max-width: 767px), (prefers-reduced-motion: reduce), (max-height: 660px) {
+/* Alineado con el breakpoint de 899px donde se desactiva el sticky de las
+   secciones (ver arriba): por debajo de ese ancho la sección ya no tiene
+   altura fija, así que .mk-mision-vision no puede seguir siendo
+   position:absolute inset:0 — pasa a flujo normal igual que el resto. */
+@media (max-width: 899px), (prefers-reduced-motion: reduce), (max-height: 660px) {
   .mk-mision-vision {
     position: static;
     display: flex;
@@ -1237,12 +1339,12 @@ body.marketing main > section.mk-valores-seccion .mk-valores {
   .mk-valores { grid-template-columns: repeat(2, 1fr); gap: var(--e-4); }
 }
 
+/* Igual que en .enfoque-mk: ya no hay que comprimir para caber en 100svh */
 @media (max-width: 480px) {
-
-  .mk-valores { gap: 6px; margin-top: 4px !important; }
-  .mk-valores__item { padding: 10px 14px; gap: 10px; }
-  .mk-valores__icono { width: 36px; height: 36px; }
-  .mk-valores__icono svg { width: 18px; height: 18px; }
+  .mk-valores { gap: var(--e-2); margin-top: var(--e-3) !important; }
+  .mk-valores__item { padding: 16px 18px; gap: var(--e-2); }
+  .mk-valores__icono { width: 42px; height: 42px; }
+  .mk-valores__icono svg { width: 21px; height: 21px; }
 }
 .mk-valores__item:nth-child(1) { --mk-valores-acento: var(--mk-turquesa); --mk-valores-acento-rgb: var(--mk-turquesa-rgb); }
 .mk-valores__item:nth-child(2) { --mk-valores-acento: var(--mk-verde-lima); --mk-valores-acento-rgb: var(--mk-verde-lima-rgb); }
@@ -1431,7 +1533,9 @@ body.marketing .campo select,
 body.marketing .campo textarea {
   border: 1.5px solid var(--mk-gris);
   border-radius: var(--r-medio);
-  background: var(--mk-blanco);
+  /* background-color, no el atajo `background`: el atajo borraría la flecha
+     (background-image) que base.css dibuja en los select */
+  background-color: var(--mk-blanco);
   color: var(--mk-tinta);
   box-shadow: 0 2px 6px rgba(64, 64, 64, .1);
   transition: border-color var(--dur-hover) ease, box-shadow var(--dur-hover) ease;
@@ -1523,7 +1627,8 @@ body.marketing .pie.reveal.en-vista {
 
 @keyframes mk-kenburns { from { transform: scale(1); } to { transform: scale(1.08); } }
 @media (prefers-reduced-motion: no-preference) {
-  .trabajo-mk__foto,
+  /* .trabajo-mk__foto (galería de 3 fotos de "Nuestro trabajo") se deja
+     fuera a propósito: esas fotos quedan estáticas, sin Ken Burns */
   .nosotros-mk-forma__foto,
   .mk-foto-kenburns {
     animation: mk-kenburns 24s ease-in-out infinite alternate;

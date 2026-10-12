@@ -128,6 +128,11 @@
   --canal-movil: 24px;
   --canal-escritorio: 48px;
 
+  /* Alto real de la barra flotante del nav en móvil (10px + logo 44px + 10px
+     + 2px de borde). Lo usa el menú desplegable para anclarse justo debajo
+     sin taparla. Si cambia el alto del logo móvil, cambia este valor. */
+  --alto-nav-movil: 66px;
+
   --dur-reveal: 520ms;
   --curva-reveal: cubic-bezier(.2, .7, .2, 1);
   --dur-hover: 140ms;
@@ -139,7 +144,10 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: auto;
+  /* Scroll suave para los enlaces de ancla (#contacto, #fiscal, chips de
+     servicios...). El bloque de prefers-reduced-motion del final del archivo
+     lo devuelve a `auto` para quien pide menos movimiento. */
+  scroll-behavior: smooth;
 }
 
 body {
@@ -181,6 +189,10 @@ h1, h2, h3, h4 {
   font-family: var(--f-titulos);
   font-weight: 700;
   color: var(--azul-hondo);
+  /* Red de seguridad para pantallas estrechas: si una palabra larga no cabe
+     en el ancho disponible, que la rompa ella sola en vez de desbordar la
+     página (overflow-x). No afecta al resto de títulos, que ya caben. */
+  overflow-wrap: break-word;
 }
 
 h1 { font-size: var(--titulo-1); line-height: 1.12; letter-spacing: -.02em; }
@@ -360,49 +372,122 @@ p {
   border-bottom-color: var(--gris-claro);
 }
 
-/* Menú móvil */
+/* Menú móvil: panel desplegable compacto anclado justo debajo de la barra
+   flotante del nav. No ocupa toda la pantalla ni se comporta como una página
+   aparte; si el contenido no cabe, hace scroll dentro del propio panel. */
 .menu-movil {
   position: fixed;
-  inset: 0;
+  inset-block-start: calc(var(--e-2) + var(--alto-nav-movil) + 8px);
+  inset-block-end: auto;
+  inset-inline: var(--canal-movil);
   z-index: 200;
+  width: auto;
+  max-width: 380px;
+  margin-inline: auto;
+  /* Nunca más alto que el espacio libre bajo el nav */
+  max-height: calc(100svh - var(--alto-nav-movil) - var(--e-2) - var(--e-5));
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background: var(--blanco);
+  border: 1px solid var(--gris-claro);
+  border-radius: var(--r-panel);
+  box-shadow: 0 24px 48px -16px rgba(0, 0, 0, .28);
   display: flex;
   flex-direction: column;
-  padding: var(--e-3) var(--canal-movil);
-  transform: translateY(-8px);
+  padding: var(--e-1) var(--e-3) var(--e-3);
+  transform: translateY(-10px) scale(.97);
+  transform-origin: top center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 220ms ease, transform 220ms ease;
+  transition: opacity 180ms ease, transform 180ms ease;
 }
 .menu-movil[data-abierto="true"] {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
   pointer-events: auto;
 }
 
+/* Solo queda el botón de cerrar, alineado a la derecha y discreto: la
+   cabecera ya no tiene que sostener un logo como cuando era pantalla completa */
 .menu-movil__cabecera {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  min-height: 32px;
 }
 
-.menu-movil__cerrar { width: 44px; height: 44px; }
+.menu-movil__cerrar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-inline-end: calc(var(--e-1) * -1);
+}
+.menu-movil__cerrar svg { width: 18px; height: 18px; }
 
+/* Pestañas centradas, una debajo de otra y con área de pulsación amplia */
 .menu-movil__nav {
-  margin-top: var(--e-5);
+  margin-top: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--e-3);
+  align-items: stretch;
+  gap: 2px;
+  text-align: center;
 }
 .menu-movil__nav a {
   font-family: var(--f-titulos);
   font-weight: 700;
-  font-size: var(--titulo-3);
+  font-size: var(--cuerpo-lg);
   color: var(--azul-hondo);
+}
+.menu-movil__nav > a {
+  padding-block: 12px;
+  border-radius: var(--r-medio);
+  text-align: center;
+}
+/* Separador fino entre pestañas de primer nivel, para que se lean como lista */
+.menu-movil__nav > a + a,
+.menu-movil__nav > a + .desplegable,
+.menu-movil__nav > .desplegable + a,
+.menu-movil__nav > .desplegable + .desplegable {
+  border-top: 1px solid var(--gris-claro);
+}
+/* El selector Asesoría/Marketing cierra el panel, centrado y con aire */
+.menu-movil__nav .cambio-mundo-toggle {
+  align-self: center;
+  margin-top: var(--e-3);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .menu-movil { transition: none; }
+}
+
+/* Nav en móvil: barra algo más baja y botones más contenidos, para que el
+   logo, la búsqueda y la hamburguesa respiren en pantallas estrechas.
+   Va prefijado con body.* para ganar a las reglas de cada hoja de sitio. */
+@media (max-width: 899px) {
+  body.asesoria .nav-flotante,
+  body.marketing .nav-flotante {
+    padding: 10px var(--e-2);
+    gap: var(--e-2);
+  }
+  body.asesoria .nav-flotante__derecha,
+  body.marketing .nav-flotante__derecha { gap: 10px; }
+
+  body.asesoria .nav-flotante__logo img,
+  body.marketing .nav-flotante__logo img,
+  body.marketing .nav-flotante__logo svg { height: 44px; }
+
+  body.asesoria .nav-flotante__movil-abrir,
+  body.marketing .nav-flotante__movil-abrir,
+  body.asesoria .busqueda-boton,
+  body.marketing .busqueda-boton {
+    width: 40px;
+    height: 40px;
+  }
+  body.asesoria .nav-flotante__movil-abrir svg,
+  body.marketing .nav-flotante__movil-abrir svg { width: 18px; height: 18px; }
 }
 
 /* Botón flotante de WhatsApp */
@@ -611,17 +696,56 @@ p {
 .campo select,
 .campo textarea {
   width: 100%;
+  /* appearance:none desactiva el estilo nativo de iOS/Android (sombra
+     interior, esquinas y tipografía del sistema en los select), que era lo
+     que hacía que en móvil los campos y sus placeholders no se vieran igual
+     que en escritorio. */
+  -webkit-appearance: none;
+  appearance: none;
   border: 1px solid var(--gris-claro);
   border-radius: var(--r-medio);
   padding: 12px 16px;
+  /* Tipografía y métrica explícitas (no heredadas) para que el render sea el
+     mismo en los dos tamaños. 17px además evita el zoom automático de iOS. */
+  font-family: var(--f-cuerpo);
   font-size: var(--cuerpo);
+  font-weight: 400;
+  line-height: 1.4;
   background: var(--blanco);
+  background-clip: padding-box;
   color: var(--gris-tinta);
 }
 .campo input:focus-visible,
 .campo select:focus-visible,
 .campo textarea:focus-visible {
   border-color: var(--azul-acero);
+}
+
+/* Placeholders: mismo estilo, tipografía y opacidad en móvil y en escritorio.
+   Safari aplica por su cuenta una opacidad distinta, así que se fija a mano. */
+.campo input::placeholder,
+.campo textarea::placeholder,
+.busqueda-panel__input::placeholder {
+  font-family: var(--f-cuerpo);
+  font-size: inherit;
+  font-weight: 400;
+  line-height: inherit;
+  color: var(--gris-tinta);
+  opacity: .55;
+}
+/* El select vacío hace de placeholder: mismo tratamiento que los input */
+.campo select:invalid,
+.campo select option[value=""] {
+  color: rgba(64, 64, 64, .55);
+}
+
+/* Al quitar el estilo nativo hay que volver a dibujar la flecha del select */
+.campo select {
+  padding-inline-end: var(--e-5);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%23404040' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--e-2) center;
+  background-size: 14px 14px;
 }
 
 .campo textarea { resize: vertical; min-height: 120px; }

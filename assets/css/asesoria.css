@@ -72,6 +72,12 @@ body.asesoria .nav-flotante--oscura .nav-flotante__nav > a[aria-current="page"] 
   background: rgba(var(--azul-acero-rgb), .14);
   color: var(--azul-acero);
 }
+/* El panel del menú móvil hereda el color de la barra del nav, para que se
+   lea como una prolongación de ella y no como una capa ajena */
+body.asesoria .menu-movil {
+  background: var(--lino);
+  border-color: var(--gris-claro);
+}
 body.asesoria .menu-movil__nav a { color: var(--gris-tinta); }
 body.asesoria .menu-movil__nav > a:last-child { color: var(--azul-hondo); }
 .nav-flotante__movil-abrir {
@@ -188,16 +194,19 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   color: var(--blanco);
 }
 
+/* Menú móvil compacto: pestañas y submenús centrados (ver .menu-movil en base.css) */
 .menu-movil__nav .desplegable { display: flex; flex-direction: column; }
 .menu-movil__nav .desplegable__boton {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--e-2);
+  justify-content: center;
+  gap: 8px;
   width: 100%;
+  padding-block: 12px;
+  border-radius: var(--r-medio);
   font-family: var(--f-titulos);
   font-weight: 700;
-  font-size: var(--titulo-3);
+  font-size: var(--cuerpo-lg);
   color: var(--azul-hondo);
 }
 .menu-movil__nav .desplegable__panel {
@@ -207,13 +216,14 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   flex-direction: column;
   transition: max-height 220ms ease;
 }
-.menu-movil__nav .desplegable--abierto .desplegable__panel { max-height: 320px; margin-top: var(--e-2); }
+.menu-movil__nav .desplegable--abierto .desplegable__panel { max-height: 320px; margin-bottom: var(--e-1); }
 .menu-movil__nav .desplegable__panel a {
-  padding-block: 10px;
-  padding-inline-start: var(--e-2);
+  padding-block: 9px;
+  padding-inline: 0;
+  text-align: center;
   font-family: var(--f-cuerpo);
   font-weight: 500;
-  font-size: var(--cuerpo);
+  font-size: var(--menor);
   color: var(--gris-tinta);
 }
 
@@ -811,6 +821,30 @@ body.asesoria .nav-flotante--oscura .desplegable__panel a:focus-visible {
   line-height: 1;
   color: var(--azul-hondo);
 }
+/* CTA de consulta de cada servicio: enlace de texto subrayado, no botón con
+   fondo. Lleva a la sección de contacto (#contacto) con scroll suave. */
+.servicio-bloque__consulta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: var(--e-3);
+  /* Alto de pulsación cómodo en móvil sin que parezca un botón */
+  padding-block: 6px;
+  font-family: var(--f-cuerpo);
+  font-weight: 700;
+  font-size: var(--cuerpo);
+  color: var(--azul-acero);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+  transition: color var(--dur-hover) ease, text-decoration-color var(--dur-hover) ease;
+}
+.servicio-bloque__consulta span { transition: transform var(--dur-hover) ease; }
+.servicio-bloque__consulta:hover,
+.servicio-bloque__consulta:focus-visible { color: var(--azul-hondo); }
+.servicio-bloque__consulta:hover span,
+.servicio-bloque__consulta:focus-visible span { transform: translateX(4px); }
+
 .servicio-bloque__lista { margin-top: var(--e-2); display: flex; flex-direction: column; gap: 8px; }
 .servicio-bloque__lista li { padding-left: var(--e-2); position: relative; }
 .servicio-bloque__lista li::before {
@@ -1065,7 +1099,9 @@ body.asesoria .campo select,
 body.asesoria .campo textarea {
   border-color: var(--dt-onyx);
   border-radius: var(--r-pildora);
-  background: #fff;
+  /* background-color, no el atajo `background`: el atajo borraría la flecha
+     (background-image) que base.css dibuja en los select */
+  background-color: #fff;
 }
 body.asesoria .campo textarea { border-radius: 24px; }
 body.asesoria .campo input:focus-visible,
@@ -1247,6 +1283,28 @@ body.asesoria main > section.servicios-hero:first-child {
   transform: translateY(-50%);
   opacity: .2;
   filter: url(#logo-duotono);
+}
+/* En móvil el logo de marca de los encabezados ("Nuestros servicios",
+   "¿Quiénes somos?") quedaba descentrado y cortado por el borde derecho,
+   compitiendo con el texto en muy poco ancho. Se oculta por debajo de 768px. */
+@media (max-width: 767px) {
+  .quienes-somos-hero__fondo,
+  .servicios-hero__fondo { display: none; }
+}
+
+/* Las etiquetas (eyebrow) de esos encabezados: en móvil se quedan alineadas
+   con el título y se les deja envolver, sin que el letter-spacing alto las
+   empuje fuera del canal */
+@media (max-width: 767px) {
+  .quienes-somos-hero__eyebrow,
+  .servicios-hero__eyebrow,
+  .trato-directo__eyebrow,
+  .calendario-fiscal__eyebrow {
+    max-width: 100%;
+    letter-spacing: .1em;
+    line-height: 1.4;
+    overflow-wrap: break-word;
+  }
 }
 
 .quienes-somos-hero__grid {
