@@ -78,12 +78,23 @@ body.marketing h3 { font-size: var(--titulo-3); line-height: 1.3; letter-spacing
    la "caja" del título la marque line-height, no las letras reales, y con
    tildes/mayúsculas acentuadas altas (Á, É, Ó...) o descendentes (g, j, y)
    el recorte quedaba muy justo. padding-block simétrico arriba y abajo (no
-   solo abajo) le da aire a los dos lados por igual. */
+   solo abajo) le da aire a los dos lados por igual.
+   Lo mismo pasaba en horizontal con la ÚLTIMA letra de cada título: h1/h2
+   llevan letter-spacing muy negativo (-.06em / -.05em, ver más abajo), que
+   se aplica también detrás del último carácter y hace que el navegador
+   calcule la caja del título más angosta que la tinta real de esa letra.
+   Como el degradado (el color) solo se pinta dentro de esa caja, no llegaba
+   a cubrir la última letra — se veía "cortada" aunque el glifo sí se
+   dibujaba. padding-inline-end le da ese mismo colchón a la derecha; el
+   margin-inline-end negativo lo compensa para no desplazar el layout
+   (títulos centrados o alineados a la derecha, como el de "Visión"). */
 body.marketing h1.mk-titulo-degradado, body.marketing h2.mk-titulo-degradado {
   color: var(--mk-vino-oscuro);
   display: inline-block;
   padding-block: .12em;
+  padding-inline-end: .12em;
   margin-block: -.12em;
+  margin-inline-end: -.12em;
 }
 @supports (background-clip: text) or (-webkit-background-clip: text) {
   body.marketing h1.mk-titulo-degradado, body.marketing h2.mk-titulo-degradado {
