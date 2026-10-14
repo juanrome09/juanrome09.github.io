@@ -1276,12 +1276,6 @@ body.marketing .cierre-marketing__linea {
 }
 @media (min-width: 900px) { .nosotros-mk-grid { grid-template-columns: 1fr 1fr; } }
 
-/* El GIF del equipo (video-equipo-mk.gif) se oculta en móvil: pesa, se
-   reproduce sin control y no aporta frente al texto en pantallas pequeñas */
-@media (max-width: 899px) {
-  .nosotros-mk-forma { display: none; }
-}
-
 @media (max-width: 480px) {
   .nosotros-mk-grid { gap: 16px; }
   .nosotros-mk-forma__foto {
