@@ -1,6 +1,6 @@
-/* Clave de acceso de Web3Forms — placeholder, hay que sustituirlo por la
-   clave real del cliente antes de publicar o el formulario no enviará. */
-const FORM_KEY = '{{FORM_KEY}}';
+/* Clave de acceso de Web3Forms del cliente. La usan los dos formularios
+   (Asesoría y Marketing), que comparten este mismo archivo. */
+const FORM_KEY = 'a29b737e-c6bf-4279-ab5d-775893514e22';
 
 /* Arranque: un inicializador por función de la página */
 document.addEventListener('DOMContentLoaded', () => {
