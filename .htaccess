@@ -1,0 +1,42 @@
+DirectoryIndex index.html
+Options -Indexes
+ErrorDocument 404 /404.html
+ErrorDocument 410 /404.html
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} !^www\.asesores360\.com$ [NC]
+RewriteRule ^(.*)$ https://www.asesores360.com/$1 [L,R=301,NE]
+RewriteCond %{REQUEST_URI} !^/\.well-known/
+RewriteRule (^|/)\. - [F,L]
+RewriteRule \.(md|py|log|sql|zip)$ - [F,L]
+RewriteRule ^(wp-admin|wp-content|wp-includes|wp-snapshots|dup-installer|cgi-bin)(/.*)?$ - [G,L]
+RewriteRule ^(wp-[a-z-]+\.php|xmlrpc\.php|install\.php|installer\.php|readme\.html|license\.txt|licencia\.txt)$ - [G,L]
+RewriteRule ^(feed|comments/feed|author|category|tag)(/.*)?$ - [G,L]
+</IfModule>
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/css application/javascript text/javascript application/json image/svg+xml text/plain application/xml
+</IfModule>
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresDefault "access plus 1 hour"
+ExpiresByType text/html "access plus 0 seconds"
+ExpiresByType text/css "access plus 1 week"
+ExpiresByType application/javascript "access plus 1 week"
+ExpiresByType text/javascript "access plus 1 week"
+ExpiresByType image/webp "access plus 1 month"
+ExpiresByType image/jpeg "access plus 1 month"
+ExpiresByType image/png "access plus 1 month"
+ExpiresByType image/gif "access plus 1 month"
+ExpiresByType font/woff2 "access plus 1 year"
+ExpiresByType image/x-icon "access plus 1 month"
+</IfModule>
+<IfModule mod_mime.c>
+AddType font/woff2 .woff2
+AddType image/webp .webp
+</IfModule>
