@@ -843,6 +843,13 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
     padding-inline: var(--canal-movil);
     padding-bottom: var(--e-2);
     scrollbar-width: none;
+    /* Sin esto, al tocar una foto el navegador duda entre scrollear la
+       página (vertical) o el carrusel (horizontal) — a veces "gana" el
+       carrusel y el dedo se queda pegado ahí sin poder seguir bajando por
+       la página. touch-action:pan-y le dice explícitamente al navegador
+       que el swipe vertical es prioritario y pasa de largo hacia la
+       página; el carrusel solo intercepta el gesto cuando es horizontal. */
+    touch-action: pan-y;
     /* El scroll-behavior:smooth global (base.css) peleaba con el scroll-snap
        nativo de este carrusel horizontal: al soltar el dedo, el navegador
        intentaba animar el ajuste del snap por encima del propio gesto
