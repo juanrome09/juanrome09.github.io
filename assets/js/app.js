@@ -928,25 +928,23 @@ function iniciarBusqueda() {
 
 /* Carruseles móviles de Marketing (Servicios, Nuestro trabajo): arrastre
    horizontal controlado a mano, en vez de dejárselo al touch-action nativo
-   del navegador. Mientras el gesto no se decide con claridad, no se toca
-   el carrusel — el scroll vertical de la página sigue su curso nativo
-   desde el primer milisegundo (nunca se le hace preventDefault). Solo
-   cuando el gesto resulta claramente horizontal se arrastra el carrusel
-   (y ahí sí se bloquea el scroll de la página, para que no se muevan los
-   dos ejes a la vez). Así una foto nunca se desplaza ni un píxel ante un
-   gesto vertical.
+   del navegador. El eje VERTICAL se deja siempre al navegador (nunca se le
+   hace preventDefault, nunca se toca con JS): es la única forma de que el
+   scroll de la página sea fluido y fiable en todos los móviles — se probó
+   tomarlo también a mano (window.scrollBy) para que las fotos grandes de
+   "Nuestro trabajo" no se movieran ni un pelo, pero en la práctica eso deja
+   el scroll trabado en varios navegadores (el scroll programático a mitad
+   de un toque activo no es fiable en todos lados, sobre todo iOS).
 
-   En las piezas grandes (las fotos casi a pantalla completa de "Nuestro
-   trabajo") dejarle el eje vertical al navegador (touch-action:pan-y)
-   seguía notándose: el motor táctil nativo arranca su propio paneo en
-   cuanto detecta el primer movimiento, a la vez que este código todavía
-   está decidiendo el eje — con fotos tan grandes esa carrera se nota.
-   Por eso aquí NINGÚN eje se deja al navegador (touch-action:none en el
-   CSS): mientras el gesto es vertical, este código mueve la página a mano
-   con window.scrollBy, al mismo ritmo que el dedo — el carrusel nunca
-   llega a tocarse porque scrollLeft solo se escribe en la rama horizontal. */
+   Para que las piezas grandes tampoco "tiemblen" ante un gesto vertical,
+   el umbral para decidir que un gesto es horizontal es más exigente que
+   el umbral para decidir que es vertical (SESGO_VERTICAL): hace falta un
+   componente horizontal claramente mayor que el vertical, no solo un pelo
+   mayor, antes de arrastrar el carrusel. Ante la duda, gana la página. */
 function iniciarCarruselesTactiles() {
   const UMBRAL_DECISION = 8; // px: cuánto hay que moverse antes de fijar el eje
+  const SESGO_VERTICAL = 1.4; // dx debe superar a dy por este factor para ser "horizontal"
+  const VELOCIDAD_FLICK = 0.45; // px/ms: a partir de aquí, un soltar cuenta como "flick"
   const carruseles = document.querySelectorAll('.servicios-marketing, .trabajo-mk');
   if (!carruseles.length) return;
 
@@ -956,14 +954,18 @@ function iniciarCarruselesTactiles() {
     let esHorizontal = false;
     let inicioX = 0;
     let inicioY = 0;
-    let ultimoY = 0;
     let scrollInicial = 0;
+    let ultimoX = 0;
+    let ultimoTiempo = 0;
+    let velocidad = 0; // px/ms, con signo (positivo = hacia la derecha)
 
-    const piezaMasCercana = () => {
-      const piezas = Array.from(carrusel.children);
-      if (!piezas.length) return null;
-      const centro = carrusel.scrollLeft + carrusel.clientWidth / 2;
-      return piezas.reduce((mejor, pieza) => {
+    const piezas = () => Array.from(carrusel.children);
+
+    const piezaMasCercana = (desde) => {
+      const lista = piezas();
+      if (!lista.length) return null;
+      const centro = desde + carrusel.clientWidth / 2;
+      return lista.reduce((mejor, pieza) => {
         const centroPieza = pieza.offsetLeft + pieza.offsetWidth / 2;
         const distancia = Math.abs(centroPieza - centro);
         const distanciaMejor = Math.abs((mejor.offsetLeft + mejor.offsetWidth / 2) - centro);
@@ -971,9 +973,23 @@ function iniciarCarruselesTactiles() {
       });
     };
 
+    /* Fluidez al soltar: si el gesto termina siendo un flick rápido, el
+       destino no es la pieza más cercana a donde se quedó el dedo, sino la
+       siguiente/anterior en la dirección del flick — como en una galería
+       nativa, no solo "donde te quedaste" sino "hacia dónde ibas". */
     const ajustarASnap = () => {
-      const pieza = piezaMasCercana();
-      if (pieza) carrusel.scrollTo({ left: pieza.offsetLeft, behavior: 'smooth' });
+      const lista = piezas();
+      if (!lista.length) return;
+      let objetivo;
+      if (Math.abs(velocidad) > VELOCIDAD_FLICK) {
+        const actual = piezaMasCercana(carrusel.scrollLeft);
+        const indice = lista.indexOf(actual);
+        const siguiente = velocidad < 0 ? indice + 1 : indice - 1; // scroll crece hacia la izquierda visual
+        objetivo = lista[Math.min(Math.max(siguiente, 0), lista.length - 1)];
+      } else {
+        objetivo = piezaMasCercana(carrusel.scrollLeft);
+      }
+      if (objetivo) carrusel.scrollTo({ left: objetivo.offsetLeft, behavior: 'smooth' });
     };
 
     carrusel.addEventListener('touchstart', (evento) => {
@@ -983,8 +999,10 @@ function iniciarCarruselesTactiles() {
       esHorizontal = false;
       inicioX = evento.touches[0].clientX;
       inicioY = evento.touches[0].clientY;
-      ultimoY = inicioY;
       scrollInicial = carrusel.scrollLeft;
+      ultimoX = inicioX;
+      ultimoTiempo = evento.timeStamp;
+      velocidad = 0;
     }, { passive: true });
 
     carrusel.addEventListener('touchmove', (evento) => {
@@ -995,28 +1013,23 @@ function iniciarCarruselesTactiles() {
       const dy = y - inicioY;
 
       if (!decidido) {
-        if (Math.abs(dx) < UMBRAL_DECISION && Math.abs(dy) < UMBRAL_DECISION) {
-          ultimoY = y;
-          return;
-        }
+        const horizontalClaro = Math.abs(dx) > UMBRAL_DECISION && Math.abs(dx) > Math.abs(dy) * SESGO_VERTICAL;
+        const verticalClaro = Math.abs(dy) > UMBRAL_DECISION && !horizontalClaro;
+        if (!horizontalClaro && !verticalClaro) return;
         decidido = true;
-        esHorizontal = Math.abs(dx) > Math.abs(dy);
+        esHorizontal = horizontalClaro;
       }
 
-      /* Con touch-action:none en el CSS el navegador ya no actúa por su
-         cuenta en ningún eje; preventDefault aquí es solo para que no
-         aparezca el rebote/selección propios de iOS a mitad de gesto. */
+      if (!esHorizontal) return; // vertical: no se toca nada, el navegador hace su scroll nativo
+
       evento.preventDefault();
+      carrusel.scrollLeft = scrollInicial - dx;
 
-      if (esHorizontal) {
-        carrusel.scrollLeft = scrollInicial - dx;
-      } else {
-        /* Vertical: movemos la página a mano, el mismo delta que se movió
-           el dedo desde el touchmove anterior (no desde el inicio del
-           gesto, para que no dé un salto al cambiar de rama). */
-        window.scrollBy(0, -(y - ultimoY));
-      }
-      ultimoY = y;
+      const ahora = evento.timeStamp;
+      const dt = ahora - ultimoTiempo;
+      if (dt > 0) velocidad = (x - ultimoX) / dt;
+      ultimoX = x;
+      ultimoTiempo = ahora;
     }, { passive: false });
 
     const terminar = () => {

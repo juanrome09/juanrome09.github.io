@@ -850,16 +850,18 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
     padding-inline: var(--canal-movil);
     padding-bottom: var(--e-2);
     scrollbar-width: none;
-    /* touch-action:none — el navegador no actúa por su cuenta en NINGÚN eje,
-       ni el vertical. Con pan-y (el intento anterior) el paneo vertical
-       nativo arrancaba en el motor táctil en cuanto el dedo se movía,
-       corriendo en paralelo mientras iniciarCarruselesTactiles() en app.js
-       aún decidía el eje del gesto — con las fotos grandes de "Nuestro
-       trabajo" esa carrera se notaba. Con "none" los dos ejes los decide y
-       mueve ese mismo JS a mano (scrollLeft para horizontal,
-       window.scrollBy para vertical), sin que el navegador tenga ocasión
-       de adelantarse. */
-    touch-action: none;
+    /* touch-action:pan-y — el eje vertical SIEMPRE lo maneja el navegador
+       de forma nativa (nunca JS): es la única manera de que el scroll de
+       la página sea fluido y fiable en todos los móviles. Se probó
+       tomar también el eje vertical a mano con window.scrollBy (para que
+       las fotos grandes de "Nuestro trabajo" no se movieran ni un pelo),
+       pero en la práctica eso deja el scroll de la página trabado en
+       varios navegadores (el scroll programático a mitad de un toque
+       activo no es fiable en todos lados, sobre todo iOS) — peor que el
+       problema que intentaba resolver. El horizontal sigue a mano
+       (iniciarCarruselesTactiles() en app.js, ver más abajo), que es el
+       único eje que de verdad necesita lógica propia aquí. */
+    touch-action: pan-y;
     /* El scroll-behavior:smooth global (base.css) le pondría una animación
        a los retoques de scrollLeft hechos a mano durante el arrastre, que
        deben ser instantáneos (1 a 1 con el dedo). El snap al soltar sí usa
@@ -900,6 +902,11 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   .enfoque-mk__item__numero { font-size: 28px; margin-bottom: 4px; }
   .enfoque-mk__item h3 { margin-bottom: 4px; }
 }
+/* Número, título y texto centrados entre sí dentro de cada tarjeta */
+.enfoque-mk__item {
+  text-align: center;
+}
+
 .enfoque-mk__item__numero {
   display: block;
   font-family: var(--f-cartel);
@@ -915,6 +922,14 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
 .enfoque-mk__item:nth-child(3) .enfoque-mk__item__numero { color: var(--mk-verde-mar); }
 .enfoque-mk__item:nth-child(4) .enfoque-mk__item__numero { color: var(--mk-violeta); }
 .enfoque-mk__item h3 { color: var(--mk-tinta); font-size: var(--titulo-3); margin-bottom: 6px; }
+/* base.css pone text-align:left y un max-width de lectura en todos los <p>;
+   aquí se anula para que el párrafo quede centrado igual que el número y
+   el título, y no se quede pegado al borde izquierdo de la tarjeta. */
+.enfoque-mk__item p {
+  text-align: center;
+  max-width: none;
+  margin-inline: auto;
+}
 
 /* FAQ */
 .faq-mk-grid {
