@@ -837,31 +837,31 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
     align-items: stretch;
     overflow-x: auto;
     overscroll-behavior-x: contain;
-    /* "proximity" en vez de "mandatory": con fotos tan grandes (casi todo
-       el ancho de pantalla, y en "Nuestro trabajo" casi cuadradas) un swipe
-       vertical que empieza sobre la foto tenía algo de componente
-       horizontal casi siempre, y "mandatory" obligaba al navegador a
-       comprometerse con el snap horizontal ante la mínima señal, comiéndose
-       el gesto vertical. "proximity" solo ajusta al soltar si ya estabas
-       cerca de una foto, sin secuestrar el gesto a mitad de camino. */
-    scroll-snap-type: x proximity;
+    /* SIN scroll-snap-type aquí: comprobado en pruebas que con
+       scroll-snap-type activo (incluso "proximity") el navegador reevalúa
+       el snap ante CUALQUIER cambio de scrollLeft, no solo al terminar un
+       gesto real — eso incluye las asignaciones que hace a mano
+       iniciarCarruselesTactiles() en app.js durante el arrastre, que
+       quedaban revertidas al instante. El snap-al-soltar-el-dedo lo hace
+       ahora ese mismo JS (carrusel.scrollTo(...) en touchend), que si no
+       pelea contra el motor de snap nativo. */
     -webkit-overflow-scrolling: touch;
     margin-inline: calc(var(--canal-movil) * -1);
     padding-inline: var(--canal-movil);
     padding-bottom: var(--e-2);
     scrollbar-width: none;
-    /* pan-y (solo) desactiva el swipe horizontal del propio carrusel —justo
-       lo que NO queremos, ya que aquí el scroll horizontal es nativo (no
-       hay JS de arrastre). pan-x junto con pan-y deja los dos gestos
-       disponibles para que el navegador bloquee la dirección según hacia
-       dónde se mueva el dedo, en vez de reclamar solo uno de los dos ejes. */
-    touch-action: pan-x pan-y;
-    /* El scroll-behavior:smooth global (base.css) peleaba con el scroll-snap
-       nativo de este carrusel horizontal: al soltar el dedo, el navegador
-       intentaba animar el ajuste del snap por encima del propio gesto
-       táctil, lo que se sentía como que la foto "saltaba" verticalmente a
-       mitad del deslizamiento. En un carrusel táctil el ajuste lo hace el
-       propio sistema de scroll-snap; se vuelve a scroll instantáneo aquí. */
+    /* Nada de touch-action nativo para el eje horizontal: el navegador NUNCA
+       debe mover el carrusel por su cuenta ante un toque. pan-y concede solo
+       el paneo vertical (así el scroll de la página siempre está disponible
+       de fábrica); el arrastre horizontal lo decide y ejecuta a mano
+       iniciarCarruselesTactiles() en app.js, que solo toca scrollLeft cuando
+       el gesto ya se decidió claramente horizontal — un swipe vertical jamás
+       llega a mover la imagen, ni un píxel. */
+    touch-action: pan-y;
+    /* El scroll-behavior:smooth global (base.css) le pondría una animación
+       a los retoques de scrollLeft hechos a mano durante el arrastre, que
+       deben ser instantáneos (1 a 1 con el dedo). El snap al soltar sí usa
+       su propio scrollTo({behavior:'smooth'}) explícito en el JS. */
     scroll-behavior: auto;
   }
   .servicios-marketing::-webkit-scrollbar,

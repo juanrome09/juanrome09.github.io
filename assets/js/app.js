@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarSombraTarjetas();
   iniciarChatWhatsapp();
   iniciarBusqueda();
+  iniciarCarruselesTactiles();
 });
 
 /* Nav: encoge la cabecera al hacer scroll */
@@ -922,5 +923,84 @@ function iniciarBusqueda() {
     if (enCampo) return;
     evento.preventDefault();
     abrirBusqueda();
+  });
+}
+
+/* Carruseles móviles de Marketing (Servicios, Nuestro trabajo): arrastre
+   horizontal controlado a mano, en vez de dejárselo al touch-action nativo
+   del navegador. Mientras el gesto no se decide con claridad, no se toca
+   el carrusel — el scroll vertical de la página sigue su curso nativo
+   desde el primer milisegundo (nunca se le hace preventDefault). Solo
+   cuando el gesto resulta claramente horizontal se arrastra el carrusel
+   (y ahí sí se bloquea el scroll de la página, para que no se muevan los
+   dos ejes a la vez). Así una foto nunca se desplaza ni un píxel ante un
+   gesto vertical. */
+function iniciarCarruselesTactiles() {
+  const UMBRAL_DECISION = 8; // px: cuánto hay que moverse antes de fijar el eje
+  const carruseles = document.querySelectorAll('.servicios-marketing, .trabajo-mk');
+  if (!carruseles.length) return;
+
+  carruseles.forEach((carrusel) => {
+    let activo = false;
+    let decidido = false;
+    let esHorizontal = false;
+    let inicioX = 0;
+    let inicioY = 0;
+    let scrollInicial = 0;
+
+    const piezaMasCercana = () => {
+      const piezas = Array.from(carrusel.children);
+      if (!piezas.length) return null;
+      const centro = carrusel.scrollLeft + carrusel.clientWidth / 2;
+      return piezas.reduce((mejor, pieza) => {
+        const centroPieza = pieza.offsetLeft + pieza.offsetWidth / 2;
+        const distancia = Math.abs(centroPieza - centro);
+        const distanciaMejor = Math.abs((mejor.offsetLeft + mejor.offsetWidth / 2) - centro);
+        return distancia < distanciaMejor ? pieza : mejor;
+      });
+    };
+
+    const ajustarASnap = () => {
+      const pieza = piezaMasCercana();
+      if (pieza) carrusel.scrollTo({ left: pieza.offsetLeft, behavior: 'smooth' });
+    };
+
+    carrusel.addEventListener('touchstart', (evento) => {
+      if (evento.touches.length !== 1) return;
+      activo = true;
+      decidido = false;
+      esHorizontal = false;
+      inicioX = evento.touches[0].clientX;
+      inicioY = evento.touches[0].clientY;
+      scrollInicial = carrusel.scrollLeft;
+    }, { passive: true });
+
+    carrusel.addEventListener('touchmove', (evento) => {
+      if (!activo || evento.touches.length !== 1) return;
+      const dx = evento.touches[0].clientX - inicioX;
+      const dy = evento.touches[0].clientY - inicioY;
+
+      if (!decidido) {
+        if (Math.abs(dx) < UMBRAL_DECISION && Math.abs(dy) < UMBRAL_DECISION) return;
+        decidido = true;
+        esHorizontal = Math.abs(dx) > Math.abs(dy);
+      }
+
+      if (esHorizontal) {
+        evento.preventDefault();
+        carrusel.scrollLeft = scrollInicial - dx;
+      }
+      /* si es vertical, no se hace nada: el scroll de la página sigue su
+         curso nativo, nunca se le quitó el control */
+    }, { passive: false });
+
+    const terminar = () => {
+      if (activo && decidido && esHorizontal) ajustarASnap();
+      activo = false;
+      decidido = false;
+      esHorizontal = false;
+    };
+    carrusel.addEventListener('touchend', terminar);
+    carrusel.addEventListener('touchcancel', terminar);
   });
 }
