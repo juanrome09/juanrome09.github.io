@@ -934,7 +934,17 @@ function iniciarBusqueda() {
    cuando el gesto resulta claramente horizontal se arrastra el carrusel
    (y ahí sí se bloquea el scroll de la página, para que no se muevan los
    dos ejes a la vez). Así una foto nunca se desplaza ni un píxel ante un
-   gesto vertical. */
+   gesto vertical.
+
+   En las piezas grandes (las fotos casi a pantalla completa de "Nuestro
+   trabajo") dejarle el eje vertical al navegador (touch-action:pan-y)
+   seguía notándose: el motor táctil nativo arranca su propio paneo en
+   cuanto detecta el primer movimiento, a la vez que este código todavía
+   está decidiendo el eje — con fotos tan grandes esa carrera se nota.
+   Por eso aquí NINGÚN eje se deja al navegador (touch-action:none en el
+   CSS): mientras el gesto es vertical, este código mueve la página a mano
+   con window.scrollBy, al mismo ritmo que el dedo — el carrusel nunca
+   llega a tocarse porque scrollLeft solo se escribe en la rama horizontal. */
 function iniciarCarruselesTactiles() {
   const UMBRAL_DECISION = 8; // px: cuánto hay que moverse antes de fijar el eje
   const carruseles = document.querySelectorAll('.servicios-marketing, .trabajo-mk');
@@ -946,6 +956,7 @@ function iniciarCarruselesTactiles() {
     let esHorizontal = false;
     let inicioX = 0;
     let inicioY = 0;
+    let ultimoY = 0;
     let scrollInicial = 0;
 
     const piezaMasCercana = () => {
@@ -972,26 +983,40 @@ function iniciarCarruselesTactiles() {
       esHorizontal = false;
       inicioX = evento.touches[0].clientX;
       inicioY = evento.touches[0].clientY;
+      ultimoY = inicioY;
       scrollInicial = carrusel.scrollLeft;
     }, { passive: true });
 
     carrusel.addEventListener('touchmove', (evento) => {
       if (!activo || evento.touches.length !== 1) return;
-      const dx = evento.touches[0].clientX - inicioX;
-      const dy = evento.touches[0].clientY - inicioY;
+      const x = evento.touches[0].clientX;
+      const y = evento.touches[0].clientY;
+      const dx = x - inicioX;
+      const dy = y - inicioY;
 
       if (!decidido) {
-        if (Math.abs(dx) < UMBRAL_DECISION && Math.abs(dy) < UMBRAL_DECISION) return;
+        if (Math.abs(dx) < UMBRAL_DECISION && Math.abs(dy) < UMBRAL_DECISION) {
+          ultimoY = y;
+          return;
+        }
         decidido = true;
         esHorizontal = Math.abs(dx) > Math.abs(dy);
       }
 
+      /* Con touch-action:none en el CSS el navegador ya no actúa por su
+         cuenta en ningún eje; preventDefault aquí es solo para que no
+         aparezca el rebote/selección propios de iOS a mitad de gesto. */
+      evento.preventDefault();
+
       if (esHorizontal) {
-        evento.preventDefault();
         carrusel.scrollLeft = scrollInicial - dx;
+      } else {
+        /* Vertical: movemos la página a mano, el mismo delta que se movió
+           el dedo desde el touchmove anterior (no desde el inicio del
+           gesto, para que no dé un salto al cambiar de rama). */
+        window.scrollBy(0, -(y - ultimoY));
       }
-      /* si es vertical, no se hace nada: el scroll de la página sigue su
-         curso nativo, nunca se le quitó el control */
+      ultimoY = y;
     }, { passive: false });
 
     const terminar = () => {

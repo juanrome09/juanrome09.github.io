@@ -850,14 +850,16 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
     padding-inline: var(--canal-movil);
     padding-bottom: var(--e-2);
     scrollbar-width: none;
-    /* Nada de touch-action nativo para el eje horizontal: el navegador NUNCA
-       debe mover el carrusel por su cuenta ante un toque. pan-y concede solo
-       el paneo vertical (así el scroll de la página siempre está disponible
-       de fábrica); el arrastre horizontal lo decide y ejecuta a mano
-       iniciarCarruselesTactiles() en app.js, que solo toca scrollLeft cuando
-       el gesto ya se decidió claramente horizontal — un swipe vertical jamás
-       llega a mover la imagen, ni un píxel. */
-    touch-action: pan-y;
+    /* touch-action:none — el navegador no actúa por su cuenta en NINGÚN eje,
+       ni el vertical. Con pan-y (el intento anterior) el paneo vertical
+       nativo arrancaba en el motor táctil en cuanto el dedo se movía,
+       corriendo en paralelo mientras iniciarCarruselesTactiles() en app.js
+       aún decidía el eje del gesto — con las fotos grandes de "Nuestro
+       trabajo" esa carrera se notaba. Con "none" los dos ejes los decide y
+       mueve ese mismo JS a mano (scrollLeft para horizontal,
+       window.scrollBy para vertical), sin que el navegador tenga ocasión
+       de adelantarse. */
+    touch-action: none;
     /* El scroll-behavior:smooth global (base.css) le pondría una animación
        a los retoques de scrollLeft hechos a mano durante el arrastre, que
        deben ser instantáneos (1 a 1 con el dedo). El snap al soltar sí usa
