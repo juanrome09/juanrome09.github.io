@@ -820,6 +820,17 @@ body.marketing main > section:has(> .mk-fondo-decorativo) > .contenedor {
   border-radius: var(--mk-r-imagen);
   border: 1px solid var(--mk-gris);
   transition: border-color var(--dur-hover) ease;
+  /* Esto es lo que de verdad distinguía a este carrusel del de Servicios
+     (que no tiene ninguna <img>, solo texto): un <img> trae de fábrica
+     comportamientos táctiles propios -- arrastrarla para "copiar/guardar
+     imagen", el menú de mantener presionado en iOS -- que compiten con
+     iniciarCarruselesTactiles() aunque el contenedor ya tenga su propio
+     touch-action. Se desactivan todos explícitamente en la imagen. */
+  -webkit-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .trabajo-mk__pieza:hover .placeholder-img,
 .trabajo-mk__pieza:focus-within .placeholder-img,
